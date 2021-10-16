@@ -37,6 +37,9 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.0-b.2
+- Fix album art appearing as dot in FireFox
+
 0.1.0-b.1
 - Initial release
 
