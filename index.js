@@ -142,6 +142,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             default: 
                 albumartStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
         }
+        albumartStylesUIConf.content[4].value = styles.albumartBorderRadius || '';
 
         /**
          * Background Styles Conf
@@ -450,7 +451,8 @@ ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
         albumartSize: data.albumartSize.value,
         albumartWidth: data.albumartWidth,
         albumartHeight: data.albumartHeight,
-        albumartFit: data.albumartFit.value
+        albumartFit: data.albumartFit.value,
+        albumartBorderRadius: data.albumartBorderRadius
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);

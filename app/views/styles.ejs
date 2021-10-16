@@ -151,6 +151,12 @@
   }
 <% } %>
 
+<% if (styles.albumartBorderRadius) { %>
+  #albumart img {
+    border-radius: <%- styles.albumartBorderRadius %>;
+  }
+<% } %>
+
 <% if (styles.backgroundType == 'albumart') { %>
   <% let albumartBackgroundFit = styles.albumartBackgroundFit || 'cover'; %>
   <% let backgroundSize = styles.albumartBackgroundFit == 'fill' ? '100% 100%' : styles.albumartBackgroundFit; %>

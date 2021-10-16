@@ -401,7 +401,8 @@
           "albumartSize",
           "albumartWidth",
           "albumartHeight",
-          "albumartFit"
+          "albumartFit",
+          "albumartBorderRadius"
         ]
       },
       "content": [
@@ -473,6 +474,14 @@
               "label": "TRANSLATE.NOW_PLAYING_FIT_FILL"
             }
           ]
+        },
+        {
+          "id": "albumartBorderRadius",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BORDER_RADIUS",
+          "label": "TRANSLATE.NOW_PLAYING_BORDER_RADIUS",
+          "value": ""
         }
       ]
     },
