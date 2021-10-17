@@ -75,6 +75,9 @@
 </body>
 
 <script>
+  let pluginVersion = '<%- pluginVersion %>';
+  let appPort = '<%- appPort %>';
+
   // Track timer for incrementing seekbar position at 1s interval
   let trackTimer = null;
 
@@ -424,6 +427,16 @@
 
   socket.on('nowPlayingRefresh', () => {
     refresh();
+  });
+
+  socket.on('nowPlayingAppStarted', info => {
+    if (info.appPort !== appPort) {
+      let href = window.location.href.replace(`:${ appPort }`, `:${ info.appPort }`);
+      window.location.href = href;
+    }
+    else if (info.pluginVersion !== pluginVersion) {
+      refresh();
+    }
   });
 
   // UI function due to legacy Chromium on Volumio 2.x

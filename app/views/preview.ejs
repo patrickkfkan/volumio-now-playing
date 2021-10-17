@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="/lib/jquery-3.6.0.min.js"></script>
   <script src="/lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="/lib/socket.io.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?Noto+Sans+Display:wght@100;700&family=Roboto:wght@700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -27,7 +28,7 @@
   </div>
   <div id="contents">
     <div id="preview-window">
-      <iframe src="<%- host %>"></iframe>
+      <iframe src="<%- nowPlayingUrl %>"></iframe>
     </div>
   </div>
 </body>
@@ -43,6 +44,29 @@
     [1280, 720],
     [1920, 1080]
   ];
+
+  let pluginVersion = '<%- pluginVersion %>';
+  let appPort = '<%- appPort %>';
+
+  function refresh() {
+    window.location.reload();
+  }
+
+  let socket = io.connect('<%- host %>', { autoConnect: false });
+
+  socket.on('nowPlayingAppStarted', info => {
+    if (info.appPort !== appPort) {
+      let href = window.location.href.replace(`:${ appPort }`, `:${ info.appPort }`);
+      window.location.href = href;
+    }
+    else if (info.pluginVersion !== pluginVersion) {
+      refresh();
+    }
+  });
+
+  socket.on('nowPlayingRefresh', () => {
+    refresh();
+  });
 
   $(document).ready(() => {
     // Populate size presets menu
@@ -105,6 +129,8 @@
         }
       }
     );
+
+    socket.connect();
   });
 </script>
 

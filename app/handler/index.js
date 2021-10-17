@@ -2,10 +2,13 @@
 
 const ejs = require('ejs');
 const np = require(nowPlayingPluginLibRoot + '/np');
+const util = require(nowPlayingPluginLibRoot + '/util');
 
 async function index(req, res) {
     let host = `${req.protocol}://${ req.hostname }:3000`;
     let html = await renderView('index', {
+        pluginVersion: util.getPluginVersion(),
+        appPort: np.getConfigValue('port', 4004),
         host,
         styles: np.getConfigValue('styles', {}, true)
     });
@@ -16,6 +19,8 @@ async function volumio(req, res) {
     let host = `${req.protocol}://${ req.hostname }:3000`;
     let nowPlayingUrl = `${req.protocol}://${ req.hostname }:${ np.getConfigValue('port', 4004) }`;
     let html = await renderView('volumio', {
+        pluginVersion: util.getPluginVersion(),
+        appPort: np.getConfigValue('port', 4004),
         host,
         nowPlayingUrl,
     });
@@ -23,8 +28,13 @@ async function volumio(req, res) {
 }
 
 async function preview(req, res) {
+    let host = `${req.protocol}://${ req.hostname }:3000`;
+    let nowPlayingUrl = `${req.protocol}://${ req.hostname }:${ np.getConfigValue('port', 4004) }`;
     let html = await renderView('preview', {
-        host: `${req.protocol}://${ req.hostname }:${ np.getConfigValue('port', 4004) }`
+        pluginVersion: util.getPluginVersion(),
+        appPort: np.getConfigValue('port', 4004),
+        host,
+        nowPlayingUrl
     });
     res.send(html);
 }

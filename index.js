@@ -388,9 +388,10 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
         np.toast('success', np.getI18n('NOW_PLAYING_RESTARTED'));
 
         // Check if kiosk script was set to show Now Playing, and update 
-        // to new port
+        // to new port (do not restart volumio-kiosk service because 
+        // the screen will reload itself when app is started)
         if (kiosk.exists && kiosk.display == 'nowPlaying') {
-            self.modifyVolumioKiosk(data['port'], data['oldPort']);
+            self.modifyVolumioKioskScript(data['oldPort'], data['port'], false);
         }
 
         self.refreshUIConfig();
@@ -509,31 +510,36 @@ ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {
     self.refreshUIConfig();
 }
 
-ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newPort) {
+ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newPort, restartService = true) {
     let defer = libQ.defer();
 
     try {
         util.replaceInFile(volumioKioskPath, `localhost:${ oldPort }`, `localhost:${ newPort }`);
         np.toast('success', np.getI18n('NOW_PLAYING_KIOSK_MODIFIED'));
 
-        // Restart volumio-kiosk service if it is active
-        util.isSystemdServiceActive('volumio-kiosk').then( isActive => {
-            if (isActive) {
-                np.toast('info', 'Restarting Volumio Kiosk service...');
-                util.restartSystemdService('volumio-kiosk')
-                .then( () => { defer.resolve(); })
-                .catch( error => {
-                    np.toast('error', 'Failed to restart Volumio Kiosk service.');
+        if (restartService) {
+            // Restart volumio-kiosk service if it is active
+            util.isSystemdServiceActive('volumio-kiosk').then( isActive => {
+                if (isActive) {
+                    np.toast('info', 'Restarting Volumio Kiosk service...');
+                    util.restartSystemdService('volumio-kiosk')
+                    .then( () => { defer.resolve(); })
+                    .catch( error => {
+                        np.toast('error', 'Failed to restart Volumio Kiosk service.');
+                        defer.resolve();
+                    });
+                }
+                else {
                     defer.resolve();
-                });
-            }
-            else {
+                }
+            })
+            .catch( error => {
                 defer.resolve();
-            }
-        })
-        .catch( error => {
+            });
+        }
+        else {
             defer.resolve();
-        });
+        }
     } catch (error) {
         np.getLogger().error(np.getErrorMessage('[now-playing] Error modifying Volumio Kiosk script:', error));
         np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_MODIFY_ERR'));
@@ -577,6 +583,7 @@ ControllerNowPlaying.prototype.onStart = function() {
                 self.modifyVolumioKioskScript(3000, np.getConfigValue('port', 4004));
             }
         }
+        
         return libQ.resolve();
     });
 };
@@ -641,11 +648,17 @@ function checkVolumioKiosk() {
 
 function startApp() {
     let defer = libQ.defer();
+    let appPort = np.getConfigValue('port', 4004);
 
     app.start({
-        port: np.getConfigValue('port', 4004)
+        port: appPort
     })
     .then( () => {
+        let pluginVersion = util.getPluginVersion();
+        // This is for active Now Playing screens to reload themselves
+        // if plugin version or port has changed.
+        np.broadcastMessage('nowPlayingAppStarted', { pluginVersion, appPort });
+
         defer.resolve();
     })
     .catch( error => {

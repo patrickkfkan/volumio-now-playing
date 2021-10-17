@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "ejs": "^3.1.6",
+    "jsonfile": "^6.1.0",
     "express": "^4.17.1",
     "kew": "^0.7.0",
     "string-format": "^2.0.0",
