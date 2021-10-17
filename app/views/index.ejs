@@ -6,8 +6,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="/lib/jquery-3.6.0.min.js"></script>
-  <script src="/lib/socket.io.min.js"></script>
   <script src="/lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="/lib/socket.io.min.js"></script>
+  <script src="/lib/common.js"></script>
 
   <!-- https://github.com/mattbryson/TouchSwipe-Jquery-Plugin -->
   <script src="/lib/jquery.touchSwipe.min.js"></script>
@@ -75,9 +76,6 @@
 </body>
 
 <script>
-  let pluginVersion = '<%- pluginVersion %>';
-  let appPort = '<%- appPort %>';
-
   // Track timer for incrementing seekbar position at 1s interval
   let trackTimer = null;
 
@@ -160,10 +158,6 @@
     isCancelled(handle) {
       return this.handles[handle.id] ? false : true;
     }
-  }
-
-  function refresh() {
-    window.location.reload();
   }
 
   function switchToVolumioInterface() {
@@ -394,7 +388,10 @@
   }
 
   // Obtain socket and handle socket events
-  let socket = io.connect('<%- host %>', { autoConnect: false });
+  let socket = getSocket('<%- host %>', {
+    pluginVersion: '<%- pluginVersion %>',
+    appPort: '<%- appPort %>'
+  });
 
   socket.on('connect', () => {
     socket.emit('getState');
@@ -423,20 +420,6 @@
 
   socket.on('nowPlayingSetCustomCSS', css => {
     $('#custom-styles').html(css.replace(/\${ host }/gm, '<%- host %>'));
-  });
-
-  socket.on('nowPlayingRefresh', () => {
-    refresh();
-  });
-
-  socket.on('nowPlayingAppStarted', info => {
-    if (info.appPort !== appPort) {
-      let href = window.location.href.replace(`:${ appPort }`, `:${ info.appPort }`);
-      window.location.href = href;
-    }
-    else if (info.pluginVersion !== pluginVersion) {
-      refresh();
-    }
   });
 
   // UI function due to legacy Chromium on Volumio 2.x

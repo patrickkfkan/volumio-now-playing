@@ -657,7 +657,7 @@ function startApp() {
         let pluginVersion = util.getPluginVersion();
         // This is for active Now Playing screens to reload themselves
         // if plugin version or port has changed.
-        np.broadcastMessage('nowPlayingAppStarted', { pluginVersion, appPort });
+        np.broadcastMessage('nowPlayingPluginInfo', { pluginVersion, appPort });
 
         defer.resolve();
     })
