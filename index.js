@@ -543,6 +543,11 @@ ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newP
     return defer.promise;
 }
 
+ControllerNowPlaying.prototype.broadcastRefresh = function() {
+    np.broadcastMessage('nowPlayingRefresh');
+    np.toast('success', np.getI18n('NOW_PLAYING_BROADCASTED_COMMAND'));
+}
+
 ControllerNowPlaying.prototype.refreshUIConfig = function() {
     let self = this;
     

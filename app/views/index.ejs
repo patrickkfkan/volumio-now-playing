@@ -422,6 +422,10 @@
     $('#custom-styles').html(css.replace(/\${ host }/gm, '<%- host %>'));
   });
 
+  socket.on('nowPlayingRefresh', () => {
+    refresh();
+  });
+
   // UI function due to legacy Chromium on Volumio 2.x
   function setDefaultSizes() {
     /**

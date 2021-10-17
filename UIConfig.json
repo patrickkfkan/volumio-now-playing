@@ -799,6 +799,28 @@
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_KIOSK",
       "icon": "fa-television"
+    },
+    {
+      "id": "section_other",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_OTHER",
+      "icon": "fa-cog",
+      "content": [
+        {
+          "id": "broadcastRefresh",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_BROADCAST_REFRESH",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_BROADCAST_REFRESH",
+          "onClick": {
+            "type": "emit",
+            "message": "callMethod",
+            "data": {
+                "endpoint": "miscellanea/now_playing",
+                "method": "broadcastRefresh"
+            }
+          }
+        }
+      ]
     }
   ]
 }
