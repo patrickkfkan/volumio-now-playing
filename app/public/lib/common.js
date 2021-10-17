@@ -20,6 +20,13 @@ function getSocket(host, data = {}) {
                 refresh();
             }
         });
+
+        socket.on('reconnect', () => {
+            socket.emit('callMethod', {
+                endpoint: 'miscellanea/now_playing',
+                method: 'broadcastPluginInfo'
+            });
+        });
     }
     
     socket.on('nowPlayingRefresh', () => {

@@ -384,7 +384,7 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
 
     self.config.set('port', data['port']);
 
-    restartApp().then( () => {
+    self.restartApp().then( () => {
         np.toast('success', np.getI18n('NOW_PLAYING_RESTARTED'));
 
         // Check if kiosk script was set to show Now Playing, and update 
@@ -554,6 +554,21 @@ ControllerNowPlaying.prototype.broadcastRefresh = function() {
     np.toast('success', np.getI18n('NOW_PLAYING_BROADCASTED_COMMAND'));
 }
 
+let broadcastPluginInfoTimer = null;
+ControllerNowPlaying.prototype.broadcastPluginInfo = function() {
+    // Multiple screens could be calling this function, so we send after two seconds.
+    // During this time, ignore all other requests.
+    if (broadcastPluginInfoTimer) {
+        return;
+    }
+    broadcastPluginInfoTimer = setTimeout( () => {
+        let appPort = np.getConfigValue('port', 4004);
+        let pluginVersion = util.getPluginVersion();
+        np.broadcastMessage('nowPlayingPluginInfo', { pluginVersion, appPort });
+        broadcastPluginInfoTimer = null;
+    }, 2000);
+}
+
 ControllerNowPlaying.prototype.refreshUIConfig = function() {
     let self = this;
     
@@ -575,7 +590,7 @@ ControllerNowPlaying.prototype.onStart = function() {
 
     np.init(self.context, self.config);
 
-    return startApp().then( () => {
+    return self.startApp().then( () => {
         let display = np.getConfigValue('kioskDisplay', 'default');
         if (display == 'nowPlaying') {
             let kiosk = checkVolumioKiosk();
@@ -589,7 +604,11 @@ ControllerNowPlaying.prototype.onStart = function() {
 };
 
 ControllerNowPlaying.prototype.onStop = function() {
-    stopApp();
+    this.stopApp();
+
+    if (broadcastPluginInfoTimer) {
+        clearTimeout(broadcastPluginInfoTimer);
+    }
 
     // If kiosk is set to Now Playing, restore it back to default
     let restoreKiosk;
@@ -608,6 +627,40 @@ ControllerNowPlaying.prototype.onStop = function() {
 
 ControllerNowPlaying.prototype.getConfigurationFiles = function() {
     return ['config.json'];
+}
+
+ControllerNowPlaying.prototype.startApp = function() {
+    let self = this;
+    let defer = libQ.defer();
+
+    app.start({
+        port: np.getConfigValue('port', 4004)
+    })
+    .then( () => {
+        // This is for active Now Playing screens to reload themselves
+        // if plugin version or port has changed.
+        // Note: if Volumio has just restarted, the socket
+        // on client side might not have reconnected and will not receive the message.
+        // So on the client side we request plugin info upon socket reconnect.
+        self.broadcastPluginInfo();
+
+        defer.resolve();
+    })
+    .catch( error => {
+        np.toast('error', np.getI18n('NOW_PLAYING_DAEMON_START_ERR', error.message));
+        defer.reject(error);
+    });
+
+    return defer.promise;
+}
+
+ControllerNowPlaying.prototype.stopApp = function() {
+    app.stop();
+}
+
+ControllerNowPlaying.prototype.restartApp = function() {
+    this.stopApp();
+    return this.startApp();
 }
 
 function checkVolumioKiosk() {
@@ -644,38 +697,6 @@ function checkVolumioKiosk() {
             exists: false
         };
     }
-}
-
-function startApp() {
-    let defer = libQ.defer();
-    let appPort = np.getConfigValue('port', 4004);
-
-    app.start({
-        port: appPort
-    })
-    .then( () => {
-        let pluginVersion = util.getPluginVersion();
-        // This is for active Now Playing screens to reload themselves
-        // if plugin version or port has changed.
-        np.broadcastMessage('nowPlayingPluginInfo', { pluginVersion, appPort });
-
-        defer.resolve();
-    })
-    .catch( error => {
-        np.toast('error', np.getI18n('NOW_PLAYING_DAEMON_START_ERR', error.message));
-        defer.reject(error);
-    });
-
-    return defer.promise;
-}
-
-function stopApp() {
-    app.stop();
-}
-
-function restartApp() {
-    stopApp();
-    return startApp();
 }
 
 function getVolumioBackgrounds() {

@@ -58,6 +58,7 @@
         </div>
       </div>
     </div>
+    <div id="disconnected-overlay"><i class="fa fa-spinner fa-spin"></i></div>
   </div>
 
   <div id="top-bar-popup">
@@ -394,7 +395,13 @@
   });
 
   socket.on('connect', () => {
+    $('#wrapper').removeClass('disconnected');
     socket.emit('getState');
+  });
+
+  socket.on('disconnect', () => {
+    $('#wrapper').addClass('disconnected');
+    stopTrackTimer();
   });
 
   let currentState = null;
