@@ -37,6 +37,11 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.0-b.4
+- Add 'Broadcast Refresh Command' button to plugin settings
+- Auto reload Now Playing screen on change in plugin version or daemon port
+- Show overlay when socket is disconnected
+
 0.1.0-b.3
 - Add border-radius setting to album art
 
