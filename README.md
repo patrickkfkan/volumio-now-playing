@@ -37,6 +37,9 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.0-b.5
+- Back up Volumio Kiosk script before modifying it to show the Now Playing screen; add 'Restore from Backup' button as failsafe measure.
+
 0.1.0-b.4
 - Add 'Broadcast Refresh Command' button to plugin settings
 - Auto reload Now Playing screen on change in plugin version or daemon port
