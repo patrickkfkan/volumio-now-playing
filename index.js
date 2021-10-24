@@ -9,6 +9,7 @@ const util = require(nowPlayingPluginLibRoot + '/util');
 const app = require(__dirname + '/app');
 
 const volumioKioskPath = '/opt/volumiokiosk.sh';
+const volumioKioskBackupPath = '/home/volumio/.now_playing/volumiokiosk.sh.bak';
 const volumioBackgroundPath = '/data/backgrounds';
 
 module.exports = ControllerNowPlaying;
@@ -322,6 +323,22 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         }
         else {
             kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_UNKNOWN');
+            if (util.fileExists(volumioKioskBackupPath)) {
+                kioskDesc += ' ' + np.getI18n('NOW_PLAYING_DOC_KIOSK_RESTORE_BAK');
+                kioskButton = {
+                    id: 'kioskRestoreBak',
+                    element: 'button',
+                    label: np.getI18n('NOW_PLAYING_KIOSK_RESTORE_BAK'),
+                    onClick: {
+                        type: 'emit',
+                        message: 'callMethod',
+                        data: {
+                            endpoint: 'miscellanea/now_playing',
+                            method: 'restoreVolumioKioskBak'
+                        }
+                    }   
+                };
+            }
         }
         kioskUIConf.description = kioskDesc;
         if (kioskButton) {
@@ -510,41 +527,64 @@ ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {
     self.refreshUIConfig();
 }
 
-ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newPort, restartService = true) {
-    let defer = libQ.defer();
-
+ControllerNowPlaying.prototype.restoreVolumioKioskBak = function() {
+    if (!util.fileExists(volumioKioskBackupPath)) {
+        np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_BAK_NOT_FOUND'));
+        return;
+    }
     try {
+        util.copyFile(volumioKioskBackupPath, volumioKioskPath, { asRoot: true });
+        this.restartVolumioKioskService();
+    } catch (error) {
+        np.getLogger().error(np.getErrorMessage('[now-playing] Error restoring kiosk script from backup: ', error));
+        np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_RESTORE_BAK_ERR'));
+    }
+    this.refreshUIConfig();
+}
+
+ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newPort, restartService = true) {
+    try {
+        if (oldPort == 3000) {
+            np.getLogger().info(`[now-playing] Backing up ${ volumioKioskPath } to ${ volumioKioskBackupPath }`);
+            util.copyFile(volumioKioskPath, volumioKioskBackupPath, { createDestDirIfNotExists: true });
+        }
         util.replaceInFile(volumioKioskPath, `localhost:${ oldPort }`, `localhost:${ newPort }`);
         np.toast('success', np.getI18n('NOW_PLAYING_KIOSK_MODIFIED'));
+    } catch (error) {
+        np.getLogger().error(np.getErrorMessage('[now-playing] Error modifying Volumio Kiosk script:', error));
+        np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_MODIFY_ERR'));
+        return libQ.reject();
+    }
 
-        if (restartService) {
-            // Restart volumio-kiosk service if it is active
-            util.isSystemdServiceActive('volumio-kiosk').then( isActive => {
-                if (isActive) {
-                    np.toast('info', 'Restarting Volumio Kiosk service...');
-                    util.restartSystemdService('volumio-kiosk')
-                    .then( () => { defer.resolve(); })
-                    .catch( error => {
-                        np.toast('error', 'Failed to restart Volumio Kiosk service.');
-                        defer.resolve();
-                    });
-                }
-                else {
-                    defer.resolve();
-                }
-            })
+    if (restartService) {
+        return this.restartVolumioKioskService();
+    }
+    else {
+        return libQ.resolve();
+    }
+}
+
+ControllerNowPlaying.prototype.restartVolumioKioskService = function() {
+    let defer = libQ.defer();
+
+    // Restart volumio-kiosk service if it is active
+    util.isSystemdServiceActive('volumio-kiosk').then( isActive => {
+        if (isActive) {
+            np.toast('info', 'Restarting Volumio Kiosk service...');
+            util.restartSystemdService('volumio-kiosk')
+            .then( () => { defer.resolve(); })
             .catch( error => {
+                np.toast('error', 'Failed to restart Volumio Kiosk service.');
                 defer.resolve();
             });
         }
         else {
             defer.resolve();
         }
-    } catch (error) {
-        np.getLogger().error(np.getErrorMessage('[now-playing] Error modifying Volumio Kiosk script:', error));
-        np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_MODIFY_ERR'));
-        defer.reject();
-    }
+    })
+    .catch( error => {
+        defer.resolve();
+    });
 
     return defer.promise;
 }
