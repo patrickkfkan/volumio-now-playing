@@ -80,6 +80,7 @@
   "NOW_PLAYING_KIOSK_RESTORE_BAK_ERR": "Error restoring kiosk script from backup",
   "NOW_PLAYING_OTHER": "Other",
   "NOW_PLAYING_BROADCAST_REFRESH": "Broadcast Refresh Command",
+  "NOW_PLAYING_VIEW_README": "View Readme",
   "NOW_PLAYING_BROADCASTED_COMMAND": "Broadcasted command",
   "NOW_PLAYING_DOC_CSS_FONT_SIZE": "Value for CSS 'font-size' property (e.g. 16px).",
   "NOW_PLAYING_DOC_CSS_COLOR": "Value for CSS 'color' property (e.g. #CCCCCC).",

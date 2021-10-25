@@ -819,6 +819,15 @@
                 "method": "broadcastRefresh"
             }
           }
+        },
+        {
+          "id": "viewReadme",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_VIEW_README",
+          "onClick": {
+              "type": "openUrl",
+              "url": "https://github.com/patrickkfkan/volumio-now-playing#readme"
+          }
         }
       ]
     }
