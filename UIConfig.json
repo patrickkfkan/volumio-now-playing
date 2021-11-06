@@ -10,7 +10,7 @@
       "icon": "fa-server",
       "onSave": {
         "type": "controller",
-        "endpoint": "miscellanea/now_playing",
+        "endpoint": "user_interface/now_playing",
         "method": "configSaveDaemon"
       },
       "saveButton": {
@@ -59,7 +59,7 @@
       "icon": "fa-css3",
       "onSave": {
         "type": "controller",
-        "endpoint": "miscellanea/now_playing",
+        "endpoint": "user_interface/now_playing",
         "method": "configSaveTextStyles"
       },
       "saveButton": {
@@ -248,7 +248,7 @@
       "icon": "fa-css3",
       "onSave": {
         "type": "controller",
-        "endpoint": "miscellanea/now_playing",
+        "endpoint": "user_interface/now_playing",
         "method": "configSaveWidgetStyles"
       },
       "saveButton": {
@@ -392,7 +392,7 @@
       "icon": "fa-css3",
       "onSave": {
         "type": "controller",
-        "endpoint": "miscellanea/now_playing",
+        "endpoint": "user_interface/now_playing",
         "method": "configSaveAlbumartStyles"
       },
       "saveButton": {
@@ -492,7 +492,7 @@
       "icon": "fa-css3",
       "onSave": {
         "type": "controller",
-        "endpoint": "miscellanea/now_playing",
+        "endpoint": "user_interface/now_playing",
         "method": "configSaveBackgroundStyles"
       },
       "saveButton": {
@@ -815,7 +815,7 @@
             "type": "emit",
             "message": "callMethod",
             "data": {
-                "endpoint": "miscellanea/now_playing",
+                "endpoint": "user_interface/now_playing",
                 "method": "broadcastRefresh"
             }
           }

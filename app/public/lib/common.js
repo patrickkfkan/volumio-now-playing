@@ -23,7 +23,7 @@ function getSocket(host, data = {}) {
 
         socket.on('reconnect', () => {
             socket.emit('callMethod', {
-                endpoint: 'miscellanea/now_playing',
+                endpoint: 'user_interface/now_playing',
                 method: 'broadcastPluginInfo'
             });
         });

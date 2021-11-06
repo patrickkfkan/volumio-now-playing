@@ -293,7 +293,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                     type: 'emit',
                     message: 'callMethod',
                     data: {
-                        endpoint: 'miscellanea/now_playing',
+                        endpoint: 'user_interface/now_playing',
                         method: 'configureVolumioKiosk',
                         data: {
                             display: 'nowPlaying'
@@ -312,7 +312,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                     type: 'emit',
                     message: 'callMethod',
                     data: {
-                        endpoint: 'miscellanea/now_playing',
+                        endpoint: 'user_interface/now_playing',
                         method: 'configureVolumioKiosk',
                         data: {
                             display: 'default'
@@ -333,7 +333,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                         type: 'emit',
                         message: 'callMethod',
                         data: {
-                            endpoint: 'miscellanea/now_playing',
+                            endpoint: 'user_interface/now_playing',
                             method: 'restoreVolumioKioskBak'
                         }
                     }   
@@ -379,7 +379,7 @@ ControllerNowPlaying.prototype.configSaveDaemon = function(data) {
                 class: 'btn btn-info',
                 emit: 'callMethod',
                 payload: {
-                    'endpoint': 'miscellanea/now_playing',
+                    'endpoint': 'user_interface/now_playing',
                     'method': 'configConfirmSaveDaemon',
                     'data': { port, oldPort }
                 }
@@ -612,7 +612,7 @@ ControllerNowPlaying.prototype.broadcastPluginInfo = function() {
 ControllerNowPlaying.prototype.refreshUIConfig = function() {
     let self = this;
     
-    self.commandRouter.getUIConfigOnPlugin('miscellanea', 'now_playing', {}).then( config => {
+    self.commandRouter.getUIConfigOnPlugin('user_interface', 'now_playing', {}).then( config => {
         self.commandRouter.broadcastMessage('pushUiConfig', config);
     });
 }
