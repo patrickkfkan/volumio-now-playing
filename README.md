@@ -100,6 +100,10 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.1
+- Update readme after branching from `master` for Volumio 2.x
+- Some minor code changes
+
 0.1.0
 - Add 'View Readme' button to plugin settings
 
