@@ -2,6 +2,15 @@
 
 This plugin provides a 'Now Playing' screen for your Volumio device. It is intended for displays that are mainly used to show what Volumio is playing, as opposed to doing things such as browsing media. This makes the plugin suitable for embedded displays that are generally limited in screen estate.
 
+This repository has two branches:
+
+1. The `master` branch is targeted towards Volumio 3.
+2. The `volumio-2.x` branch is targeted towards Volumio 2.x.
+
+The focus is on the `master` branch. The `volumio-2.x` branch will only be maintained if it is practically feasible and still worthwhile to do so.
+
+## Q&A
+
 ### How do I show the Now Playing screen on my device's display?
 
 First, you need to make sure that your display is able to show Volumio's default interface. This plugin does not deal with the hardware setup part.
