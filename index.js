@@ -72,10 +72,10 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             value: fontColors,
             label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
         };
-        textStylesUIConf.content[6].value = styles.titleFontColor || '';
-        textStylesUIConf.content[7].value = styles.artistFontColor || '';
-        textStylesUIConf.content[8].value = styles.albumFontColor || '';
-        textStylesUIConf.content[9].value = styles.mediaInfoFontColor || '';
+        textStylesUIConf.content[6].value = styles.titleFontColor || '#FFFFFF';
+        textStylesUIConf.content[7].value = styles.artistFontColor || '#CCCCCC';
+        textStylesUIConf.content[8].value = styles.albumFontColor || '#CCCCCC';
+        textStylesUIConf.content[9].value = styles.mediaInfoFontColor || '#CCCCCC';
         let textAlignment = styles.textAlignment || 'left';
         textStylesUIConf.content[10].value = {
             value: textAlignment
@@ -99,8 +99,8 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             value: widgetColors,
             label: widgetColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
         };
-        widgetStylesUIConf.content[1].value = styles.widgetPrimaryColor || '';
-        widgetStylesUIConf.content[2].value = styles.widgetHighlightColor || '';
+        widgetStylesUIConf.content[1].value = styles.widgetPrimaryColor || '#CCCCCC';
+        widgetStylesUIConf.content[2].value = styles.widgetHighlightColor || '#24A4F3';
 
         let widgetVisibility = styles.widgetVisibility || 'default';
         widgetStylesUIConf.content[3].value = {
@@ -166,7 +166,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                 backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
         }
 
-        backgroundStylesUIConf.content[1].value = styles.backgroundColor || '';
+        backgroundStylesUIConf.content[1].value = styles.backgroundColor || '#000000';
 
         let albumartBackgroundFit = styles.albumartBackgroundFit || 'cover';
         backgroundStylesUIConf.content[2].value = {
@@ -272,7 +272,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             default: 
                 backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
         }
-        backgroundStylesUIConf.content[12].value = styles.backgroundOverlayColor || '';
+        backgroundStylesUIConf.content[12].value = styles.backgroundOverlayColor || '#000000';
         backgroundStylesUIConf.content[13].value = styles.backgroundOverlayOpacity || '';
 
         /**
