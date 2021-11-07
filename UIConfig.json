@@ -170,7 +170,7 @@
         },
         {
           "id": "titleFontColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_TITLE",
@@ -182,7 +182,7 @@
         },
         {
           "id": "artistFontColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_ARTIST",
@@ -194,7 +194,7 @@
         },
         {
           "id": "albumFontColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_ALBUM",
@@ -206,7 +206,7 @@
         },
         {
           "id": "mediaInfoFontColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
@@ -286,7 +286,7 @@
         },
         {
           "id": "widgetPrimaryColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_PRIMARY",
@@ -298,7 +298,7 @@
         },
         {
           "id": "widgetHighlightColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_HIGHLIGHT",
@@ -544,7 +544,7 @@
         },
         {
           "id": "backgroundColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BG_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_COLOR",
@@ -770,7 +770,7 @@
         },
         {
           "id": "backgroundOverlayColor",
-          "type": "text",
+          "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BG_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_COLOR",
