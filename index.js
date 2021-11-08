@@ -76,19 +76,30 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         textStylesUIConf.content[7].value = styles.artistFontColor || '#CCCCCC';
         textStylesUIConf.content[8].value = styles.albumFontColor || '#CCCCCC';
         textStylesUIConf.content[9].value = styles.mediaInfoFontColor || '#CCCCCC';
-        let textAlignment = styles.textAlignment || 'left';
+
+        let textMargins = styles.textMargins || 'auto';
         textStylesUIConf.content[10].value = {
+            value: textMargins,
+            label: textMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+        };
+        textStylesUIConf.content[11].value = styles.titleMargin || '';
+        textStylesUIConf.content[12].value = styles.artistMargin || '';
+        textStylesUIConf.content[13].value = styles.albumMargin || '';
+        textStylesUIConf.content[14].value = styles.mediaInfoMargin || '';
+
+        let textAlignment = styles.textAlignment || 'left';
+        textStylesUIConf.content[15].value = {
             value: textAlignment
         };
         switch (textAlignment) {
             case 'center':
-                textStylesUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
                 break;
             case 'right':
-                textStylesUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
                 break;
             default: 
-                textStylesUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
         }
         
         /**
@@ -437,7 +448,12 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         artistFontColor: data.artistFontColor,
         albumFontColor: data.albumFontColor,
         mediaInfoFontColor: data.mediaInfoFontColor,
-        textAlignment: data.textAlignment.value
+        textAlignment: data.textAlignment.value,
+        textMargins: data.textMargins.value,
+        titleMargin: data.titleMargin,
+        artistMargin: data.artistMargin,
+        albumMargin: data.albumMargin,
+        mediaInfoMargin: data.mediaInfoMargin
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);
