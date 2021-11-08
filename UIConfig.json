@@ -80,7 +80,8 @@
           "artistMargin",
           "albumMargin",
           "mediaInfoMargin",
-          "textAlignmentH"
+          "textAlignmentH",
+          "textAlignmentV"
         ]
       },
       "content": [
@@ -311,6 +312,33 @@
             {
               "value": "right", 
               "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            }
+          ]
+        },
+        {
+          "id": "textAlignmentV",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ALIGNMENT_V",
+          "value": {
+            "value": "flex-start", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+          },
+          "options": [
+            {
+              "value": "flex-start", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "flex-end", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "space-between", 
+              "label": "TRANSLATE.NOW_PLAYING_SPREAD"
             }
           ]
         }

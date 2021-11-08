@@ -240,7 +240,13 @@ body {
     font-weight: 700;
 }
 
-#track-info .title {
+#track-info .text {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#track-info .text .title {
     display: -webkit-box;
     color: #fff;
     font-family: 'Noto Sans Display', sans-serif;
@@ -254,7 +260,7 @@ body {
     word-break: break-word;
 }
 
-#track-info .artist {
+#track-info .text .artist {
     display: -webkit-box;
     font-size: 1em;
     line-height: 1.4em;
@@ -267,7 +273,7 @@ body {
     word-break: break-word;
 }
 
-#track-info .album {
+#track-info .text .album {
     display: -webkit-box;
     font-size: 0.8em;
     line-height: 1.2em;
@@ -296,7 +302,7 @@ body {
 
 #controls {
     text-align: center;
-    margin-top: auto;
+    margin-top: 1em;
     margin-bottom: 1em;
 }
 
