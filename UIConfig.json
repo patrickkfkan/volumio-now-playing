@@ -398,6 +398,7 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
+          "albumartVisibility",
           "albumartSize",
           "albumartWidth",
           "albumartHeight",
@@ -406,6 +407,13 @@
         ]
       },
       "content": [
+        {
+          "id": "albumartVisibility",
+          "element": "switch",
+          "doc": "",
+          "label": "TRANSLATE.NOW_PLAYING_ALBUM_ART_VISIBILITY",
+          "value": true
+        },
         {
           "id": "albumartSize",
           "element": "select",

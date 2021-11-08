@@ -122,6 +122,12 @@
   <% } %>
 <% } %>
 
+<% if (!styles.albumartVisibility) { %>
+  #albumart {
+    display: none !important;
+  }
+<% } %>
+
 <% if (styles.albumartSize == 'custom') { %>
   <% if (styles.albumartWidth) { %>
     #albumart img {
