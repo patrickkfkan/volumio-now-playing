@@ -119,6 +119,15 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             default: 
                 textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
         }
+
+        let maxLines = styles.maxLines || 'auto';
+        textStylesUIConf.content[17].value = {
+            value: maxLines,
+            label: maxLines == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+        };
+        textStylesUIConf.content[18].value = styles.maxTitleLines || '';
+        textStylesUIConf.content[19].value = styles.maxArtistLines || '';
+        textStylesUIConf.content[20].value = styles.maxAlbumLines || '';
         
         /**
          * Widget Styles conf
@@ -455,6 +464,9 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
 }
 
 ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
+    let maxTitleLines = data.maxTitleLines ? parseInt(data.maxTitleLines, 10) : '';
+    let maxArtistLines = data.maxArtistLines ? parseInt(data.maxArtistLines, 10) : '';
+    let maxAlbumLines = data.maxAlbumLines ? parseInt(data.maxAlbumLines, 10) : '';
     let styles = {
         fontSizes: data.fontSizes.value,
         titleFontSize: data.titleFontSize,
@@ -472,7 +484,11 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         titleMargin: data.titleMargin,
         artistMargin: data.artistMargin,
         albumMargin: data.albumMargin,
-        mediaInfoMargin: data.mediaInfoMargin
+        mediaInfoMargin: data.mediaInfoMargin,
+        maxLines: data.maxLines.value,
+        maxTitleLines,
+        maxArtistLines,
+        maxAlbumLines
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);

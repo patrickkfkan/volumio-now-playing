@@ -82,6 +82,24 @@
   <% } %>
 <% } %> 
 
+<% if (styles.maxLines == 'custom') { %>
+  <% if (styles.maxTitleLines) { %>
+    #track-info .text .title {
+      -webkit-line-clamp: <%- styles.maxTitleLines %>;
+    }
+  <% } %>
+  <% if (styles.maxArtistLines) { %>
+    #track-info .text .artist {
+      -webkit-line-clamp: <%- styles.maxArtistLines %>;
+    }
+  <% } %>
+  <% if (styles.maxAlbumLines) { %>
+    #track-info .text .album {
+      -webkit-line-clamp: <%- styles.maxAlbumLines %>;
+    }
+  <% } %>
+<% } %> 
+
 <% if (styles.widgetColors == 'custom') { %>
   <% if (styles.widgetPrimaryColor) { %>
     #controls button {
