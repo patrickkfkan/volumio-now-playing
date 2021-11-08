@@ -121,29 +121,35 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         /**
          * Albumart Styles conf
          */
+        let albumartVisibility = styles.albumartVisibility == undefined ? true : styles.albumartVisibility;
+        albumartStylesUIConf.content[0].value = albumartVisibility ? true : false;
         let albumartSize = styles.albumartSize || 'auto';
-        albumartStylesUIConf.content[0].value = {
+        albumartStylesUIConf.content[1].value = {
             value: albumartSize,
             label: albumartSize == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
         };
-        albumartStylesUIConf.content[1].value = styles.albumartWidth || '';
-        albumartStylesUIConf.content[2].value = styles.albumartHeight || '';
+        albumartStylesUIConf.content[2].value = styles.albumartWidth || '';
+        albumartStylesUIConf.content[3].value = styles.albumartHeight || '';
 
         let albumartFit = styles.albumartFit || 'cover';
-        albumartStylesUIConf.content[3].value = {
+        albumartStylesUIConf.content[4].value = {
             value: albumartFit
         };
         switch (albumartFit) {
             case 'contain':
-                albumartStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
+                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
                 break;
             case 'fill': 
-                albumartStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
+                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
                 break;
             default: 
-                albumartStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
+                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
         }
-        albumartStylesUIConf.content[4].value = styles.albumartBorderRadius || '';
+        albumartStylesUIConf.content[5].value = styles.albumartBorderRadius || '';
+        if (!albumartVisibility) {
+            albumartStylesUIConf.content = [ albumartStylesUIConf.content[0] ];
+            albumartStylesUIConf.saveButton.data = [ 'albumartVisibility' ];
+        }
 
         /**
          * Background Styles Conf
@@ -465,14 +471,26 @@ ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
 }
 
 ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
-    let styles = {
+    let styles = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value.value !== undefined) {
+            styles[key] = value.value;
+        }
+        else {
+            styles[key] = value;
+        }
+    }
+    /*let styles = {
+        albumartVisibility: data.albumartVisibility,
         albumartSize: data.albumartSize.value,
         albumartWidth: data.albumartWidth,
         albumartHeight: data.albumartHeight,
         albumartFit: data.albumartFit.value,
         albumartBorderRadius: data.albumartBorderRadius
-    };
+    };*/
     let currentStyles = np.getConfigValue('styles', {}, true);
+    let currentAlbumartVisibility = (currentStyles.albumartVisibility == undefined ? true : currentStyles.albumartVisibility) ? true : false;
+    let refresh = currentAlbumartVisibility !== styles.albumartVisibility;
     let updatedStyles = Object.assign(currentStyles, styles);
     this.config.set('styles', JSON.stringify(updatedStyles));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
@@ -480,6 +498,10 @@ ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
     util.renderStylesheet(updatedStyles).then( css => {
         np.broadcastMessage('nowPlayingSetCustomCSS', css);
     });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
