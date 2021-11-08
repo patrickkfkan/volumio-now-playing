@@ -1,24 +1,24 @@
 <% if (styles.fontSizes == 'custom') { %>
   <% if (styles.titleFontSize) { %>
-    #track-info .title {
+    #track-info .text .title {
       font-size: <%- styles.titleFontSize %>;
     }
   <% } %>
   <% if (styles.artistFontSize) { %>
-    #track-info .artist {
+    #track-info .text .artist {
       font-size: <%- styles.artistFontSize %>;
     }
   <% } %>
   <% if (styles.albumFontSize) { %>
-    #track-info .album {
+    #track-info .text .album {
       font-size: <%- styles.albumFontSize %>;
     }
   <% } %>
   <% if (styles.mediaInfoFontSize) { %>
-    #track-info .media-info .quality {
+    #track-info .text .media-info .quality {
       font-size: <%- styles.mediaInfoFontSize %>;
     }
-    #track-info .media-info .format-icon {
+    #track-info .text .media-info .format-icon {
       height: <%- styles.mediaInfoFontSize %>;
     }
   <% } %>
@@ -26,22 +26,22 @@
 
 <% if (styles.fontColors == 'custom') { %>
   <% if (styles.titleFontColor) { %>
-    #track-info .title {
+    #track-info .text .title {
       color: <%- styles.titleFontColor %>;
     }
   <% } %>
   <% if (styles.artistFontColor) { %>
-    #track-info .artist {
+    #track-info .text .artist {
       color: <%- styles.artistFontColor %>;
     }
   <% } %>
   <% if (styles.albumFontColor) { %>
-    #track-info .album {
+    #track-info .text .album {
       color: <%- styles.albumFontColor %>;
     }
   <% } %>
   <% if (styles.mediaInfoFontColor) { %>
-    #track-info .media-info .quality {
+    #track-info .text .media-info .quality {
       color: <%- styles.mediaInfoFontColor %>;
     }
   <% } %>
