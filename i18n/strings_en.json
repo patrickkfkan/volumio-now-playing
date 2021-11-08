@@ -22,7 +22,7 @@
   "NOW_PLAYING_DAEMON_START_ERR": "Failed to start daemon: {}",
   "NOW_PLAYING_FONT_SIZES": "Font Sizes",
   "NOW_PLAYING_FONT_COLORS": "Font Colors",
-  "NOW_PLAYING_ALIGNMENT": "Alignment",
+  "NOW_PLAYING_ALIGNMENT_H": "Alignment (Horizontal)",
   "NOW_PLAYING_MARGINS": "Margins",
   "NOW_PLAYING_WIDGET_COLORS": "Widget Colors",
   "NOW_PLAYING_WIDGET_VISIBILITY": "Widget Visibility",
