@@ -75,6 +75,11 @@
           "artistFontColor",
           "albumFontColor",
           "mediaInfoFontColor",
+          "textMargins",
+          "titleMargin",
+          "artistMargin",
+          "albumMargin",
+          "mediaInfoMargin",
           "textAlignment"
         ]
       },
@@ -213,6 +218,76 @@
           "value": "",
           "visibleIf": {
             "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "textMargins",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_MARGINS",
+          "value": {
+            "value": "auto", 
+            "label": "TRANSLATE.NOW_PLAYING_AUTO"
+          },
+          "options": [
+            {
+              "value": "auto",
+              "label": "TRANSLATE.NOW_PLAYING_AUTO"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "titleMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_TITLE",
+          "value": "",
+          "visibleIf": {
+            "field": "textMargins",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "artistMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_ARTIST",
+          "value": "",
+          "visibleIf": {
+            "field": "textMargins",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "albumMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_ALBUM",
+          "value": "",
+          "visibleIf": {
+            "field": "textMargins",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "mediaInfoMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
+          "value": "",
+          "attributes": [
+            { "style": "margin-bottom: 32px;" }
+          ],
+          "visibleIf": {
+            "field": "textMargins",
             "value": "custom"
           }
         },
