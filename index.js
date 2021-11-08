@@ -87,11 +87,11 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         textStylesUIConf.content[13].value = styles.albumMargin || '';
         textStylesUIConf.content[14].value = styles.mediaInfoMargin || '';
 
-        let textAlignment = styles.textAlignment || 'left';
+        let textAlignmentH = styles.textAlignmentH || 'left';
         textStylesUIConf.content[15].value = {
-            value: textAlignment
+            value: textAlignmentH
         };
-        switch (textAlignment) {
+        switch (textAlignmentH) {
             case 'center':
                 textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
                 break;
@@ -448,7 +448,7 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         artistFontColor: data.artistFontColor,
         albumFontColor: data.albumFontColor,
         mediaInfoFontColor: data.mediaInfoFontColor,
-        textAlignment: data.textAlignment.value,
+        textAlignmentH: data.textAlignmentH.value,
         textMargins: data.textMargins.value,
         titleMargin: data.titleMargin,
         artistMargin: data.artistMargin,

@@ -80,7 +80,7 @@
           "artistMargin",
           "albumMargin",
           "mediaInfoMargin",
-          "textAlignment"
+          "textAlignmentH"
         ]
       },
       "content": [
@@ -292,9 +292,9 @@
           }
         },
         {
-          "id": "textAlignment",
+          "id": "textAlignmentH",
           "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_ALIGNMENT",
+          "label": "TRANSLATE.NOW_PLAYING_ALIGNMENT_H",
           "value": {
             "value": "left", 
             "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
