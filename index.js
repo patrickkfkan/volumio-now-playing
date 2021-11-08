@@ -101,6 +101,24 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             default: 
                 textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
         }
+
+        let textAlignmentV = styles.textAlignmentV || 'flex-start';
+        textStylesUIConf.content[16].value = {
+            value: textAlignmentV
+        };
+        switch (textAlignmentV) {
+            case 'center':
+                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                break;
+            case 'flex-end':
+                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                break;
+            case 'space-between':
+                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_SPREAD');
+                break;
+            default: 
+                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+        }
         
         /**
          * Widget Styles conf
@@ -449,6 +467,7 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         albumFontColor: data.albumFontColor,
         mediaInfoFontColor: data.mediaInfoFontColor,
         textAlignmentH: data.textAlignmentH.value,
+        textAlignmentV: data.textAlignmentV.value,
         textMargins: data.textMargins.value,
         titleMargin: data.titleMargin,
         artistMargin: data.artistMargin,

@@ -53,24 +53,30 @@
   }
 <% } %>
 
+<% if (styles.textAlignmentV) { %>
+  #track-info .text {
+    justify-content: <%- styles.textAlignmentV %>;
+  }
+<% } %>
+
 <% if (styles.textMargins == 'custom') { %>
   <% if (styles.titleMargin) { %>
-    #track-info .title {
+    #track-info .text .title {
       margin: <%- styles.titleMargin %>;
     }
   <% } %>
   <% if (styles.artistMargin) { %>
-    #track-info .artist {
+    #track-info .text.artist {
       margin: <%- styles.artistMargin %>;
     }
   <% } %>
   <% if (styles.albumMargin) { %>
-    #track-info .album {
+    #track-info .text .album {
       margin: <%- styles.albumMargin %>;
     }
   <% } %>
   <% if (styles.mediaInfoMargin) { %>
-    #track-info .media-info {
+    #track-info .text .media-info {
       margin: <%- styles.mediaInfoMargin %>;
     }
   <% } %>
