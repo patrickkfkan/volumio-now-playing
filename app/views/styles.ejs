@@ -169,7 +169,7 @@
   <% } %>
 <% } %>
 
-<% if (!styles.albumartVisibility) { %>
+<% if (styles.albumartVisibility !== undefined && !styles.albumartVisibility) { %>
   #albumart {
     display: none !important;
   }
