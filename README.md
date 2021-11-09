@@ -100,6 +100,12 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.2
+- Use colorpicker for color settings
+- Add "Show Album Art" option to Album Art settings
+- Add "Margins", "Alignment (Vertical)" and "Max Lines" options to Text Style settings
+- Add external volume change indicator 
+
 0.1.1
 - Update readme after branching from `master` for Volumio 2.x
 - Some minor code changes
