@@ -229,6 +229,7 @@ body {
     */
     filter: drop-shadow(0 0 8px #00000080);
     object-fit: cover;
+    display: block; /* https://stackoverflow.com/questions/5804256/image-inside-div-has-extra-space-below-the-image */
 }
 
 #track-info {
@@ -458,6 +459,11 @@ body {
                 body {
                     font-size: 16px;
                 }
+            }
+        }
+        @media (max-height: 320px) {
+            #track-info .media-info {
+                margin-top: 0.2em;
             }
         }
         @media (min-height: 400px) {
