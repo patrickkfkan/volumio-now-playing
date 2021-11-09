@@ -76,6 +76,17 @@
       <div><span class="action switch"><%= i18n('NOW_PLAYING_SWITCH_TO_VOLUMIO') %> <i class="fa fa-arrow-right"></i></span class="action switch"></div>
     </div>
   </div>
+  
+  <div id="volume-indicator" style="display: none;">
+    <div class="circle-wrapper">
+      <svg>
+        <circle class="primary" cx="50%" cy="50%" r="3.5em"></circle>
+        <circle class="highlight" cx="50%" cy="50%" r="3.5em" pathLength="100"></circle>
+      </svg>
+    </div>
+    <div class="level-text">
+    </div>
+  </div>
 </body>
 
 <script>
@@ -340,6 +351,51 @@
       $('#volume-mute').removeClass('active');
       $('#volume-slider').removeClass('muted');
     }
+
+    updateVolumeIndicator(state);
+  }
+
+  let oldVolume = null;
+  function updateVolumeIndicator(state) {
+    if ($('#top-bar-popup').dialog('isOpen')) {
+      return;
+    }
+    let volumeChanged = oldVolume ? (oldVolume.level !== state.volume || oldVolume.mute !== state.mute) : true;
+    if (volumeChanged) {
+      document.documentElement.style.setProperty('--volume-level', state.volume);
+      let levelText;
+      if (state.mute) {
+        levelText = `<i class="fa fa-volume-off"></i>`;
+        $('#volume-indicator').addClass('muted');
+      }
+      else {
+        levelText = `<i class="fa fa-volume-up"></i> ${ state.volume }%`;
+        $('#volume-indicator').removeClass('muted');
+      }
+      $('#volume-indicator .level-text').html(levelText);
+      if (oldVolume) {
+        showVolumeIndicator();
+      }
+      oldVolume = {
+        level: state.volume,
+        mute: state.mute
+      };
+    }
+  }
+
+  let volumeIndicatorAutoHide = null;;
+  function showVolumeIndicator() {
+    if (volumeIndicatorAutoHide) {
+      clearTimeout(volumeIndicatorAutoHide);
+      volumeIndicatorAutoHide = null;
+    }
+    else {
+      $('#volume-indicator').fadeIn(200);
+    }
+    volumeIndicatorAutoHide = setTimeout( () => {
+      $('#volume-indicator').fadeOut(200);
+      volumeIndicatorAutoHide = null;
+    }, 1500);
   }
 
   // Handle seekbar events
@@ -584,6 +640,14 @@
 
     $('#actions-wrapper .action.switch').on('click', function() {
       switchToVolumioInterface();
+    });
+
+    $('#volume-indicator').on('click', function() {
+      if (volumeIndicatorAutoHide) {
+        clearTimeout(volumeIndicatorAutoHide);
+        volumeIndicatorAutoHide = null;
+      }
+      $(this).fadeOut(100);
     });
    
     socket.connect();

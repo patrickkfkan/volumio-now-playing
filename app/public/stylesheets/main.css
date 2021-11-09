@@ -1,3 +1,7 @@
+:root {
+    --volume-level: 0;
+}
+
 body {
     font-size: 10px;
     font-family: 'Roboto', sans-serif;
@@ -435,6 +439,63 @@ body {
     margin-top: auto;
     margin-bottom: auto;
 }
+
+#volume-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  #volume-indicator .circle-wrapper {
+    width: 11em;
+    height: 11em;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+  }
+
+  #volume-indicator .circle-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #volume-indicator .circle-wrapper svg circle {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke-width: 0.7em;
+    stroke-linecap: round;
+  }
+
+  #volume-indicator .circle-wrapper svg circle.primary {
+    stroke: #ccc;
+  }
+
+  #volume-indicator .circle-wrapper svg circle.highlight {
+    stroke-dasharray: 100;
+    stroke-dashoffset: calc(100 - var(--volume-level));
+    stroke: #24a4f3;
+  }
+
+  #volume-indicator.muted .circle-wrapper svg circle.highlight {
+    stroke: #aaa;
+  }
+
+  #volume-indicator .level-text {
+    position: absolute;
+    color: #ccc;
+    font-size: 1.4em;
+  }
+
+  #volume-indicator.muted .level-text {
+    font-size: 1.8em;
+  }
 
 /**
 * Landscape Orientation
