@@ -455,9 +455,16 @@ body {
   #volume-indicator .circle-wrapper {
     width: 11em;
     height: 11em;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.8);
     border-radius: 50%;
+  }
+
+  /* Use backdrop-filter if supported */
+  @supports (backdrop-filter: none) {
+    #volume-indicator .circle-wrapper {
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(10px);
+    }
   }
 
   #volume-indicator .circle-wrapper svg {
