@@ -427,10 +427,7 @@ body {
     width: 0.8em;
 }
 
-#track-info.controls-only .title,
-#track-info.controls-only .artist,
-#track-info.controls-only .album,
-#track-info.controls-only .media-info,
+#track-info.controls-only .text,
 #track-info.controls-only #seekbar-wrapper {
     display: none;
 }
