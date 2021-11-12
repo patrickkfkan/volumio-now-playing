@@ -421,7 +421,10 @@
           "playbackButtonsVisibility",
           "seekbarVisibility",
           "playbackButtonSizeType",
-          "playbackButtonSize"
+          "playbackButtonSize",
+          "widgetMargins",
+          "playbackButtonsMargin",
+          "seekbarMargin"
         ]
       },
       "content": [
@@ -540,6 +543,49 @@
           "value": "",
           "visibleIf": {
             "field": "playbackButtonSizeType",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "widgetMargins",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_MARGINS",
+          "value": {
+            "value": "auto", 
+            "label": "TRANSLATE.NOW_PLAYING_AUTO"
+          },
+          "options": [
+            {
+              "value": "auto",
+              "label": "TRANSLATE.NOW_PLAYING_AUTO"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "playbackButtonsMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_PLAYBACK_BUTTONS",
+          "value": "",
+          "visibleIf": {
+            "field": "widgetMargins",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "seekbarMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_SEEK_BAR",
+          "value": "",
+          "visibleIf": {
+            "field": "widgetMargins",
             "value": "custom"
           }
         }

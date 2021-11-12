@@ -436,8 +436,8 @@ body {
 }
 
 #track-info.controls-only #controls {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
 }
 
 #volume-indicator {

@@ -169,6 +169,19 @@
   <% } %>
 <% } %>
 
+<% if (styles.widgetMargins == 'custom') { %>
+  <% if (styles.playbackButtonsMargin) { %>
+    #controls {
+      margin: <%- styles.playbackButtonsMargin %>;
+    }
+  <% } %>
+  <% if (styles.seekbarMargin) { %>
+    #seekbar-wrapper {
+      margin: <%- styles.seekbarMargin %>;
+    }
+  <% } %>
+<% } %> 
+
 <% if (styles.albumartVisibility !== undefined && !styles.albumartVisibility) { %>
   #albumart {
     display: none !important;
