@@ -156,6 +156,14 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         };
         widgetStylesUIConf.content[7].value = styles.playbackButtonSize || '';
 
+        let widgetMargins = styles.widgetMargins || 'auto';
+        widgetStylesUIConf.content[8].value = {
+            value: widgetMargins,
+            label: widgetMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+        };
+        widgetStylesUIConf.content[9].value = styles.playbackButtonsMargin || '';
+        widgetStylesUIConf.content[10].value = styles.seekbarMargin || '';
+
         /**
          * Albumart Styles conf
          */
@@ -509,7 +517,10 @@ ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
         playbackButtonsVisibility: data.playbackButtonsVisibility,
         seekbarVisibility: data.seekbarVisibility,
         playbackButtonSizeType: data.playbackButtonSizeType.value,
-        playbackButtonSize: data.playbackButtonSize
+        playbackButtonSize: data.playbackButtonSize,
+        widgetMargins: data.widgetMargins.value,
+        playbackButtonsMargin: data.playbackButtonsMargin,
+        seekbarMargin: data.seekbarMargin
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);
