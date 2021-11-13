@@ -100,6 +100,10 @@ To change the volume, tap the down arrow at the top of the screen (or swipe down
 
 ## Changelog
 
+0.1.3
+- Add widget margins setting
+- Code changes relating to use of CSS variables
+
 0.1.2
 - Use colorpicker for color settings
 - Add "Show Album Art" option to Album Art settings
