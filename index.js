@@ -503,9 +503,7 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
     this.config.set('styles', JSON.stringify(updatedStyles));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    util.renderStylesheet(updatedStyles).then( css => {
-        np.broadcastMessage('nowPlayingSetCustomCSS', css);
-    });
+    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
 }
 
 ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
@@ -527,9 +525,7 @@ ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
     this.config.set('styles', JSON.stringify(updatedStyles));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    util.renderStylesheet(updatedStyles).then( css => {
-        np.broadcastMessage('nowPlayingSetCustomCSS', css);
-    });
+    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
 }
 
 ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
@@ -557,9 +553,7 @@ ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
     this.config.set('styles', JSON.stringify(updatedStyles));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    util.renderStylesheet(updatedStyles).then( css => {
-        np.broadcastMessage('nowPlayingSetCustomCSS', css);
-    });
+    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
 
     if (refresh) {
         this.refreshUIConfig();
@@ -588,9 +582,7 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
     this.config.set('styles', JSON.stringify(updatedStyles));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    util.renderStylesheet(updatedStyles).then( css => {
-        np.broadcastMessage('nowPlayingSetCustomCSS', css);
-    });
+    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
 }
 
 ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {
