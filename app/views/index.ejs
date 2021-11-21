@@ -28,8 +28,10 @@
   <div id="top-bar">
     <i class="fa fa-angle-down expand"></i>
   </div>
-  <div id="wrapper">
+  <div id="bg-wrapper">
     <div id="bg"></div>
+  </div>
+  <div id="wrapper">
     <div id="contents">
       <div id="albumart"></div>
       <div id="track-info">
@@ -52,8 +54,8 @@
         </div>
       </div>
     </div>
-    <div id="disconnected-overlay"><i class="fa fa-spinner fa-spin"></i></div>
   </div>
+  <div id="disconnected-overlay"><i class="fa fa-spinner fa-spin"></i></div>
 
   <div id="top-bar-popup">
     <div id="volume">
@@ -64,8 +66,8 @@
       <i id="volume-max" class="fa fa-volume-up"></i>
     </div>
     <div id="actions-wrapper">
-      <div><span class="action refresh"><i class="fa fa-refresh"></i> <%= i18n('NOW_PLAYING_REFRESH') %></span></div>
-      <div><span class="action switch"><%= i18n('NOW_PLAYING_SWITCH_TO_VOLUMIO') %> <i class="fa fa-arrow-right"></i></span class="action switch"></div>
+      <div class="action refresh"><i class="fa fa-refresh" title="<%= i18n('NOW_PLAYING_REFRESH') %>"></i></div>
+      <div class="action switch"><img src="/assets/volumio-icon.png" title="<%= i18n('NOW_PLAYING_SWITCH_TO_VOLUMIO') %>"></img></div>
     </div>
   </div>
   
@@ -398,6 +400,18 @@
     }, 1500);
   }
 
+  function openTopBarPopup() {
+      $('#bg').addClass('blur');
+      $('#wrapper').addClass('blur');
+      $( "#top-bar-popup" ).dialog('open');
+    }
+
+    function closeTopBarPopup() {
+      if ($('#top-bar-popup').dialog('isOpen')) {
+        $('#top-bar-popup').dialog('close');
+      }
+    }
+
   // Handle seekbar events
   function seekTo(event, ui) {
     if (!event.originalEvent) { // No original event if programatically changed value
@@ -453,12 +467,13 @@
   });
 
   socket.on('connect', () => {
-    $('#wrapper').removeClass('disconnected');
+    $('#disconnected-overlay').removeClass('active');
     socket.emit('getState');
   });
 
   socket.on('disconnect', () => {
-    $('#wrapper').addClass('disconnected');
+    closeTopBarPopup();
+    $('#disconnected-overlay').addClass('active');
     stopTrackTimer();
   });
 
@@ -578,16 +593,19 @@
           $('#top-bar-popup').dialog('close');
         });
       },
-
+      beforeClose: () => {
+        $('#bg').removeClass('blur');
+        $('#wrapper').removeClass('blur');
+      }
     });
 
     $('#top-bar .expand').on('click', () => {
-      $( "#top-bar-popup" ).dialog('open');
+      openTopBarPopup();
     });
 
     $('#top-bar').swipe({
       swipeDown: () => {
-        $( "#top-bar-popup" ).dialog('open');
+        openTopBarPopup();
       }
     });
 
