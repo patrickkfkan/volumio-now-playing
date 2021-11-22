@@ -1,0 +1,175 @@
+body {
+  font-size: 10px;
+  font-family: "Roboto", sans-serif;
+  background: #000;
+  overflow: hidden;
+}
+
+#screen-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-transition: -webkit-filter 0.1s ease-in;
+  transition: -webkit-filter 0.1s ease-in;
+  transition: filter 0.1s ease-in;
+  transition: filter 0.1s ease-in, -webkit-filter 0.1s ease-in;
+}
+
+#screen-wrapper.blur {
+  -webkit-filter: blur(30px);
+          filter: blur(30px);
+}
+
+/**
+* Landscape Orientation
+*/
+@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 400px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 320px) and (min-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 720px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 800px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 480px) and (min-width: 960px) {
+  body {
+    font-size: 23px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 600px) and (min-width: 1280px) {
+  body {
+    font-size: 28px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1400px) {
+  body {
+    font-size: 30px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1600px) {
+  body {
+    font-size: 32px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1680px) {
+  body {
+    font-size: 34px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1800px) {
+  body {
+    font-size: 38px;
+  }
+}
+
+/**
+ *  Portrait Orientation
+ */
+@media all and (orientation: portrait) {
+  body {
+    font-size: 10px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 400px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 320px) and (min-height: 640px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 720px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 800px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 900px) {
+  body {
+    font-size: 24px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 480px) and (min-height: 960px) {
+  body {
+    font-size: 22px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 600px) and (min-height: 1280px) {
+  body {
+    font-size: 28px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1400px) {
+  body {
+    font-size: 32px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1600px) {
+  body {
+    font-size: 36px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1680px) {
+  body {
+    font-size: 40px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1800px) {
+  body {
+    font-size: 44px;
+  }
+}
+/*# sourceMappingURL=main.css.map */

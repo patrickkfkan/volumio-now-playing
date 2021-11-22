@@ -1,0 +1,301 @@
+/* Background */
+
+#screen-wrapper {
+  .bg {
+    --default-background-size: cover;
+    --default-background-position: center;
+    --default-background-blur: 50px;
+    --default-background-scale: 1.5;
+    --default-background-image: none;
+    --default-background-color: #000;
+    --default-background-overlay-color: #000;
+    --default-background-overlay-opacity: 0.5;
+    --default-background-overlay-display: inherit;
+
+    --background-size: var(--default-background-size);
+    --background-position: var(--default-background-position);
+    --background-blur: var(--default-background-blur);
+    --background-scale: var(--default-background-scale);
+    --background-image: var(--default-background-image);
+    --background-color: var(--default-background-color);
+    --background-overlay-color: var(--default-background-overlay-color);
+    --background-overlay-opacity: var(--default-background-overlay-opacity);
+    --background-overlay-display: var(--default-background-overlay-display);
+
+    width: 100%;
+    height: 100%;
+    background-image: var(--background-image);
+    background-color: var(--background-color);
+    filter: blur(var(--background-blur));
+    transform: scale(var(--background-scale));
+    background-size: var(--background-size);
+    background-position: var(--background-position);
+    transition: background-image 1s ease-in-out, filter 0.2s ease-in;
+
+    &:before {
+      content: "";
+      display: var(--background-overlay-display);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--background-overlay-color);
+      opacity: var(--background-overlay-opacity);
+    }
+  }
+}
+
+/* Action Panel */
+
+#top-bar {
+  width: 100%;
+  font-size: 1.5em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  color: #ccc;
+  opacity: 0.5;
+  z-index: 10;
+
+  .expand:hover {
+    color: #24a4f3;
+    cursor: pointer;
+  }
+}
+
+/* Wraps around #action-panel (created by jquery UI's Dialog) */
+.action-panel-container {
+  filter: drop-shadow(0 0 8px #00000080);
+  margin-top: 2em;
+  pointer-events: none;
+
+  .ui-dialog-titlebar {
+    display: none;
+  }
+
+  &.ui-widget-content,
+  .ui-dialog-content {
+    background: none;
+    color: #ccc;
+    border: none !important;
+    padding: 0px;
+  }
+}
+
+#action-panel {
+  min-height: 0px !important;
+
+  .volume {
+    background: #202020;
+    border-radius: 1.5em;
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    pointer-events: auto;
+
+    &.disabled:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+
+    @mixin volume-button {
+      font-size: 1.3em;
+      line-height: 1.5em;
+      cursor: pointer;
+    }
+
+    .mute {
+      @include volume-button;
+
+      margin-right: 10px;
+      &.active {
+        color: #24a4f3;
+      }
+    }
+
+    .max {
+      @include volume-button;
+      margin-left: 10px;
+    }
+
+    .volume-slider-wrapper {
+      flex-grow: 1;
+      border-radius: 1em;
+      overflow: hidden;
+      position: relative;
+
+      .volume-slider {
+        &.ui-widget-content {
+          background: #ccc;
+        }
+        &.ui-slider-horizontal {
+          height: 1.5em !important;
+          border: none;
+        }
+        .ui-slider-range {
+          background: #24a4f3;
+          border-radius: 0px;
+        }
+        .ui-slider-handle {
+          visibility: hidden;
+        }
+        &.muted .ui-slider-range {
+          background: #aaa;
+        }
+      }
+
+    }
+
+    &.disabled .volume-slider-wrapper:after {
+      content: "\f05e";
+      font-family: "FontAwesome";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      text-align: center;
+      line-height: 1.5em;
+      color: #fff;
+    }
+  }
+
+  .actions-wrapper {
+    display: flex;
+    margin: 1.2em 0px;
+    justify-content: center;
+
+    .action {
+      display: flex;
+      color: #a9a9a9;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 0.8em;
+      border-radius: 50%;
+      width: 1em;
+      height: 1em;
+      line-height: 1em;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s ease-out;
+      background: #202020;
+      opacity: 0.8;
+      transition: 0.2s ease-out;
+      pointer-events: auto;
+
+      &.switch img {
+        width: 1.3em;
+        height: 1.3em;
+      }
+
+      &:not(:first-of-type) {
+        margin-left: 1em;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  
+}
+
+.ui-widget-overlay {
+  background: #000 !important;
+  /*opacity: 0.7 !important;*/
+}
+
+/* Volume Indicator */
+
+#volume-indicator {
+  --volume-level: 0;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+
+  .circle-wrapper {
+    width: 11em;
+    height: 11em;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      circle {
+        width: 100%;
+        height: 100%;
+        fill: none;
+        stroke-width: 0.7em;
+        stroke-linecap: round;
+
+        &.primary {
+          stroke: #ccc;
+        }
+
+        &.highlight {
+          stroke-dasharray: 100;
+          stroke-dashoffset: calc(100 - var(--volume-level));
+          stroke: #24a4f3;
+        }
+      }
+    }
+
+    @supports (backdrop-filter: none) {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  .level-text {
+    position: absolute;
+    color: #ccc;
+    font-size: 1.4em;
+  }
+
+  &.muted {
+    .circle-wrapper svg circle.highlight {
+      stroke: #aaa;
+    }
+
+    .level-text {
+      font-size: 1.8em;
+    }
+  }
+}
+
+/* Disconnect Indicator */
+#disconnected-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255,255,255,0.7);
+  font-size: 3em;
+
+  &.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;   
+  }
+}

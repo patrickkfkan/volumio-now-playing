@@ -1,13 +1,20 @@
-function setCSSVariables(data) {
-  for (let [varName, value] of Object.entries(data)) {
-    if (value == undefined || (typeof value === 'string' && value.trim() === '')) {
-      value = `var(--default-${ varName })`;
+import { registry } from './registry.js';
+
+function setCSSVariables(data, target = 'root') {
+  let style = target === 'root' ? document.documentElement.style : $(target.el).prop('style');
+  let bgStyle = $(registry.ui.background.el).prop('style');
+  if (style) {
+    for (let [varName, value] of Object.entries(data)) {
+      if (value == undefined || (typeof value === 'string' && value.trim() === '')) {
+        value = `var(--default-${ varName })`;
+      }
+      let _style = varName.startsWith('background') ? bgStyle : style;
+      _style.setProperty(`--${ varName }`, value);
     }
-    document.documentElement.style.setProperty(`--${ varName }`, value);
   }
 }
 
-function applyCustomStyles(styles = {}) {
+export function applyCustomStyles(styles = {}, target) {
   let css = {
     'title-font-size': undefined,
     'artist-font-size': undefined,
@@ -142,7 +149,7 @@ function applyCustomStyles(styles = {}) {
     let backgroundPosition = styles.volumioBackgroundPosition || 'center'; 
     let backgroundBlur = styles.volumioBackgroundBlur || '0px'; 
     let backgroundScale = styles.volumioBackgroundScale || '1'; 
-    css['background-image'] = `url("${ getHost() }/backgrounds/${ styles.volumioBackgroundImage }")`;
+    css['background-image'] = `url("${ registry.app.host }/backgrounds/${ styles.volumioBackgroundImage }")`;
     css['background-size'] = backgroundSize;
     css['background-position'] = backgroundPosition;
     css['background-blur'] = backgroundBlur;
@@ -161,5 +168,5 @@ function applyCustomStyles(styles = {}) {
     css['background-overlay-display'] = 'none';
   }
 
-  setCSSVariables(css);
+  setCSSVariables(css, target);
 }
