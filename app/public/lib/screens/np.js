@@ -39,10 +39,7 @@ export class NowPlayingScreen {
 
     let self = this;
     let socket = registry.socket;
-    let currentState = null;
-    socket.on('pushState', state => {
-      // console.log(state);
-
+    registry.state.on('stateChanged', state => {
       if ( (state.title == undefined || state.title === '') &&
           (state.artist == undefined || state.artist === '') &&
           (state.album == undefined || state.album === '') ) {
@@ -55,8 +52,6 @@ export class NowPlayingScreen {
       self.refreshTrackInfo(state);
       self.refreshSeekbar(state);
       self.refreshControls(state);
-
-      currentState = state;
     });
 
     $(document).ready( () => {
@@ -70,19 +65,21 @@ export class NowPlayingScreen {
       let controls = $('.controls', screen);
   
       $('.repeat', controls).on('click', () => {
-        if (!currentState) {
+        let state = registry.state.get();
+        if (state == null) {
           return;
         }
-        let repeat = currentState.repeat ? (currentState.repeatSingle ? false : true) : true;
-        let repeatSingle = repeat && currentState.repeat;
+        let repeat = state.repeat ? (state.repeatSingle ? false : true) : true;
+        let repeatSingle = repeat && state.repeat;
         socket.emit('setRepeat', { value: repeat, repeatSingle });
       });
   
       $('.random', controls).on('click', () => {
-        if (!currentState) {
+        let state = registry.state.get();
+        if (state == null) {
           return;
         }
-        socket.emit('setRandom', { value: !currentState.random });
+        socket.emit('setRandom', { value: !state.random });
       });
   
       $('.previous', controls).on('click', () => {

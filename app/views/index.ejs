@@ -8,6 +8,7 @@
   <script src="/lib/vendor/jquery-3.6.0.min.js"></script>
   <script src="/lib/vendor/jquery-ui-1.12.1/jquery-ui.min.js"></script>
   <script src="/lib/vendor/socket.io.min.js"></script>
+  <script src="/lib/vendor/EventEmitter.js"></script>
 
   <!-- https://github.com/mattbryson/TouchSwipe-Jquery-Plugin -->
   <script src="/lib/vendor/jquery.touchSwipe.min.js"></script>
@@ -78,11 +79,6 @@
   util.setActiveScreen(registry.screens.nowPlaying);
 
   let socket = registry.socket;
-
-  socket.on('connect', () => {
-    socket.emit('getState');
-    socket.emit('getQueue'); // TODO: Move to corresponding screens?
-  });
 
   socket.on('nowPlayingSetCustomCSS', css => {
     settings.applyCustomStyles(css, registry.screens.nowPlaying);

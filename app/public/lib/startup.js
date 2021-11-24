@@ -1,4 +1,5 @@
 import * as Components from './components.js';
+import { State } from './state.js';
 import { NowPlayingScreen } from './screens/np.js';
 import { QueueScreen } from './screens/queue.js';
 import { refresh } from './util.js';
@@ -8,6 +9,7 @@ export function init(data) {
   registry.app = Object.assign({}, data.app);
   registry.socket = getSocket();
   registry.i18n = data.i18n || {};
+  registry.state = State.init();
   if (data.ui) {
     registry.ui = {};
     registry.ui.background = Components.Background.init(data.ui.background);
@@ -38,6 +40,16 @@ function getSocket() {
       } else if (info.pluginVersion !== registry.app.version) {
         refresh();
       }
+    });
+
+    _socket.on('connect', () => {
+      _socket.emit('getState');
+      _socket.emit('getQueue');
+    });
+
+    _socket.on('reconnect', () => {
+      _socket.emit('getState');
+      _socket.emit('getQueue');
     });
 
     _socket.on("reconnect", () => {
