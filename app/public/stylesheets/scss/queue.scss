@@ -42,6 +42,8 @@
   }
   
   .albumart {
+    position: relative;
+
     img {
       display: block;
       width: 2em;
@@ -81,6 +83,12 @@
       }
     }
   }
+
+  &.playing {
+    .albumart img {
+      content: url(/assets/equalizer.gif) !important;
+    }
+  }
 }
 
 #queue {
@@ -114,7 +122,8 @@
         button {
           @include queue-action-button(0px);
           position: relative;
-          font-size: 1.3em;
+          font-size: 1.2em;
+          margin: 0px 0.3em 0px 0px;
           z-index: 100;
   
           &.clear:hover {
@@ -128,6 +137,10 @@
             &:hover {
               color: #ccc;
             }
+          }
+
+          &.active {
+            color: #24a4f3;
           }
         }
       }

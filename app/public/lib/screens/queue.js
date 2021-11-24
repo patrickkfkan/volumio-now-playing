@@ -9,6 +9,8 @@ export class QueueScreen {
       <div class="contents">
         <div class="header">
           <div class="actions">
+            <button class="action random"><i class="fa fa-random"></i></button>
+            <button class="action repeat"><i class="fa fa-repeat"></i></button>
             <button class="action clear"><i class="fa fa-trash-o"></i></button>
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
@@ -24,11 +26,15 @@ export class QueueScreen {
 
     let self = this;
     let socket = registry.socket;
-    socket.on("pushQueue", (data) => {
+    socket.on('pushQueue', (data) => {
       self.setItems(data);
-
-      // TODO: move to current position
+      self.showCurrentPlaying();
     });
+
+    registry.state.on('stateChanged', () => {
+      self.showCurrentPlaying();
+      self.refreshActionButtons();
+    })
 
     $('.items', screen).on('click', '.item', function() {
       socket.emit('play', { value: $(this).data('position') });
@@ -37,6 +43,24 @@ export class QueueScreen {
     $('.items', screen).on('click', 'button.remove', function() {
       let item = $(this).parents('.item');
       socket.emit('removeFromQueue', { value: item.data('position') });
+    });
+
+    $('.action.repeat', screen).on('click', () => {
+      let state = registry.state.get();
+      if (state == null) {
+        return;
+      }
+      let repeat = state.repeat ? (state.repeatSingle ? false : true) : true;
+      let repeatSingle = repeat && state.repeat;
+      socket.emit('setRepeat', { value: repeat, repeatSingle });
+    });
+
+    $('.action.random', screen).on('click', () => {
+      let state = registry.state.get();
+      if (state == null) {
+        return;
+      }
+      socket.emit('setRandom', { value: !state.random });
     });
 
     $('.action.clear', screen).on('click', function() {
@@ -68,11 +92,11 @@ export class QueueScreen {
   setItems(data) {
     let self = this;
     let screen = $(self.el);
-    let itemList = $(".items", screen);
-    itemList.html("");
+    let itemList = $('.items', screen);
+    itemList.html('');
     data.forEach( (track, index) => {
       let item = self.createItem(track);
-      item.data('position', index);
+      item.attr('data-position', index);
       itemList.append(item);
     });
   }
@@ -97,7 +121,7 @@ export class QueueScreen {
 
     $('.albumart img', item).attr('src', data.albumart);
 
-    let trackInfo = $(".track-info", item);
+    let trackInfo = $('.track-info', item);
     $('.title', trackInfo).text(data.title);
 
     let artistAlbum = data.artist || "";
@@ -108,5 +132,50 @@ export class QueueScreen {
     $('.artist-album', trackInfo).text(artistAlbum);
 
     return item;
+  }
+
+  showCurrentPlaying() {
+    let state = registry.state.get();
+    let screen = $(this.el);
+    let current = $('.items .item.current', screen);
+    let stateItem = $(`.items .item[data-position="${ state.position }"]`, screen);
+    if (state === null || state.position == undefined || stateItem.length == 0) {
+      current.removeClass('current playing');
+      return;
+    }
+    if (state.position != current.data('position')) {
+      current.removeClass('current playing');
+      stateItem.addClass('current');
+    }
+    if (state.status == 'play') {
+      stateItem.addClass('playing');
+    }
+    else {
+      stateItem.removeClass('playing');
+    }
+
+    // TODO: move to current position
+  }
+
+  refreshActionButtons() {
+    let state = registry.state.get();
+    let screen = $(this.el);
+    let repeatEl = $('.action.repeat', screen);
+    if (state.repeat) {
+      repeatEl.addClass('active');
+      $('i', repeatEl).html(state.repeatSingle ? '1' : '');
+    }
+    else {
+      repeatEl.removeClass('active');
+      $('i', repeatEl).html('');
+    }
+
+    let randomEl = $('.action.random', screen);
+    if (state.random) {
+      randomEl.addClass('active');
+    }
+    else {
+      randomEl.removeClass('active');
+    }
   }
 }

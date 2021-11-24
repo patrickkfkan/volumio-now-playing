@@ -55,7 +55,8 @@
   font-size: 1em;
   transition: 0.2s;
   position: relative;
-  font-size: 1.3em;
+  font-size: 1.2em;
+  margin: 0px 0.3em 0px 0px;
   z-index: 100;
 }
 
@@ -74,6 +75,10 @@
 
 #queue .contents .header .actions button.close:hover {
   color: #ccc;
+}
+
+#queue .contents .header .actions button.active {
+  color: #24a4f3;
 }
 
 #queue .contents .items {
@@ -105,6 +110,10 @@
 #queue .contents .items .item:hover .albumart img {
   -webkit-filter: brightness(1.2);
           filter: brightness(1.2);
+}
+
+#queue .contents .items .item .albumart {
+  position: relative;
 }
 
 #queue .contents .items .item .albumart img {
@@ -176,5 +185,9 @@
 
 #queue .contents .items .item .actions button.remove:hover {
   color: #aa4a44;
+}
+
+#queue .contents .items .item.playing .albumart img {
+  content: url(/assets/equalizer.gif) !important;
 }
 /*# sourceMappingURL=queue.css.map */
