@@ -17,6 +17,10 @@ body {
   &.blur {
     filter: blur(30px);
   }
+
+  .screens > .screen:not(.active) {
+    display: none;
+  }
 }
 
 /**

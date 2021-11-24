@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/stylesheets/css/main.css">
   <link rel="stylesheet" href="/stylesheets/css/components.css">
   <link rel="stylesheet" href="/stylesheets/css/np.css">
+  <link rel="stylesheet" href="/stylesheets/css/queue.css">
 </head>
 
 <body>
@@ -30,8 +31,9 @@
   </div>
   <div id="screen-wrapper">
     <div class="bg"></div>
-    <div class="screen">
-      <div id="now-playing"></div>
+    <div class="screens">
+      <div id="now-playing" class="screen"></div>
+      <div id="queue" class="screen"></div>
     </div>
     <div id="track-bar"></div>
   </div>
@@ -64,7 +66,8 @@
       trackBar: '#track-bar'
     },
     screens: {
-      nowPlaying: '#now-playing'
+      nowPlaying: '#now-playing',
+      queue: '#queue'
     },
     i18n: {
       'REFRESH': <%- JSON.stringify(i18n('NOW_PLAYING_REFRESH')) %>,
@@ -72,15 +75,21 @@
     }
   });
 
+  util.setActiveScreen(registry.screens.nowPlaying);
+
   let socket = registry.socket;
 
   socket.on('connect', () => {
     socket.emit('getState');
+    socket.emit('getQueue'); // TODO: Move to corresponding screens?
   });
 
   socket.on('nowPlayingSetCustomCSS', css => {
     settings.applyCustomStyles(css, registry.screens.nowPlaying);
   });
+
+  window.registry = registry;
+  window.util = util;
   
   $(document).ready( () => {
     settings.applyCustomStyles(<%- JSON.stringify(styles || {}) %>, registry.screens.nowPlaying);

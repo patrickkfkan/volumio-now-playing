@@ -30,6 +30,16 @@ export class ActionPanel {
       <i class="fa fa-volume-up max"></i>
     </div>
     <div class="actions-wrapper">
+      <div class="screen-switcher">
+        <div class="label-wrapper">
+          <div class="label"><i class="fa fa-television"></i></div>
+        </div>
+        <div class="switches-wrapper">
+          <div class="switch" data-screen="nowPlaying"><i class="fa fa-youtube-play"></i></div>
+          <div class="switch" data-screen="queue"><i class="fa fa-list"></i></div>
+        </div>
+      </div>
+      <div class="spacer"></div>
       <div class="action refresh"><i class="fa fa-refresh" title=""></i></div>
       <div class="action switch"><img src="/assets/volumio-icon.png" title=""></img></div>
     </div>
@@ -106,14 +116,20 @@ export class ActionPanel {
         }
       });
   
-      $('.refresh', panelEl).on('click', function() {
+      $('.action.refresh', panelEl).on('click', function() {
         util.refresh();
       });
   
-      $('.switch', panelEl).on('click', function() {
+      $('.action.switch', panelEl).on('click', function() {
         self.switchToVolumioInterface();
       });
-  
+
+      $('.screen-switcher .switch', panelEl).on('click', function() {
+        self.hide();
+        let screen = $(this).data('screen');
+        util.setActiveScreen(registry.screens[screen]);
+      });
+ 
       $(trigger).on('click', () => {
         self.show();
       });

@@ -32,6 +32,7 @@ export class NowPlayingScreen {
     `;
 
     let screen = $(this.el);
+    screen.data('screenName', this.getScreenName());
     screen.html(html);
 
     util.trackTimer.attach(`${ this.el } .seekbar`);
@@ -106,6 +107,10 @@ export class NowPlayingScreen {
 
   static init(el) {
     return new NowPlayingScreen(el);
+  }
+
+  getScreenName() {
+    return 'nowPlaying';
   }
 
   // UI function due to legacy Chromium on Volumio 2.x

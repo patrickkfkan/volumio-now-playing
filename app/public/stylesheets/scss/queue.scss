@@ -1,0 +1,145 @@
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+}
+
+@mixin queue-action-button($margin: 0px 8px) {
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: 0.2s;
+  margin: $margin;
+  color: #ccc;
+  width: 2em;
+  height: 2em;
+  font-size: 1em;
+  transition: 0.2s;
+
+  &:last-of-type {
+    margin-right: 0px;
+  }
+}
+
+@mixin queue-item {
+  display: flex;
+  /*padding: 15px 20px;*/
+  padding: 0.7em 1em;
+  border-bottom: 1px solid #666;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: #2b2b2b;
+
+    .albumart img {
+      filter: brightness(1.2);
+    }
+  }
+  
+  .albumart {
+    img {
+      display: block;
+      width: 2em;
+      height: 2em;
+      border-radius: 0.2em;
+      transition: 0.2s;
+    }
+  }
+
+  .track-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: center;
+
+    .title {
+      @include line-clamp(1);
+      color: #fff;
+      font-size: 0.9em;
+    }
+
+    .artist-album {
+      @include line-clamp(1);
+      color: #ccc;
+      font-family: 'Noto Sans Display', sans-serif;
+      font-size: 0.7em;
+    }
+  }
+
+  .actions {
+    button {
+      @include queue-action-button();
+
+      &.remove:hover {
+        color: #aa4a44;
+      }
+    }
+  }
+}
+
+#queue {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #202020;
+
+  .contents {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .header {
+      padding: 0px 0px 0px 10px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+
+      .actions {
+        flex-grow: 1;
+        display: flex;
+
+        button {
+          @include queue-action-button(0px);
+          position: relative;
+          font-size: 1.3em;
+          z-index: 100;
+  
+          &.clear:hover {
+            color: #aa4a44;
+          }
+
+          &.close {
+            color: #606060;
+            margin-left: auto;
+
+            &:hover {
+              color: #ccc;
+            }
+          }
+        }
+      }
+    }
+
+    .items {
+      flex-grow: 1;
+      overflow-y: auto;
+
+      .item {
+        @include queue-item;
+      }
+    }
+  }
+}

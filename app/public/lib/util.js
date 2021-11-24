@@ -90,7 +90,7 @@ class ImageLoader {
     return handle;
   }
 
-  cancel(handle) {'<%- host %>'
+  cancel(handle) {
     delete this.handles[handle.id];
   }
 
@@ -172,6 +172,63 @@ export function setScreenBlur(blur = true) {
   else {
     $("#screen-wrapper").removeClass("blur");
   }
+}
+
+export function setActiveScreen(screen, options = {}) {
+  let currentActive = $('#screen-wrapper .screen.active');
+  if (currentActive.length > 0) {
+    if (currentActive.data('screenName') === screen.getScreenName()) {
+      return;
+    }
+    currentActive.fadeOut(100, 'swing', function() {
+      $(this).removeClass('active');
+    });
+  }
+
+  let screenEl = $(screen.el);
+  let showTrackBar = false;
+  let defaultShowEffect = null;
+
+  if (typeof screen.usesTrackBar === 'function' && screen.usesTrackBar()) {
+    let trackBarHeight = $(registry.ui.trackBar.el).css('height');
+    screenEl.css('height', `calc(100% - ${ trackBarHeight }`);
+    showTrackBar = true;
+  }
+  if (typeof screen.getDefaultShowEffect === 'function') {
+    defaultShowEffect = screen.getDefaultShowEffect();
+  }
+
+  screenEl.hide(); // So that it remains hidden when 'active' class is added
+  screenEl.addClass('active');
+
+  let showEffect = options.showEffect || defaultShowEffect;
+  switch (showEffect) {
+    case 'slideDown':
+      screenEl.show('slide', { direction: 'up' }, 100);
+      break;
+    case 'slideUp': 
+      screenEl.show('slide', { direction: 'down' }, 100);
+      break;
+    case 'slideRight':
+      screenEl.show('slide', { direction: 'left' }, 100);
+      break;
+    case 'slideLeft':
+      screenEl.show('slide', { direction: 'right' }, 100);
+      break;
+    default:
+      screenEl.show();
+  }
+
+  if (showTrackBar) {
+    registry.ui.trackBar.show();
+  }
+  else {
+    registry.ui.trackBar.hide();
+  }
+
+  let actionPanel = $(registry.ui.actionPanel.el);
+  $('.screen-switcher .switch.active', actionPanel).removeClass('active');
+  $(`.screen-switcher .switch[data-screen="${ screen.getScreenName() }"]`, actionPanel).addClass('active');
 }
 
 export let trackTimer = new TrackTimer();

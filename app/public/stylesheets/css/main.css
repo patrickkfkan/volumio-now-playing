@@ -23,6 +23,10 @@ body {
           filter: blur(30px);
 }
 
+#screen-wrapper .screens > .screen:not(.active) {
+  display: none;
+}
+
 /**
 * Landscape Orientation
 */

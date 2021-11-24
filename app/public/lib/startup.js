@@ -1,5 +1,6 @@
 import * as Components from './components.js';
 import { NowPlayingScreen } from './screens/np.js';
+import { QueueScreen } from './screens/queue.js';
 import { refresh } from './util.js';
 import { registry } from './registry.js';
 
@@ -18,6 +19,7 @@ export function init(data) {
   if (data.screens) {
     registry.screens = {};
     registry.screens.nowPlaying = NowPlayingScreen.init(data.screens.nowPlaying);
+    registry.screens.queue = QueueScreen.init(data.screens.queue);
   }
 }
 
