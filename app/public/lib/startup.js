@@ -22,6 +22,16 @@ export function init(data) {
     registry.screens = {};
     registry.screens.nowPlaying = NowPlayingScreen.init(data.screens.nowPlaying);
     registry.screens.queue = QueueScreen.init(data.screens.queue);
+
+    $(window).on('resize', () => {
+      // Resize active screen that has the trackbar showing
+      let trackBar = $(registry.ui.trackBar.el);
+      if (trackBar.is(':visible')) {
+        let screen = $('#screen-wrapper .screen.active');
+        let trackBarHeight = trackBar.css('height');
+        screen.css('height', `calc(100% - ${ trackBarHeight }`);
+      }
+    });
   }
 }
 
