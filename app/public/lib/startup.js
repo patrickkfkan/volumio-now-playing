@@ -9,8 +9,8 @@ export function init(data) {
   registry.app = Object.assign({}, data.app);
   registry.socket = getSocket();
   registry.i18n = data.i18n || {};
-  registry.state = State.init();
   if (data.ui) {
+    registry.state = State.init();
     registry.ui = {};
     registry.ui.background = Components.Background.init(data.ui.background);
     registry.ui.actionPanel = Components.ActionPanel.init(data.ui.actionPanel);
