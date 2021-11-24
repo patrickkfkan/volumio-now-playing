@@ -247,6 +247,7 @@
       -ms-flex-pack: center;
           justify-content: center;
   z-index: 200;
+  display: none;
 }
 
 #volume-indicator .circle-wrapper {
@@ -325,5 +326,204 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+/* Track bar */
+#track-bar {
+  --default-track-bar-height: 4em;
+  --default-widget-primary-color: #ccc;
+  --default-widget-highlight-color: #24a4f3;
+  --track-bar-height: var(--default-track-bar-height);
+  --widget-primary-color: var(--default-widget-primary-color);
+  --widget-highlight-color: var(--default-widget-highlight-color);
+  --track-bar-padding: 0.4em;
+  position: absolute;
+  width: 100%;
+  height: var(--track-bar-height);
+  bottom: 0;
+  left: 0;
+  background: #202020;
+  border-top: 1px solid var(--widget-primary-color);
+  z-index: 10;
+  display: none;
+}
+
+#track-bar .seekbar-wrapper {
+  --seekbar-height: 3px;
+  --handle-diameter: 0.8em;
+  --handle-radius: calc(var(--handle-diameter) / 2);
+  --handle-radius-offset: calc(-1 * var(--handle-radius));
+  padding: 0px var(--handle-radius);
+  position: relative;
+  top: calc(-1 * (var(--seekbar-height) / 2));
+}
+
+#track-bar .seekbar-wrapper .seekbar.ui-widget-content {
+  background: var(--widget-primary-color);
+}
+
+#track-bar .seekbar-wrapper .seekbar.ui-slider-horizontal {
+  height: var(--seekbar-height) !important;
+  border: none;
+}
+
+#track-bar .seekbar-wrapper .seekbar.ui-corner-all {
+  border-radius: 0px !important;
+}
+
+#track-bar .seekbar-wrapper .seekbar .ui-slider-range {
+  height: var(--seekbar-height);
+  background: var(--widget-highlight-color);
+}
+
+#track-bar .seekbar-wrapper .seekbar .ui-slider-handle,
+#track-bar .seekbar-wrapper .seekbar .ui-slider-handle.ui-state-focus,
+#track-bar .seekbar-wrapper .seekbar .ui-slider-handle.ui-state-active {
+  width: var(--handle-diameter);
+  height: var(--handle-diameter);
+  top: var(--handle-radius-offset);
+  border: none;
+  background: var(--widget-highlight-color);
+  border-radius: 50%;
+  outline: none;
+  margin-left: var(--handle-radius-offset);
+}
+
+#track-bar .seekbar-wrapper .seekbar.ui-slider:before {
+  content: "";
+  border: inherit;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--handle-radius-offset);
+  background: var(--widget-highlight-color);
+  width: var(--handle-radius);
+}
+
+#track-bar .seekbar-wrapper .seekbar.ui-slider:after {
+  content: "";
+  border: inherit;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: var(--handle-radius-offset);
+  background: inherit;
+  width: var(--handle-radius);
+}
+
+#track-bar .main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: var(--track-bar-padding);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#track-bar .main .albumart img {
+  --size: calc(var(--track-bar-height) - (var(--track-bar-padding) * 2));
+  display: block;
+  width: var(--size);
+  height: var(--size);
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+#track-bar .main .track-info {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-left: 10px;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#track-bar .main .track-info .title {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+  color: #fff;
+  font-size: 0.9em;
+}
+
+#track-bar .main .track-info .artist-album {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+  color: #ccc;
+  font-family: 'Noto Sans Display', sans-serif;
+  font-size: 0.7em;
+}
+
+#track-bar .main .track-info .media-info {
+  line-height: 0.7em;
+}
+
+#track-bar .main .track-info .media-info .format-icon {
+  height: 0.6em;
+  margin-right: 5px;
+}
+
+#track-bar .main .track-info .media-info .quality {
+  font-size: 0.6em;
+  color: #ccc;
+  font-weight: normal;
+  font-family: sans-serif;
+}
+
+#track-bar .main .controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#track-bar .main .controls button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  margin: 0px 8px;
+  color: #ccc;
+  width: 2em;
+  height: 2em;
+  font-size: 0.8em;
+}
+
+#track-bar .main .controls button:focus {
+  outline: none;
+}
+
+#track-bar .main .controls button.active {
+  color: var(--widget-highlight-color);
+}
+
+#track-bar .main .controls button.previous:hover, #track-bar .main .controls button.next:hover, #track-bar .main .controls button.play:hover {
+  color: var(--widget-highlight-color);
+}
+
+@media all and (max-width: 580px) {
+  #track-bar .main .controls button.repeat,
+  #track-bar .main .controls button.random {
+    display: none;
+  }
 }
 /*# sourceMappingURL=components.css.map */

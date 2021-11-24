@@ -299,3 +299,199 @@
     justify-content: center;   
   }
 }
+
+/* Track bar */
+#track-bar {
+  --default-track-bar-height: 4em;
+  --default-widget-primary-color: #ccc;
+  --default-widget-highlight-color: #24a4f3;
+
+  --track-bar-height: var(--default-track-bar-height);
+  --widget-primary-color: var(--default-widget-primary-color);
+  --widget-highlight-color: var(--default-widget-highlight-color);
+
+  --track-bar-padding: 0.4em;
+
+  position: absolute;
+  width: 100%;
+  height: var(--track-bar-height);
+  bottom: 0;
+  left: 0;
+  background: #202020;
+  border-top: 1px solid var(--widget-primary-color);
+  z-index: 10;
+  display: none;
+
+  .seekbar-wrapper {
+    --seekbar-height: 3px;
+    --handle-diameter: 0.8em;
+    --handle-radius: calc(var(--handle-diameter) / 2);
+    --handle-radius-offset: calc(-1 * var(--handle-radius));
+
+    padding: 0px var(--handle-radius);
+    position: relative;
+    top: calc(-1 * (var(--seekbar-height) / 2));
+
+    .seekbar {
+      &.ui-widget-content {
+        background: var(--widget-primary-color);
+      }
+
+      &.ui-slider-horizontal {
+        height: var(--seekbar-height) !important;
+        border: none;
+      }
+
+      &.ui-corner-all {
+        border-radius: 0px !important;
+      }
+
+      .ui-slider-range {
+        height: var(--seekbar-height);
+        background: var(--widget-highlight-color);
+      }
+
+      .ui-slider-handle,
+      .ui-slider-handle.ui-state-focus,
+      .ui-slider-handle.ui-state-active {
+        width: var(--handle-diameter);
+        height: var(--handle-diameter);
+        top: var(--handle-radius-offset);
+        border: none;
+        background: var(--widget-highlight-color);
+        border-radius: 50%;
+        outline: none;
+        margin-left: var(--handle-radius-offset);
+      }
+
+      &.ui-slider {
+        @mixin slider-ba {
+          content: "";
+          border: inherit;
+          border-radius: inherit;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+        }
+
+        &:before {
+          @include slider-ba;
+
+          left: var(--handle-radius-offset);
+          background: var(--widget-highlight-color);
+          width: var(--handle-radius);
+        }
+
+        &:after {
+          @include slider-ba;
+
+          right: var(--handle-radius-offset);
+          background: inherit;
+          width: var(--handle-radius);
+        }
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+    padding: var(--track-bar-padding);
+    box-sizing: border-box; 
+
+    .albumart {
+      img {
+        --size: calc(var(--track-bar-height) - (var(--track-bar-padding) * 2));
+        display: block;
+        width: var(--size);
+        height: var(--size);
+        object-fit: cover;
+        border-radius: 0.2em;
+      }
+    }
+
+    .track-info {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      justify-content: space-around;
+
+      @mixin line-clamp($lines) {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: $lines;
+        word-break: break-word;
+        -webkit-box-orient: vertical;
+      }
+
+      .title {
+        @include line-clamp(1);
+        color: #fff;
+        font-size: 0.9em;
+      }
+
+      .artist-album {
+        @include line-clamp(1);
+        color: #ccc;
+        font-family: 'Noto Sans Display', sans-serif;
+        font-size: 0.7em;
+      }
+
+      .media-info {
+        line-height: 0.7em;
+
+        .format-icon {
+          height: 0.6em;
+          margin-right: 5px;
+        }
+
+        .quality {
+          font-size: 0.6em;
+          color: #ccc;
+          font-weight: normal;
+          font-family: sans-serif;
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition: 0.2s;
+        margin: 0px 8px;
+        color: #ccc;
+        width: 2em;
+        height: 2em;
+        font-size: 0.8em;
+
+        &:focus {
+          outline: none;
+        }
+
+        &.active {
+          color: var(--widget-highlight-color);
+        }
+
+        &.previous:hover,
+        &.next:hover,
+        &.play:hover {
+          color: var(--widget-highlight-color);
+        }
+      }
+
+      @media all and (max-width: 580px) {
+        button.repeat,
+        button.random {
+          display: none;
+        }
+      }
+    }
+  }
+}

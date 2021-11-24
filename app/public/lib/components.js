@@ -1,4 +1,4 @@
-import { refresh, setCSSVariable, trackTimer, setScreenBlur } from './util.js';
+import * as util from './util.js';
 import { registry } from './registry.js';
 
 export class Background {
@@ -11,7 +11,7 @@ export class Background {
   }
 
   setImage(src) {
-    setCSSVariable('--default-background-image', `url("${ src }")`, this);
+    util.setCSSVariable('--default-background-image', `url("${ src }")`, this);
   }
 }
 
@@ -78,7 +78,7 @@ export class ActionPanel {
           });
         },
         beforeClose: () => {
-          setScreenBlur(false);
+          util.setScreenBlur(false);
         },
       });
   
@@ -107,7 +107,7 @@ export class ActionPanel {
       });
   
       $('.refresh', panelEl).on('click', function() {
-        refresh();
+        util.refresh();
       });
   
       $('.switch', panelEl).on('click', function() {
@@ -131,7 +131,7 @@ export class ActionPanel {
   }
 
   show() {
-    setScreenBlur(true);
+    util.setScreenBlur(true);
     $(this.el).dialog("open");
   }
 
@@ -248,7 +248,7 @@ export class VolumeIndicator {
     let volumeChanged = oldVolume ? (oldVolume.level !== state.volume || oldVolume.mute !== state.mute) : true;
     if (volumeChanged) {
       let volumeIndicator = $(this.el);
-      setCSSVariable('--volume-level', state.volume, this);
+      util.setCSSVariable('--volume-level', state.volume, this);
       let levelText;
       if (state.mute) {
         levelText = `<i class="fa fa-volume-off"></i>`;
@@ -320,10 +320,232 @@ export class DisconnectIndicator {
   show() {
     registry.ui.actionPanel.hide();
     $(this.el).addClass('active');
-    trackTimer.stop();
+    util.trackTimer.stop();
   }
 
   hide() {
     $(this.el).removeClass('active');
+  }
+}
+
+export class TrackBar {
+  constructor(el) {
+    this.el = el;
+    this.albumartHandle = null;
+
+    const html = `
+    <div class="seekbar-wrapper">
+      <div class="seekbar"></div>
+    </div>
+    <div class="main">
+      <div class="albumart"></div>
+      <div class="track-info">
+        <span class="title"></span>
+        <span class="artist-album"></span>
+        <div class="media-info"><img class="format-icon" /><span class="quality"></span></div>     
+      </div>
+      <div class="controls">
+        <button class="repeat"><i class="fa fa-repeat"></i></button>
+        <button class="previous"><i class="fa fa-step-backward"></i></button>
+        <button class="play"><i class="fa fa-play"></i></button>
+        <button class="next"><i class="fa fa-step-forward"></i></button>
+        <button class="random"><i class="fa fa-random"></i></button>
+      </div>
+    </div>
+    `;
+
+    let trackBar = $(this.el);
+    trackBar.html(html);
+
+    util.trackTimer.attach(`${ this.el } .seekbar`);
+
+    let self = this;
+    let socket = registry.socket;
+    let currentState = null;
+    socket.on('pushState', state => {
+      // console.log(state);
+
+      if ( (state.title == undefined || state.title === '') &&
+          (state.artist == undefined || state.artist === '') &&
+          (state.album == undefined || state.album === '') ) {
+        $('.track-info', trackBar).hide();
+      }
+      else {
+        $('.track-info', trackBar).show();
+      }
+
+      self.refreshTrackInfo(state);
+      self.refreshSeekbar(state);
+      self.refreshControls(state);
+
+      currentState = state;
+    });
+
+    $(document).ready( () => {
+      $('.seekbar', trackBar).slider({
+        orientation: 'horizontal',
+        range: 'min',
+        change: self.seekTo.bind(self),
+        slide: self.seeking.bind(self)
+      });
+
+      let controls = $('.controls', trackBar);
+  
+      $('.repeat', controls).on('click', () => {
+        if (!currentState) {
+          return;
+        }
+        let repeat = currentState.repeat ? (currentState.repeatSingle ? false : true) : true;
+        let repeatSingle = repeat && currentState.repeat;
+        socket.emit('setRepeat', { value: repeat, repeatSingle });
+      });
+  
+      $('.random', controls).on('click', () => {
+        if (!currentState) {
+          return;
+        }
+        socket.emit('setRandom', { value: !currentState.random });
+      });
+  
+      $('.previous', controls).on('click', () => {
+        socket.emit('prev');
+      });
+  
+      $('.play', controls).on('click', () => {
+        socket.emit('toggle');
+      });
+  
+      $('.next', controls).on('click', () => {
+        socket.emit('next');
+      });
+    })
+  }
+
+  static init(el) {
+    return new TrackBar(el);
+  }
+
+  refreshTrackInfo(state) {
+    let trackBar = $(this.el);
+    if (this.albumartHandle) {
+      util.imageLoader.cancel(this.albumartHandle);
+    }
+    let albumartUrl = state.albumart;
+    if (albumartUrl.startsWith('/')) {
+      albumartUrl = registry.app.host + albumartUrl;
+    }
+    // load img into cache first to reduce flicker
+    this.albumartHandle = util.imageLoader.load(albumartUrl, (src) => { 
+      $('.albumart', trackBar).html(`<img src="${ src }"/>`);
+    });
+
+    let trackInfo = $('.track-info', trackBar);
+    $('.title', trackInfo).text(state.title || '');
+
+    let artistAlbum = state.artist || '';
+    if (state.album) {
+      artistAlbum += artistAlbum ? ' - ' : '';
+      artistAlbum += state.album;
+    }
+    $('.artist-album', trackInfo).text(artistAlbum);
+
+    let mediaInfo = $('.media-info', trackInfo);
+    let mediaInfoText;
+    if (state.trackType == 'webradio') {
+      mediaInfoText = state.bitrate || '';
+    }
+    else {
+      let mediaInfoValues = [];
+      ['bitdepth', 'samplerate'].forEach( prop => {
+        if (state[prop]) {
+          mediaInfoValues.push(state[prop]);
+        }
+      });
+      mediaInfoText = mediaInfoValues.join(' ');
+    }
+    $('.quality', mediaInfo).text(mediaInfoText);
+
+    let mediaFormatIcon = util.getMediaFormatIcon(state.trackType);
+    if (mediaFormatIcon) {
+      $('.format-icon', mediaInfo).attr('src', mediaFormatIcon).show();
+    }
+    else {
+      $('.format-icon', mediaInfo).hide();
+    }
+  }
+
+  refreshSeekbar(state) {
+    util.trackTimer.stop();
+
+    let trackBar = $(this.el);
+    let seekbarWrapper = $('.seekbar-wrapper', trackBar);
+    if (state.duration == 0 || state.status == 'stop') {
+      seekbarWrapper.css('visibility', 'hidden');
+      return;
+    }
+    else {
+      seekbarWrapper.css('visibility', 'visible');
+    }
+
+    let duration = (state.duration || 0) * 1000;
+    let seek = state.seek || 0;
+    let seekbar = $('.seekbar', seekbarWrapper);
+    seekbar.slider('option', 'max', duration);
+    seekbar.slider('option', 'value', seek);
+
+    if (state.status == 'play') {
+      util.trackTimer.start();
+    }
+  }
+
+  refreshControls(state) {
+    let trackBar = $(this.el);
+    let controls = $('.controls', trackBar);
+    if (state.status == 'play') {
+      let i = state.duration ? 'fa fa-pause' : 'fa fa-stop';
+      $('button.play', controls).html(`<i class="${i}"></i>`);
+    }
+    else {
+      $('button.play', controls).html('<i class="fa fa-play"></i>');
+    }
+
+    let repeatEl = $('button.repeat', controls);
+    if (state.repeat) {
+      repeatEl.addClass('active');
+      $('i', repeatEl).html(state.repeatSingle ? '1' : '');
+    }
+    else {
+      repeatEl.removeClass('active');
+      $('i', repeatEl).html('');
+    }
+
+    let randomEl = $('button.random', controls);
+    if (state.random) {
+      randomEl.addClass('active');
+    }
+    else {
+      randomEl.removeClass('active');
+    }
+  }
+
+  // Handle seekbar events
+  seekTo(event, ui) {
+    if (!event.originalEvent) { // No original event if programatically changed value
+      return;
+    }
+    util.trackTimer.stop();
+    registry.socket.emit('seek', (ui.value / 1000));
+  }
+
+  seeking(event, ui) {
+    util.trackTimer.stop();
+  }
+
+  show() {
+    $(this.el).show('slide', { direction: 'down' }, 100);
+  }
+
+  hide() {
+    $(this.el).hide('slide', { direction: 'down' }, 100);
   }
 }

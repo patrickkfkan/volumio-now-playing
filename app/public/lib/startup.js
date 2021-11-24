@@ -13,6 +13,7 @@ export function init(data) {
     registry.ui.actionPanel = Components.ActionPanel.init(data.ui.actionPanel);
     registry.ui.volumeIndicator = Components.VolumeIndicator.init(data.ui.volumeIndicator);
     registry.ui.disconnectIndicator = Components.DisconnectIndicator.init(data.ui.disconnectIndicator);
+    registry.ui.trackBar = Components.TrackBar.init(data.ui.trackBar);
   }
   if (data.screens) {
     registry.screens = {};
