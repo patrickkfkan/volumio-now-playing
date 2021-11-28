@@ -376,7 +376,7 @@ export class BrowseMusicScreen {
         list = itemEl.parents('section').data('raw');
         index = itemEl.data('index');
       }
-      if (list && list.items && index) {
+      if (list && list.items && index != undefined) {
         socket.emit('playItemsList', {
           item,
           list: list.items,
