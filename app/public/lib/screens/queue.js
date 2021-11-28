@@ -102,11 +102,9 @@ export class QueueScreen {
   }
 
   createItem(data) {
-    let fallbackImgSrc = registry.app.host + '/albumart';
-    let fallbackImgJS = `onerror="if (this.src != '${ fallbackImgSrc }') this.src = '${ fallbackImgSrc }';"`;
     let itemHtml = `
         <div class="item">
-            <div class="albumart"><img src="" ${ fallbackImgJS } /></div>
+            <div class="albumart"></div>
             <div class="track-info">
                 <span class="title"></span>
                 <span class="artist-album"></span>
@@ -119,10 +117,23 @@ export class QueueScreen {
 
     let item = $(itemHtml);
 
-    $('.albumart img', item).attr('src', data.albumart);
+    // TODO: move to util
+    if (data.albumart || !data.icon) {
+      let fallbackImgSrc = registry.app.host + '/albumart';
+      let albumartUrl = data.albumart || fallbackImgSrc;
+      if (albumartUrl.startsWith('/')) {
+        albumartUrl = registry.app.host + albumartUrl;
+      }
+      let fallbackImgJS = `onerror="if (this.src != '${ fallbackImgSrc }') this.src = '${ fallbackImgSrc }';"`;
+      $('.albumart', item).html(`<img src="${ albumartUrl }" ${ fallbackImgJS }/>`);
+    }
+    else { // icon
+      let iconHtml = `<div class="icon"><i class="${ data.icon }"></i></div>`;
+      $('.albumart', item).html(iconHtml);
+    }
 
     let trackInfo = $('.track-info', item);
-    $('.title', trackInfo).text(data.title);
+    $('.title', trackInfo).text(data.title || data.name || '');
 
     let artistAlbum = data.artist || "";
     if (data.album) {
