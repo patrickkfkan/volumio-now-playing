@@ -430,7 +430,7 @@
 
 /* Track bar */
 #track-bar {
-  --default-track-bar-height: 5em;
+  --default-track-bar-height: 4.5em;
   --default-widget-primary-color: #ccc;
   --default-widget-highlight-color: #24a4f3;
   --track-bar-height: var(--default-track-bar-height);
@@ -611,7 +611,6 @@
   color: #ccc;
   width: 2em;
   height: 2em;
-  font-size: 0.8em;
 }
 
 #track-bar .main .controls button:focus {

@@ -25,14 +25,14 @@
 }
 
 #queue .contents .header {
-  padding: 0px 0px 0px 10px;
-  border-bottom: 1px solid #ccc;
+  padding: 0.5em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
 }
 
 #queue .contents .header .actions {
@@ -57,7 +57,7 @@
   font-size: 1em;
   transition: 0.2s;
   position: relative;
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin: 0px 0.3em 0px 0px;
   z-index: 100;
 }
@@ -88,6 +88,7 @@
       -ms-flex-positive: 1;
           flex-grow: 1;
   overflow-y: auto;
+  margin-top: 1em;
 }
 
 #queue .contents .items .item {
@@ -96,17 +97,21 @@
   display: flex;
   /*padding: 15px 20px;*/
   padding: 0.7em 1em;
-  border-bottom: 1px solid #666;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   cursor: pointer;
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
+  background: #282828;
+}
+
+#queue .contents .items .item:not(:last-of-type) {
+  border-bottom: 1px solid #454545;
 }
 
 #queue .contents .items .item:hover {
-  background: #2b2b2b;
+  background: #303030;
 }
 
 #queue .contents .items .item:hover .albumart img {
@@ -152,7 +157,6 @@
   word-break: break-word;
   -webkit-box-orient: vertical;
   color: #fff;
-  font-size: 0.9em;
 }
 
 #queue .contents .items .item .track-info .artist-album {
@@ -162,9 +166,8 @@
   -webkit-line-clamp: 1;
   word-break: break-word;
   -webkit-box-orient: vertical;
-  color: #ccc;
-  font-family: 'Noto Sans Display', sans-serif;
-  font-size: 0.7em;
+  color: #7a848e;
+  font-family: "Noto Sans Display", sans-serif;
 }
 
 #queue .contents .items .item .actions button {

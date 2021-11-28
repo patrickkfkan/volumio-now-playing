@@ -6,9 +6,22 @@
     transition: 0.2s ease;
     align-items: center;
     color: #ccc;
+    background: #282828;
 
     &:not(:last-of-type) {
       border-bottom: 1px solid #454545;
+    }
+
+    @media (min-width: 1024px) {
+      &:first-of-type {
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
+      }
+
+      &:last-of-type {
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+      }
     }
 
     .text {
@@ -79,7 +92,7 @@
     }
 
     &:hover {
-      background: #2b2b2b;
+      background: #303030;
   
       .albumart img {
         filter: brightness(1.2);
@@ -240,7 +253,7 @@
         button {
           @include action-button(0px);
           position: relative;
-          font-size: 1.5em;
+          font-size: 1.3em;
           margin: 0px 0.3em 0px 0px;
           z-index: 100;
 

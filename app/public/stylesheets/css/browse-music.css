@@ -58,7 +58,7 @@
   font-size: 1em;
   transition: 0.2s;
   position: relative;
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin: 0px 0.3em 0px 0px;
   z-index: 100;
 }
@@ -290,10 +290,22 @@
       -ms-flex-align: center;
           align-items: center;
   color: #ccc;
+  background: #282828;
 }
 
 #browse-music .contents .navigation section.list .items .item:not(:last-of-type) {
   border-bottom: 1px solid #454545;
+}
+
+@media (min-width: 1024px) {
+  #browse-music .contents .navigation section.list .items .item:first-of-type {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+  }
+  #browse-music .contents .navigation section.list .items .item:last-of-type {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+  }
 }
 
 #browse-music .contents .navigation section.list .items .item .text {
@@ -381,7 +393,7 @@
 }
 
 #browse-music .contents .navigation section.list .items .item:hover {
-  background: #2b2b2b;
+  background: #303030;
 }
 
 #browse-music .contents .navigation section.list .items .item:hover .albumart img {
