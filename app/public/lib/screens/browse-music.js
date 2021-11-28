@@ -238,7 +238,7 @@ export class BrowseMusicScreen {
     `;
     let item = $(html);
 
-    if (data.albumart || !data.icon) {
+    if (data.albumart || (!data.icon && data.tracknumber == undefined)) {
       let fallbackImgSrc = registry.app.host + '/albumart';
       let albumartUrl = data.albumart || fallbackImgSrc;
       if (albumartUrl.startsWith('/')) {
@@ -247,9 +247,13 @@ export class BrowseMusicScreen {
       let fallbackImgJS = `onerror="if (this.src != '${ fallbackImgSrc }') this.src = '${ fallbackImgSrc }';"`;
       $('.albumart', item).html(`<img src="${ albumartUrl }" ${ fallbackImgJS }/>`);
     }
-    else { // icon
+    else if (data.icon) {
       let iconHtml = `<div class="icon"><i class="${ data.icon }"></i></div>`;
       $('.albumart', item).html(iconHtml);
+    }
+    else { // track number
+      let trackNumberHtml = `<div class="track-number">${ data.tracknumber }</div>`;
+      $('.albumart', item).html(trackNumberHtml);
     }
 
     item.data('raw', data);
