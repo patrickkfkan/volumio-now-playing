@@ -10,6 +10,15 @@ export function timeToString(ms) {
   return `${mm}:${ss}`;
 }
 
+export function secondsToString(s) {
+  let mm = Math.trunc(s / 60);
+  let ss = `${Math.trunc(s % 60)}`;
+  if (ss.length == 1) {
+    ss = '0' + ss;
+  }
+  return `${mm}:${ss}`;
+}
+
 // Track timer for incrementing seekbar position at 1s interval
 class TrackTimer {
   constructor() {

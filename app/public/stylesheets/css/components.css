@@ -1,5 +1,5 @@
 /* Background */
-#screen-wrapper .bg {
+#screen-wrapper > .bg {
   --default-background-size: cover;
   --default-background-position: center;
   --default-background-blur: 50px;
@@ -34,7 +34,7 @@
   transition: background-image 1s ease-in-out, filter 0.2s ease-in, -webkit-filter 0.2s ease-in;
 }
 
-#screen-wrapper .bg:before {
+#screen-wrapper > .bg:before {
   content: "";
   display: var(--background-overlay-display);
   position: absolute;
@@ -176,7 +176,7 @@
 }
 
 #action-panel .actions-wrapper {
-  --switch-count: 2;
+  --switch-count: 3;
   --switch-width: 3em;
   --switch-height: 2em;
   display: -webkit-box;
@@ -430,7 +430,7 @@
 
 /* Track bar */
 #track-bar {
-  --default-track-bar-height: 4em;
+  --default-track-bar-height: 5em;
   --default-widget-primary-color: #ccc;
   --default-widget-highlight-color: #24a4f3;
   --track-bar-height: var(--default-track-bar-height);
@@ -446,6 +446,8 @@
   border-top: 1px solid var(--widget-primary-color);
   z-index: 10;
   display: none;
+  font-size: 1rem;
+  /* TODO: Should change body font-size instead*/
 }
 
 #track-bar .seekbar-wrapper {
@@ -481,7 +483,7 @@
 #track-bar .seekbar-wrapper .seekbar .ui-slider-handle.ui-state-active {
   width: var(--handle-diameter);
   height: var(--handle-diameter);
-  top: var(--handle-radius-offset);
+  top: calc(var(--handle-radius-offset) + 1px);
   border: none;
   background: var(--widget-highlight-color);
   border-radius: 50%;
@@ -520,6 +522,8 @@
   padding: var(--track-bar-padding);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  position: relative;
+  top: -3px;
 }
 
 #track-bar .main .albumart img {
@@ -556,7 +560,6 @@
   word-break: break-word;
   -webkit-box-orient: vertical;
   color: #fff;
-  font-size: 0.9em;
 }
 
 #track-bar .main .track-info .artist-album {
@@ -568,20 +571,21 @@
   -webkit-box-orient: vertical;
   color: #ccc;
   font-family: 'Noto Sans Display', sans-serif;
-  font-size: 0.7em;
+  font-size: 0.9em;
 }
 
 #track-bar .main .track-info .media-info {
-  line-height: 0.7em;
+  line-height: 0.8em;
+  margin-top: auto;
 }
 
 #track-bar .main .track-info .media-info .format-icon {
-  height: 0.6em;
+  height: 0.8em;
   margin-right: 5px;
 }
 
 #track-bar .main .track-info .media-info .quality {
-  font-size: 0.6em;
+  font-size: 0.7em;
   color: #ccc;
   font-weight: normal;
   font-family: sans-serif;

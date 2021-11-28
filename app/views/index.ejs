@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/lib/vendor/jquery-ui-1.12.1/jquery-ui.min.css">
   <link rel="stylesheet" href="/stylesheets/css/main.css">
   <link rel="stylesheet" href="/stylesheets/css/components.css">
+  <link rel="stylesheet" href="/stylesheets/css/browse-music.css">
   <link rel="stylesheet" href="/stylesheets/css/np.css">
   <link rel="stylesheet" href="/stylesheets/css/queue.css">
 </head>
@@ -33,6 +34,7 @@
   <div id="screen-wrapper">
     <div class="bg"></div>
     <div class="screens">
+      <div id="browse-music" class="screen"></div>
       <div id="now-playing" class="screen"></div>
       <div id="queue" class="screen"></div>
     </div>
@@ -67,6 +69,7 @@
       trackBar: '#track-bar'
     },
     screens: {
+      browseMusic: '#browse-music',
       nowPlaying: '#now-playing',
       queue: '#queue'
     },

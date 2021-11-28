@@ -1,5 +1,6 @@
 import * as Components from './components.js';
 import { State } from './state.js';
+import { BrowseMusicScreen } from './screens/browse-music.js';
 import { NowPlayingScreen } from './screens/np.js';
 import { QueueScreen } from './screens/queue.js';
 import { refresh } from './util.js';
@@ -20,6 +21,7 @@ export function init(data) {
   }
   if (data.screens) {
     registry.screens = {};
+    registry.screens.browseMusic = BrowseMusicScreen.init(data.screens.browseMusic);
     registry.screens.nowPlaying = NowPlayingScreen.init(data.screens.nowPlaying);
     registry.screens.queue = QueueScreen.init(data.screens.queue);
 
@@ -53,11 +55,13 @@ function getSocket() {
     });
 
     _socket.on('connect', () => {
+      _socket.emit('getBrowseSources');
       _socket.emit('getState');
       _socket.emit('getQueue');
     });
 
     _socket.on('reconnect', () => {
+      _socket.emit('getBrowseSources');
       _socket.emit('getState');
       _socket.emit('getQueue');
     });

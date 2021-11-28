@@ -1,0 +1,485 @@
+@mixin list-item {
+  .item {
+    display: flex;
+    padding: 0.7em 1em;
+    cursor: pointer;
+    transition: 0.2s ease;
+    align-items: center;
+    color: #ccc;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid #454545;
+    }
+
+    .text {
+      padding-left: 0.8em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .albumart {
+      width: var(--albumart-width);
+      height: var(--albumart-height);
+
+      img {
+        display: block;
+        width: var(--albumart-width);
+        height: var(--albumart-height);
+        object-fit: cover;
+        border-radius: 0.2em;
+        transition: 0.2s;
+      }
+
+      .icon {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .title-album-artist {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+
+      .title {
+        flex-basis: var(--title-width);
+      }
+
+      .album {
+        flex-basis: var(--album-width);
+      }
+  
+      .artist {
+        flex-basis: var(--artist-width);
+      }
+    }
+
+    .duration {
+      min-width: var(--duration-width);
+    }
+
+    .ellipsis {
+      width: var(--ellipsis-width);
+    }
+
+    .album,
+    .artist,
+    .duration {
+      font-family: "Noto Sans Display", sans-serif;
+    }
+
+    .album,
+    .artist {
+      color: #7a848e;
+    }
+
+    &:hover {
+      background: #2b2b2b;
+  
+      .albumart img {
+        filter: brightness(1.2);
+      }
+    }
+  }
+
+  @media (max-width: 599px) {
+    --title-width: 100%;
+    --album-width: unset;
+    --artist-width: unset;
+
+    .title-album-artist {
+      flex-wrap: wrap;
+    }
+
+    .item:not(.no-album):not(.no-artist) .artist {
+      padding-left: 0px;
+
+      &:before {
+        content: "-";
+        padding: 0px 0.5em;
+      }
+    }
+  }
+}
+
+@mixin grid-item {
+  .item {
+    width: 100%;
+    min-width: 0;
+
+    display: block;
+    cursor: pointer;
+    transition: 0.2s ease;
+    color: #ccc;
+    text-align: center;
+
+    .text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    > :not(:first-child) {
+      padding: 0.5em 0px;
+    }
+
+    .albumart {
+      width: 100%;
+      background: #2e2e2e;
+      border-radius: 0.5em;
+      transition: 0.2s;
+      overflow: hidden;
+      position: relative;
+
+      &:before { /* 1:1 */
+        content: "";
+        display: block;
+        width: 100%;
+        padding-top: 100%;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .icon {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    .album,
+    .duration,
+    .ellipsis {
+      display: none;
+    }
+
+    .ellipsis {
+      width: var(--ellipsis-width);
+    }
+
+    .artist {
+      font-family: "Noto Sans Display", sans-serif;
+      color: #7a848e;
+      font-size: 0.9em;
+    }
+
+    &:hover {
+      .albumart {
+        filter: brightness(1.2);
+      }
+    }
+  }
+}
+
+@mixin action-button($margin: 0px 8px) {
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: 0.2s;
+  margin: $margin;
+  color: #ccc;
+  width: 2em;
+  height: 2em;
+  font-size: 1em;
+  transition: 0.2s;
+
+  &:last-of-type {
+    margin-right: 0px;
+  }
+}
+
+#browse-music {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: #202020;
+
+  font-size: 1rem; /* TODO: Should change body font-size instead*/
+
+  --loading-percent: 0;
+
+  .contents {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .header {
+      padding: 0.5em;
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .actions {
+        flex-grow: 1;
+        display: flex;
+
+        button {
+          @include action-button(0px);
+          position: relative;
+          font-size: 1.5em;
+          margin: 0px 0.3em 0px 0px;
+          z-index: 100;
+
+          &.clear:hover {
+            color: #aa4a44;
+          }
+
+          &.close {
+            color: #606060;
+            margin-left: auto;
+
+            &:hover {
+              color: #ccc;
+            }
+          }
+
+          &.active {
+            color: #24a4f3;
+          }
+
+          &.list-view-toggle[data-current="list"] i:before {
+            content: '\f009';
+          }
+
+          &.list-view-toggle[data-current="grid"] i:before {
+            content: '\f03a';
+          }
+        }
+      }
+    }
+
+    .info-header {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.5em;
+
+      --albumart-height: 8em;
+
+      .bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          filter: blur(30px) brightness(0.5);
+          transform: scale(1.5);
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+
+      .main {
+        box-sizing: border-box;
+        margin: 1.5em auto;
+        padding: 0 1em;
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        @media (min-width: 1024px) {
+          max-width: 80%;
+        }
+
+        .albumart {
+          position: relative;
+
+          img {
+            display: block;
+            width: var(--albumart-height);
+            height: 8em;
+            object-fit: cover;
+            border-radius: 0.5em;
+            filter: drop-shadow(0 0 8px #00000080);
+          }
+        }
+
+        .info {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          color: #ccc;
+          margin-left: 1em;
+          min-height: var(--albumart-height);
+
+          .title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 0.3em;
+          }
+
+          .artist,
+          .media-info {
+            margin-bottom: 0.3em;
+          }
+
+          .media-info {
+            display: flex;
+            align-items: center;
+            margin-top: 0.3em;
+            font-size: 0.9em;
+
+            i.dot {
+              font-size: 0.3em;
+              margin: 0 1.5em;
+            }
+          }
+        }
+        
+      }
+    }
+
+    .navigation {
+      overflow-y: auto;
+      flex-grow: 1;
+
+      .info {
+        width: 100%;
+      }
+
+      section {
+        width: 100%;
+        margin: 0 auto;
+
+        &:last-of-type {
+          margin-bottom: 1em;
+        }
+
+        @media (min-width: 1024px) {
+          max-width: 80%;
+        }
+
+        > .title {
+          color: #ccc;
+          font-size: 1.2em;
+          font-family: "Noto Sans Display";
+        }
+
+        &.no-title > .title {
+          display: none;
+        }
+        
+      }
+
+      section.list {
+
+        margin-top: 1em;
+
+        > .title {
+          padding: 1em 0.7em 1.2em 0.7em;
+        }
+
+        .items {
+          --albumart-width: 2em;
+          --albumart-height: 2em;
+          --title-width: calc(100% - var(--album-width) - var(--artist-width));
+          --album-width: 25%;
+          --artist-width: 25%;
+          --duration-width: 4em;
+          --ellipsis-width: 2em;
+
+          display: flex;
+          flex-direction: column;
+
+          &.no-album .album {
+            --album-width: 0;
+            display: none;
+          }
+          &.no-artist .artist {
+            --artist-width: 0;
+            display: none;
+          }
+          &.no-duration .duration {
+            display: none;
+          }
+          &.no-ellipsis .ellipsis {
+            display: none;
+          }
+          
+          @include list-item;
+        }
+      }
+
+      section.grid {
+        padding-bottom: 1em;
+
+        > .title {
+          padding: 1.2em 1em 0.8em 1em;
+        }
+
+        &.no-title {
+          padding: 1em 0em;
+        }
+        
+        .items {         
+          --grid-columns: 3;
+          display: grid;
+          grid-template-columns: repeat(var(--grid-columns), 1fr);
+          grid-gap: 1em;
+          margin: 1em;
+
+          @include grid-item;
+
+          @media (max-width: 240px) {
+            --grid-columns: 2;
+          }
+
+          @media (min-width: 480px) {
+            --grid-columns: 3;
+          }
+
+          @media (min-width: 640px) {
+            --grid-columns: 4;
+          }
+
+          @media (min-width: 900px) {
+            --grid-columns: 5;
+          }
+
+          @media (min-width: 1920px) {
+            --grid-columns: 6;
+          }
+        }
+      }
+    }
+  }
+
+  &.loading .contents .header:before {
+    content: "";
+    width: var(--loading-percent);
+    height: 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #24a4f3;
+    transition: 0.2s ease-out;
+  }
+}

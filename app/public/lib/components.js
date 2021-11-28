@@ -35,6 +35,7 @@ export class ActionPanel {
           <div class="label"><i class="fa fa-television"></i></div>
         </div>
         <div class="switches-wrapper">
+          <div class="switch" data-screen="browseMusic"><i class="fa fa-music"></i></div>
           <div class="switch" data-screen="nowPlaying"><i class="fa fa-youtube-play"></i></div>
           <div class="switch" data-screen="queue"><i class="fa fa-list"></i></div>
         </div>

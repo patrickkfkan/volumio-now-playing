@@ -1,7 +1,7 @@
 /* Background */
 
 #screen-wrapper {
-  .bg {
+  > .bg {
     --default-background-size: cover;
     --default-background-position: center;
     --default-background-blur: 50px;
@@ -170,7 +170,7 @@
   }
 
   .actions-wrapper {
-    --switch-count: 2;
+    --switch-count: 3;
     --switch-width: 3em;
     --switch-height: 2em;
 
@@ -502,7 +502,6 @@
       .title {
         @include line-clamp(1);
         color: #fff;
-        font-size: 0.9em;
       }
 
       .artist-album {

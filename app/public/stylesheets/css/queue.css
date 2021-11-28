@@ -8,6 +8,8 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: #202020;
+  font-size: 1rem;
+  /* TODO: Should change body font-size instead*/
 }
 
 #queue .contents {
