@@ -56,6 +56,12 @@ export class BrowseMusicScreen {
     
     $('.navigation', screen).on('click', 'section .items .item', function() {
       self.handleItemClick($(this));
+      return false;
+    });
+
+    $('.navigation', screen).on('click', 'section .items .item .action.play', function() {
+      self.handleItemPlayButtonClicked($(this).parents('.item'));
+      return false;
     });
 
     $('.action.list-view-toggle', screen).on('click', function() {
@@ -256,6 +262,15 @@ export class BrowseMusicScreen {
       $('.albumart', item).html(trackNumberHtml);
     }
 
+    if (this.hasPlayButton(data)) {
+      let buttonContainerHtml = `
+        <div class="button-container">
+          <button class="action play"><i class="fa fa-play-circle-o"></i></button>
+        </div>`;
+      let buttonContainer = $(buttonContainerHtml);
+      $('.albumart', item).append(buttonContainer);
+    }
+
     item.data('raw', data);
 
     return item;
@@ -289,8 +304,8 @@ export class BrowseMusicScreen {
     }*/
   }
 
-  handlePlayButtonClicked(item) {
-
+  handleItemPlayButtonClicked(itemEl) {
+    this.doPlayOnClick(itemEl);
   }
 
   // Should item of the given type play when clicked directly (i.e. not using the play button)
@@ -304,6 +319,32 @@ export class BrowseMusicScreen {
       */
     ]
     return playOnDirectClickTypes.includes(itemType);
+  }
+
+  // Based on:
+  // https://github.com/volumio/Volumio2-UI/blob/master/src/app/browse-music/browse-music.controller.js
+  hasPlayButton(item) {
+    if (!item) {
+      return false;
+    }
+    // We avoid that by mistake one clicks on play all NAS or USB, freezing volumio
+    if ((item.type === 'folder' && item.uri && item.uri.startsWith('music-library/') && item.uri.split('/').length < 4 ) ||
+        item.disablePlayButton === true) {
+      return false;
+    }
+    const playButtonTypes = [
+      'folder',
+      'song',
+      'mywebradio',
+      'webradio',
+      'playlist',
+      'cuesong',
+      'remdisk',
+      'cuefile',
+      'folder-with-favourites',
+      'internal-folder'
+    ]
+    return playButtonTypes.includes(item.type);
   }
 
   showBrowseLibrary(data) {
@@ -375,7 +416,10 @@ export class BrowseMusicScreen {
     else {
       let list;
       let index;
-      let playEntireList = !(item.type === 'webradio' || item.type === 'mywebradio');
+      let playEntireListTypes = [
+        'song'
+      ];
+      let playEntireList = playEntireListTypes.includes(item.type);
       if (playEntireList) {
         list = itemEl.parents('section').data('raw');
         index = itemEl.data('index');
