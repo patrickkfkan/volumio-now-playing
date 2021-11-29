@@ -120,6 +120,13 @@ export class BrowseMusicScreen {
   }
 
   createInfoHeader(data) {
+    const excludeItemTypes = [
+      'play-playlist'
+    ];
+    if (excludeItemTypes.includes(data.type)) {
+      return;
+    }
+
     let html = `
       <div class="info-header">
         <div class="bg">
