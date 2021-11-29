@@ -320,8 +320,6 @@
   box-sizing: border-box;
   background: #202020;
 
-  font-size: 1rem; /* TODO: Should change body font-size instead*/
-
   --loading-percent: 0;
 
   .contents {
@@ -471,6 +469,7 @@
       section {
         width: 100%;
         margin: 0 auto;
+        padding-bottom: 1em;
 
         &:last-of-type {
           margin-bottom: 1em;
@@ -481,13 +480,21 @@
         }
 
         > .title {
+          padding: 2em 0.8em 0.5em 0.8em;
           color: #ccc;
           font-size: 1.2em;
           font-family: "Noto Sans Display";
         }
 
-        &.no-title > .title {
-          display: none;
+        &.no-title {
+
+          &:first-of-type {
+            padding: 1em 0em;
+          }
+
+          > .title {
+            display: none;
+          }
         }
 
         .button-container {
@@ -513,12 +520,6 @@
 
       section.list {
 
-        margin-top: 1em;
-
-        > .title {
-          padding: 1em 0.7em 1.2em 0.7em;
-        }
-
         .items {
           --albumart-width: 2em;
           --albumart-height: 2em;
@@ -530,6 +531,8 @@
 
           display: flex;
           flex-direction: column;
+          margin-top: 1em;
+          margin-bottom: 1em;
 
           &.no-album .album {
             --album-width: 0;
@@ -551,16 +554,7 @@
       }
 
       section.grid {
-        padding-bottom: 1em;
-
-        > .title {
-          padding: 1.2em 1em 0.8em 1em;
-        }
-
-        &.no-title {
-          padding: 1em 0em;
-        }
-        
+       
         .items {         
           --grid-columns: 3;
           display: grid;

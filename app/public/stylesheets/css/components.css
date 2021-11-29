@@ -49,19 +49,34 @@
 /* Action Panel */
 #top-bar {
   width: 100%;
-  font-size: 1.5em;
+  height: 2em;
   position: absolute;
   top: 0;
   left: 0;
   text-align: center;
-  color: #ccc;
   opacity: 0.5;
   z-index: 10;
 }
 
-#top-bar .expand:hover {
-  color: #24a4f3;
+#top-bar button.expand {
+  border: none;
+  background: none;
   cursor: pointer;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  color: #ccc;
+  width: 2em;
+  height: 2em;
+  transition: 0.2s;
+  font-size: 1em;
+}
+
+#top-bar button.expand i {
+  font-size: 1.3em;
+}
+
+#top-bar button.expand:hover {
+  color: #24a4f3;
 }
 
 /* Wraps around #action-panel (created by jquery UI's Dialog) */
@@ -87,6 +102,12 @@
 
 #action-panel {
   min-height: 0px !important;
+}
+
+@media (min-width: 580px) {
+  #action-panel {
+    font-size: 1.3em;
+  }
 }
 
 #action-panel .volume {
@@ -229,6 +250,7 @@
   -webkit-transition: 0.2s;
   transition: 0.2s;
   color: #ccc;
+  margin-left: -0.25em;
 }
 
 #action-panel .actions-wrapper .screen-switcher .switches-wrapper {
@@ -281,8 +303,10 @@
   border-radius: 50%;
 }
 
-#action-panel .actions-wrapper .spacer {
-  width: 1.5em;
+@media (min-width: 480px) {
+  #action-panel .actions-wrapper .spacer {
+    width: 1.5em;
+  }
 }
 
 #action-panel .actions-wrapper .action {
@@ -446,8 +470,6 @@
   border-top: 1px solid var(--widget-primary-color);
   z-index: 10;
   display: none;
-  font-size: 1rem;
-  /* TODO: Should change body font-size instead*/
 }
 
 #track-bar .seekbar-wrapper {

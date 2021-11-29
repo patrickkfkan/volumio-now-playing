@@ -66,7 +66,7 @@
 
     .title {
       @include line-clamp(1);
-      color: #fff;
+      color: #ccc;
     }
 
     .artist-album {
@@ -104,8 +104,6 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: #202020;
-
-  font-size: 1rem; /* TODO: Should change body font-size instead*/
 
   .contents {
     display: flex;
@@ -153,7 +151,6 @@
     .items {
       flex-grow: 1;
       overflow-y: auto;
-      margin-top: 1em;
 
       .item {
         @include queue-item;

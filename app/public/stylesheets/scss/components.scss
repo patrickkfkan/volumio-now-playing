@@ -50,18 +50,32 @@
 
 #top-bar {
   width: 100%;
-  font-size: 1.5em;
+  height: 2em;
   position: absolute;
   top: 0;
   left: 0;
   text-align: center;
-  color: #ccc;
   opacity: 0.5;
   z-index: 10;
 
-  .expand:hover {
-    color: #24a4f3;
+  button.expand {
+    border: none;
+    background: none;
     cursor: pointer;
+    transition: 0.2s;
+    color: #ccc;
+    width: 2em;
+    height: 2em;
+    transition: 0.2s;
+    font-size: 1em;
+
+    i {
+      font-size: 1.3em;
+    }
+
+    &:hover {
+      color: #24a4f3;
+    }
   }
 }
 
@@ -88,6 +102,10 @@
 #action-panel {
   min-height: 0px !important;
 
+  @media (min-width: 580px) {
+    font-size: 1.3em;
+  }
+  
   .volume {
     background: #202020;
     border-radius: 1.5em;
@@ -206,6 +224,7 @@
         .label {
           @include switch-label-common;
           color: #ccc;
+          margin-left: -0.25em;
         }
       }
      
@@ -243,8 +262,10 @@
       }
     }
 
-    .spacer {
-      width: 1.5em;
+    @media (min-width: 480px) {
+      .spacer {
+        width: 1.5em;
+      }
     }
 
     .action {
@@ -395,8 +416,6 @@
   border-top: 1px solid var(--widget-primary-color);
   z-index: 10;
   display: none;
-
-  font-size: 1rem; /* TODO: Should change body font-size instead*/
 
   .seekbar-wrapper {
     --seekbar-height: 3px;

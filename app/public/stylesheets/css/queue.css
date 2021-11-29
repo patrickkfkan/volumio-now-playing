@@ -8,8 +8,6 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: #202020;
-  font-size: 1rem;
-  /* TODO: Should change body font-size instead*/
 }
 
 #queue .contents {
@@ -88,7 +86,6 @@
       -ms-flex-positive: 1;
           flex-grow: 1;
   overflow-y: auto;
-  margin-top: 1em;
 }
 
 #queue .contents .items .item {
@@ -156,7 +153,7 @@
   -webkit-line-clamp: 1;
   word-break: break-word;
   -webkit-box-orient: vertical;
-  color: #fff;
+  color: #ccc;
 }
 
 #queue .contents .items .item .track-info .artist-album {

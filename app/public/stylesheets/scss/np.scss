@@ -1,5 +1,6 @@
 #now-playing {
   /* Default styles */
+  --default-base-font-size: 10px;
   --default-title-font-size: 1.5em;
   --default-artist-font-size: 1em;
   --default-album-font-size: 0.8em;
@@ -36,6 +37,7 @@
   --default-track-info-max-width: auto;
   --default-track-info-max-height: auto;
 
+  --base-font-size: var(--default-base-font-size);
   --title-font-size: var(--default-title-font-size);
   --artist-font-size: var(--default-artist-font-size);
   --album-font-size: var(--default-album-font-size);
@@ -83,6 +85,7 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-size: 100% 100%;
+  font-size: var(--base-font-size);
 
   .contents {
     display: flex;
@@ -452,6 +455,172 @@
     @media (min-width: 380px) {
       & {
         --default-playback-buttons-size: 0.9em;
+      }
+    }
+  }
+
+  /* Base font sizes */
+
+  /**
+  * Landscape Orientation
+  */
+
+  @media all and (orientation: landscape) {
+    @media (min-height: 240px) {
+      @media (min-width: 400px) {
+        & {
+          --default-base-font-size: 12px;
+        }
+      }
+      @media (min-width: 480px) {
+        & {
+          --default-base-font-size: 15px;
+        }
+      }
+    }
+    @media (min-height: 320px) {
+      @media (min-width: 640px) {
+        & {
+          --default-base-font-size: 16px;
+        }
+      }
+    }
+    @media (min-height: 400px) {
+      @media (min-width: 720px) {
+        & {
+          --default-base-font-size: 18px;
+        }
+      }
+      @media (min-width: 800px) {
+        & {
+          --default-base-font-size: 20px;
+        }
+      }
+    }
+    @media (min-height: 480px) {
+      @media (min-width: 960px) {
+        & {
+          --default-base-font-size: 23px;
+        }
+      }
+    }
+    @media (min-height: 600px) {
+      @media (min-width: 1280px) {
+        & {
+          --default-base-font-size: 28px;
+        }
+      }
+    }
+    @media (min-height: 900px) {
+      @media (min-width: 1400px) {
+        & {
+          --default-base-font-size: 30px;
+        }
+      }
+      @media (min-width: 1600px) {
+        & {
+          --default-base-font-size: 32px;
+        }
+      }
+    }
+    @media (min-height: 1080px) {
+      @media (min-width: 1680px) {
+        & {
+          --default-base-font-size: 34px;
+        }
+      }
+      @media (min-width: 1800px) {
+        & {
+          --default-base-font-size: 38px;
+        }
+      }
+    }
+  }
+  
+  /**
+  *  Portrait Orientation
+  */
+  @media all {
+    @media (orientation: portrait) {
+      & {
+        --default-base-font-size: 10px;
+      }
+    }
+  }
+
+  @media all and (orientation: portrait) {
+    @media (min-width: 240px) {
+      @media (min-height: 400px) {
+        & {
+          --default-base-font-size: 12px;
+        }
+      }
+      @media (min-height: 480px) {
+        & {
+          --default-base-font-size: 14px;
+        }
+      }
+    }
+    @media (min-width: 320px) {
+      @media (min-height: 640px) {
+        & {
+          --default-base-font-size: 16px;
+        }
+      }
+    }
+    @media (min-width: 400px) {
+      @media (min-height: 720px) {
+        & {
+          --default-base-font-size: 18px;
+        }
+      }
+      @media (min-height: 800px) {
+        & {
+          --default-base-font-size: 20px;
+        }
+      }
+      @media (min-height: 900px) {
+        & {
+          --default-base-font-size: 24px;
+        }
+      }
+    }
+    @media (min-width: 480px) {
+      @media (min-height: 960px) {
+        & {
+          --default-base-font-size: 22px;
+        }
+      }
+    }
+    @media (min-width: 600px) {
+      @media (min-height: 1280px) {
+        & {
+          --default-base-font-size: 28px;
+        }
+      }
+    }
+    @media (min-width: 900px) {
+      @media (min-height: 1400px) {
+        & {
+          --default-base-font-size: 32px;
+        }
+      }
+      @media (min-height: 1600px) {
+        & {
+          --default-base-font-size: 36px;
+        }
+      }
+    }
+    @media (min-width: 1080px) {
+      @media (min-height: 1680px) {
+        & {
+          --default-base-font-size: 40px;
+        }
+      }
+      @media (min-height: 1800px) {
+        & {
+          --default-base-font-size: 44px;
+        }
       }
     }
   }

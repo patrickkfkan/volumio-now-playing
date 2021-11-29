@@ -1,5 +1,6 @@
 #now-playing {
   /* Default styles */
+  --default-base-font-size: 10px;
   --default-title-font-size: 1.5em;
   --default-artist-font-size: 1em;
   --default-album-font-size: 0.8em;
@@ -37,6 +38,7 @@
   --default-track-info-min-height: auto;
   --default-track-info-max-width: auto;
   --default-track-info-max-height: auto;
+  --base-font-size: var(--default-base-font-size);
   --title-font-size: var(--default-title-font-size);
   --artist-font-size: var(--default-artist-font-size);
   --album-font-size: var(--default-album-font-size);
@@ -82,6 +84,14 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-size: 100% 100%;
+  font-size: var(--base-font-size);
+  /**
+  * Landscape Orientation
+  */
+  /**
+  *  Portrait Orientation
+  */
+  /* Base font sizes */
   /**
   * Landscape Orientation
   */
@@ -466,6 +476,150 @@
 @media all and (orientation: portrait) and (min-width: 380px) {
   #now-playing {
     --default-playback-buttons-size: 0.9em;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 400px) {
+  #now-playing {
+    --default-base-font-size: 12px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 480px) {
+  #now-playing {
+    --default-base-font-size: 15px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 320px) and (min-width: 640px) {
+  #now-playing {
+    --default-base-font-size: 16px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 720px) {
+  #now-playing {
+    --default-base-font-size: 18px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 800px) {
+  #now-playing {
+    --default-base-font-size: 20px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 480px) and (min-width: 960px) {
+  #now-playing {
+    --default-base-font-size: 23px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 600px) and (min-width: 1280px) {
+  #now-playing {
+    --default-base-font-size: 28px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1400px) {
+  #now-playing {
+    --default-base-font-size: 30px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1600px) {
+  #now-playing {
+    --default-base-font-size: 32px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1680px) {
+  #now-playing {
+    --default-base-font-size: 34px;
+  }
+}
+
+@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1800px) {
+  #now-playing {
+    --default-base-font-size: 38px;
+  }
+}
+
+@media all and (orientation: portrait) {
+  #now-playing {
+    --default-base-font-size: 10px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 400px) {
+  #now-playing {
+    --default-base-font-size: 12px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 480px) {
+  #now-playing {
+    --default-base-font-size: 14px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 320px) and (min-height: 640px) {
+  #now-playing {
+    --default-base-font-size: 16px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 720px) {
+  #now-playing {
+    --default-base-font-size: 18px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 800px) {
+  #now-playing {
+    --default-base-font-size: 20px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 900px) {
+  #now-playing {
+    --default-base-font-size: 24px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 480px) and (min-height: 960px) {
+  #now-playing {
+    --default-base-font-size: 22px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 600px) and (min-height: 1280px) {
+  #now-playing {
+    --default-base-font-size: 28px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1400px) {
+  #now-playing {
+    --default-base-font-size: 32px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1600px) {
+  #now-playing {
+    --default-base-font-size: 36px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1680px) {
+  #now-playing {
+    --default-base-font-size: 40px;
+  }
+}
+
+@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1800px) {
+  #now-playing {
+    --default-base-font-size: 44px;
   }
 }
 /*# sourceMappingURL=np.css.map */
