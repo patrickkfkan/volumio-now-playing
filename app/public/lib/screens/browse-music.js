@@ -348,7 +348,6 @@ export class BrowseMusicScreen {
   }
 
   showBrowseLibrary(data) {
-    // TODO: show info if any
     let self = this;
     if (!data.navigation) {
       return;
@@ -411,6 +410,11 @@ export class BrowseMusicScreen {
         uri: item.uri,
         number: item.number,
         service: (item.service || null)
+      });
+    }
+    else if (item.type === 'playlist') {
+      socket.emit('playPlaylist', {
+        name: item.title
       });
     }
     else {
