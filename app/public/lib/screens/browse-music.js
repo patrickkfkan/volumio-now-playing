@@ -252,6 +252,12 @@ export class BrowseMusicScreen {
       itemClasses += ' no-artist';
     }
 
+    let albumArtist = data.album || '';
+    if (data.artist) {
+      albumArtist += albumArtist ? ' - ' : '';
+      albumArtist += data.artist;
+    }
+
     let html = `
       <div class="item ${ itemClasses }">
         <div class="albumart">
@@ -260,6 +266,7 @@ export class BrowseMusicScreen {
           <div class="text title">${ title }</div>
           <div class="text album">${ album }</div>
           <div class="text artist">${ artist }</div>
+          <div class="text album-artist">${ albumArtist }</div>
         </div>
         <div class="text duration">${ duration }</div>
         <div class="ellipsis"><button class="menu-trigger"><i class="fa fa-ellipsis-v"></i></button></div>
@@ -288,7 +295,7 @@ export class BrowseMusicScreen {
     if (this.hasPlayButton(data)) {
       let buttonContainerHtml = `
         <div class="button-container">
-          <button class="action play"><i class="fa fa-play-circle-o"></i></button>
+          <button class="action play"><i class="fa fa-play"></i></button>
         </div>`;
       let buttonContainer = $(buttonContainerHtml);
       $('.albumart', item).append(buttonContainer);

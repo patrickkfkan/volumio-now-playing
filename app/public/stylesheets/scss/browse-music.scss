@@ -73,6 +73,11 @@
             font-size: 1.5em;
           }
 
+          /* Force fa-play-circle-o */
+          &.play i:before {
+            content: '\f01d';
+          }
+
           margin-left: 0.5em;
         }
       }
@@ -107,12 +112,14 @@
 
     .album,
     .artist,
+    .album-artist,
     .duration {
       font-family: "Noto Sans Display", sans-serif;
     }
 
     .album,
-    .artist {
+    .artist,
+    .album-artist {
       color: #7a848e;
     }
 
@@ -140,6 +147,15 @@
 
     .title-album-artist {
       flex-wrap: wrap;
+
+      .album,
+      .artist {
+        display: none;
+      }
+
+      .album-artist {
+        display: block;
+      }
     }
 
     .item:not(.no-album):not(.no-artist) .artist {
@@ -239,23 +255,24 @@
 
         @media (hover: none) {
           display: block;
-          
-          button.play {
-            background: #0000009e;
-            border-radius: 50%;
-          }
         }
 
         button {
           position: absolute;
 
           i {
-            font-size: var(--play-button-diameter);
+            font-size: calc(var(--play-button-diameter) / 3);
           }
             
           &.play {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 0.2em;
             width: var(--play-button-diameter);
             height: var(--play-button-diameter);
+            background: #0000009e;
+            border-radius: 50%;
             opacity: 0.8;
             left: var(--play-button-margin);
             bottom: var(--play-button-margin);
@@ -493,10 +510,10 @@
       section {
         width: 100%;
         margin: 0 auto;
-        padding-bottom: 1em;
+        /*padding-bottom: 1em;*/
 
         &:last-of-type {
-          margin-bottom: 1em;
+          margin-bottom: 2em;
         }
 
         @media (min-width: 1024px) {
@@ -510,15 +527,12 @@
           font-family: "Noto Sans Display";
         }
 
-        &.no-title {
+        &:first-of-type > .title {
+          padding-top: 1.2em;
+        }
 
-          &:first-of-type {
-            padding: 1em 0em;
-          }
-
-          > .title {
-            display: none;
-          }
+        &.no-title > .title {
+          display: none;
         }
 
         .button-container {
@@ -539,14 +553,18 @@
             }
           }
         }
+
+        .items .album-artist {
+          display: none;
+        }
         
       }
 
       section.list {
 
         .items {
-          --albumart-width: 2em;
-          --albumart-height: 2em;
+          --albumart-width: 2.5em;
+          --albumart-height: 2.5em;
           --title-width: calc(100% - var(--album-width) - var(--artist-width));
           --album-width: 25%;
           --artist-width: 25%;
@@ -565,6 +583,9 @@
           &.no-artist .artist {
             --artist-width: 0;
             display: none;
+          }
+          &.no-album.no-artist .album-artist {
+            display: none !important;
           }
           &.no-duration .duration {
             display: none;
