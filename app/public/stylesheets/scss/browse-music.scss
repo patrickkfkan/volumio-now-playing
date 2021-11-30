@@ -377,7 +377,6 @@
       width: 100%;
       position: relative;
       overflow: hidden;
-      margin-bottom: 1.5em;
 
       --albumart-height: 8em;
 
@@ -451,6 +450,31 @@
             i.dot {
               font-size: 0.3em;
               margin: 0 1.5em;
+            }
+          }
+
+          .buttons {
+            margin-top: auto;
+
+            button.play {
+              min-width: 6em;
+              height: 2.3em;
+              color: #fff;
+              text-align: center;
+              border-radius: 0.5em;
+              border: 1px solid #ffffff33;
+              background: #2828284d;
+              transition: 0.2s ease-out;
+              cursor: pointer;
+
+              i {
+                font-size: 0.8em;
+                margin-right: 0.8em;
+              }
+
+              &:hover {
+                background: #aaaaaa4d;
+              }
             }
           }
         }

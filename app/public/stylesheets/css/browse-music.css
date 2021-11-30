@@ -94,7 +94,6 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-bottom: 1.5em;
   --albumart-height: 8em;
 }
 
@@ -195,6 +194,32 @@
 #browse-music .contents .info-header .main .info .media-info i.dot {
   font-size: 0.3em;
   margin: 0 1.5em;
+}
+
+#browse-music .contents .info-header .main .info .buttons {
+  margin-top: auto;
+}
+
+#browse-music .contents .info-header .main .info .buttons button.play {
+  min-width: 6em;
+  height: 2.3em;
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5em;
+  border: 1px solid #ffffff33;
+  background: #2828284d;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+  cursor: pointer;
+}
+
+#browse-music .contents .info-header .main .info .buttons button.play i {
+  font-size: 0.8em;
+  margin-right: 0.8em;
+}
+
+#browse-music .contents .info-header .main .info .buttons button.play:hover {
+  background: #aaaaaa4d;
 }
 
 #browse-music .contents .navigation {

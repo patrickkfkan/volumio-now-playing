@@ -64,6 +64,11 @@ export class BrowseMusicScreen {
       return false;
     });
 
+    $('.navigation', screen).on('click', '.info-header .action.play', function() {
+      self.handleInfoHeaderPlayButtonClicked($(this).parents('.info-header'));
+      return false;
+    });
+
     $('.action.list-view-toggle', screen).on('click', function() {
       let current = $(this).attr('data-current');
       let toggled = current == 'list' ? 'grid' : 'list';
@@ -138,6 +143,7 @@ export class BrowseMusicScreen {
             <div class="title"></div>
             <div class="artist"></div>
             <div class="media-info"></div>
+            <div class="buttons"></div>
           </div>
         </div>
       </div>
@@ -169,6 +175,16 @@ export class BrowseMusicScreen {
     $('.title', infoEl).text(titleText);
     $('.artist', infoEl).text(artistText);
     $('.media-info', infoEl).html(mediaInfoComponents.join(dotHtml));
+
+    let buttons = $('.buttons', infoEl);
+    if (this.hasPlayButton(data)) {
+      let playButtonHtml = '<button class="action play"><i class="fa fa-play"></i>Play</button>';
+      buttons.append($(playButtonHtml));
+    }
+
+    console.log(data);
+
+    infoEl.data('raw', data);
 
     return infoEl;
   }
@@ -315,6 +331,10 @@ export class BrowseMusicScreen {
     this.doPlayOnClick(itemEl);
   }
 
+  handleInfoHeaderPlayButtonClicked(infoHeaderEl) {
+    this.doPlayOnClick(infoHeaderEl);
+  }
+
   // Should item of the given type play when clicked directly (i.e. not using the play button)
   isPlayOnDirectClick(itemType) {
     const playOnDirectClickTypes = [
@@ -341,6 +361,8 @@ export class BrowseMusicScreen {
     }
     const playButtonTypes = [
       'folder',
+      'album',
+      'artist',
       'song',
       'mywebradio',
       'webradio',
