@@ -121,6 +121,7 @@
           align-items: center;
   padding: 1em;
   pointer-events: auto;
+  position: relative;
 }
 
 #action-panel .volume.disabled:after {
