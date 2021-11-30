@@ -15,7 +15,8 @@ export class QueueScreen {
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
         </div>
-        <div class="items">
+        <div class="items-wrapper">
+          <div class="items"></div>
         </div>
       </div>
     `;

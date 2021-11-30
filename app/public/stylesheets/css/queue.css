@@ -81,14 +81,24 @@
   color: #24a4f3;
 }
 
-#queue .contents .items {
+#queue .contents .items-wrapper {
+  overflow-y: auto;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  overflow-y: auto;
 }
 
-#queue .contents .items .item {
+#queue .contents .items-wrapper .items {
+  margin: 1em auto 2em auto;
+}
+
+@media (min-width: 1024px) {
+  #queue .contents .items-wrapper .items {
+    max-width: 80%;
+  }
+}
+
+#queue .contents .items-wrapper .items .item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -103,24 +113,24 @@
   background: #282828;
 }
 
-#queue .contents .items .item:not(:last-of-type) {
+#queue .contents .items-wrapper .items .item:not(:last-of-type) {
   border-bottom: 1px solid #454545;
 }
 
-#queue .contents .items .item:hover {
+#queue .contents .items-wrapper .items .item:hover {
   background: #303030;
 }
 
-#queue .contents .items .item:hover .albumart img {
+#queue .contents .items-wrapper .items .item:hover .albumart img {
   -webkit-filter: brightness(1.2);
           filter: brightness(1.2);
 }
 
-#queue .contents .items .item .albumart {
+#queue .contents .items-wrapper .items .item .albumart {
   position: relative;
 }
 
-#queue .contents .items .item .albumart img {
+#queue .contents .items-wrapper .items .item .albumart img {
   display: block;
   width: 2.5em;
   height: 2.5em;
@@ -129,7 +139,7 @@
   transition: 0.2s;
 }
 
-#queue .contents .items .item .track-info {
+#queue .contents .items-wrapper .items .item .track-info {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -146,7 +156,7 @@
           justify-content: center;
 }
 
-#queue .contents .items .item .track-info .title {
+#queue .contents .items-wrapper .items .item .track-info .title {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -156,7 +166,7 @@
   color: #ccc;
 }
 
-#queue .contents .items .item .track-info .artist-album {
+#queue .contents .items-wrapper .items .item .track-info .artist-album {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -167,7 +177,7 @@
   font-family: "Noto Sans Display", sans-serif;
 }
 
-#queue .contents .items .item .actions button {
+#queue .contents .items-wrapper .items .item .actions button {
   border: none;
   background: none;
   cursor: pointer;
@@ -181,15 +191,26 @@
   transition: 0.2s;
 }
 
-#queue .contents .items .item .actions button:last-of-type {
+#queue .contents .items-wrapper .items .item .actions button:last-of-type {
   margin-right: 0px;
 }
 
-#queue .contents .items .item .actions button.remove:hover {
+#queue .contents .items-wrapper .items .item .actions button.remove:hover {
   color: #aa4a44;
 }
 
-#queue .contents .items .item.playing .albumart img {
+#queue .contents .items-wrapper .items .item.playing .albumart img {
   content: url(/assets/equalizer.gif) !important;
+}
+
+@media (min-width: 1024px) {
+  #queue .contents .items-wrapper .items .item:first-of-type {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+  }
+  #queue .contents .items-wrapper .items .item:last-of-type {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+  }
 }
 /*# sourceMappingURL=queue.css.map */

@@ -91,6 +91,18 @@
       content: url(/assets/equalizer.gif) !important;
     }
   }
+
+  @media (min-width: 1024px) {
+    &:first-of-type {
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em;
+    }
+
+    &:last-of-type {
+      border-bottom-left-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
+    }
+  }
 }
 
 #queue {
@@ -148,12 +160,20 @@
       }
     }
 
-    .items {
-      flex-grow: 1;
+    .items-wrapper {
       overflow-y: auto;
+      flex-grow: 1;
 
-      .item {
-        @include queue-item;
+      .items {
+        margin: 1em auto 2em auto;
+
+        @media (min-width: 1024px) {
+          max-width: 80%;
+        }
+
+        .item {
+          @include queue-item;
+        }
       }
     }
   }
