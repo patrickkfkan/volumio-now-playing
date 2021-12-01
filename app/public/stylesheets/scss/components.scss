@@ -197,6 +197,8 @@
     margin: 1.2em 0px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
 
     .screen-switcher {
       display: flex;
@@ -290,10 +292,6 @@
       &.switch img {
         width: 1.3em;
         height: 1.3em;
-      }
-
-      &:not(:first-of-type) {
-        margin-left: 1em;
       }
 
       &:hover {

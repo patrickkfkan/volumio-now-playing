@@ -211,6 +211,9 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 1em;
 }
 
 #action-panel .actions-wrapper .screen-switcher {
@@ -340,10 +343,6 @@
 #action-panel .actions-wrapper .action.switch img {
   width: 1.3em;
   height: 1.3em;
-}
-
-#action-panel .actions-wrapper .action:not(:first-of-type) {
-  margin-left: 1em;
 }
 
 #action-panel .actions-wrapper .action:hover {
