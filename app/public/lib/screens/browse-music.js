@@ -25,7 +25,8 @@ export class BrowseMusicScreen {
   constructor(el) {
     this.el = el;
     this.browseSources = [];
-    this.currentUri = '';
+    this.currentLocation = { type: 'browse', uri: '' };
+    this.currentService = null;
 
     const html = `
       <div class="contents">
@@ -34,6 +35,7 @@ export class BrowseMusicScreen {
             <button class="action home"><i class="fa fa-home"></i></button>
             <button class="action back"><i class="fa fa-arrow-left"></i></button>
             <button class="action list-view-toggle" data-current="list"><i class="fa"></i></button>
+            <input type="text" class="action search" />
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
         </div>
@@ -53,6 +55,14 @@ export class BrowseMusicScreen {
       self.browseSources = data;
       self.showBrowseSources();
     });
+
+    socket.on('pushBrowseLibrary', data => {
+      // Only handle search results.
+      // For browsing library we use REST API
+      if (data.navigation && data.navigation.isSearchResult) {
+        self.showSearchResults(data);
+      }
+    })
     
     $('.navigation', screen).on('click', 'section .items .item', function() {
       self.handleItemClick($(this));
@@ -81,12 +91,33 @@ export class BrowseMusicScreen {
     });
     
     $('.action.home', screen).on('click', function() {
-      self.browse('');
+      self.browse('', () => {
+        self.currentService = null;
+      });
     });
 
     $('.action.back', screen).on('click', function() {
       let uri = $(this).data('uri') || '';
-      self.browse(uri);
+      self.browse(uri, () => {
+        if (uri === '' || uri === '/') {
+          self.currentService = null;
+        }
+      });
+    })
+
+    $('.action.search', screen).on('input', function() {
+      let inputTimer = $(this).data('inputTimer');
+      if (inputTimer) {
+        clearTimeout(inputTimer);
+        $(this).data('inputTimer', null);
+      }
+      let query = $(this).val().trim();
+      if (query.length >= 3) {
+        inputTimer = setTimeout(() => {
+          self.search(query);
+        }, 500);
+        $(this).data('inputTimer', inputTimer);
+      }
     })
   }
 
@@ -107,7 +138,7 @@ export class BrowseMusicScreen {
   }
 
   showBrowseSources() {
-    if (this.currentUri !== '' && this.currentUri !== '/') {
+    if (this.currentLocation.type !== 'browse' || (this.currentLocation.uri !== '/' && this.currentLocation.uri !== '')) {
       return;
     }
 
@@ -181,8 +212,6 @@ export class BrowseMusicScreen {
       let playButtonHtml = '<button class="action play"><i class="fa fa-play"></i>Play</button>';
       buttons.append($(playButtonHtml));
     }
-
-    console.log(data);
 
     infoEl.data('raw', data);
 
@@ -316,7 +345,9 @@ export class BrowseMusicScreen {
       this.doPlayOnClick(itemEl);
     }
     else {
-      this.browse(item.uri);
+      this.browse(item.uri, () => {
+        this.currentService = item.service || item.plugin_name || null;
+      });
     }
 
 /*    if (data.type !== 'song' && data.type !== 'webradio' && data.type !== 'mywebradio' && data.type !== 'cuesong' && data.type !== 'album' && data.type !== 'artist' && data.type !== 'cd' && data.type !== 'play-playlist') {
@@ -407,29 +438,87 @@ export class BrowseMusicScreen {
       }
     }
     let prev = data.navigation.prev || { uri: '' };
+    // prev info only has 'uri' field. We assume it points back to
+    // the current service (or null if the uri value is empty). Or...
+    // perhaps we can get the service from the uri?
     $('.action.back', screen).data('uri', prev.uri || '');
     self.scrollToTop();
   }
 
-  browse(uri) {
+  showSearchResults(data) {
+    let screen = $(this.el);
+    let searchInputValue = $('.action.search', screen).val().trim();
+    if (this.currentLocation.type !== 'search' || this.currentLocation.query !== searchInputValue) {
+      return;
+    }
+    this.showBrowseLibrary(data);
+    this.stopFakeLoadingBar(true);
+  }
+
+  requestRestApi(url, callback) {
     let self = this;
-    self.currentUri = uri;
+    self.stopFakeLoadingBar();
+    if (url === '' || url === '/') {
+      self.showBrowseSources();
+    }
+    else {
+      self.startFakeLoadingBar();
+      $.getJSON(url, data => {
+        if (callback) {
+          callback(data);
+        }
+      });
+    }
+  }
+
+  browse(uri, callback) {
+    const doCallback = (uri, data) => {
+      if (callback) {
+        callback(uri, data);
+      }
+    }
+    let self = this;
+    self.currentLocation = {
+      type: 'browse',
+      uri: uri
+    };
     self.stopFakeLoadingBar();
     if (uri === '' || uri === '/') {
       self.showBrowseSources();
+      doCallback(uri, self.browseSources);
     }
     else {
       // Double encode uri because Volumio will decode it after
       // it has already been decoded by Express query parser.
       let requestUrl = `${ registry.app.host }/api/v1/browse?uri=${ encodeURIComponent(encodeURIComponent(uri)) }`;
       self.startFakeLoadingBar();
-      $.getJSON(requestUrl, function(data) {
-        if (self.currentUri === uri) {
+      self.requestRestApi(requestUrl, data => {
+        if (self.currentLocation.type === 'browse' && self.currentLocation.uri === uri) {
           self.showBrowseLibrary(data);
           self.stopFakeLoadingBar(true);
+          doCallback(uri, data);
         }
       });
     }
+  }
+
+  search(query) {
+    // Volumio REST API for search does NOT have the same implementation as Websocket API!
+    // Must use Websocket because REST API does not allow for source-specific searching.
+    let payload = {
+      value: query
+      // In Volumio musiclibrary.js, the payload also has a 'uri' field - what is it used for???
+    }
+    if (this.currentService) {
+      payload.service = this.currentService;
+    }
+    this.currentLocation = {
+      type: 'search',
+      service: this.currentService,
+      query
+    }
+    this.startFakeLoadingBar();
+    registry.socket.emit('search', payload);
   }
 
   scrollToTop() {

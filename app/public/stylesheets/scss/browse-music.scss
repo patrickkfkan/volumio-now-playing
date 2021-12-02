@@ -354,6 +354,7 @@
       .actions {
         flex-grow: 1;
         display: flex;
+        align-items: center;
 
         button {
           @include action-button(0px);
@@ -385,6 +386,22 @@
 
           &.list-view-toggle[data-current="grid"] i:before {
             content: '\f03a';
+          }
+        }
+
+        .search {
+          background: #282828;
+          border: 1px solid #ccc;
+          color: #ccc;
+          border-radius: 1em;
+          width: 13em;
+          height: 2em;
+          padding: 0 1em;
+          box-shadow: none;
+
+          &:focus {
+            outline: none !important;
+            border-color: #24a4f3;
           }
         }
       }

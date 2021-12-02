@@ -41,6 +41,9 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 #browse-music .contents .header .actions button {
@@ -88,6 +91,23 @@
 
 #browse-music .contents .header .actions button.list-view-toggle[data-current="grid"] i:before {
   content: '\f03a';
+}
+
+#browse-music .contents .header .actions .search {
+  background: #282828;
+  border: 1px solid #ccc;
+  color: #ccc;
+  border-radius: 1em;
+  width: 13em;
+  height: 2em;
+  padding: 0 1em;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+#browse-music .contents .header .actions .search:focus {
+  outline: none !important;
+  border-color: #24a4f3;
 }
 
 #browse-music .contents .info-header {
