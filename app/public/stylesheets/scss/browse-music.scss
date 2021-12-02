@@ -389,19 +389,40 @@
           }
         }
 
-        .search {
-          background: #282828;
-          border: 1px solid #ccc;
-          color: #ccc;
-          border-radius: 1em;
-          width: 13em;
-          height: 2em;
-          padding: 0 1em;
-          box-shadow: none;
+        .icon-text-input {
+          position: relative;
 
-          &:focus {
-            outline: none !important;
-            border-color: #24a4f3;
+          input[type="text"] {
+            background: #282828;
+            border: 1px solid #ccc;
+            color: #ccc;
+            border-radius: 1em;
+            width: 13em;
+            height: 2em;
+            padding: 0 1em 0 2.7em;
+            box-shadow: none;
+            transition: 0.2s;
+  
+            &:focus {
+              outline: none !important;
+              border-color: #24a4f3;
+            }
+          }
+
+          i {
+            position: absolute;
+            left: 0.2em;
+            top: 0;
+            line-height: 1.8em;
+            text-align: center;
+            height: 2em;
+            width: 2em;
+            color: #ccc;
+            transition: 0.2s;
+          }
+
+          input[type="text"]:focus + i {
+            color: #24a4f3;
           }
         }
       }

@@ -35,7 +35,10 @@ export class BrowseMusicScreen {
             <button class="action home"><i class="fa fa-home"></i></button>
             <button class="action back"><i class="fa fa-arrow-left"></i></button>
             <button class="action list-view-toggle" data-current="list"><i class="fa"></i></button>
-            <input type="text" class="action search" />
+            <div class="icon-text-input">
+              <input type="text" class="action search" />
+              <i class="fa fa-search"></i>
+            </div>
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
         </div>
@@ -92,7 +95,7 @@ export class BrowseMusicScreen {
     
     $('.action.home', screen).on('click', function() {
       self.browse('', () => {
-        self.currentService = null;
+        self.setCurrentService(null);
       });
     });
 
@@ -100,7 +103,7 @@ export class BrowseMusicScreen {
       let uri = $(this).data('uri') || '';
       self.browse(uri, () => {
         if (uri === '' || uri === '/') {
-          self.currentService = null;
+          self.setCurrentService(null);
         }
       });
     })
@@ -345,8 +348,31 @@ export class BrowseMusicScreen {
       this.doPlayOnClick(itemEl);
     }
     else {
+      let prevServiceName = this.currentService ? this.currentService.name : '';
       this.browse(item.uri, () => {
-        this.currentService = item.service || item.plugin_name || null;
+        if (!item.service && !item.plugin_name) {
+          this.setCurrentService(null);
+        }
+        else if (item.plugin_name) { // itemEl refers to a browse source
+          this.setCurrentService({
+            name: item.plugin_name,
+            prettyName: item.plugin_name !== 'mpd' ? item.name : 'Music Library'
+          });
+        }
+        else if (item.service !== prevServiceName) {
+          let prettyName = '';
+          if (item.service === 'mpd') {
+            prettyName = 'Music Library';
+          }
+          else {
+            let itemService = this.browseSources.find(source => source.plugin_name === item.service);
+            prettyName = itemService ? itemService.name : '';
+          }
+          this.setCurrentService({
+            name: item.service,
+            prettyName
+          });
+        }
       });
     }
 
@@ -510,7 +536,7 @@ export class BrowseMusicScreen {
       // In Volumio musiclibrary.js, the payload also has a 'uri' field - what is it used for???
     }
     if (this.currentService) {
-      payload.service = this.currentService;
+      payload.service = this.currentService.name;
     }
     this.currentLocation = {
       type: 'search',
@@ -519,6 +545,12 @@ export class BrowseMusicScreen {
     }
     this.startFakeLoadingBar();
     registry.socket.emit('search', payload);
+  }
+
+  setCurrentService(service) {
+    this.currentService = service;
+    let screen = $(this.el);
+    $('.action.search', screen).attr('placeholder', service ? service.prettyName : '');
   }
 
   scrollToTop() {
