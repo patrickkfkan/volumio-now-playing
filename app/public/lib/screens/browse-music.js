@@ -21,12 +21,23 @@ import { registry } from '../registry.js';
  * - prev.uri
  */
 
+ const ROOT_LOCATION = {
+   type: 'browse',
+   uri: '',
+   service: null
+ };
+
 export class BrowseMusicScreen {
   constructor(el) {
     this.el = el;
     this.browseSources = [];
-    this.currentLocation = { type: 'browse', uri: '' };
-    this.currentService = null;
+    this.currentRequest = null;
+    this.currentLocation = { 
+      type: 'browse', 
+      uri: '', 
+      service: null 
+    };
+    this.backHistory = [];
 
     const html = `
       <div class="contents">
@@ -94,18 +105,11 @@ export class BrowseMusicScreen {
     });
     
     $('.action.home', screen).on('click', function() {
-      self.browse('', () => {
-        self.setCurrentService(null);
-      });
+      self.browse(ROOT_LOCATION);
     });
 
     $('.action.back', screen).on('click', function() {
-      let uri = $(this).data('uri') || '';
-      self.browse(uri, () => {
-        if (uri === '' || uri === '/') {
-          self.setCurrentService(null);
-        }
-      });
+      self.handleBackClicked();
     })
 
     $('.action.search', screen).on('input', function() {
@@ -141,7 +145,10 @@ export class BrowseMusicScreen {
   }
 
   showBrowseSources() {
-    if (this.currentLocation.type !== 'browse' || (this.currentLocation.uri !== '/' && this.currentLocation.uri !== '')) {
+    let cr = !this.currentRequest || this.currentRequest.type !== 'browse' || (this.currentRequest.uri !== '/' && this.currentRequest.uri !== '');
+    let cl = this.currentLocation.type !== 'browse' || (this.currentLocation.uri !== '/' && this.currentLocation.uri !== '');
+
+    if (cr && cl) {
       return;
     }
 
@@ -153,8 +160,8 @@ export class BrowseMusicScreen {
 
     let screen = $(this.el);
     $('.navigation', screen).empty().append(section);
+    $('.action.back', screen).hide();
     $('.action.list-view-toggle', screen).hide();
-    $('.action.back', screen).data('uri', '');
     this.scrollToTop();
   }
 
@@ -348,47 +355,39 @@ export class BrowseMusicScreen {
       this.doPlayOnClick(itemEl);
     }
     else {
-      let prevServiceName = this.currentService ? this.currentService.name : '';
-      this.browse(item.uri, () => {
-        if (!item.service && !item.plugin_name) {
-          this.setCurrentService(null);
+      let location = {
+        type: 'browse',
+        uri: item.uri
+      }
+      if (!item.service && !item.plugin_name) {
+        location.service = null;
+      }
+      else if (item.plugin_name) { // itemEl refers to a browse source
+        location.service = {
+          name: item.plugin_name,
+          prettyName: item.plugin_name !== 'mpd' ? item.name : 'Music Library'
+        };
+      }
+      else if (!this.currentLocation.service || item.service !== this.currentLocation.service.name) {
+        let prettyName = '';
+        if (item.service === 'mpd') {
+          prettyName = 'Music Library';
         }
-        else if (item.plugin_name) { // itemEl refers to a browse source
-          this.setCurrentService({
-            name: item.plugin_name,
-            prettyName: item.plugin_name !== 'mpd' ? item.name : 'Music Library'
-          });
+        else {
+          let itemService = this.browseSources.find(source => source.plugin_name === item.service);
+          prettyName = itemService ? itemService.name : '';
         }
-        else if (item.service !== prevServiceName) {
-          let prettyName = '';
-          if (item.service === 'mpd') {
-            prettyName = 'Music Library';
-          }
-          else {
-            let itemService = this.browseSources.find(source => source.plugin_name === item.service);
-            prettyName = itemService ? itemService.name : '';
-          }
-          this.setCurrentService({
-            name: item.service,
-            prettyName
-          });
-        }
-      });
+        location.service = {
+          name: item.service,
+          prettyName
+        };
+      }
+      else {
+        location.service = this.currentLocation.service;
+      }
+      
+      this.browse(location);
     }
-
-/*    if (data.type !== 'song' && data.type !== 'webradio' && data.type !== 'mywebradio' && data.type !== 'cuesong' && data.type !== 'album' && data.type !== 'artist' && data.type !== 'cd' && data.type !== 'play-playlist') {
-      this.browse(data.uri);
-    } else if (data.type === 'webradio' || data.type === 'mywebradio' || data.type === 'album' || data.type === 'artist') {
-      this.play(item, list, itemIndex);
-    } else if (data.type === 'song') {
-      this.playItemsList(item, list, itemIndex);
-    } else if (data.type === 'cuesong') {
-      this.playQueueService.addPlayCue(item);
-    } else if (data.type === 'cd') {
-      this.playQueueService.replaceAndPlay(item);
-    } else if ( data.type === 'play-playlist') {
-      this.playQueueService.playPlaylist({title: data.name});
-    }*/
   }
 
   handleItemPlayButtonClicked(itemEl) {
@@ -440,7 +439,7 @@ export class BrowseMusicScreen {
     return playButtonTypes.includes(item.type);
   }
 
-  showBrowseLibrary(data) {
+  showBrowseResults(data) {
     let self = this;
     if (!data.navigation) {
       return;
@@ -463,32 +462,33 @@ export class BrowseMusicScreen {
         $('.action.list-view-toggle', screen).hide();
       }
     }
-    let prev = data.navigation.prev || { uri: '' };
-    // prev info only has 'uri' field. We assume it points back to
-    // the current service (or null if the uri value is empty). Or...
-    // perhaps we can get the service from the uri?
-    $('.action.back', screen).data('uri', prev.uri || '');
+    $('.action.back', screen).show();
     self.scrollToTop();
   }
 
   showSearchResults(data) {
     let screen = $(this.el);
     let searchInputValue = $('.action.search', screen).val().trim();
-    if (this.currentLocation.type !== 'search' || this.currentLocation.query !== searchInputValue) {
+    if (!this.currentRequest || this.currentRequest.type !== 'search' || this.currentRequest.query !== searchInputValue) {
       return;
     }
-    this.showBrowseLibrary(data);
+    if (data.navigation) {
+      this.showBrowseResults(data);
+      this.addToBackHistory(this.currentLocation);
+      let location = Object.assign({}, this.currentRequest, { pageData: data } );
+      this.setCurrentLocation(location);
+    }
+    this.currentRequest = null;
     this.stopFakeLoadingBar(true);
   }
 
   requestRestApi(url, callback) {
-    let self = this;
-    self.stopFakeLoadingBar();
+    this.stopFakeLoadingBar();
     if (url === '' || url === '/') {
-      self.showBrowseSources();
+      this.showBrowseSources();
     }
     else {
-      self.startFakeLoadingBar();
+      this.startFakeLoadingBar();
       $.getJSON(url, data => {
         if (callback) {
           callback(data);
@@ -497,60 +497,83 @@ export class BrowseMusicScreen {
     }
   }
 
-  browse(uri, callback) {
-    const doCallback = (uri, data) => {
-      if (callback) {
-        callback(uri, data);
-      }
+  browse(location) {
+    if (location.type !== 'browse') {
+      return;
     }
     let self = this;
-    self.currentLocation = {
-      type: 'browse',
-      uri: uri
-    };
+    self.currentRequest = location;
     self.stopFakeLoadingBar();
-    if (uri === '' || uri === '/') {
+    if (location.uri === '' || location.uri === '/') {
       self.showBrowseSources();
-      doCallback(uri, self.browseSources);
+      self.setCurrentLocation(location);
+      self.resetBackHistory();
     }
     else {
       // Double encode uri because Volumio will decode it after
       // it has already been decoded by Express query parser.
-      let requestUrl = `${ registry.app.host }/api/v1/browse?uri=${ encodeURIComponent(encodeURIComponent(uri)) }`;
+      let requestUrl = `${ registry.app.host }/api/v1/browse?uri=${ encodeURIComponent(encodeURIComponent(location.uri)) }`;
       self.startFakeLoadingBar();
       self.requestRestApi(requestUrl, data => {
-        if (self.currentLocation.type === 'browse' && self.currentLocation.uri === uri) {
-          self.showBrowseLibrary(data);
+        if (data.navigation && self.currentRequest && self.currentRequest.type === 'browse' && self.currentRequest.uri === location.uri) {
+          self.showBrowseResults(data);
+          self.addToBackHistory(self.currentLocation);
+          location.pageData = data;
+          self.setCurrentLocation(location);
           self.stopFakeLoadingBar(true);
-          doCallback(uri, data);
+          self.currentRequest = null;
         }
       });
     }
   }
 
-  search(query) {
+  search(query, service) {
     // Volumio REST API for search does NOT have the same implementation as Websocket API!
     // Must use Websocket because REST API does not allow for source-specific searching.
     let payload = {
       value: query
       // In Volumio musiclibrary.js, the payload also has a 'uri' field - what is it used for???
     }
-    if (this.currentService) {
-      payload.service = this.currentService.name;
+    if (service) {
+      payload.service = service.name;
     }
-    this.currentLocation = {
+    else if (this.currentLocation.service) {
+      payload.service = this.currentLocation.service.name;
+    }
+    this.currentRequest = {
       type: 'search',
-      service: this.currentService,
-      query
+      query,
+      service: service || this.currentLocation.service || null
     }
     this.startFakeLoadingBar();
     registry.socket.emit('search', payload);
   }
 
-  setCurrentService(service) {
-    this.currentService = service;
+  setCurrentLocation(location) {
+    this.currentLocation = location;
     let screen = $(this.el);
-    $('.action.search', screen).attr('placeholder', service ? service.prettyName : '');
+    $('.action.search', screen).attr('placeholder', location.service ? location.service.prettyName : '');
+  }
+
+  addToBackHistory(location) {
+    this.backHistory.push(location);
+  }
+
+  resetBackHistory() {
+    this.backHistory = [];
+  }
+
+  handleBackClicked() {
+    this.startFakeLoadingBar();
+    let prevLocation = this.backHistory.pop();
+    if (!prevLocation || (prevLocation.type === 'browse' && (prevLocation.uri === '' || prevLocation.uri === '/'))) {
+      this.browse(ROOT_LOCATION);
+    }
+    else if (prevLocation.type === 'browse' || prevLocation.type === 'search') {
+      this.showBrowseResults(prevLocation.pageData);
+      this.setCurrentLocation(prevLocation);
+    }
+    this.stopFakeLoadingBar(true);
   }
 
   scrollToTop() {
