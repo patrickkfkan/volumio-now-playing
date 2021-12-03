@@ -82,19 +82,32 @@
 }
 
 #queue .contents .items-wrapper {
-  overflow-y: auto;
+  width: 100%;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
+#queue .contents .items-wrapper .os-scrollbar .os-scrollbar-handle {
+  background: #45454580;
+}
+
+#queue .contents .items-wrapper .os-scrollbar .os-scrollbar-handle.active {
+  background: #454545cc;
+}
+
+#queue .contents .items-wrapper .os-scrollbar:hover .os-scrollbar-handle {
+  background: #454545cc;
+}
+
 #queue .contents .items-wrapper .items {
-  margin: 1em auto 2em auto;
+  margin: 0 auto;
 }
 
 @media (min-width: 1024px) {
   #queue .contents .items-wrapper .items {
     max-width: 80%;
+    padding-bottom: 2em;
   }
 }
 

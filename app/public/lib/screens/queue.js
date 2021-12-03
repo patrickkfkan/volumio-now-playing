@@ -71,7 +71,15 @@ export class QueueScreen {
     $('.action.close', screen).on('click', function() {
       util.setActiveScreen(registry.screens.nowPlaying);
     })
-    
+
+    $(document).ready(() => {
+      let supportsHover = !window.matchMedia('(hover: none)').matches;
+      $('.items-wrapper', screen).overlayScrollbars({
+        scrollbars: {
+          autoHide: supportsHover ? 'leave' : 'scroll'
+        }
+      });
+    })
   }
 
   static init(el) {

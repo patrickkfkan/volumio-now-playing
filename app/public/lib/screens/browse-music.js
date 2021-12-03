@@ -53,7 +53,8 @@ export class BrowseMusicScreen {
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
         </div>
-        <div class="navigation">
+        <div class="navigation-wrapper">
+          <div class="navigation"></div>
         </div>
       </div>
     `;
@@ -125,6 +126,15 @@ export class BrowseMusicScreen {
         }, 500);
         $(this).data('inputTimer', inputTimer);
       }
+    })
+
+    $(document).ready(() => {
+      let supportsHover = !window.matchMedia('(hover: none)').matches;
+      $('.navigation-wrapper', screen).overlayScrollbars({
+        scrollbars: {
+          autoHide: supportsHover ? 'leave' : 'scroll'
+        }
+      });
     })
   }
 
@@ -578,7 +588,8 @@ export class BrowseMusicScreen {
 
   scrollToTop() {
     let screen = $(this.el);
-    $('.navigation', screen).scrollTop(0);
+    //$('.navigation', screen).scrollTop(0);
+    $('.navigation-wrapper', screen).overlayScrollbars().scroll(0);
   }
 
   doPlayOnClick(itemEl) {

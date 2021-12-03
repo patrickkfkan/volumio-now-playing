@@ -537,10 +537,26 @@
       }
     }
 
-    .navigation {
-      overflow-y: auto;
+    .navigation-wrapper {
+      width: 100%;
       flex-grow: 1;
 
+      .os-scrollbar {
+        .os-scrollbar-handle {
+          background: #45454580;
+  
+          &.active {
+            background: #454545cc;
+          }
+        }
+
+        &:hover .os-scrollbar-handle {
+          background: #454545cc;
+        }
+      }
+    }
+
+    .navigation {
       .info {
         width: 100%;
       }
@@ -551,7 +567,7 @@
         /*padding-bottom: 1em;*/
 
         &:last-of-type {
-          margin-bottom: 2em;
+          padding-bottom: 2em;
         }
 
         @media (min-width: 1024px) {

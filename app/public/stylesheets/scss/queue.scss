@@ -161,14 +161,29 @@
     }
 
     .items-wrapper {
-      overflow-y: auto;
+      width: 100%;
       flex-grow: 1;
 
+      .os-scrollbar {
+        .os-scrollbar-handle {
+          background: #45454580;
+  
+          &.active {
+            background: #454545cc;
+          }
+        }
+
+        &:hover .os-scrollbar-handle {
+          background: #454545cc;
+        }
+      }
+
       .items {
-        margin: 1em auto 2em auto;
+        margin: 0 auto;
 
         @media (min-width: 1024px) {
           max-width: 80%;
+          padding-bottom: 2em;
         }
 
         .item {
