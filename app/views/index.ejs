@@ -32,9 +32,6 @@
 </head>
 
 <body>
-  <div id="top-bar">
-    <button class="expand"><i class="fa fa-angle-down"></i></button>
-  </div>
   <div id="screen-wrapper">
     <div class="bg"></div>
     <div class="screens">
@@ -63,11 +60,7 @@
     },
     ui: {
       background: '#screen-wrapper .bg',
-      actionPanel: {
-        panel: '#action-panel',
-        trigger: '#top-bar .expand',
-        swipe: '#top-bar',
-      },
+      actionPanel: '#action-panel',
       volumeIndicator: '#volume-indicator',
       disconnectIndicator: '#disconnected-overlay',
       trackBar: '#track-bar'

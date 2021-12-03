@@ -85,6 +85,7 @@
   box-sizing: border-box;
   background-size: 100% 100%;
   font-size: var(--base-font-size);
+  /* Action panel trigger */
   /**
   * Landscape Orientation
   */
@@ -98,6 +99,38 @@
   /**
   *  Portrait Orientation
   */
+}
+
+#now-playing .action-panel-trigger {
+  width: 100%;
+  height: 3em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+#now-playing .action-panel-trigger button.expand {
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  color: #ccc;
+  width: 2em;
+  height: 2em;
+  transition: 0.2s;
+  font-size: 1em;
+}
+
+#now-playing .action-panel-trigger button.expand i {
+  font-size: 1.3rem;
+}
+
+#now-playing .action-panel-trigger button.expand:hover {
+  color: #24a4f3;
 }
 
 #now-playing .contents {

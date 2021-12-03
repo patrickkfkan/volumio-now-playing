@@ -37,6 +37,12 @@ export class QueueScreen {
       self.refreshActionButtons();
     })
 
+    $('.header', screen).swipe({
+      swipeDown: () => {
+        registry.ui.actionPanel.show();
+      }
+    });
+
     $('.items', screen).on('click', '.item', function() {
       socket.emit('play', { value: $(this).data('position') });
     });

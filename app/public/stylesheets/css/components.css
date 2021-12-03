@@ -46,39 +46,6 @@
   opacity: var(--background-overlay-opacity);
 }
 
-/* Action Panel */
-#top-bar {
-  width: 100%;
-  height: 2em;
-  position: absolute;
-  top: 0;
-  left: 0;
-  text-align: center;
-  opacity: 0.5;
-  z-index: 10;
-}
-
-#top-bar button.expand {
-  border: none;
-  background: none;
-  cursor: pointer;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-  color: #ccc;
-  width: 2em;
-  height: 2em;
-  transition: 0.2s;
-  font-size: 1em;
-}
-
-#top-bar button.expand i {
-  font-size: 1.3em;
-}
-
-#top-bar button.expand:hover {
-  color: #24a4f3;
-}
-
 /* Wraps around #action-panel (created by jquery UI's Dialog) */
 .action-panel-container {
   -webkit-filter: drop-shadow(0 0 8px #00000080);

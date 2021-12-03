@@ -7,6 +7,9 @@ export class NowPlayingScreen {
     this.albumartHandle = null;
 
     const html = `
+    <div class="action-panel-trigger">
+      <button class="expand"><i class="fa fa-angle-down"></i></button>
+    </div>
     <div class="contents">
       <div class="albumart"></div>
       <div class="track-info">
@@ -55,6 +58,16 @@ export class NowPlayingScreen {
     });
 
     $(document).ready( () => {
+      $('.action-panel-trigger .expand', screen).on('click', () => {
+        registry.ui.actionPanel.show();
+      });
+
+      $('.action-panel-trigger', screen).swipe({
+        swipeDown: () => {
+          registry.ui.actionPanel.show();
+        }
+      });
+
       $('.seekbar', screen).slider({
         orientation: 'horizontal',
         range: 'min',

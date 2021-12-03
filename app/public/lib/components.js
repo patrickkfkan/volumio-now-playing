@@ -16,7 +16,7 @@ export class Background {
 }
 
 export class ActionPanel {
-  constructor({panel, trigger, swipe}) {
+  constructor(panel) {
     this.el = panel;
     this.slideVolumeTimer = null;
     this.slideVolumeValue = 0;
@@ -129,16 +129,6 @@ export class ActionPanel {
         self.hide();
         let screen = $(this).data('screen');
         util.setActiveScreen(registry.screens[screen]);
-      });
- 
-      $(trigger).on('click', () => {
-        self.show();
-      });
-  
-      $(swipe).swipe({
-        swipeDown: () => {
-          self.show();
-        }
       });
     });
   }

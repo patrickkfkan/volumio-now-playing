@@ -79,6 +79,12 @@ export class BrowseMusicScreen {
         self.showSearchResults(data);
       }
     })
+
+    $('.header', screen).swipe({
+      swipeDown: () => {
+        registry.ui.actionPanel.show();
+      }
+    });
     
     $('.navigation', screen).on('click', 'section .items .item', function() {
       self.handleItemClick($(this));
