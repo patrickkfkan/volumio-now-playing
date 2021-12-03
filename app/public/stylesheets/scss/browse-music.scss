@@ -360,6 +360,8 @@
           color: #606060;
           margin-left: auto;
           margin-right: 1em;
+          align-self: start;
+          margin-top: 1em;
 
           &:hover {
             color: #ccc;
@@ -371,6 +373,7 @@
             right: 1em;
             margin-left: 0;
             margin-right: 0;
+            margin-top: 0;
           }
         }
 
@@ -385,12 +388,23 @@
         &.list-view-toggle[data-current="grid"] i:before {
           content: '\f03a';
         }
+
+        &.search-expand {
+          @media (min-width: 470px) {
+            display: none;
+          }
+
+          &.active {
+            color: #24a4f3;
+          }
+        }
       }
 
       .main-actions {
         flex-grow: 1;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         padding: 1em;
         box-sizing: border-box;
         gap: 1em;
@@ -398,6 +412,20 @@
         @media (min-width: 1024px) {
           max-width: 80%;
           margin: 0 auto;
+        }
+
+        @media (max-width: 469px) {
+          .search-input {
+            width: 100%;
+
+            .action.search {
+              width: 100%;
+            }
+
+            &.hidden {
+              display: none;
+            }
+          }
         }
 
         .icon-text-input {

@@ -53,10 +53,6 @@
   margin-right: 0px;
 }
 
-#queue .contents .header button.action:not(:first-of-type) {
-  margin-left: 1em;
-}
-
 #queue .contents .header button.action i {
   font-size: 1.5em;
 }
@@ -102,6 +98,7 @@
   padding: 1em;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  gap: 1em;
 }
 
 @media (min-width: 1024px) {
