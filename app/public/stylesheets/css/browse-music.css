@@ -24,20 +24,8 @@
 }
 
 #browse-music .contents .header {
-  padding: 0.5em;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  width: 100%;
   position: relative;
-}
-
-#browse-music .contents .header .actions {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -46,7 +34,7 @@
           align-items: center;
 }
 
-#browse-music .contents .header .actions button {
+#browse-music .contents .header button.action {
   border: none;
   background: none;
   cursor: pointer;
@@ -58,47 +46,79 @@
   height: 2em;
   font-size: 1em;
   transition: 0.2s;
-  position: relative;
-  font-size: 1.3em;
-  margin: 0px 0.3em 0px 0px;
+  font-size: 1em;
   z-index: 100;
 }
 
-#browse-music .contents .header .actions button:last-of-type {
-  margin-right: 0px;
+#browse-music .contents .header button.action:not(:first-of-type) {
+  margin-left: 1em;
 }
 
-#browse-music .contents .header .actions button.clear:hover {
-  color: #aa4a44;
+#browse-music .contents .header button.action i {
+  font-size: 1.5em;
 }
 
-#browse-music .contents .header .actions button.close {
+#browse-music .contents .header button.action.close {
   color: #606060;
   margin-left: auto;
+  margin-right: 1em;
 }
 
-#browse-music .contents .header .actions button.close:hover {
+#browse-music .contents .header button.action.close:hover {
   color: #ccc;
 }
 
-#browse-music .contents .header .actions button.active {
+@media (min-width: 1024px) {
+  #browse-music .contents .header button.action.close {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+#browse-music .contents .header button.action.active {
   color: #24a4f3;
 }
 
-#browse-music .contents .header .actions button.list-view-toggle[data-current="list"] i:before {
+#browse-music .contents .header button.action.list-view-toggle[data-current="list"] i:before {
   content: '\f009';
 }
 
-#browse-music .contents .header .actions button.list-view-toggle[data-current="grid"] i:before {
+#browse-music .contents .header button.action.list-view-toggle[data-current="grid"] i:before {
   content: '\f03a';
 }
 
-#browse-music .contents .header .actions .icon-text-input {
-  position: relative;
+#browse-music .contents .header .main-actions {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1em;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
-#browse-music .contents .header .actions .icon-text-input input[type="text"] {
-  background: #282828;
+@media (min-width: 1024px) {
+  #browse-music .contents .header .main-actions {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
+
+#browse-music .contents .header .main-actions .icon-text-input {
+  position: relative;
+  margin-left: auto;
+}
+
+#browse-music .contents .header .main-actions .icon-text-input input[type="text"] {
+  background: #282828cc;
   border: 1px solid #ccc;
   color: #ccc;
   border-radius: 1em;
@@ -111,12 +131,18 @@
   transition: 0.2s;
 }
 
-#browse-music .contents .header .actions .icon-text-input input[type="text"]:focus {
+@media (min-width: 1024px) {
+  #browse-music .contents .header .main-actions .icon-text-input input[type="text"] {
+    width: 20em;
+  }
+}
+
+#browse-music .contents .header .main-actions .icon-text-input input[type="text"]:focus {
   outline: none !important;
   border-color: #24a4f3;
 }
 
-#browse-music .contents .header .actions .icon-text-input i {
+#browse-music .contents .header .main-actions .icon-text-input i {
   position: absolute;
   left: 0.2em;
   top: 0;
@@ -129,7 +155,7 @@
   transition: 0.2s;
 }
 
-#browse-music .contents .header .actions .icon-text-input input[type="text"]:focus + i {
+#browse-music .contents .header .main-actions .icon-text-input input[type="text"]:focus + i {
   color: #24a4f3;
 }
 

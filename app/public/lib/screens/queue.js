@@ -8,12 +8,12 @@ export class QueueScreen {
     const html = `
       <div class="contents">
         <div class="header">
-          <div class="actions">
+          <div class="main-actions">
             <button class="action random"><i class="fa fa-random"></i></button>
             <button class="action repeat"><i class="fa fa-repeat"></i></button>
             <button class="action clear"><i class="fa fa-trash-o"></i></button>
-            <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
+          <button class="action close"><i class="fa fa-times-circle"></i></button>
         </div>
         <div class="items-wrapper">
           <div class="items"></div>

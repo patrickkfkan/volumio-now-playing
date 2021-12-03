@@ -321,10 +321,6 @@
   height: 2em;
   font-size: 1em;
   transition: 0.2s;
-
-  &:last-of-type {
-    margin-right: 0px;
-  }
 }
 
 #browse-music {
@@ -346,54 +342,70 @@
     height: 100%;
 
     .header {
-      padding: 0.5em;
+      width: 100%;
+      position: relative;
       display: flex;
       align-items: center;
-      position: relative;
 
-      .actions {
+      button.action {
+        @include action-button(0px);
+        font-size: 1em;
+        z-index: 100;
+
+        i {
+          font-size: 1.5em;
+        }
+
+        &.close {
+          color: #606060;
+          margin-left: auto;
+          margin-right: 1em;
+
+          &:hover {
+            color: #ccc;
+          }
+
+          @media (min-width: 1024px) {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            margin-left: 0;
+            margin-right: 0;
+          }
+        }
+
+        &.active {
+          color: #24a4f3;
+        }
+
+        &.list-view-toggle[data-current="list"] i:before {
+          content: '\f009';
+        }
+
+        &.list-view-toggle[data-current="grid"] i:before {
+          content: '\f03a';
+        }
+      }
+
+      .main-actions {
         flex-grow: 1;
         display: flex;
         align-items: center;
+        padding: 1em;
+        box-sizing: border-box;
+        gap: 1em;
 
-        button {
-          @include action-button(0px);
-          position: relative;
-          font-size: 1.3em;
-          margin: 0px 0.3em 0px 0px;
-          z-index: 100;
-
-          &.clear:hover {
-            color: #aa4a44;
-          }
-
-          &.close {
-            color: #606060;
-            margin-left: auto;
-
-            &:hover {
-              color: #ccc;
-            }
-          }
-
-          &.active {
-            color: #24a4f3;
-          }
-
-          &.list-view-toggle[data-current="list"] i:before {
-            content: '\f009';
-          }
-
-          &.list-view-toggle[data-current="grid"] i:before {
-            content: '\f03a';
-          }
+        @media (min-width: 1024px) {
+          max-width: 80%;
+          margin: 0 auto;
         }
 
         .icon-text-input {
           position: relative;
+          margin-left: auto;
 
           input[type="text"] {
-            background: #282828;
+            background: #282828cc;
             border: 1px solid #ccc;
             color: #ccc;
             border-radius: 1em;
@@ -402,6 +414,10 @@
             padding: 0 1em 0 2.7em;
             box-shadow: none;
             transition: 0.2s;
+
+            @media (min-width: 1024px) {
+              width: 20em;
+            }
   
             &:focus {
               outline: none !important;

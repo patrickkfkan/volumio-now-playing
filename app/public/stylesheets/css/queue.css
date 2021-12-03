@@ -23,26 +23,17 @@
 }
 
 #queue .contents .header {
-  padding: 0.5em;
+  width: 100%;
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  position: relative;
 }
 
-#queue .contents .header .actions {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-#queue .contents .header .actions button {
+#queue .contents .header button.action {
   border: none;
   background: none;
   cursor: pointer;
@@ -54,31 +45,70 @@
   height: 2em;
   font-size: 1em;
   transition: 0.2s;
-  position: relative;
-  font-size: 1.3em;
-  margin: 0px 0.3em 0px 0px;
+  font-size: 1em;
   z-index: 100;
 }
 
-#queue .contents .header .actions button:last-of-type {
+#queue .contents .header button.action:last-of-type {
   margin-right: 0px;
 }
 
-#queue .contents .header .actions button.clear:hover {
+#queue .contents .header button.action:not(:first-of-type) {
+  margin-left: 1em;
+}
+
+#queue .contents .header button.action i {
+  font-size: 1.5em;
+}
+
+#queue .contents .header button.action.clear:hover {
   color: #aa4a44;
 }
 
-#queue .contents .header .actions button.close {
+#queue .contents .header button.action.close {
   color: #606060;
   margin-left: auto;
+  margin-right: 1em;
 }
 
-#queue .contents .header .actions button.close:hover {
+#queue .contents .header button.action.close:hover {
   color: #ccc;
 }
 
-#queue .contents .header .actions button.active {
+@media (min-width: 1024px) {
+  #queue .contents .header button.action.close {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+#queue .contents .header button.action.active {
   color: #24a4f3;
+}
+
+#queue .contents .header .main-actions {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1em;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  #queue .contents .header .main-actions {
+    max-width: 80%;
+    margin: 0 auto;
+  }
 }
 
 #queue .contents .items-wrapper {

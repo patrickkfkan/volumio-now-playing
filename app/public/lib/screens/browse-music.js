@@ -42,7 +42,7 @@ export class BrowseMusicScreen {
     const html = `
       <div class="contents">
         <div class="header">
-          <div class="actions">
+          <div class="main-actions">
             <button class="action home"><i class="fa fa-home"></i></button>
             <button class="action back"><i class="fa fa-arrow-left"></i></button>
             <button class="action list-view-toggle" data-current="list"><i class="fa"></i></button>
@@ -50,8 +50,8 @@ export class BrowseMusicScreen {
               <input type="text" class="action search" />
               <i class="fa fa-search"></i>
             </div>
-            <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
+          <button class="action close"><i class="fa fa-times-circle"></i></button>
         </div>
         <div class="navigation-wrapper">
           <div class="navigation"></div>
