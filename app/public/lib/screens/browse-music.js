@@ -47,7 +47,7 @@ export class BrowseMusicScreen {
             <button class="action back"><i class="fa fa-arrow-left"></i></button>
             <button class="action list-view-toggle" data-current="grid"><i class="fa"></i></button>
             <button class="action search-expand"><i class="fa fa-search"></i></button>
-            <div class="search-input icon-text-input hidden">
+            <div class="search-input icon-text-input noSwipe hidden">
               <input type="text" class="action search" />
               <i class="fa fa-search"></i>
             </div>
