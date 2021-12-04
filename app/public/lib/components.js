@@ -485,10 +485,12 @@ export class TrackBar {
     let seekbarWrapper = $('.seekbar-wrapper', trackBar);
     if (state.duration == 0 || state.status == 'stop') {
       seekbarWrapper.css('visibility', 'hidden');
+      trackBar.addClass('seekbar-hidden');
       return;
     }
     else {
       seekbarWrapper.css('visibility', 'visible');
+      trackBar.removeClass('seekbar-hidden');
     }
 
     let duration = (state.duration || 0) * 1000;

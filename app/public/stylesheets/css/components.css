@@ -334,9 +334,11 @@
   bottom: 0;
   left: 0;
   background: #202020;
-  border-top: 1px solid var(--widget-primary-color);
   z-index: 10;
   display: none;
+}
+#track-bar.seekbar-hidden {
+  border-top: 1px solid var(--widget-primary-color);
 }
 #track-bar .seekbar-wrapper {
   --seekbar-height: 3px;
