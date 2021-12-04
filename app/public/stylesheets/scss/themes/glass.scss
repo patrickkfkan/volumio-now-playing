@@ -1,3 +1,19 @@
+@mixin scrollbar {
+  .os-scrollbar {
+    .os-scrollbar-handle {
+      background: rgba(179, 179, 179, 0.3);
+
+      &.active {
+        background: rgba(143, 143, 143, 0.3);
+      }
+    }
+
+    &:hover .os-scrollbar-handle {
+      background: rgba(143, 143, 143, 0.3);
+    }
+  }
+}
+
 #screen-wrapper[data-active="browseMusic"],
 #screen-wrapper[data-active="queue"] {
   > .bg {
@@ -23,19 +39,7 @@
 
     .navigation-wrapper {
 
-      .os-scrollbar {
-        .os-scrollbar-handle {
-          background: rgba(0, 0, 0, 0.3);
-  
-          &.active {
-            background: rgba(0, 0, 0, 0.5);
-          }
-        }
-
-        &:hover .os-scrollbar-handle {
-          background: rgba(0, 0, 0, 0.5);
-        }
-      }
+      @include scrollbar;
     }
 
     .navigation {
@@ -95,20 +99,7 @@
     }
 
     .items-wrapper {
-
-      .os-scrollbar {
-        .os-scrollbar-handle {
-          background: rgba(0, 0, 0, 0.3);
-  
-          &.active {
-            background: rgba(0, 0, 0, 0.5);
-          }
-        }
-
-        &:hover .os-scrollbar-handle {
-          background: rgba(0, 0, 0, 0.5);
-        }
-      }
+      @include scrollbar;
     }
   }
 }

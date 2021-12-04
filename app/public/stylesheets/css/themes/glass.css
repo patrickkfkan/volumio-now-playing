@@ -14,13 +14,13 @@
   color: #ccc;
 }
 #browse-music .contents .navigation-wrapper .os-scrollbar .os-scrollbar-handle {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(179, 179, 179, 0.3);
 }
 #browse-music .contents .navigation-wrapper .os-scrollbar .os-scrollbar-handle.active {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(143, 143, 143, 0.3);
 }
 #browse-music .contents .navigation-wrapper .os-scrollbar:hover .os-scrollbar-handle {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(143, 143, 143, 0.3);
 }
 #browse-music .contents .navigation section.list .items .item {
   background: rgba(0, 0, 0, 0.4);
@@ -60,13 +60,13 @@
   background: rgba(0, 0, 0, 0.2);
 }
 #queue .contents .items-wrapper .os-scrollbar .os-scrollbar-handle {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(179, 179, 179, 0.3);
 }
 #queue .contents .items-wrapper .os-scrollbar .os-scrollbar-handle.active {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(143, 143, 143, 0.3);
 }
 #queue .contents .items-wrapper .os-scrollbar:hover .os-scrollbar-handle {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(143, 143, 143, 0.3);
 }
 
 #track-bar {
