@@ -161,17 +161,16 @@
     --switch-height: 2em;
 
     display: flex;
-    margin: 1.2em 0px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1em;
 
     .screen-switcher {
       display: flex;
       pointer-events: auto;
       /*flex-grow: 1;*/
       min-width: 0;
+      margin-top: 1.2em;
 
       @mixin switch-label-common {
         display: inline-flex;
@@ -232,10 +231,10 @@
       }
     }
 
-    @media (min-width: 480px) {
-      .spacer {
-        width: 1.5em;
-      }
+    .extra-switches-wrapper {
+      display: flex;
+      gap: 0.5em;
+      margin: 1.2em 1.5em 0em 1.5em;
     }
 
     .action {

@@ -40,9 +40,10 @@ export class ActionPanel {
           <div class="switch" data-screen="queue"><i class="fa fa-list"></i></div>
         </div>
       </div>
-      <div class="spacer"></div>
-      <div class="action refresh"><i class="fa fa-refresh" title=""></i></div>
-      <div class="action switch"><img src="/assets/volumio-icon.png" title=""></img></div>
+      <div class="extra-switches-wrapper">
+        <div class="action refresh"><i class="fa fa-refresh" title=""></i></div>
+        <div class="action switch"><img src="/assets/volumio-icon.png" title=""></img></div>
+      </div>
     </div>
     `;
 

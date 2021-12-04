@@ -141,17 +141,16 @@
   --switch-width: 3em;
   --switch-height: 2em;
   display: flex;
-  margin: 1.2em 0px;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1em;
 }
 #action-panel .actions-wrapper .screen-switcher {
   display: flex;
   pointer-events: auto;
   /*flex-grow: 1;*/
   min-width: 0;
+  margin-top: 1.2em;
 }
 #action-panel .actions-wrapper .screen-switcher .label-wrapper {
   background: #303030;
@@ -207,10 +206,10 @@
   background: #24a4f3;
   border-radius: 50%;
 }
-@media (min-width: 480px) {
-  #action-panel .actions-wrapper .spacer {
-    width: 1.5em;
-  }
+#action-panel .actions-wrapper .extra-switches-wrapper {
+  display: flex;
+  gap: 0.5em;
+  margin: 1.2em 1.5em 0em 1.5em;
 }
 #action-panel .actions-wrapper .action {
   display: flex;

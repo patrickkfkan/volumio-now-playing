@@ -73,4 +73,18 @@
   background: rgba(72, 72, 72, 0.3);
   --widget-primary-color: rgba(255, 255, 255, 0.2);
   --widget-highlight-color: #ccc;
+}
+
+#action-panel .volume {
+  background: rgba(0, 0, 0, 0.3);
+}
+#action-panel .actions-wrapper .screen-switcher .label-wrapper {
+  background: rgba(0, 0, 0, 0.5);
+}
+#action-panel .actions-wrapper .screen-switcher .switches-wrapper {
+  background: rgba(0, 0, 0, 0.3);
+}
+#action-panel .actions-wrapper .action {
+  background: rgba(0, 0, 0, 0.3);
+  color: #ccc;
 }/*# sourceMappingURL=glass.css.map */
