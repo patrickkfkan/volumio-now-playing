@@ -81,7 +81,6 @@
   top: 0;
   left: 0;
   padding: 20px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-size: 100% 100%;
   font-size: var(--base-font-size);
@@ -100,7 +99,6 @@
   *  Portrait Orientation
   */
 }
-
 #now-playing .action-panel-trigger {
   width: 100%;
   height: 3em;
@@ -111,12 +109,10 @@
   opacity: 0.5;
   z-index: 10;
 }
-
 #now-playing .action-panel-trigger button.expand {
   border: none;
   background: none;
   cursor: pointer;
-  -webkit-transition: 0.2s;
   transition: 0.2s;
   color: #ccc;
   width: 2em;
@@ -124,41 +120,31 @@
   transition: 0.2s;
   font-size: 1em;
 }
-
 #now-playing .action-panel-trigger button.expand i {
   font-size: 1.3rem;
 }
-
 #now-playing .action-panel-trigger button.expand:hover {
   color: #24a4f3;
 }
-
 #now-playing .contents {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
   height: 100%;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 #now-playing .albumart {
   display: var(--albumart-visibility);
   z-index: 1;
   margin-right: 12px;
 }
-
 #now-playing .albumart img {
   /**
-      * Commenting out following since legacy Chromium on Volumio 2.x
-      * doesn't support min()
-      width: min(40vw, 80vh);
-      height: min(40vw, 80vh);
-      */
-  -webkit-filter: drop-shadow(0 0 8px #00000080);
-          filter: drop-shadow(0 0 8px #00000080);
+  * Commenting out following since legacy Chromium on Volumio 2.x
+  * doesn't support min()
+  width: min(40vw, 80vh);
+  height: min(40vw, 80vh);
+  */
+  filter: drop-shadow(0 0 8px #00000080);
   -o-object-fit: var(--albumart-fit);
      object-fit: var(--albumart-fit);
   display: block;
@@ -167,19 +153,11 @@
   height: var(--albumart-height);
   border-radius: var(--albumart-border-radius);
 }
-
 #now-playing .track-info {
   z-index: 1;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  flex-grow: 1;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   color: #ccc;
   font-weight: 700;
   text-align: var(--text-alignment-h);
@@ -190,23 +168,12 @@
   max-width: var(--track-info-max-width);
   max-height: var(--track-info-max-height);
 }
-
 #now-playing .track-info .text {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  -webkit-box-pack: var(--text-alignment-v);
-      -ms-flex-pack: var(--text-alignment-v);
-          justify-content: var(--text-alignment-v);
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: var(--text-alignment-v);
 }
-
 #now-playing .track-info .text .title {
   display: -webkit-box;
   color: var(--title-font-color);
@@ -220,7 +187,6 @@
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-
 #now-playing .track-info .text .artist {
   display: -webkit-box;
   color: var(--artist-font-color);
@@ -235,7 +201,6 @@
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-
 #now-playing .track-info .text .album {
   display: -webkit-box;
   color: var(--album-font-color);
@@ -249,29 +214,24 @@
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-
 #now-playing .track-info .text .media-info {
   margin: var(--media-info-margin);
 }
-
 #now-playing .track-info .text .media-info .format-icon {
   height: var(--media-info-font-size);
   margin-right: 5px;
 }
-
 #now-playing .track-info .text .media-info .quality {
   font-size: var(--media-info-font-size);
   color: var(--media-info-font-color);
   font-weight: normal;
   font-family: sans-serif;
 }
-
 #now-playing .track-info .controls {
   display: var(--playback-buttons-visibility);
   text-align: center;
   margin: var(--playback-buttons-margin);
 }
-
 #now-playing .track-info .controls button {
   font-size: var(--playback-buttons-size);
   width: 2em;
@@ -281,22 +241,17 @@
   background: none;
   color: var(--widget-primary-color);
   cursor: pointer;
-  -webkit-transition: 0.2s;
   transition: 0.2s;
 }
-
 #now-playing .track-info .controls button:focus {
   outline: none;
 }
-
 #now-playing .track-info .controls button.repeat, #now-playing .track-info .controls button.random {
   display: none;
 }
-
 #now-playing .track-info .controls button.repeat.active, #now-playing .track-info .controls button.random.active {
   color: var(--widget-highlight-color);
 }
-
 #now-playing .track-info .controls button.play {
   width: 2.5em;
   margin: 0px 8px;
@@ -304,26 +259,21 @@
   border-radius: 1.25em;
   color: var(--widget-highlight-color);
 }
-
 #now-playing .track-info .controls button.play.hover {
   background: var(--widget-highlight-color);
   color: #fff;
 }
-
 #now-playing .track-info .controls button.play i.fa-play {
   margin-left: 0.25em;
 }
-
 #now-playing .track-info .controls button.previous:hover, #now-playing .track-info .controls button.next:hover {
   color: var(--widget-highlight-color);
 }
-
 #now-playing .track-info .seekbar-wrapper {
   display: var(--seekbar-visibility);
   padding: 0px 0.6em;
   margin: var(--seekbar-margin);
 }
-
 #now-playing .track-info .seekbar-wrapper .seek {
   display: inline-block;
   width: 50%;
@@ -335,7 +285,6 @@
   left: -0.6em;
   text-align: left;
 }
-
 #now-playing .track-info .seekbar-wrapper .duration {
   display: inline-block;
   width: 50%;
@@ -347,22 +296,18 @@
   right: -0.6em;
   text-align: right;
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar.ui-widget-content {
   background: var(--widget-primary-color);
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar.ui-slider-horizontal {
   height: 5px !important;
   border: none;
   margin-bottom: 3px;
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar .ui-slider-range {
   height: 5px;
   background: var(--widget-highlight-color);
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar .ui-slider-handle,
 #now-playing .track-info .seekbar-wrapper .seekbar .ui-slider-handle.ui-state-focus,
 #now-playing .track-info .seekbar-wrapper .seekbar .ui-slider-handle.ui-state-active {
@@ -372,7 +317,6 @@
   border-radius: 1.2em;
   outline: none;
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar.ui-slider:before {
   content: "";
   border: inherit;
@@ -385,7 +329,6 @@
   background: var(--widget-highlight-color);
   width: 0.8em;
 }
-
 #now-playing .track-info .seekbar-wrapper .seekbar.ui-slider:after {
   content: "";
   border: inherit;
@@ -397,47 +340,39 @@
   background: inherit;
   width: 0.8em;
 }
-
 #now-playing .track-info.controls-only .text,
 #now-playing .track-info.controls-only .seekbar-wrapper {
   display: none;
 }
-
 #now-playing .track-info.controls-only .controls {
   margin-top: auto !important;
   margin-bottom: auto !important;
 }
-
 @media all and (orientation: landscape) and (max-height: 320px) {
   #now-playing {
     --default-media-info-margin: 0.2em 0px 0px 0px;
   }
 }
-
-@media all and (orientation: landscape) and (min-width: 600px) and (min-height: 320px) {
+@media (orientation: landscape) and (min-width: 600px) and (min-height: 320px) {
   #now-playing {
     --default-playback-buttons-margin: 1em 0px 1.5em 0px;
   }
 }
-
-@media all and (orientation: landscape) and (min-width: 580px) and (min-height: 320px) {
+@media (orientation: landscape) and (min-width: 580px) and (min-height: 320px) {
   #now-playing {
     --default-max-title-lines: 2;
   }
 }
-
-@media all and (orientation: landscape) and (min-width: 480px) {
+@media (orientation: landscape) and (min-width: 480px) {
   #now-playing .track-info .controls button.repeat, #now-playing .track-info .controls button.random {
     display: inline-block;
   }
 }
-
-@media all and (orientation: landscape) and (min-width: 768px) {
+@media (orientation: landscape) and (min-width: 768px) {
   #now-playing .track-info .controls button {
     margin: 0px 12px;
   }
 }
-
 @media all and (orientation: landscape) {
   #now-playing {
     --default-track-info-min-height: var(--default-albumart-height);
@@ -446,14 +381,13 @@
   #now-playing .track-info {
     /* Set to same height as #albumart img */
     /**
-          * Commenting out following since legacy Chromium on Volumio 2.x
-          * doesn't support min()
-          height: min(40vw, 80vh);
-          min-height: min(40vw, 80vh);
-          */
+        * Commenting out following since legacy Chromium on Volumio 2.x
+        * doesn't support min()
+        height: min(40vw, 80vh);
+        min-height: min(40vw, 80vh);
+        */
   }
 }
-
 @media all and (orientation: portrait) {
   #now-playing {
     padding: 1.6em 40px;
@@ -463,10 +397,7 @@
     --default-playback-buttons-margin: 1em 0px 2em 0px;
   }
   #now-playing .contents {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
   }
   #now-playing .albumart {
     margin-right: 0px;
@@ -474,14 +405,13 @@
   }
   #now-playing .albumart img {
     /**
-          * Commenting out following since legacy Chromium on Volumio 2.x
-          * doesn't support min()
-          width: min(80vw, 40vh);
-          height: min(80vw, 40vh);
-          */
+        * Commenting out following since legacy Chromium on Volumio 2.x
+        * doesn't support min()
+        width: min(80vw, 40vh);
+        height: min(80vw, 40vh);
+        */
   }
 }
-
 @media all and (orientation: portrait) and (min-width: 240px) and (min-height: 400px) {
   #now-playing {
     --default-max-title-lines: 2;
@@ -490,8 +420,7 @@
     display: inline-block;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 240px) and (max-width: 279px) {
+@media (orientation: portrait) and (min-width: 240px) and (max-width: 279px) {
   #now-playing {
     --default-playback-buttons-size: 12px;
   }
@@ -499,160 +428,133 @@
     display: inline-block;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 320px) {
+@media (orientation: portrait) and (min-width: 320px) {
   #now-playing {
     --default-playback-buttons-size: 0.7em;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 380px) {
+@media (orientation: portrait) and (min-width: 380px) {
   #now-playing {
     --default-playback-buttons-size: 0.9em;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 400px) {
+@media (orientation: landscape) and (min-height: 240px) and (min-width: 400px) {
   #now-playing {
     --default-base-font-size: 12px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 240px) and (min-width: 480px) {
+@media (orientation: landscape) and (min-height: 240px) and (min-width: 480px) {
   #now-playing {
     --default-base-font-size: 15px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 320px) and (min-width: 640px) {
+@media (orientation: landscape) and (min-height: 320px) and (min-width: 640px) {
   #now-playing {
     --default-base-font-size: 16px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 720px) {
+@media (orientation: landscape) and (min-height: 400px) and (min-width: 720px) {
   #now-playing {
     --default-base-font-size: 18px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 400px) and (min-width: 800px) {
+@media (orientation: landscape) and (min-height: 400px) and (min-width: 800px) {
   #now-playing {
     --default-base-font-size: 20px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 480px) and (min-width: 960px) {
+@media (orientation: landscape) and (min-height: 480px) and (min-width: 960px) {
   #now-playing {
     --default-base-font-size: 23px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 600px) and (min-width: 1280px) {
+@media (orientation: landscape) and (min-height: 600px) and (min-width: 1280px) {
   #now-playing {
     --default-base-font-size: 28px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1400px) {
+@media (orientation: landscape) and (min-height: 900px) and (min-width: 1400px) {
   #now-playing {
     --default-base-font-size: 30px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 900px) and (min-width: 1600px) {
+@media (orientation: landscape) and (min-height: 900px) and (min-width: 1600px) {
   #now-playing {
     --default-base-font-size: 32px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1680px) {
+@media (orientation: landscape) and (min-height: 1080px) and (min-width: 1680px) {
   #now-playing {
     --default-base-font-size: 34px;
   }
 }
-
-@media all and (orientation: landscape) and (min-height: 1080px) and (min-width: 1800px) {
+@media (orientation: landscape) and (min-height: 1080px) and (min-width: 1800px) {
   #now-playing {
     --default-base-font-size: 38px;
   }
 }
-
-@media all and (orientation: portrait) {
+@media (orientation: portrait) {
   #now-playing {
     --default-base-font-size: 10px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 400px) {
+@media (orientation: portrait) and (min-width: 240px) and (min-height: 400px) {
   #now-playing {
     --default-base-font-size: 12px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 240px) and (min-height: 480px) {
+@media (orientation: portrait) and (min-width: 240px) and (min-height: 480px) {
   #now-playing {
     --default-base-font-size: 14px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 320px) and (min-height: 640px) {
+@media (orientation: portrait) and (min-width: 320px) and (min-height: 640px) {
   #now-playing {
     --default-base-font-size: 16px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 720px) {
+@media (orientation: portrait) and (min-width: 400px) and (min-height: 720px) {
   #now-playing {
     --default-base-font-size: 18px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 800px) {
+@media (orientation: portrait) and (min-width: 400px) and (min-height: 800px) {
   #now-playing {
     --default-base-font-size: 20px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 400px) and (min-height: 900px) {
+@media (orientation: portrait) and (min-width: 400px) and (min-height: 900px) {
   #now-playing {
     --default-base-font-size: 24px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 480px) and (min-height: 960px) {
+@media (orientation: portrait) and (min-width: 480px) and (min-height: 960px) {
   #now-playing {
     --default-base-font-size: 22px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 600px) and (min-height: 1280px) {
+@media (orientation: portrait) and (min-width: 600px) and (min-height: 1280px) {
   #now-playing {
     --default-base-font-size: 28px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1400px) {
+@media (orientation: portrait) and (min-width: 900px) and (min-height: 1400px) {
   #now-playing {
     --default-base-font-size: 32px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 900px) and (min-height: 1600px) {
+@media (orientation: portrait) and (min-width: 900px) and (min-height: 1600px) {
   #now-playing {
     --default-base-font-size: 36px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1680px) {
+@media (orientation: portrait) and (min-width: 1080px) and (min-height: 1680px) {
   #now-playing {
     --default-base-font-size: 40px;
   }
 }
-
-@media all and (orientation: portrait) and (min-width: 1080px) and (min-height: 1800px) {
+@media (orientation: portrait) and (min-width: 1080px) and (min-height: 1800px) {
   #now-playing {
     --default-base-font-size: 44px;
   }
-}
-/*# sourceMappingURL=np.css.map */
+}/*# sourceMappingURL=np.css.map */

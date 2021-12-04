@@ -1,0 +1,122 @@
+#screen-wrapper[data-active="browseMusic"],
+#screen-wrapper[data-active="queue"] {
+  > .bg {
+    --background-blur: 30px !important;
+    --background-scale: 1.5 !important;
+  }
+}
+
+#browse-music {
+  background: rgba(72, 72, 72, 0.3);
+
+  .contents {
+
+    .header {
+      .main-actions .icon-text-input input[type=text] {
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      button.action.close {
+        color: #ccc;
+      }
+    }
+
+    .navigation-wrapper {
+
+      .os-scrollbar {
+        .os-scrollbar-handle {
+          background: rgba(0, 0, 0, 0.3);
+  
+          &.active {
+            background: rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        &:hover .os-scrollbar-handle {
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+
+    .navigation {
+      section.list .items .item {
+        &:not(:last-of-type) {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        background: rgba(0, 0, 0, 0.4);
+    
+        &:hover {
+          background: rgba(0, 0, 0, 0.2);
+        }
+      }
+    
+      section.grid .items .item .albumart {
+        background: rgba(0, 0, 0, 0.3);
+      }
+    
+      .info-header .bg {
+        background: rgba(0, 0, 0, 0.3);
+    
+        img {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.loading .contents .header:before {
+    background: rgba(255, 255, 255, 0.7);
+  }
+}
+
+#queue {
+  background: rgba(72, 72, 72, 0.3);
+
+  .contents {
+
+    .header {
+      button.action.close {
+        color: #ccc;
+      }
+    }
+
+    .items-wrapper .items .item {
+
+      &:not(:last-of-type) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      background: rgba(0, 0, 0, 0.4);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .items-wrapper {
+
+      .os-scrollbar {
+        .os-scrollbar-handle {
+          background: rgba(0, 0, 0, 0.3);
+  
+          &.active {
+            background: rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        &:hover .os-scrollbar-handle {
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+}
+
+#track-bar {
+  background: rgba(72, 72, 72, 0.3);
+
+  --widget-primary-color: rgba(255, 255, 255, 0.2);
+  --widget-highlight-color: #ccc;
+}
+

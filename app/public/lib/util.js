@@ -238,6 +238,8 @@ export function setActiveScreen(screen, options = {}) {
   let actionPanel = $(registry.ui.actionPanel.el);
   $('.screen-switcher .switch.active', actionPanel).removeClass('active');
   $(`.screen-switcher .switch[data-screen="${ screen.getScreenName() }"]`, actionPanel).addClass('active');
+
+  $('#screen-wrapper').attr('data-active', screen.getScreenName());
 }
 
 export let trackTimer = new TrackTimer();

@@ -1,13 +1,8 @@
 body {
   font-family: "Noto Sans Display", sans-serif;
   color: #ccc;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   background: #333;
   margin: 0;
   padding: 0;
@@ -25,9 +20,7 @@ body {
 }
 
 #contents {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   padding-top: 40px;
   overflow: auto;
   text-align: center;
@@ -41,16 +34,13 @@ body {
   padding-bottom: 10px;
   background: #202020;
 }
-
 #preview-window iframe {
   width: 100%;
   height: 100%;
   border: none;
 }
-
 #preview-window .ui-resizable-handle {
-  -webkit-filter: invert(0.5);
-          filter: invert(0.5);
+  filter: invert(0.5);
 }
 
 #size-presets {
@@ -60,37 +50,30 @@ body {
   padding: 0px 10px;
   cursor: pointer;
 }
-
 #size-presets i {
   margin-left: 5px;
 }
-
 #size-presets .choices {
   display: none;
   color: #ccc;
   position: absolute;
   text-align: left;
   background-color: #303030;
-  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 18px;
   z-index: 10;
 }
-
 #size-presets .choices ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-
 #size-presets .choices ul li {
   white-space: nowrap;
 }
-
 #size-presets .choices ul li:hover {
   color: #24a4f3;
 }
-
 #size-presets:hover .choices {
   display: block;
 }
@@ -98,14 +81,11 @@ body {
 #rotate {
   display: inline-block;
 }
-
 #rotate i {
   margin-left: 5px;
   padding: 5px;
 }
-
 #rotate i:hover {
   color: #24a4f3;
   cursor: pointer;
-}
-/*# sourceMappingURL=preview.css.map */
+}/*# sourceMappingURL=preview.css.map */

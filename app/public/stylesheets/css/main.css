@@ -12,18 +12,11 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  -webkit-transition: -webkit-filter 0.1s ease-in;
-  transition: -webkit-filter 0.1s ease-in;
   transition: filter 0.1s ease-in;
-  transition: filter 0.1s ease-in, -webkit-filter 0.1s ease-in;
 }
-
 #screen-wrapper.blur {
-  -webkit-filter: blur(30px);
-          filter: blur(30px);
+  filter: blur(30px);
 }
-
 #screen-wrapper .screens > .screen:not(.active) {
   display: none;
-}
-/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=main.css.map */

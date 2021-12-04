@@ -1,13 +1,8 @@
 body {
   font-family: "Noto Sans Display", sans-serif;
   color: #ccc;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   background: #333;
   margin: 0;
   padding: 0;
@@ -21,34 +16,27 @@ body {
   padding: 5px 10px;
   text-align: right;
 }
-
 #header i {
   margin-left: 2px;
 }
-
 #header a {
   text-decoration: none;
   color: #ccc;
 }
-
 #header a:hover {
   color: #54c688;
 }
 
 #volumio-wrapper {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   width: 100%;
   padding: 0;
   margin: 0;
 }
-
 #volumio-wrapper iframe {
   width: 100%;
   height: 100%;
   border: 0px;
   padding: 0;
   margin: 0;
-}
-/*# sourceMappingURL=volumio.css.map */
+}/*# sourceMappingURL=volumio.css.map */
