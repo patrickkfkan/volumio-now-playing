@@ -13,7 +13,10 @@ export class QueueScreen {
             <button class="action repeat"><i class="fa fa-repeat"></i></button>
             <button class="action clear"><i class="fa fa-trash-o"></i></button>
           </div>
-          <button class="action close"><i class="fa fa-times-circle"></i></button>
+          <div class="screen-actions">
+            <button class="action show-action-panel"><i class="fa fa-ellipsis-h"></i></button>
+            <button class="action close"><i class="fa fa-times-circle"></i></button>
+          </div>
         </div>
         <div class="items-wrapper">
           <div class="items"></div>
@@ -72,6 +75,10 @@ export class QueueScreen {
 
     $('.action.clear', screen).on('click', function() {
       socket.emit('clearQueue');
+    })
+
+    $('.action.show-action-panel', screen).on('click', function() {
+      registry.ui.actionPanel.show();
     })
 
     $('.action.close', screen).on('click', function() {

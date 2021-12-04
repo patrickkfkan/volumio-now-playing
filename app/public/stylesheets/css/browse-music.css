@@ -39,26 +39,6 @@
 #browse-music .contents .header button.action i {
   font-size: 1.5em;
 }
-#browse-music .contents .header button.action.close {
-  color: #606060;
-  margin-left: auto;
-  margin-right: 1em;
-  align-self: start;
-  margin-top: 1em;
-}
-#browse-music .contents .header button.action.close:hover {
-  color: #ccc;
-}
-@media (min-width: 1024px) {
-  #browse-music .contents .header button.action.close {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-  }
-}
 #browse-music .contents .header button.action.active {
   color: #24a4f3;
 }
@@ -68,7 +48,7 @@
 #browse-music .contents .header button.action.list-view-toggle[data-current=grid] i:before {
   content: "";
 }
-@media (min-width: 470px) {
+@media (min-width: 480px) {
   #browse-music .contents .header button.action.search-expand {
     display: none;
   }
@@ -91,12 +71,12 @@
     margin: 0 auto;
   }
 }
-@media (max-width: 469px) {
+@media (max-width: 479px) {
   #browse-music .contents .header .main-actions .search-input {
     width: 100%;
   }
   #browse-music .contents .header .main-actions .search-input .action.search {
-    width: 100%;
+    width: calc(100% + 2em);
   }
   #browse-music .contents .header .main-actions .search-input.hidden {
     display: none;
@@ -111,7 +91,7 @@
   border: 1px solid #ccc;
   color: #ccc;
   border-radius: 1em;
-  width: 13em;
+  width: 12em;
   height: 2em;
   padding: 0 1em 0 2.7em;
   box-shadow: none;
@@ -139,6 +119,30 @@
 }
 #browse-music .contents .header .main-actions .icon-text-input input[type=text]:focus + i {
   color: #24a4f3;
+}
+#browse-music .contents .screen-actions {
+  margin-top: 1em;
+  margin-right: 1em;
+  align-self: start;
+  display: flex;
+  gap: 0.5em;
+}
+#browse-music .contents .screen-actions button.action {
+  color: #606060;
+  align-self: start;
+}
+#browse-music .contents .screen-actions button.action:hover {
+  color: #ccc;
+}
+@media (min-width: 1024px) {
+  #browse-music .contents .screen-actions {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+  }
 }
 #browse-music .contents .info-header {
   width: 100%;

@@ -43,23 +43,6 @@
 #queue .contents .header button.action.clear:hover {
   color: #aa4a44;
 }
-#queue .contents .header button.action.close {
-  color: #606060;
-  margin-left: auto;
-  margin-right: 1em;
-}
-#queue .contents .header button.action.close:hover {
-  color: #ccc;
-}
-@media (min-width: 1024px) {
-  #queue .contents .header button.action.close {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
 #queue .contents .header button.action.active {
   color: #24a4f3;
 }
@@ -75,6 +58,30 @@
   #queue .contents .header .main-actions {
     max-width: 80%;
     margin: 0 auto;
+  }
+}
+#queue .contents .header .screen-actions {
+  margin-top: 1em;
+  margin-right: 1em;
+  align-self: start;
+  display: flex;
+  gap: 0.5em;
+}
+#queue .contents .header .screen-actions button.action {
+  color: #606060;
+  align-self: start;
+}
+#queue .contents .header .screen-actions button.action:hover {
+  color: #ccc;
+}
+@media (min-width: 1024px) {
+  #queue .contents .header .screen-actions {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
   }
 }
 #queue .contents .items-wrapper {

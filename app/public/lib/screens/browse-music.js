@@ -52,7 +52,10 @@ export class BrowseMusicScreen {
               <i class="fa fa-search"></i>
             </div>
           </div>
-          <button class="action close"><i class="fa fa-times-circle"></i></button>
+          <div class="screen-actions">
+            <button class="action show-action-panel"><i class="fa fa-ellipsis-h"></i></button>
+            <button class="action close"><i class="fa fa-times-circle"></i></button>
+          </div>
         </div>
         <div class="navigation-wrapper">
           <div class="navigation"></div>
@@ -106,6 +109,10 @@ export class BrowseMusicScreen {
       let toggled = current == 'list' ? 'grid' : 'list';
       $(this).attr('data-current', toggled);
       $('section:not(.fixed-list-view)', screen).toggleClass('list grid');
+    })
+
+    $('.action.show-action-panel', screen).on('click', function() {
+      registry.ui.actionPanel.show();
     })
 
     $('.action.close', screen).on('click', function() {

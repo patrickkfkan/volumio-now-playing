@@ -32,7 +32,7 @@
         background: rgba(0, 0, 0, 0.3);
       }
 
-      button.action.close {
+      .screen-actions button.action {
         color: #ccc;
       }
     }
@@ -80,7 +80,7 @@
   .contents {
 
     .header {
-      button.action.close {
+      .screen-actions button.action {
         color: #ccc;
       }
     }

@@ -142,24 +142,6 @@
           color: #aa4a44;
         }
 
-        &.close {
-          color: #606060;
-          margin-left: auto;
-          margin-right: 1em;
-
-          &:hover {
-            color: #ccc;
-          }
-
-          @media (min-width: 1024px) {
-            position: absolute;
-            top: 1em;
-            right: 1em;
-            margin-left: 0;
-            margin-right: 0;
-          }
-        }
-
         &.active {
           color: #24a4f3;
         }
@@ -176,6 +158,32 @@
         @media (min-width: 1024px) {
           max-width: 80%;
           margin: 0 auto;
+        }
+      }
+
+      .screen-actions {
+        margin-top: 1em;
+        margin-right: 1em;
+        align-self: start;
+        display: flex;
+        gap: 0.5em;
+  
+        button.action {
+          color: #606060;
+          align-self: start;
+  
+          &:hover {
+            color: #ccc;
+          }
+        }
+  
+        @media (min-width: 1024px) {
+          position: absolute;
+          top: 1em;
+          right: 1em;
+          margin-left: 0;
+          margin-right: 0;
+          margin-top: 0;
         }
       }
     }

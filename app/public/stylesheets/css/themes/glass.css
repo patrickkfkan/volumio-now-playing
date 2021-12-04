@@ -10,7 +10,7 @@
 #browse-music .contents .header .main-actions .icon-text-input input[type=text] {
   background: rgba(0, 0, 0, 0.3);
 }
-#browse-music .contents .header button.action.close {
+#browse-music .contents .header .screen-actions button.action {
   color: #ccc;
 }
 #browse-music .contents .navigation-wrapper .os-scrollbar .os-scrollbar-handle {
@@ -47,7 +47,7 @@
 #queue {
   background: rgba(72, 72, 72, 0.3);
 }
-#queue .contents .header button.action.close {
+#queue .contents .header .screen-actions button.action {
   color: #ccc;
 }
 #queue .contents .items-wrapper .items .item {
