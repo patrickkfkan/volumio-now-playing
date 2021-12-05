@@ -196,10 +196,15 @@ export class QueueScreen {
     let repeatEl = $('.action.repeat', screen);
     if (state.repeat) {
       repeatEl.addClass('active');
-      $('i', repeatEl).html(state.repeatSingle ? '1' : '');
+      if (state.repeatSingle) {
+        repeatEl.addClass('single');
+      }
+      else {
+        repeatEl.removeClass('single');
+      }
     }
     else {
-      repeatEl.removeClass('active');
+      repeatEl.removeClass('active single');
       $('i', repeatEl).html('');
     }
 

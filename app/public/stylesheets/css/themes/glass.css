@@ -10,8 +10,24 @@
 #browse-music .contents .header .main-actions .icon-text-input input[type=text] {
   background: rgba(0, 0, 0, 0.3);
 }
+#browse-music .contents .header .main-actions .icon-text-input input[type=text]:focus, #browse-music .contents .header .main-actions .icon-text-input input[type=text]:hover {
+  border-color: #eee;
+}
+#browse-music .contents .header .main-actions .icon-text-input input[type=text]:focus + i,
+#browse-music .contents .header .main-actions .icon-text-input input[type=text]:hover + i {
+  color: #eee;
+}
+#browse-music .contents .header button.action.search-expand.active {
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.2em;
+}
 #browse-music .contents .header .screen-actions button.action {
   color: #ccc;
+}
+#browse-music .contents .header .screen-actions button.action :hover {
+  color: #eee;
 }
 #browse-music .contents .navigation-wrapper .os-scrollbar .os-scrollbar-handle {
   background: rgba(179, 179, 179, 0.3);
@@ -47,8 +63,17 @@
 #queue {
   background: rgba(72, 72, 72, 0.3);
 }
+#queue .contents .header button.action.active {
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.2em;
+}
 #queue .contents .header .screen-actions button.action {
   color: #ccc;
+}
+#queue .contents .header .screen-actions button.action :hover {
+  color: #eee;
 }
 #queue .contents .items-wrapper .items .item {
   background: rgba(0, 0, 0, 0.4);

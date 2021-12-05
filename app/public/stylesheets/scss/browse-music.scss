@@ -321,6 +321,9 @@
   height: 2em;
   font-size: 1em;
   transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #browse-music {
@@ -353,7 +356,7 @@
         z-index: 100;
 
         i {
-          font-size: 1.5em;
+          font-size: 1.3em;
         }
 
         &.active {
@@ -377,6 +380,10 @@
             color: #24a4f3;
           }
         }
+
+        &:hover {
+          color: #eee;
+        }
       }
 
       .main-actions {
@@ -398,7 +405,7 @@
             width: 100%;
 
             .action.search {
-              width: calc(100% + 2em);
+              width: calc(100% + 2.5em);
             }
 
             &.hidden {
@@ -677,7 +684,10 @@
           display: flex;
           flex-direction: column;
           margin-top: 1em;
-          margin-bottom: 1em;
+
+          @media (min-width: 1024px) {
+            margin-bottom: 1em;
+          }
 
           &.no-album .album {
             --album-width: 0;

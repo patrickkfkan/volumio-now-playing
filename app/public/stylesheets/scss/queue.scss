@@ -18,6 +18,9 @@
   height: 2em;
   font-size: 1em;
   transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:last-of-type {
     margin-right: 0px;
@@ -135,7 +138,7 @@
         z-index: 100;
 
         i {
-          font-size: 1.5em;
+          font-size: 1.3em;
         }
 
         &.clear:hover {
@@ -144,6 +147,20 @@
 
         &.active {
           color: #24a4f3;
+        }
+
+        &.repeat.single {
+          position: relative;
+
+          &:after {
+            content: "1";
+            font-size: 0.7em;
+            font-family: "Roboto", sans-serif;
+            font-weight: 700;
+            position: absolute;
+            bottom: 0.2em;
+            right: 0.2em;
+          }
         }
       }
 

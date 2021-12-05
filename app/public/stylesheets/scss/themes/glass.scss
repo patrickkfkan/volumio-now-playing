@@ -28,12 +28,34 @@
   .contents {
 
     .header {
-      .main-actions .icon-text-input input[type=text] {
+      .main-actions .icon-text-input {
+        input[type="text"] {
+          background: rgba(0, 0, 0, 0.3);
+
+          &:focus,
+          &:hover {
+            border-color: #eee;
+          }
+        }
+        input[type="text"]:focus + i,
+        input[type="text"]:hover + i {
+          color: #eee;
+        }
+      }
+
+      button.action.search-expand.active {
+        color: #ccc;
         background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 0.2em;
       }
 
       .screen-actions button.action {
         color: #ccc;
+
+        :hover {
+          color: #eee;
+        }
       }
     }
 
@@ -80,8 +102,19 @@
   .contents {
 
     .header {
+      button.action.active {
+        color: #ccc;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 0.2em;
+      }
+
       .screen-actions button.action {
         color: #ccc;
+
+        :hover {
+          color: #eee;
+        }
       }
     }
 
