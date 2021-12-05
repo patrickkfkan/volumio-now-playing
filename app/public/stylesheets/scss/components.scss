@@ -464,6 +464,8 @@
     top: -3px;
 
     .albumart {
+      cursor: pointer;
+
       img {
         --size: calc(var(--track-bar-height) - (var(--track-bar-padding) * 2));
         display: block;
@@ -493,6 +495,7 @@
       .title {
         @include line-clamp(1);
         color: #fff;
+        cursor: pointer;
       }
 
       .artist-album {
@@ -500,6 +503,7 @@
         color: #ccc;
         font-family: 'Noto Sans Display', sans-serif;
         font-size: 0.9em;
+        cursor: pointer;
       }
 
       .media-info {
@@ -539,23 +543,33 @@
           outline: none;
         }
 
-        &.active {
+ /*       &.active {
           color: var(--widget-highlight-color);
         }
-
-        &.previous:hover,
+*/
+        /*&.previous:hover,
         &.next:hover,
         &.play:hover {
+          color: var(--widget-highlight-color);
+        }*/
+
+        &:hover {
           color: var(--widget-highlight-color);
         }
       }
 
       @media all and (max-width: 580px) {
+        button.previous {
+          display: none;
+        }
+      }
+/*
+      @media all and (max-width: 580px) {
         button.repeat,
         button.random {
           display: none;
         }
-      }
+      }*/
     }
   }
 }

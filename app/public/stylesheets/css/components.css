@@ -403,6 +403,9 @@
   position: relative;
   top: -3px;
 }
+#track-bar .main .albumart {
+  cursor: pointer;
+}
 #track-bar .main .albumart img {
   --size: calc(var(--track-bar-height) - (var(--track-bar-padding) * 2));
   display: block;
@@ -427,6 +430,7 @@
   word-break: break-word;
   -webkit-box-orient: vertical;
   color: #fff;
+  cursor: pointer;
 }
 #track-bar .main .track-info .artist-album {
   display: -webkit-box;
@@ -438,6 +442,7 @@
   color: #ccc;
   font-family: "Noto Sans Display", sans-serif;
   font-size: 0.9em;
+  cursor: pointer;
 }
 #track-bar .main .track-info .media-info {
   line-height: 0.8em;
@@ -457,6 +462,13 @@
   display: flex;
   align-items: center;
   margin-left: auto;
+  /*
+        @media all and (max-width: 580px) {
+          button.repeat,
+          button.random {
+            display: none;
+          }
+        }*/
 }
 #track-bar .main .controls button {
   border: none;
@@ -467,19 +479,24 @@
   color: #ccc;
   width: 2em;
   height: 2em;
+  /*       &.active {
+            color: var(--widget-highlight-color);
+          }
+  */
+  /*&.previous:hover,
+  &.next:hover,
+  &.play:hover {
+    color: var(--widget-highlight-color);
+  }*/
 }
 #track-bar .main .controls button:focus {
   outline: none;
 }
-#track-bar .main .controls button.active {
-  color: var(--widget-highlight-color);
-}
-#track-bar .main .controls button.previous:hover, #track-bar .main .controls button.next:hover, #track-bar .main .controls button.play:hover {
+#track-bar .main .controls button:hover {
   color: var(--widget-highlight-color);
 }
 @media all and (max-width: 580px) {
-  #track-bar .main .controls button.repeat,
-#track-bar .main .controls button.random {
+  #track-bar .main .controls button.previous {
     display: none;
   }
 }/*# sourceMappingURL=components.css.map */

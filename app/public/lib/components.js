@@ -353,11 +353,12 @@ export class TrackBar {
         <div class="media-info"><img class="format-icon" /><span class="quality"></span></div>     
       </div>
       <div class="controls">
-        <button class="repeat"><i class="fa fa-repeat"></i></button>
+        <!--<button class="repeat"><i class="fa fa-repeat"></i></button>-->
+        <button class="queue"><i class="fa fa-list"></i></button>
         <button class="previous"><i class="fa fa-step-backward"></i></button>
         <button class="play"><i class="fa fa-play"></i></button>
         <button class="next"><i class="fa fa-step-forward"></i></button>
-        <button class="random"><i class="fa fa-random"></i></button>
+        <!--<button class="random"><i class="fa fa-random"></i></button>-->
       </div>
     </div>
     `;
@@ -392,9 +393,13 @@ export class TrackBar {
         slide: self.seeking.bind(self)
       });
 
+      $('.albumart, .title, .artist-album', trackBar).on('click', () => {
+        util.setActiveScreen(registry.screens.nowPlaying);
+      })
+
       let controls = $('.controls', trackBar);
   
-      $('.repeat', controls).on('click', () => {
+/*      $('.repeat', controls).on('click', () => {
         let state = registry.state.get();
         if (state == null) {
           return;
@@ -410,6 +415,12 @@ export class TrackBar {
           return;
         }
         socket.emit('setRandom', { value: !state.random });
+      });*/
+
+      $('.queue', controls).on('click', () => {
+        util.setActiveScreen(registry.screens.queue, {
+          showEffect: 'slideUp'
+        });
       });
   
       $('.previous', controls).on('click', () => {
@@ -423,6 +434,12 @@ export class TrackBar {
       $('.next', controls).on('click', () => {
         socket.emit('next');
       });
+
+      trackBar.swipe({
+        swipeUp: () => {
+          util.setActiveScreen(registry.screens.queue);
+        }
+      })
     })
   }
 
@@ -515,7 +532,7 @@ export class TrackBar {
     else {
       $('button.play', controls).html('<i class="fa fa-play"></i>');
     }
-
+/*
     let repeatEl = $('button.repeat', controls);
     if (state.repeat) {
       repeatEl.addClass('active');
@@ -532,7 +549,7 @@ export class TrackBar {
     }
     else {
       randomEl.removeClass('active');
-    }
+    }*/
   }
 
   // Handle seekbar events
