@@ -173,7 +173,7 @@ export class BrowseMusicScreen {
   }
 
   getDefaultShowEffect() {
-    return 'slideDown';
+    return 'fadeIn';
   }
 
   usesTrackBar() {

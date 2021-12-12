@@ -14,7 +14,6 @@ export class QueueScreen {
             <button class="action clear"><i class="fa fa-trash-o"></i></button>
           </div>
           <div class="screen-actions">
-            <button class="action show-action-panel"><i class="fa fa-ellipsis-h"></i></button>
             <button class="action close"><i class="fa fa-times-circle"></i></button>
           </div>
         </div>
@@ -42,7 +41,7 @@ export class QueueScreen {
 
     $('.header', screen).swipe({
       swipeDown: () => {
-        registry.ui.actionPanel.show();
+        util.closeActiveScreen();
       }
     });
 
@@ -77,12 +76,9 @@ export class QueueScreen {
       socket.emit('clearQueue');
     })
 
-    $('.action.show-action-panel', screen).on('click', function() {
-      registry.ui.actionPanel.show();
-    })
 
     $('.action.close', screen).on('click', function() {
-      util.setActiveScreen(registry.screens.nowPlaying);
+      util.closeActiveScreen();
     })
 
     $(document).ready(() => {

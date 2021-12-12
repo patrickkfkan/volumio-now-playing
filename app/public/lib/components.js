@@ -129,7 +129,12 @@ export class ActionPanel {
       $('.screen-switcher .switch', panelEl).on('click', function() {
         self.hide();
         let screen = $(this).data('screen');
-        util.setActiveScreen(registry.screens[screen]);
+        let screenOpts = {};
+        if (screen === 'queue') {
+          screenOpts.keepCurrentOpen = true;
+          screenOpts.showEffect = 'slideUp';
+        }
+        util.setActiveScreen(registry.screens[screen], screenOpts);
       });
     });
   }
@@ -419,7 +424,8 @@ export class TrackBar {
 
       $('.queue', controls).on('click', () => {
         util.setActiveScreen(registry.screens.queue, {
-          showEffect: 'slideUp'
+          showEffect: 'slideUp',
+          keepCurrentOpen: true
         });
       });
   
@@ -437,7 +443,10 @@ export class TrackBar {
 
       trackBar.swipe({
         swipeUp: () => {
-          util.setActiveScreen(registry.screens.queue);
+          util.setActiveScreen(registry.screens.queue, {
+            showEffect: 'slideUp',
+            keepCurrentOpen: true
+          });
         }
       })
     })

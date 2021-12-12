@@ -18,6 +18,12 @@ body {
 #screen-wrapper.blur {
   filter: blur(30px);
 }
-#screen-wrapper .screens > .screen:not(.active) {
+#screen-wrapper .screens > .screen {
+  transition: 0.2s;
+}
+#screen-wrapper .screens > .screen:not(.active):not(.visible-under-active) {
   display: none;
+}
+#screen-wrapper .screens > .screen:not(.active).visible-under-active {
+  filter: brightness(0.8);
 }/*# sourceMappingURL=main.css.map */

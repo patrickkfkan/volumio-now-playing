@@ -19,7 +19,15 @@ body {
     filter: blur(30px);
   }
 
-  .screens > .screen:not(.active) {
+  .screens > .screen {
+    transition: 0.2s;
+  }
+
+  .screens > .screen:not(.active):not(.visible-under-active) {
     display: none;
+  }
+
+  .screens > .screen:not(.active).visible-under-active {
+    filter: brightness(0.8);
   }
 }

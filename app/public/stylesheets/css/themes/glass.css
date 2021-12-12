@@ -4,6 +4,10 @@
   --background-scale: 1.5 !important;
 }
 
+#screen-wrapper .screens > .screen:not(.active).visible-under-active {
+  filter: blur(30px) brightness(0.8);
+}
+
 #browse-music {
   background: rgba(72, 72, 72, 0.3);
 }
@@ -62,6 +66,9 @@
 
 #queue {
   background: rgba(72, 72, 72, 0.3);
+}
+#queue .contents .header {
+  background: rgba(0, 0, 0, 0.4);
 }
 #queue .contents .header button.action.active {
   color: #ccc;

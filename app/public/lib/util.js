@@ -183,15 +183,44 @@ export function setScreenBlur(blur = true) {
   }
 }
 
+let screenStack = [];
+
 export function setActiveScreen(screen, options = {}) {
   let currentActive = $('#screen-wrapper .screen.active');
-  if (currentActive.length > 0) {
-    if (currentActive.data('screenName') === screen.getScreenName()) {
+  if (currentActive.length > 0 && 
+    currentActive.data('screenName') === screen.getScreenName()) {
       return;
+  }
+
+  let reorderScreenStack = [];
+  let zIndexes = {};
+  let currentZIndex = 1;
+  screenStack.forEach( _screen => {
+    if (_screen.getScreenName() !== screen.getScreenName()) {
+      reorderScreenStack.push(_screen);
+      zIndexes[_screen.getScreenName()] = currentZIndex;
+      currentZIndex++;
     }
-    currentActive.fadeOut(100, 'swing', function() {
-      $(this).removeClass('active');
-    });
+  });
+  zIndexes[screen.getScreenName()] = currentZIndex;
+  reorderScreenStack.push(screen);
+  screenStack = reorderScreenStack;
+
+  $('#screen-wrapper .screen').each(function() {
+    let _screen = $(this);
+    _screen.css('z-index', zIndexes[_screen.data('screenName')] || 0);
+  })
+
+  if (!options.keepCurrentOpen) {
+    if (currentActive.length > 0) {
+      currentActive.fadeOut(100, 'swing', function() {
+        $(this).removeClass('active');
+      });
+    }
+  }
+  else {
+    currentActive.removeClass('active');
+    currentActive.addClass('visible-under-active');
   }
 
   let screenEl = $(screen.el);
@@ -207,25 +236,33 @@ export function setActiveScreen(screen, options = {}) {
     defaultShowEffect = screen.getDefaultShowEffect();
   }
 
-  screenEl.hide(); // So that it remains hidden when 'active' class is added
-  screenEl.addClass('active');
+  if (!screenEl.hasClass('visible-under-active')) {
+    screenEl.hide(); // So that it remains hidden when 'active' class is added
+    screenEl.addClass('active');
 
-  let showEffect = options.showEffect || defaultShowEffect;
-  switch (showEffect) {
-    case 'slideDown':
-      screenEl.show('slide', { direction: 'up' }, 100);
-      break;
-    case 'slideUp': 
-      screenEl.show('slide', { direction: 'down' }, 100);
-      break;
-    case 'slideRight':
-      screenEl.show('slide', { direction: 'left' }, 100);
-      break;
-    case 'slideLeft':
-      screenEl.show('slide', { direction: 'right' }, 100);
-      break;
-    default:
-      screenEl.show();
+    let showEffect = options.showEffect || defaultShowEffect;
+    switch (showEffect) {
+      case 'slideDown':
+        screenEl.show('slide', { direction: 'up' }, 100);
+        break;
+      case 'slideUp': 
+        screenEl.show('slide', { direction: 'down' }, 100);
+        break;
+      case 'slideRight':
+        screenEl.show('slide', { direction: 'left' }, 100);
+        break;
+      case 'slideLeft':
+        screenEl.show('slide', { direction: 'right' }, 100);
+        break;
+      case 'fadeIn':
+        screenEl.fadeIn(100);
+      default:
+        screenEl.show();
+    }
+  }
+  else {
+    screenEl.removeClass('visible-under-active');
+    screenEl.addClass('active');
   }
 
   if (showTrackBar) {
@@ -240,6 +277,18 @@ export function setActiveScreen(screen, options = {}) {
   $(`.screen-switcher .switch[data-screen="${ screen.getScreenName() }"]`, actionPanel).addClass('active');
 
   $('#screen-wrapper').attr('data-active', screen.getScreenName());
+}
+
+export function closeActiveScreen() {
+  let currentActive = $('#screen-wrapper .screen.active');
+  if (currentActive.length === 0) {
+    return;
+  }
+
+  if (screenStack.length > 1) {
+    let newActive = screenStack[screenStack.length - 2];
+    setActiveScreen(newActive);
+  }
 }
 
 export let trackTimer = new TrackTimer();
