@@ -46,6 +46,8 @@
   
   .albumart {
     position: relative;
+    width: 2.5em;
+    height: 2.5em;
 
     img {
       display: block;
@@ -86,8 +88,13 @@
   }
 
   &.playing {
-    .albumart img {
-      content: url(/assets/equalizer.gif) !important;
+    .albumart {
+      background-image: url(/assets/equalizer.gif) !important;
+      background-size: cover;
+
+      img {
+        display: none;
+      }
     }
   }
 }
