@@ -123,6 +123,10 @@ export class NowPlayingScreen {
     return 'nowPlaying';
   }
 
+  getDefaultShowEffect() {
+    return 'fadeIn';
+  }
+
   // UI function due to legacy Chromium on Volumio 2.x
   setDefaultSizes() {
     /**

@@ -13,14 +13,15 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  border-radius: 0.5em;
   overflow: hidden;
+  background: #282828;
 }
 @media (min-width: 1024px) {
   #queue .contents {
     width: 80%;
-    height: calc(100% - 2em);
-    margin: 1em auto 1em auto;
+    height: calc(100% - 4em);
+    margin: 2em auto 2em auto;
+    border-radius: 0.5em;
   }
 }
 #queue .contents .header {
@@ -28,7 +29,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: #282828;
   border-bottom: 1px solid #454545;
 }
 #queue .contents .header button.action {
@@ -127,9 +127,6 @@
   align-items: center;
   cursor: pointer;
   transition: 0.2s ease;
-  background: #282828;
-}
-#queue .contents .items-wrapper .items .item:not(:last-of-type) {
   border-bottom: 1px solid #454545;
 }
 #queue .contents .items-wrapper .items .item:hover {

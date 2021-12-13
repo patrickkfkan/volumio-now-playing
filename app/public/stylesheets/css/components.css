@@ -27,7 +27,7 @@
   transform: scale(var(--background-scale));
   background-size: var(--background-size);
   background-position: var(--background-position);
-  transition: background-image 1s ease-in-out, filter 0.2s ease-in;
+  transition: background-image 1s ease-in-out;
 }
 #screen-wrapper > .bg:before {
   content: "";

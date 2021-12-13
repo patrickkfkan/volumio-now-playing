@@ -1,4 +1,3 @@
-import * as util from './../util.js';
 import { registry } from './../registry.js';
 
 export class QueueScreen {
@@ -79,6 +78,12 @@ export class QueueScreen {
 
     $('.action.close', screen).on('click', function() {
       registry.screens.manager.closeCurrent();
+    })
+
+    screen.on('click', function(e) {
+      if ($(e.target).attr('id') === screen.attr('id')) {
+        registry.screens.manager.closeCurrent();
+      }
     })
 
     $(document).ready(() => {

@@ -1,7 +1,7 @@
 #screen-wrapper[data-active=browseMusic] > .bg,
 #screen-wrapper[data-active=queue] > .bg {
   --background-blur: 30px !important;
-  --background-scale: 1.5 !important;
+  /*    --background-scale: 1.5 !important;*/
 }
 
 #screen-wrapper .screens > .screen:not(.active).visible-under-active {
@@ -67,8 +67,8 @@
 #queue {
   background: rgba(72, 72, 72, 0.3);
 }
-#queue .contents .header {
-  background: rgba(0, 0, 0, 0.4);
+#queue .contents {
+  background: rgba(0, 0, 0, 0.3);
 }
 #queue .contents .header button.action.active {
   color: #ccc;
@@ -83,9 +83,6 @@
   color: #eee;
 }
 #queue .contents .items-wrapper .items .item {
-  background: rgba(0, 0, 0, 0.4);
-}
-#queue .contents .items-wrapper .items .item:not(:last-of-type) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 #queue .contents .items-wrapper .items .item:hover {
