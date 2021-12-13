@@ -183,7 +183,7 @@ export function setScreenBlur(blur = true) {
   }
 }
 
-let screenStack = [];
+/*let screenStack = [];
 
 export function setActiveScreen(screen, options = {}) {
   let currentActive = $('#screen-wrapper .screen.active');
@@ -289,7 +289,7 @@ export function closeActiveScreen() {
     let newActive = screenStack[screenStack.length - 2];
     setActiveScreen(newActive);
   }
-}
+}*/
 
 export let trackTimer = new TrackTimer();
 export let imageLoader = new ImageLoader();

@@ -479,10 +479,6 @@
   color: #ccc;
   width: 2em;
   height: 2em;
-  /*       &.active {
-            color: var(--widget-highlight-color);
-          }
-  */
   /*&.previous:hover,
   &.next:hover,
   &.play:hover {
@@ -491,6 +487,9 @@
 }
 #track-bar .main .controls button:focus {
   outline: none;
+}
+#track-bar .main .controls button.active {
+  color: var(--widget-highlight-color);
 }
 #track-bar .main .controls button:hover {
   color: var(--widget-highlight-color);

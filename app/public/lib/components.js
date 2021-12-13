@@ -134,8 +134,13 @@ export class ActionPanel {
           screenOpts.keepCurrentOpen = true;
           screenOpts.showEffect = 'slideUp';
         }
-        util.setActiveScreen(registry.screens[screen], screenOpts);
+        registry.screens.manager.switch(registry.screens[screen], screenOpts);
       });
+
+      registry.screens.manager.on('screenChanged', (current, previous) => {
+        $('.screen-switcher .switch.active', panelEl).removeClass('active');
+        $(`.screen-switcher .switch[data-screen="${ current.getScreenName() }"]`, panelEl).addClass('active');
+      })
     });
   }
 
@@ -399,7 +404,7 @@ export class TrackBar {
       });
 
       $('.albumart, .title, .artist-album', trackBar).on('click', () => {
-        util.setActiveScreen(registry.screens.nowPlaying);
+        registry.screens.manager.switch(registry.screens.nowPlaying);
       })
 
       let controls = $('.controls', trackBar);
@@ -422,11 +427,16 @@ export class TrackBar {
         socket.emit('setRandom', { value: !state.random });
       });*/
 
-      $('.queue', controls).on('click', () => {
-        util.setActiveScreen(registry.screens.queue, {
-          showEffect: 'slideUp',
-          keepCurrentOpen: true
-        });
+      $('.queue', controls).on('click', function() {
+        if (!$(this).hasClass('active')) {
+          registry.screens.manager.switch(registry.screens.queue, {
+            showEffect: 'slideUp',
+            keepCurrentOpen: true
+          });
+        }
+        else {
+          registry.screens.manager.closeCurrent();
+        }
       });
   
       $('.previous', controls).on('click', () => {
@@ -441,9 +451,18 @@ export class TrackBar {
         socket.emit('next');
       });
 
+      registry.screens.manager.on('screenChanged', (current, previous) => {
+        if (current.getScreenName() === 'queue') {
+          $('.queue', controls).addClass('active');
+        }
+        else {
+          $('.queue', controls).removeClass('active');
+        }
+      })
+
       trackBar.swipe({
         swipeUp: () => {
-          util.setActiveScreen(registry.screens.queue, {
+          registry.screens.manager.switch(registry.screens.queue, {
             showEffect: 'slideUp',
             keepCurrentOpen: true
           });

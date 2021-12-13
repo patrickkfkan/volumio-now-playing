@@ -116,7 +116,7 @@ export class BrowseMusicScreen {
     })
 
     $('.action.close', screen).on('click', function() {
-      util.setActiveScreen(registry.screens.nowPlaying);
+      registry.screens.manager.closeCurrent();
     });
     
     $('.action.home', screen).on('click', function() {

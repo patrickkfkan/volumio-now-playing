@@ -3,6 +3,7 @@ import { State } from './state.js';
 import { BrowseMusicScreen } from './screens/browse-music.js';
 import { NowPlayingScreen } from './screens/np.js';
 import { QueueScreen } from './screens/queue.js';
+import { ScreenManager } from './screen-manager.js';
 import { refresh } from './util.js';
 import { registry } from './registry.js';
 
@@ -35,6 +36,7 @@ export function init(data) {
       }
     });
   }
+  registry.screens.manager = ScreenManager.init();
 }
 
 let _socket;

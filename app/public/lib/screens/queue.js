@@ -41,7 +41,7 @@ export class QueueScreen {
 
     $('.header', screen).swipe({
       swipeDown: () => {
-        util.closeActiveScreen();
+        registry.screens.manager.closeCurrent();
       }
     });
 
@@ -78,7 +78,7 @@ export class QueueScreen {
 
 
     $('.action.close', screen).on('click', function() {
-      util.closeActiveScreen();
+      registry.screens.manager.closeCurrent();
     })
 
     $(document).ready(() => {
