@@ -266,7 +266,7 @@ export class VolumeIndicator {
     let volumeChanged = oldVolume ? (oldVolume.level !== state.volume || oldVolume.mute !== state.mute) : true;
     if (volumeChanged) {
       let volumeIndicator = $(this.el);
-      util.setCSSVariable('--volume-level', state.volume, this);
+      util.setCSSVariable('--volume-level', state.volume + 'px', this);
       let levelText;
       if (state.mute) {
         levelText = `<span class="material-icons">volume_off</span>`;

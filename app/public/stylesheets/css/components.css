@@ -246,7 +246,7 @@
 
 /* Volume Indicator */
 #volume-indicator {
-  --volume-level: 0;
+  --volume-level: 0px;
   position: absolute;
   top: 0;
   left: 0;
@@ -279,7 +279,7 @@
 }
 #volume-indicator .circle-wrapper svg circle.highlight {
   stroke-dasharray: 100;
-  stroke-dashoffset: calc(100 - var(--volume-level));
+  stroke-dashoffset: calc(100px - var(--volume-level));
   stroke: #24a4f3;
 }
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
