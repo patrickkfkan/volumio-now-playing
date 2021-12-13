@@ -124,16 +124,18 @@
   background: #aaa;
 }
 #action-panel .volume.disabled .volume-slider-wrapper:after {
-  content: "";
-  font-family: "FontAwesome";
+  content: "";
+  font-family: "Material Icons";
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 100;
   text-align: center;
-  line-height: 1.5em;
   color: #fff;
 }
 #action-panel .actions-wrapper {
@@ -291,6 +293,9 @@
   position: absolute;
   color: #ccc;
   font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #volume-indicator.muted .circle-wrapper svg circle.highlight {
   stroke: #aaa;
@@ -479,6 +484,7 @@
   color: #ccc;
   width: 2em;
   height: 2em;
+  font-size: 1em;
   /*&.previous:hover,
   &.next:hover,
   &.play:hover {

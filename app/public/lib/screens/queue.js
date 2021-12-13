@@ -8,12 +8,12 @@ export class QueueScreen {
       <div class="contents">
         <div class="header">
           <div class="main-actions">
-            <button class="action random"><i class="fa fa-random"></i></button>
-            <button class="action repeat"><i class="fa fa-repeat"></i></button>
-            <button class="action clear"><i class="fa fa-trash-o"></i></button>
+            <button class="action random"><span class="material-icons">shuffle</span></button>
+            <button class="action repeat"><span></span></button>
+            <button class="action clear"><span class="material-icons">clear_all</span></button>
           </div>
           <div class="screen-actions">
-            <button class="action close"><i class="fa fa-times-circle"></i></button>
+            <button class="action close"><span class="material-icons">close</span></button>
           </div>
         </div>
         <div class="items-wrapper">
@@ -133,7 +133,7 @@ export class QueueScreen {
                 <span class="artist-album"></span>
             </div>
             <div class="actions">
-                <button class="remove"><i class="fa fa-times"></i></button>
+                <button class="remove"><span class="material-icons">remove_circle_outline</span></button>
             </div>
         </div>
       `;
@@ -206,7 +206,6 @@ export class QueueScreen {
     }
     else {
       repeatEl.removeClass('active single');
-      $('i', repeatEl).html('');
     }
 
     let randomEl = $('.action.random', screen);

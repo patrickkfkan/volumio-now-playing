@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #queue {
   width: 100%;
   height: 100%;
@@ -51,26 +52,19 @@
 #queue .contents .header button.action:last-of-type {
   margin-right: 0px;
 }
-#queue .contents .header button.action i {
-  font-size: 1.3em;
-}
 #queue .contents .header button.action.clear:hover {
   color: #aa4a44;
 }
 #queue .contents .header button.action.active {
   color: #24a4f3;
 }
-#queue .contents .header button.action.repeat.single {
-  position: relative;
+#queue .contents .header button.action.repeat span:before {
+  content: "";
+  font-family: "Material Icons";
+  font-size: 1.5em;
 }
-#queue .contents .header button.action.repeat.single:after {
-  content: "1";
-  font-size: 0.7em;
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  position: absolute;
-  bottom: 0.2em;
-  right: 0.2em;
+#queue .contents .header button.action.repeat.single span:before {
+  content: "";
 }
 #queue .contents .header .main-actions {
   flex-grow: 1;

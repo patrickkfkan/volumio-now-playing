@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #now-playing {
   /* Default styles */
   --default-base-font-size: 10px;
@@ -120,9 +121,6 @@
   transition: 0.2s;
   font-size: 1em;
 }
-#now-playing .action-panel-trigger button.expand i {
-  font-size: 1.3rem;
-}
 #now-playing .action-panel-trigger button.expand:hover {
   color: #24a4f3;
 }
@@ -234,14 +232,17 @@
 }
 #now-playing .track-info .controls button {
   font-size: var(--playback-buttons-size);
-  width: 2em;
+  width: 2.5em;
   height: 2.5em;
-  margin: 0px 4px;
+  /*margin: 0px 4px;*/
   border: none;
   background: none;
   color: var(--widget-primary-color);
   cursor: pointer;
   transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 #now-playing .track-info .controls button:focus {
   outline: none;
@@ -252,9 +253,17 @@
 #now-playing .track-info .controls button.repeat.active, #now-playing .track-info .controls button.random.active {
   color: var(--widget-highlight-color);
 }
+#now-playing .track-info .controls button.repeat span:before {
+  content: "";
+  font-family: "Material Icons";
+  font-size: 1.5em;
+}
+#now-playing .track-info .controls button.repeat.single span:before {
+  content: "";
+}
 #now-playing .track-info .controls button.play {
   width: 2.5em;
-  margin: 0px 8px;
+  /*margin: 0px 8px;*/
   border: 2px solid var(--widget-highlight-color);
   border-radius: 1.25em;
   color: var(--widget-highlight-color);
@@ -262,9 +271,6 @@
 #now-playing .track-info .controls button.play.hover {
   background: var(--widget-highlight-color);
   color: #fff;
-}
-#now-playing .track-info .controls button.play i.fa-play {
-  margin-left: 0.25em;
 }
 #now-playing .track-info .controls button.previous:hover, #now-playing .track-info .controls button.next:hover {
   color: var(--widget-highlight-color);
@@ -365,7 +371,7 @@
 }
 @media (orientation: landscape) and (min-width: 480px) {
   #now-playing .track-info .controls button.repeat, #now-playing .track-info .controls button.random {
-    display: inline-block;
+    display: inline-flex;
   }
 }
 @media (orientation: landscape) and (min-width: 768px) {

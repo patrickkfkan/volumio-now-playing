@@ -8,7 +8,7 @@ export class NowPlayingScreen {
 
     const html = `
     <div class="action-panel-trigger">
-      <button class="expand"><i class="fa fa-angle-down"></i></button>
+      <button class="expand"><span class="material-icons">expand_more</span></button>
     </div>
     <div class="contents">
       <div class="albumart"></div>
@@ -20,11 +20,11 @@ export class NowPlayingScreen {
           <div class="media-info"><img class="format-icon" /><span class="quality"></span></div>
         </div>
         <div class="controls">
-          <button class="repeat"><i class="fa fa-repeat"></i></button>
-          <button class="previous"><i class="fa fa-step-backward"></i></button>
-          <button class="play"><i class="fa fa-play"></i></button>
-          <button class="next"><i class="fa fa-step-forward"></i></button>
-          <button class="random"><i class="fa fa-random"></i></button>
+          <button class="repeat"><span></span></button>
+          <button class="previous"><span class="material-icons">skip_previous</span></button>
+          <button class="play"><span class="material-icons">play</span></button>
+          <button class="next"><span class="material-icons">skip_next</span></button>
+          <button class="random"><span class="material-icons">shuffle</span></button>
         </div>
         <div class="seekbar-wrapper">
           <div class="seekbar"></div>
@@ -226,22 +226,24 @@ export class NowPlayingScreen {
   refreshControls(state) {
     let screen = $(this.el);
     let controls = $('.controls', screen);
+    let icon = 'play_arrow';
     if (state.status == 'play') {
-      let i = state.duration ? 'fa fa-pause' : 'fa fa-stop';
-      $('button.play', controls).html(`<i class="${i}"></i>`);
+      icon = state.duration ? 'pause' : 'stop';
     }
-    else {
-      $('button.play', controls).html('<i class="fa fa-play"></i>');
-    }
+    $('button.play span', controls).html(icon);
 
     let repeatEl = $('button.repeat', controls);
     if (state.repeat) {
       repeatEl.addClass('active');
-      $('i', repeatEl).html(state.repeatSingle ? '1' : '');
+      if (state.repeatSingle) {
+        repeatEl.addClass('single');
+      }
+      else {
+        repeatEl.removeClass('single');
+      }
     }
     else {
-      repeatEl.removeClass('active');
-      $('i', repeatEl).html('');
+      repeatEl.removeClass('active single');
     }
 
     let randomEl = $('button.random', controls);

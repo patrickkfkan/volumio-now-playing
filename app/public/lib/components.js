@@ -23,25 +23,25 @@ export class ActionPanel {
 
     const html = `
     <div class="volume">
-      <i class="fa fa-volume-off mute"></i>
+      <span class="material-icons mute">volume_mute</span>
       <div class="volume-slider-wrapper">       
         <div class="volume-slider"></div>
       </div>
-      <i class="fa fa-volume-up max"></i>
+      <span class="material-icons max">volume_up</span>
     </div>
     <div class="actions-wrapper">
       <div class="screen-switcher">
         <div class="label-wrapper">
-          <div class="label"><i class="fa fa-television"></i></div>
+          <div class="label"><span class="material-icons">tv</span></div>
         </div>
         <div class="switches-wrapper">
-          <div class="switch" data-screen="browseMusic"><i class="fa fa-music"></i></div>
-          <div class="switch" data-screen="nowPlaying"><i class="fa fa-youtube-play"></i></div>
-          <div class="switch" data-screen="queue"><i class="fa fa-list"></i></div>
+          <div class="switch" data-screen="browseMusic"><span class="material-icons">library_music</span></div>
+          <div class="switch" data-screen="nowPlaying"><span class="material-icons">art_track</span></div>
+          <div class="switch" data-screen="queue"><span class="material-icons">queue_music</span></div>
         </div>
       </div>
       <div class="extra-switches-wrapper">
-        <div class="action refresh"><i class="fa fa-refresh" title=""></i></div>
+        <div class="action refresh"><span class="material-icons">refresh</span></div>
         <div class="action switch"><img src="/assets/volumio-icon.png" title=""></img></div>
       </div>
     </div>
@@ -269,11 +269,11 @@ export class VolumeIndicator {
       util.setCSSVariable('--volume-level', state.volume, this);
       let levelText;
       if (state.mute) {
-        levelText = `<i class="fa fa-volume-off"></i>`;
+        levelText = `<span class="material-icons">volume_off</span>`;
         volumeIndicator.addClass('muted');
       }
       else {
-        levelText = `<i class="fa fa-volume-up"></i> ${ state.volume }%`;
+        levelText = `<span class="material-icons">volume_up</span> ${ state.volume }%`;
         volumeIndicator.removeClass('muted');
       }
       $('.level-text', volumeIndicator).html(levelText);
@@ -364,10 +364,10 @@ export class TrackBar {
       </div>
       <div class="controls">
         <!--<button class="repeat"><i class="fa fa-repeat"></i></button>-->
-        <button class="queue"><i class="fa fa-list"></i></button>
-        <button class="previous"><i class="fa fa-step-backward"></i></button>
-        <button class="play"><i class="fa fa-play"></i></button>
-        <button class="next"><i class="fa fa-step-forward"></i></button>
+        <button class="queue"><span class="material-icons">queue_music</span></button>
+        <button class="previous"><span class="material-icons">skip_previous</span></button>
+        <button class="play"><span class="material-icons">play</span></button>
+        <button class="next"><span class="material-icons">skip_next</span></button>
         <!--<button class="random"><i class="fa fa-random"></i></button>-->
       </div>
     </div>
@@ -553,13 +553,12 @@ export class TrackBar {
   refreshControls(state) {
     let trackBar = $(this.el);
     let controls = $('.controls', trackBar);
+    let icon = 'play_arrow';
     if (state.status == 'play') {
-      let i = state.duration ? 'fa fa-pause' : 'fa fa-stop';
-      $('button.play', controls).html(`<i class="${i}"></i>`);
+      icon = state.duration ? 'pause' : 'stop';
     }
-    else {
-      $('button.play', controls).html('<i class="fa fa-play"></i>');
-    }
+    $('button.play span', controls).html(icon);
+
 /*
     let repeatEl = $('button.repeat', controls);
     if (state.repeat) {

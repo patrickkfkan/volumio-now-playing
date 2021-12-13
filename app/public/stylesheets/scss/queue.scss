@@ -131,10 +131,6 @@
         font-size: 1em;
         z-index: 100;
 
-        i {
-          font-size: 1.3em;
-        }
-
         &.clear:hover {
           color: #aa4a44;
         }
@@ -143,17 +139,15 @@
           color: #24a4f3;
         }
 
-        &.repeat.single {
-          position: relative;
-
-          &:after {
-            content: "1";
-            font-size: 0.7em;
-            font-family: "Roboto", sans-serif;
-            font-weight: 700;
-            position: absolute;
-            bottom: 0.2em;
-            right: 0.2em;
+        &.repeat {
+          span:before {
+            content: "\e040";
+            font-family: "Material Icons";
+            font-size: 1.5em;            
+          }
+          
+          &.single span:before {
+            content: "\e041";
           }
         }
       }

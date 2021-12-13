@@ -109,10 +109,6 @@
       transition: 0.2s;
       font-size: 1em;
   
-      i {
-        font-size: 1.3rem;
-      }
-  
       &:hover {
         color: #24a4f3;
       }
@@ -235,14 +231,17 @@
 
       button {
         font-size: var(--playback-buttons-size);
-        width: 2em;
+        width: 2.5em;
         height: 2.5em;
-        margin: 0px 4px;
+        /*margin: 0px 4px;*/
         border: none;
         background: none;
         color: var(--widget-primary-color);
         cursor: pointer;
         transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
         &:focus {
           outline: none;
@@ -257,9 +256,21 @@
           }
         }
 
+        &.repeat {
+          span:before {
+            content: "\e040";
+            font-family: "Material Icons";
+            font-size: 1.5em;            
+          }
+          
+          &.single span:before {
+            content: "\e041";
+          }
+        }
+
         &.play {
           width: 2.5em;
-          margin: 0px 8px;
+          /*margin: 0px 8px;*/
           border: 2px solid var(--widget-highlight-color);
           border-radius: 1.25em;
           color: var(--widget-highlight-color);
@@ -267,10 +278,6 @@
           &.hover {
             background: var(--widget-highlight-color);
             color: #fff;
-          }
-
-          i.fa-play {
-            margin-left: 0.25em;
           }
         }
 
@@ -402,7 +409,7 @@
       .track-info .controls button {
         &.repeat,
         &.random {
-          display: inline-block;
+          display: inline-flex;
         }
       }
     }

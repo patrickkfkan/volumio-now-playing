@@ -39,17 +39,18 @@
   font-size: 1em;
   z-index: 100;
 }
-#browse-music .contents .header button.action i {
-  font-size: 1.3em;
-}
 #browse-music .contents .header button.action.active {
   color: #24a4f3;
 }
-#browse-music .contents .header button.action.list-view-toggle[data-current=list] i:before {
-  content: "";
+#browse-music .contents .header button.action.list-view-toggle[data-current=list] span:before {
+  content: "";
+  font-family: "Material Icons";
+  font-size: 1.5em;
 }
-#browse-music .contents .header button.action.list-view-toggle[data-current=grid] i:before {
-  content: "";
+#browse-music .contents .header button.action.list-view-toggle[data-current=grid] span:before {
+  content: "";
+  font-family: "Material Icons";
+  font-size: 1.5em;
 }
 @media (min-width: 480px) {
   #browse-music .contents .header button.action.search-expand {
@@ -112,19 +113,14 @@
   outline: none !important;
   border-color: #24a4f3;
 }
-#browse-music .contents .header .main-actions .icon-text-input i {
+#browse-music .contents .header .main-actions .icon-text-input span {
   position: absolute;
-  left: 0.2em;
+  left: 0.4em;
   top: 0;
-  line-height: 1.8em;
+  line-height: 1.3em;
   text-align: center;
-  height: 2em;
-  width: 2em;
   color: #ccc;
   transition: 0.2s;
-}
-#browse-music .contents .header .main-actions .icon-text-input input[type=text]:focus + i {
-  color: #24a4f3;
 }
 #browse-music .contents .screen-actions {
   margin-top: 1em;
@@ -238,10 +234,6 @@
   background: #2828284d;
   transition: 0.2s ease-out;
   cursor: pointer;
-}
-#browse-music .contents .info-header .main .info .buttons button.play i {
-  font-size: 0.8em;
-  margin-right: 0.8em;
 }
 #browse-music .contents .info-header .main .info .buttons button.play:hover {
   background: #aaaaaa4d;
@@ -363,7 +355,7 @@
   }
 }
 #browse-music .contents .navigation section.list .items .item .text {
-  padding-left: 0.8em;
+  padding-left: 0.5em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -401,14 +393,12 @@
   width: var(--albumart-width);
   height: var(--albumart-height);
   opacity: 0.6;
-  /* Force fa-play-circle-o */
-  margin-left: 0.5em;
+  margin-left: 0.2em;
 }
-#browse-music .contents .navigation section.list .items .item .albumart .button-container button i {
+#browse-music .contents .navigation section.list .items .item .albumart .button-container button span:before {
+  content: "";
+  font-family: "Material Icons";
   font-size: 1.5em;
-}
-#browse-music .contents .navigation section.list .items .item .albumart .button-container button.play i:before {
-  content: "";
 }
 #browse-music .contents .navigation section.list .items .item .title-album-artist {
   flex-grow: 1;
@@ -561,7 +551,7 @@
 }
 @media (min-width: 1120px) {
   #browse-music .contents .navigation section.grid .items .item .albumart .button-container {
-    --play-button-margin: 12px;
+    --play-button-margin: 8px;
   }
 }
 @media (hover: none) {
@@ -572,21 +562,22 @@
 #browse-music .contents .navigation section.grid .items .item .albumart .button-container button {
   position: absolute;
 }
-#browse-music .contents .navigation section.grid .items .item .albumart .button-container button i {
-  font-size: calc(var(--play-button-diameter) / 3);
-}
 #browse-music .contents .navigation section.grid .items .item .albumart .button-container button.play {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 0.2em;
-  width: var(--play-button-diameter);
-  height: var(--play-button-diameter);
-  background: #0000009e;
   border-radius: 50%;
   opacity: 0.8;
   left: var(--play-button-margin);
   bottom: var(--play-button-margin);
+  width: var(--play-button-diameter);
+  height: var(--play-button-diameter);
+  background: rgba(0, 0, 0, 0.5);
+}
+#browse-music .contents .navigation section.grid .items .item .albumart .button-container button.play span:before {
+  content: "";
+  font-family: "Material Icons";
+  font-size: calc(var(--play-button-diameter) / 2);
 }
 #browse-music .contents .navigation section.grid .items .item .album,
 #browse-music .contents .navigation section.grid .items .item .duration,
