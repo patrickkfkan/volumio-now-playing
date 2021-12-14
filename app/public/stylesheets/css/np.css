@@ -19,11 +19,11 @@
   --default-max-title-lines: 1;
   --default-max-artist-lines: 1;
   --default-max-album-lines: 1;
-  --default-widget-primary-color: #ccc;
+  --default-widget-primary-color: #fff;
   --default-widget-highlight-color: #24a4f3;
-  --default-playback-buttons-visibility: inherit;
+  --default-playback-buttons-visibility: flex;
   --default-seekbar-visibility: inherit;
-  --default-playback-buttons-size: 1em;
+  --default-playback-buttons-size: 1.5em;
   --default-playback-buttons-margin: 1em 0px;
   --default-seekbar-margin: unset;
   --default-albumart-visibility: inherit;
@@ -228,22 +228,28 @@
 }
 #now-playing .track-info .controls {
   display: var(--playback-buttons-visibility);
-  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
   margin: var(--playback-buttons-margin);
 }
 #now-playing .track-info .controls button {
-  font-size: var(--playback-buttons-size);
-  width: 2.5em;
-  height: 2.5em;
   /*margin: 0px 4px;*/
   border: none;
   background: none;
   color: var(--widget-primary-color);
   cursor: pointer;
   transition: 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-size: var(--playback-buttons-size);
+  width: 1.5em;
+  height: 1.5em;
+  text-align: center;
+  padding: 0px;
+}
+#now-playing .track-info .controls button span {
+  line-height: 1.5em;
+  font-size: 1em;
+  width: 1.5em;
 }
 #now-playing .track-info .controls button:focus {
   outline: none;
@@ -257,21 +263,31 @@
 #now-playing .track-info .controls button.repeat span:before {
   content: "";
   font-family: "Material Icons";
-  font-size: 1.5em;
 }
 #now-playing .track-info .controls button.repeat.single span:before {
   content: "";
 }
 #now-playing .track-info .controls button.play {
-  width: 2.5em;
-  /*margin: 0px 8px;*/
-  border: 2px solid var(--widget-highlight-color);
-  border-radius: 1.25em;
   color: var(--widget-highlight-color);
+  position: relative;
 }
-#now-playing .track-info .controls button.play.hover {
+#now-playing .track-info .controls button.play:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border: 2px solid var(--widget-highlight-color);
+  border-radius: 50%;
+  transition: 0.2s;
+  z-index: -1;
+}
+#now-playing .track-info .controls button.play:hover {
+  color: var(--widget-primary-color) !important;
+}
+#now-playing .track-info .controls button.play:hover:before {
   background: var(--widget-highlight-color);
-  color: #fff;
 }
 #now-playing .track-info .controls button.previous:hover, #now-playing .track-info .controls button.next:hover {
   color: var(--widget-highlight-color);
@@ -366,6 +382,11 @@
     --default-media-info-margin: 0.2em 0px 0px 0px;
   }
 }
+@media (orientation: landscape) and (max-width: 579px) {
+  #now-playing .track-info .controls {
+    gap: 1em;
+  }
+}
 @media (orientation: landscape) and (min-width: 600px) and (min-height: 320px) {
   #now-playing {
     --default-playback-buttons-margin: 1em 0px 1.5em 0px;
@@ -376,14 +397,14 @@
     --default-max-title-lines: 2;
   }
 }
-@media (orientation: landscape) and (min-width: 480px) {
+@media (orientation: landscape) and (min-width: 340px) {
   #now-playing .track-info .controls button.repeat, #now-playing .track-info .controls button.random {
-    display: inline-flex;
+    display: inline-block;
   }
 }
 @media (orientation: landscape) and (min-width: 768px) {
-  #now-playing .track-info .controls button {
-    margin: 0px 12px;
+  #now-playing .track-info .controls {
+    gap: 24px;
   }
 }
 @media all and (orientation: landscape) {
@@ -403,7 +424,7 @@
 }
 @media all and (orientation: portrait) {
   #now-playing {
-    padding: 1.6em 40px;
+    padding: 2em 40px;
     --default-track-info-width: 80vw;
     --default-track-info-min-width: 80vw;
     --default-track-info-max-width: 100vw;
@@ -433,22 +454,27 @@
     display: inline-block;
   }
 }
-@media (orientation: portrait) and (min-width: 240px) and (max-width: 279px) {
+@media (orientation: portrait) and (max-width: 279px) {
   #now-playing {
-    --default-playback-buttons-size: 12px;
+    --default-playback-buttons-size: 20px;
   }
+  #now-playing .track-info .controls {
+    gap: 1em;
+  }
+}
+@media (orientation: portrait) and (min-width: 240px) and (max-width: 279px) {
   #now-playing .track-info .controls button.repeat, #now-playing .track-info .controls button.random {
     display: inline-block;
   }
 }
 @media (orientation: portrait) and (min-width: 320px) {
   #now-playing {
-    --default-playback-buttons-size: 0.7em;
+    --default-playback-buttons-size: 1.2em;
   }
 }
 @media (orientation: portrait) and (min-width: 380px) {
   #now-playing {
-    --default-playback-buttons-size: 0.9em;
+    --default-playback-buttons-size: 1.5em;
   }
 }
 @media (orientation: landscape) and (min-height: 240px) and (min-width: 400px) {
