@@ -7,13 +7,17 @@ export class QueueScreen {
     const html = `
       <div class="contents">
         <div class="header">
+          <div class="screen-actions">
+            <button class="action close"><span class="material-icons">expand_more</span></button>
+          </div>
+          <div class="title">
+            <div class="primary">Queue</div>
+            <div class="secondary">0 items</div>
+          </div>
           <div class="main-actions">
             <button class="action random"><span class="material-icons">shuffle</span></button>
             <button class="action repeat"><span></span></button>
             <button class="action clear"><span class="material-icons">clear_all</span></button>
-          </div>
-          <div class="screen-actions">
-            <button class="action close"><span class="material-icons">close</span></button>
           </div>
         </div>
         <div class="items-wrapper">
@@ -122,6 +126,7 @@ export class QueueScreen {
       item.attr('data-position', index);
       itemList.append(item);
     });
+    $('.title .secondary', screen).html(data.length + ' items');
   }
 
   createItem(data) {

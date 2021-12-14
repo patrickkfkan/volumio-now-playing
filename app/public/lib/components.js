@@ -352,7 +352,7 @@ export class TrackBar {
     this.albumartHandle = null;
 
     const html = `
-    <div class="seekbar-wrapper">
+    <div class="seekbar-wrapper noSwipe">
       <div class="seekbar"></div>
     </div>
     <div class="main">

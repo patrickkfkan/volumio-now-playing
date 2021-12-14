@@ -260,7 +260,7 @@
   /*padding-bottom: 1em;*/
 }
 #browse-music .contents .navigation section:last-of-type {
-  padding-bottom: 2em;
+  padding-bottom: 1em;
 }
 @media (min-width: 1024px) {
   #browse-music .contents .navigation section {
@@ -308,7 +308,7 @@
   --ellipsis-width: 2em;
   display: flex;
   flex-direction: column;
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 @media (min-width: 1024px) {
   #browse-music .contents .navigation section.list .items {
@@ -578,6 +578,7 @@
   content: "";
   font-family: "Material Icons";
   font-size: calc(var(--play-button-diameter) / 2);
+  line-height: var(--play-button-diameter);
 }
 #browse-music .contents .navigation section.grid .items .item .album,
 #browse-music .contents .navigation section.grid .items .item .duration,

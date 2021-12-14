@@ -391,8 +391,8 @@
   }
 
   .seekbar-wrapper {
-    --seekbar-height: 3px;
-    --handle-diameter: 0.8em;
+    --seekbar-height: 4px;
+    --handle-diameter: 1em;
     --handle-radius: calc(var(--handle-diameter) / 2);
     --handle-radius-offset: calc(-1 * var(--handle-radius));
 
@@ -432,6 +432,10 @@
         margin-left: var(--handle-radius-offset);
       }
 
+      .ui-slider-handle:hover {
+        cursor: pointer;
+      }
+
       &.ui-slider {
         @mixin slider-ba {
           content: "";
@@ -447,7 +451,7 @@
 
           left: var(--handle-radius-offset);
           background: var(--widget-highlight-color);
-          width: var(--handle-radius);
+          width: calc(var(--handle-radius) + 1px);
         }
 
         &:after {
@@ -456,6 +460,10 @@
           right: var(--handle-radius-offset);
           background: inherit;
           width: var(--handle-radius);
+        }
+
+        &:hover {
+          cursor: pointer;
         }
       }
     }
@@ -544,6 +552,9 @@
         width: 2em;
         height: 2em;
         font-size: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:focus {
           outline: none;

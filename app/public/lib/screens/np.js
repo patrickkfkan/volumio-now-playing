@@ -266,7 +266,6 @@ export class NowPlayingScreen {
 
   seeking(event, ui) {
     util.trackTimer.stop();
-
     let screen = $(this.el);
     let seek = ui.value;
     $('.seekbar-wrapper .seek', screen).text(util.timeToString(seek));

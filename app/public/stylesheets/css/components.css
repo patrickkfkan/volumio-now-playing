@@ -345,8 +345,8 @@
   border-top: 1px solid var(--widget-primary-color);
 }
 #track-bar .seekbar-wrapper {
-  --seekbar-height: 3px;
-  --handle-diameter: 0.8em;
+  --seekbar-height: 4px;
+  --handle-diameter: 1em;
   --handle-radius: calc(var(--handle-diameter) / 2);
   --handle-radius-offset: calc(-1 * var(--handle-radius));
   padding: 0px var(--handle-radius);
@@ -379,6 +379,9 @@
   outline: none;
   margin-left: var(--handle-radius-offset);
 }
+#track-bar .seekbar-wrapper .seekbar .ui-slider-handle:hover {
+  cursor: pointer;
+}
 #track-bar .seekbar-wrapper .seekbar.ui-slider:before {
   content: "";
   border: inherit;
@@ -388,7 +391,7 @@
   bottom: 0;
   left: var(--handle-radius-offset);
   background: var(--widget-highlight-color);
-  width: var(--handle-radius);
+  width: calc(var(--handle-radius) + 1px);
 }
 #track-bar .seekbar-wrapper .seekbar.ui-slider:after {
   content: "";
@@ -400,6 +403,9 @@
   right: var(--handle-radius-offset);
   background: inherit;
   width: var(--handle-radius);
+}
+#track-bar .seekbar-wrapper .seekbar.ui-slider:hover {
+  cursor: pointer;
 }
 #track-bar .main {
   display: flex;
@@ -485,6 +491,9 @@
   width: 2em;
   height: 2em;
   font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /*&.previous:hover,
   &.next:hover,
   &.play:hover {

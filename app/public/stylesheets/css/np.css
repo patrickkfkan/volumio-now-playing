@@ -120,6 +120,7 @@
   height: 2em;
   transition: 0.2s;
   font-size: 1em;
+  margin-top: 0.5em;
 }
 #now-playing .action-panel-trigger button.expand:hover {
   color: #24a4f3;
@@ -323,6 +324,9 @@
   border-radius: 1.2em;
   outline: none;
 }
+#now-playing .track-info .seekbar-wrapper .seekbar .ui-slider-handle:hover {
+  cursor: pointer;
+}
 #now-playing .track-info .seekbar-wrapper .seekbar.ui-slider:before {
   content: "";
   border: inherit;
@@ -345,6 +349,9 @@
   right: -0.6em;
   background: inherit;
   width: 0.8em;
+}
+#now-playing .track-info .seekbar-wrapper .seekbar.ui-slider:hover {
+  cursor: pointer;
 }
 #now-playing .track-info.controls-only .text,
 #now-playing .track-info.controls-only .seekbar-wrapper {

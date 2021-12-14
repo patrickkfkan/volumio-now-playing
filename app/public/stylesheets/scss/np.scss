@@ -108,6 +108,7 @@
       height: 2em;
       transition: 0.2s;
       font-size: 1em;
+      margin-top: 0.5em;
   
       &:hover {
         color: #24a4f3;
@@ -344,6 +345,10 @@
           outline: none;
         }
 
+        .ui-slider-handle:hover {
+          cursor: pointer;
+        }
+
         &.ui-slider {
           @mixin slider-ba {
             content: "";
@@ -368,6 +373,10 @@
             right: -0.6em;
             background: inherit;
             width: 0.8em;
+          }
+
+          &:hover {
+            cursor: pointer;
           }
         }
       }
