@@ -1009,6 +1009,44 @@
       ]
     },
     {
+      "id": "section_extra_screens",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_EXTRA_SCREENS",
+      "icon": "fa-television",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveExtraScreenSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "theme"
+        ]
+      },
+      "content": [
+        {
+          "id": "theme",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_THEME",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default", 
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "glass",
+              "label": "TRANSLATE.NOW_PLAYING_GLASS"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "section_kiosk",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_KIOSK",

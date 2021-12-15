@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="/stylesheets/css/browse-music.css">
   <link rel="stylesheet" href="/stylesheets/css/np.css">
   <link rel="stylesheet" href="/stylesheets/css/queue.css">
-  <link rel="stylesheet" href="/stylesheets/css/themes/glass.css">
+  <link id="theme-stylesheet" rel="stylesheet" href="">
 </head>
 
 <body>
@@ -86,12 +86,16 @@
   socket.on('nowPlayingSetCustomCSS', css => {
     settings.applyCustomStyles(css, registry.screens.nowPlaying);
   });
+  socket.on('nowPlayingSetTheme', theme => {
+    settings.applyTheme(theme);
+  })
 
   window.registry = registry;
   window.util = util;
   
   $(document).ready( () => {
     settings.applyCustomStyles(<%- JSON.stringify(styles || {}) %>, registry.screens.nowPlaying);
+    settings.applyTheme(<%- JSON.stringify(theme || 'default') %>);
     socket.connect();
   });
 </script>

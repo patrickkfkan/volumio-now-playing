@@ -36,7 +36,8 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         let widgetStylesUIConf = uiconf.sections[2];
         let albumartStylesUIConf = uiconf.sections[3];
         let backgroundStylesUIConf = uiconf.sections[4];
-        let kioskUIConf = uiconf.sections[5];
+        let extraScreensUIConf = uiconf.sections[5];
+        let kioskUIConf = uiconf.sections[6];
 
         /**
          * Daemon conf
@@ -328,6 +329,21 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         backgroundStylesUIConf.content[13].value = styles.backgroundOverlayOpacity || '';
 
         /**
+         * Extra Screens conf
+         */
+        let theme = np.getConfigValue('theme', 'default');
+        extraScreensUIConf.content[0].value = {
+            value: theme
+        };
+        switch (theme) {
+            case 'glass':
+                extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_GLASS');
+                break;
+            default: 
+                extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+        }
+
+        /**
          * Kiosk conf
          */
         let kiosk = checkVolumioKiosk();
@@ -583,6 +599,14 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+}
+
+ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function(data) {
+    let theme = data.theme.value;
+    this.config.set('theme', theme);
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingSetTheme', theme);
 }
 
 ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {

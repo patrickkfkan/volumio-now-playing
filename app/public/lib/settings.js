@@ -170,3 +170,8 @@ export function applyCustomStyles(styles = {}, target) {
 
   setCSSVariables(css, target);
 }
+
+export function applyTheme(theme) {
+  let styleSheetPath = theme === 'default' ? '' : `/stylesheets/css/themes/${ theme }.css`;
+  $('head link#theme-stylesheet').attr('href', styleSheetPath);
+}
