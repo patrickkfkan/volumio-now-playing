@@ -506,14 +506,14 @@ export class TrackBar {
     });
 
     let trackInfo = $('.track-info', trackBar);
-    $('.title', trackInfo).text(state.title || '');
+    $('.title', trackInfo).html(state.title || '');
 
     let artistAlbum = state.artist || '';
     if (state.album) {
       artistAlbum += artistAlbum ? ' - ' : '';
       artistAlbum += state.album;
     }
-    $('.artist-album', trackInfo).text(artistAlbum);
+    $('.artist-album', trackInfo).html(artistAlbum);
 
     let mediaInfo = $('.media-info', trackInfo);
     let mediaInfoText;
@@ -529,7 +529,7 @@ export class TrackBar {
       });
       mediaInfoText = mediaInfoValues.join(' ');
     }
-    $('.quality', mediaInfo).text(mediaInfoText);
+    $('.quality', mediaInfo).html(mediaInfoText);
 
     let mediaFormatIcon = util.getMediaFormatIcon(state.trackType);
     if (mediaFormatIcon) {

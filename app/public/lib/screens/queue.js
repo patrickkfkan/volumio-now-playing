@@ -161,14 +161,14 @@ export class QueueScreen {
     }
 
     let trackInfo = $('.track-info', item);
-    $('.title', trackInfo).text(data.title || data.name || '');
+    $('.title', trackInfo).html(data.title || data.name || '');
 
     let artistAlbum = data.artist || "";
     if (data.album) {
       artistAlbum += artistAlbum ? " - " : "";
       artistAlbum += data.album;
     }
-    $('.artist-album', trackInfo).text(artistAlbum);
+    $('.artist-album', trackInfo).html(artistAlbum);
 
     return item;
   }

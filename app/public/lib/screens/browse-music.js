@@ -326,8 +326,8 @@ export class BrowseMusicScreen {
       }
     });
     let dotHtml = '<i class="fa fa-circle dot"></i>';
-    $('.title', infoEl).text(titleText);
-    $('.artist', infoEl).text(artistText);
+    $('.title', infoEl).html(titleText);
+    $('.artist', infoEl).html(artistText);
     $('.media-info', infoEl).html(mediaInfoComponents.join(dotHtml));
 
     let buttons = $('.buttons', infoEl);

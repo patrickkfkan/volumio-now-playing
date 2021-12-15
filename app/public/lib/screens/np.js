@@ -188,9 +188,9 @@ export class NowPlayingScreen {
     });
 
     let trackInfo = $('.track-info', screen);
-    $('.title', trackInfo).text(state.title || '');
-    $('.artist', trackInfo).text(state.artist || '');
-    $('.album', trackInfo).text(state.album || '');
+    $('.title', trackInfo).html(state.title || '');
+    $('.artist', trackInfo).html(state.artist || '');
+    $('.album', trackInfo).html(state.album || '');
 
     let mediaInfo = $('.media-info', trackInfo);
     let mediaInfoText;
@@ -206,7 +206,7 @@ export class NowPlayingScreen {
       });
       mediaInfoText = mediaInfoValues.join(' ');
     }
-    $('.quality', mediaInfo).text(mediaInfoText);
+    $('.quality', mediaInfo).html(mediaInfoText);
 
     let mediaFormatIcon = util.getMediaFormatIcon(state.trackType);
     if (mediaFormatIcon) {
