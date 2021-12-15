@@ -51,4 +51,8 @@ body {
 }
 #screen-wrapper .screens > .screen:not(.active).visible-under-active {
   filter: brightness(0.5);
+}
+
+button:focus {
+  outline: none;
 }/*# sourceMappingURL=main.css.map */

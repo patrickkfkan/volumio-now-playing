@@ -255,7 +255,7 @@ export class BrowseMusicScreen {
 
     let buttons = $('.buttons', infoEl);
     if (this.hasPlayButton(data)) {
-      let playButtonHtml = '<button class="action play"><span class="materia-icons">play</span> Play</button>';
+      let playButtonHtml = '<button class="action play"><span class="material-icons">play_arrow</span><span>Play</span></button>';
       buttons.append($(playButtonHtml));
     }
 

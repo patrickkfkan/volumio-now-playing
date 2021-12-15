@@ -574,8 +574,8 @@
           color: var(--widget-highlight-color);
         }*/
 
-        &:hover {
-          color: var(--widget-highlight-color);
+        &:not(.active):hover {
+          color: #fff;
         }
       }
 

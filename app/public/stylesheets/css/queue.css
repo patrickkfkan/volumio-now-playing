@@ -103,7 +103,7 @@
   padding: 1em;
   box-sizing: border-box;
   gap: 1em;
-  justify-content: right;
+  justify-content: flex-end;
 }
 #queue .contents .items-wrapper {
   width: 100%;

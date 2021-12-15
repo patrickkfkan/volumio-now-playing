@@ -560,6 +560,10 @@
             margin-top: auto;
 
             button.play {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.4em;
               min-width: 6em;
               height: 2.3em;
               color: #fff;
@@ -569,6 +573,10 @@
               background: #2828284d;
               transition: 0.2s ease-out;
               cursor: pointer;
+
+              span.material-icons {
+                font-size: 1.2em;
+              }
 
               &:hover {
                 background: #aaaaaa4d;

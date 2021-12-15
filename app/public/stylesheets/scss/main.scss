@@ -59,3 +59,9 @@ body {
     filter: brightness(0.5);
   }
 }
+
+button {
+  &:focus {
+    outline: none;
+  }
+}

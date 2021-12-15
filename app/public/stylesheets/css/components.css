@@ -511,8 +511,8 @@
 #track-bar .main .controls button.active {
   color: var(--widget-highlight-color);
 }
-#track-bar .main .controls button:hover {
-  color: var(--widget-highlight-color);
+#track-bar .main .controls button:not(.active):hover {
+  color: #fff;
 }
 @media all and (max-width: 479px) {
   #track-bar .main .controls button.next {
