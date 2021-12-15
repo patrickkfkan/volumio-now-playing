@@ -88,6 +88,12 @@ export class ActionPanel {
           $(".ui-widget-overlay").on("click", () => {
             self.hide();
           });
+          // ...or swiped upwards
+          $(".ui-widget-overlay").swipe({
+            swipeUp: () => {
+              self.hide();
+            }
+          });
         },
         beforeClose: () => {
           util.setScreenBlur(false);

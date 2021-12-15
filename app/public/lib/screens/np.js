@@ -19,14 +19,14 @@ export class NowPlayingScreen {
           <span class="album"></span>
           <div class="media-info"><img class="format-icon" /><span class="quality"></span></div>
         </div>
-        <div class="controls">
+        <div class="controls noSwipe">
           <button class="repeat"><span></span></button>
           <button class="previous"><span class="material-icons">skip_previous</span></button>
           <button class="play"><span class="material-icons">play</span></button>
           <button class="next"><span class="material-icons">skip_next</span></button>
           <button class="random"><span class="material-icons">shuffle</span></button>
         </div>
-        <div class="seekbar-wrapper">
+        <div class="seekbar-wrapper noSwipe">
           <div class="seekbar"></div>
           <span class="seek"></span><span class="duration"></span>
         </div>
@@ -62,9 +62,30 @@ export class NowPlayingScreen {
         registry.ui.actionPanel.show();
       });
 
-      $('.action-panel-trigger', screen).swipe({
-        swipeDown: () => {
-          registry.ui.actionPanel.show();
+      screen.swipe( {
+        swipe: (event, direction, distance, duration, fingerCount, fingerData) => {
+          if (!fingerData || !fingerData[0]) {
+            return;
+          }
+
+          let fd = fingerData[0];
+          let w = screen.outerWidth();
+          let h = screen.outerHeight();
+          if (direction === 'down' && fd.start.y <= (h * 0.3)) {
+            registry.ui.actionPanel.show();
+          }
+          else if (direction === 'up' && fd.start.y >= (h * 0.7)) {
+            registry.screens.manager.switch(registry.screens.queue, {
+              showEffect: 'slideUp',
+              keepCurrentOpen: true
+            });
+          }
+          else if ( (direction === 'right' && fd.start.x <= (w * 0.3)) || 
+              (direction === 'left' && fd.start.x >= (w * 0.7)) ) {
+            registry.screens.manager.switch(registry.screens.browseMusic, {
+              showEffect: direction === 'right' ? 'slideRight' : 'slideLeft'
+            });
+          }
         }
       });
 
