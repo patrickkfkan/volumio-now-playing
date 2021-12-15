@@ -586,6 +586,7 @@ export class BrowseMusicScreen {
       return;
     }
     if (data.navigation) {
+      this.currentLocation.scrollPosition = this.getScrollPosition();
       this.showBrowseResults(data);
       this.addToBackHistory(this.currentLocation);
       let location = Object.assign({}, this.currentRequest, { pageData: data } );
@@ -629,6 +630,7 @@ export class BrowseMusicScreen {
       self.startFakeLoadingBar();
       self.requestRestApi(requestUrl, data => {
         if (data.navigation && self.currentRequest && self.currentRequest.type === 'browse' && self.currentRequest.uri === location.uri) {
+          self.currentLocation.scrollPosition = self.getScrollPosition();
           self.showBrowseResults(data);
           self.addToBackHistory(self.currentLocation);
           location.pageData = data;
@@ -672,6 +674,12 @@ export class BrowseMusicScreen {
     this.backHistory.push(location);
   }
 
+  getScrollPosition() {
+    let screen = $(this.el);
+    let scroll = $('.navigation-wrapper', screen).overlayScrollbars().scroll() || {};
+    return scroll.position || { x: 0, y: 0 };
+  }
+
   resetBackHistory() {
     this.backHistory = [];
   }
@@ -684,6 +692,10 @@ export class BrowseMusicScreen {
     }
     else if (prevLocation.type === 'browse' || prevLocation.type === 'search') {
       this.showBrowseResults(prevLocation.pageData);
+      if (prevLocation.scrollPosition) {
+        let screen = $(this.el);
+        $('.navigation-wrapper', screen).overlayScrollbars().scroll(prevLocation.scrollPosition, 0);
+      }
       this.setCurrentLocation(prevLocation);
     }
     this.stopFakeLoadingBar(true);
