@@ -122,4 +122,17 @@
 #action-panel .actions-wrapper .action {
   background: rgba(0, 0, 0, 0.3);
   color: #ccc;
+}
+
+#volume-panel .contents .volume {
+  background: rgba(0, 0, 0, 0.8);
+}
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+  #volume-panel {
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+  }
+  #volume-panel .contents .volume {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }/*# sourceMappingURL=glass.css.map */

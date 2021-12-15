@@ -265,7 +265,7 @@ export class VolumeIndicator {
   }
 
   update(state) {
-    if (registry.ui.actionPanel.isOpen()) {
+    if (registry.ui.actionPanel.isOpen() || registry.ui.volumePanel.isOpen()) {
       return;
     }
     let oldVolume = this.oldVolume;
@@ -374,6 +374,7 @@ export class TrackBar {
         <button class="previous"><span class="material-icons">skip_previous</span></button>
         <button class="play"><span class="material-icons">play</span></button>
         <button class="next"><span class="material-icons">skip_next</span></button>
+        <button class="volume"><span class="material-icons">volume_up</span></button>
         <!--<button class="random"><i class="fa fa-random"></i></button>-->
       </div>
     </div>
@@ -456,6 +457,15 @@ export class TrackBar {
       $('.next', controls).on('click', () => {
         socket.emit('next');
       });
+
+      $('.volume', controls).on('click', function() {
+        if (!registry.ui.volumePanel.isOpen()) {
+          registry.ui.volumePanel.show();
+        }
+        else {
+          registry.ui.volumePanel.hide();
+        }
+      })
 
       registry.screens.manager.on('screenChanged', (current, previous) => {
         if (current.getScreenName() === 'queue') {
@@ -604,5 +614,163 @@ export class TrackBar {
 
   hide() {
     $(this.el).hide('slide', { direction: 'down' }, 100);
+  }
+}
+
+export class VolumePanel {
+  constructor(panel) {
+    this.el = panel;
+    this.slideVolumeTimer = null;
+    this.slideVolumeValue = 0;
+    this.autoCloseHandler = (e) => {
+      console.log(e);
+      this.hide();
+    };
+
+    const html = `
+    <div class="contents">
+      <div class="volume">
+        <span class="material-icons mute">volume_mute</span>
+        <div class="volume-slider-wrapper">       
+          <div class="volume-slider"></div>
+        </div>
+        <span class="material-icons max">volume_up</span>
+      </div>
+    </div>
+    `;
+
+    let self = this;
+    let panelEl = $(this.el);
+
+    panelEl.hide();
+    panelEl.html(html);
+
+    // Socket events
+    registry.state.on('stateChanged', state => {
+      self.updateVolumeSlider(state);
+    });
+    
+    $(document).ready( () => {
+      $('.volume-slider', panelEl).slider({
+        orientation: 'horizontal',
+        range: 'min',
+        min: 0,
+        max: 100,
+        start: self.beginSlideVolume.bind(self),
+        stop: self.endSlideVolume.bind(self),
+        change: self.setVolume.bind(self),
+        slide: self.slideVolume.bind(self)
+      });
+  
+      $('.max', panelEl).on('click', () => {
+        registry.socket.emit('volume', 100);
+      });
+  
+      $('.mute', panelEl).on('click', function() {
+        if ($(this).hasClass('active')) {
+          registry.socket.emit('unmute');
+        }
+        else {
+          registry.socket.emit('mute');
+        }
+      });
+
+      registry.screens.manager.on('screenChanged', (current, previous) => {
+        self.hide();
+      });
+
+    });
+  }
+
+  static init(data) {
+    return new VolumePanel(data);
+  }
+
+  show() {
+    let panelEl = $(this.el);
+    let contents = $('.contents', panelEl);
+    contents.hide();
+    panelEl.show();
+    contents.show('drop', { direction: 'down' }, 100, () => {
+      this.addOverlay();
+    });
+  }
+
+  hide(complete) {
+    let panelEl = $(this.el);
+    let contents = $('.contents', panelEl);
+    contents.hide('drop', { direction: 'down' }, 100, () => {
+      panelEl.hide();
+    });
+  }
+
+  isOpen() {
+    return $(this.el).is(':visible');
+  }
+
+  updateVolumeSlider(state) {
+    let panelEl = $(this.el);
+    let volumeSlider = $('.volume-slider', panelEl);
+    if (!volumeSlider.data('sliding')) {
+      volumeSlider.slider('option', 'value', state.volume);
+    }
+    if (state.disableVolumeControl) {
+      $('.volume', panelEl).addClass('disabled');
+    }
+    else {
+      $('.volume', panelEl).removeClass('disabled');
+    }
+    if (state.mute) {
+      $('.mute', panelEl).addClass('active');
+      $('.volume-slider', panelEl).addClass('muted');
+    }
+    else {
+      $('.mute', panelEl).removeClass('active');
+      $('.volume-slider', panelEl).removeClass('muted');
+    }
+  }
+
+  setVolume(event, ui) {
+    if (!event.originalEvent) { // No original event if programatically changed value
+      return;
+    }
+    registry.socket.emit('volume', (ui.value));
+  }
+  
+  slideVolume(event, ui) {
+    this.slideVolumeValue = ui.value;
+  }
+
+  beginSlideVolume(event, ui) {
+    if (this.slideVolumeTimer) {
+      clearInterval(this.slideVolumeTimer);
+    }
+    this.slideVolumeValue = ui.value;
+    this.slideVolumeTimer = setInterval(() => {
+      registry.socket.emit('volume', this.slideVolumeValue);
+    }, 300);
+    let panelEl = $(this.el);
+    $('.volume-slider', panelEl).data('sliding', true);
+  }
+
+  endSlideVolume(event, ui) {
+    if (this.slideVolumeTimer) {
+      clearInterval(this.slideVolumeTimer);
+    }
+    let panelEl = $(this.el);
+    $('.volume-slider', panelEl).data('sliding', false);
+  }
+
+  addOverlay() {
+    let self = this;
+    let overlay = $('<div class="transparent-overlay"></div>');
+    $('body').append(overlay);
+    $(self.el).css('z-index', '101');
+    overlay.on('click', function() {
+      $(this).remove();
+      self.hide(() => {
+        $(self.el).css('z-index', '');
+      });
+    });
   }
 }

@@ -426,6 +426,11 @@
      object-fit: cover;
   border-radius: 0.2em;
 }
+@media all and (max-width: 319px) {
+  #track-bar .main .albumart {
+    display: none;
+  }
+}
 #track-bar .main .track-info {
   flex-grow: 1;
   display: flex;
@@ -509,8 +514,114 @@
 #track-bar .main .controls button:hover {
   color: var(--widget-highlight-color);
 }
+@media all and (max-width: 479px) {
+  #track-bar .main .controls button.next {
+    display: none;
+  }
+}
 @media all and (max-width: 580px) {
   #track-bar .main .controls button.previous {
     display: none;
   }
+}
+
+/* Volume panel */
+#volume-panel {
+  position: absolute;
+  bottom: 5.5em;
+  right: 0.8em;
+  min-height: 0px !important;
+  filter: drop-shadow(0 0 8px #00000080);
+  pointer-events: none;
+  max-width: 480px;
+  min-width: 240px;
+  width: 60%;
+  overflow: hidden;
+}
+#volume-panel .contents .volume {
+  background: #202020;
+  border-radius: 0.5em;
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  pointer-events: auto;
+  position: relative;
+}
+#volume-panel .contents .volume.disabled:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+#volume-panel .contents .volume .mute {
+  font-size: 1.3em;
+  line-height: 1.5em;
+  cursor: pointer;
+  color: #ccc;
+  margin-right: 10px;
+}
+#volume-panel .contents .volume .mute.active {
+  color: #24a4f3;
+}
+#volume-panel .contents .volume .max {
+  font-size: 1.3em;
+  line-height: 1.5em;
+  cursor: pointer;
+  color: #ccc;
+  margin-left: 10px;
+}
+#volume-panel .contents .volume .volume-slider-wrapper {
+  flex-grow: 1;
+  border-radius: 1em;
+  overflow: hidden;
+  position: relative;
+}
+#volume-panel .contents .volume .volume-slider-wrapper .volume-slider.ui-widget-content {
+  background: #ccc;
+}
+#volume-panel .contents .volume .volume-slider-wrapper .volume-slider.ui-slider-horizontal {
+  height: 1.5em !important;
+  border: none;
+}
+#volume-panel .contents .volume .volume-slider-wrapper .volume-slider .ui-slider-range {
+  background: #24a4f3;
+  border-radius: 0px;
+}
+#volume-panel .contents .volume .volume-slider-wrapper .volume-slider .ui-slider-handle {
+  visibility: hidden;
+}
+#volume-panel .contents .volume .volume-slider-wrapper .volume-slider.muted .ui-slider-range {
+  background: #aaa;
+}
+#volume-panel .contents .volume.disabled .volume-slider-wrapper:after {
+  content: "";
+  font-family: "Material Icons";
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  text-align: center;
+  color: #fff;
+}
+
+.ui-widget-overlay {
+  background: #000 !important;
+  /*opacity: 0.7 !important;*/
+}
+
+.transparent-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }/*# sourceMappingURL=components.css.map */

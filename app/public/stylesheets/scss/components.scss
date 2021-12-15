@@ -487,6 +487,10 @@
         object-fit: cover;
         border-radius: 0.2em;
       }
+
+      @media all and (max-width: 319px) {
+        display: none;
+      }
     }
 
     .track-info {
@@ -575,6 +579,12 @@
         }
       }
 
+      @media all and (max-width: 479px) {
+        button.next {
+          display: none;
+        }
+      }
+
       @media all and (max-width: 580px) {
         button.previous {
           display: none;
@@ -589,4 +599,119 @@
       }*/
     }
   }
+}
+
+/* Volume panel */
+#volume-panel {
+  position: absolute;
+  bottom: 5.5em; // 4.5em: track bar height
+  right: 0.8em;
+  min-height: 0px !important;
+  filter: drop-shadow(0 0 8px #00000080);
+  pointer-events: none;
+  max-width: 480px;
+  min-width: 240px;
+  width: 60%;
+  overflow: hidden;
+
+  .contents {
+    .volume {
+      background: #202020;
+      border-radius: 0.5em;
+      display: flex;
+      align-items: center;
+      padding: 1em;
+      pointer-events: auto;
+      position: relative;
+
+      &.disabled:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+      }
+
+      @mixin volume-button {
+        font-size: 1.3em;
+        line-height: 1.5em;
+        cursor: pointer;
+        color: #ccc;
+      }
+
+      .mute {
+        @include volume-button;
+
+        margin-right: 10px;
+        &.active {
+          color: #24a4f3;
+        }
+      }
+
+      .max {
+        @include volume-button;
+        margin-left: 10px;
+      }
+
+      .volume-slider-wrapper {
+        flex-grow: 1;
+        border-radius: 1em;
+        overflow: hidden;
+        position: relative;
+
+        .volume-slider {
+          &.ui-widget-content {
+            background: #ccc;
+          }
+          &.ui-slider-horizontal {
+            height: 1.5em !important;
+            border: none;
+          }
+          .ui-slider-range {
+            background: #24a4f3;
+            border-radius: 0px;
+          }
+          .ui-slider-handle {
+            visibility: hidden;
+          }
+          &.muted .ui-slider-range {
+            background: #aaa;
+          }
+        }
+
+      }
+
+      &.disabled .volume-slider-wrapper:after {
+        content: "\e14b";
+        font-family: "Material Icons";
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        text-align: center;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.ui-widget-overlay {
+  background: #000 !important;
+  /*opacity: 0.7 !important;*/
+}
+
+.transparent-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }

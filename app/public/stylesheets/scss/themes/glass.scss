@@ -174,3 +174,17 @@
     }
   }
 }
+
+#volume-panel {
+  & .contents .volume {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  @supports (backdrop-filter: none) {
+    backdrop-filter: blur(10px);
+
+    & .contents .volume {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

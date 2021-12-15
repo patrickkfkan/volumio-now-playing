@@ -19,6 +19,7 @@ export function init(data) {
     registry.ui.volumeIndicator = Components.VolumeIndicator.init(data.ui.volumeIndicator);
     registry.ui.disconnectIndicator = Components.DisconnectIndicator.init(data.ui.disconnectIndicator);
     registry.ui.trackBar = Components.TrackBar.init(data.ui.trackBar);
+    registry.ui.volumePanel = Components.VolumePanel.init(data.ui.volumePanel);
   }
   if (data.screens) {
     registry.screens = {};
