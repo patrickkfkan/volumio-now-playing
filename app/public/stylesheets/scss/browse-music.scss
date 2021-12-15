@@ -751,4 +751,28 @@
     background: #24a4f3;
     transition: 0.2s ease-out;
   }
+
+  /*
+   * Temporary workaround for my plugins that provide rich titles
+   */
+  .rich-title {
+    display: flex;
+    align-items: center;
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+      font-family: "Roboto", sans-serif;
+      transition: 0.2s;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    div {
+      border-color: #ccc !important;
+    }
+  }
+
 }

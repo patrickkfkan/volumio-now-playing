@@ -9,6 +9,9 @@
   box-sizing: border-box;
   background: #202020;
   --loading-percent: 0;
+  /*
+   * Temporary workaround for my plugins that provide rich titles
+   */
 }
 #browse-music .contents {
   display: flex;
@@ -641,4 +644,20 @@
   top: 0;
   background: #24a4f3;
   transition: 0.2s ease-out;
+}
+#browse-music .rich-title {
+  display: flex;
+  align-items: center;
+}
+#browse-music .rich-title a {
+  color: #ccc;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  transition: 0.2s;
+}
+#browse-music .rich-title a:hover {
+  color: #fff;
+}
+#browse-music .rich-title div {
+  border-color: #ccc !important;
 }/*# sourceMappingURL=browse-music.css.map */

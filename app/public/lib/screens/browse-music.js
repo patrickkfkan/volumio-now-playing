@@ -162,6 +162,83 @@ export class BrowseMusicScreen {
         }
       });
     })
+
+    /*
+     * Temporary workaround for my plugins that provide in-title links
+     */
+    const _angularBrowseFn = {
+      fetchLibrary: (data) => {
+        self.browse({
+          type: 'browse',
+          service: self.currentLocation.service,
+          uri: data.uri
+        });
+      },
+      socketService: registry.socket
+    };
+    const _angularBrowsePageEl = {
+      scope: () => {
+        return {
+          browse: _angularBrowseFn
+        }
+      }
+    }
+    const angular = {
+      element: (t) => {
+        if (t === '#browse-page') {
+          return _angularBrowsePageEl;
+        }
+      }
+    };
+    window.angular = angular;
+  }
+
+  /*
+   * Temporary workaround for my plugins that provide rich titles
+   */
+  formatRichTitle(s) {
+    let hasHtml = /<[a-z][\s\S]*>/i.test(s);
+    if (!hasHtml) {
+      return s;
+    }
+    let titleEl = $('<div>' + s + '</div>');
+
+    // Process images
+    titleEl.find('img').each( function() {
+      let img = $(this);
+      let src = img.attr('src');
+      if (src.startsWith('/albumart')) {
+        img.attr('src', registry.app.host + src);
+      }
+      // Also format image containers
+      let container = img.parent('div');
+      container.css({
+        'display': 'flex',
+        'align-items': 'center'
+      });
+      if (container.css('text-align') == 'right') {
+        container.css('justify-content', 'flex-end');
+      }
+    });
+
+    // Process divs
+    titleEl.find('div').each( function() {
+      let div = $(this);
+      // Remove negative bottom margins and relative top positions
+      // because our screens do not show insanely huge default margins
+      if (div.css('margin-bottom') && parseInt(div.css('margin-bottom'), 10) < 0) {
+        div.css('margin-bottom', '0');
+      }
+      if (div.css('top')) {
+        div.css('top', '0');
+      }
+    })
+
+    let html = `
+      <div class="rich-title">
+        ${ titleEl.html() }
+      </div>`;
+    return html;
   }
 
   static init(el) {
@@ -266,7 +343,7 @@ export class BrowseMusicScreen {
 
   createSection(data) {
     let self = this;
-    let title = data.title || '';
+    let title = data.title ? self.formatRichTitle(data.title) : '';
     let availableListViews = data.availableListViews;;
     if (!Array.isArray(availableListViews) || availableListViews.length == 0) {
       availableListViews = ['list', 'grid'];
