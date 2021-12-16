@@ -183,6 +183,21 @@ export function setScreenBlur(blur = true) {
   }
 }
 
+let currentSnackbar;
+export function showSnackbar(data) {
+  const show = () => {
+    currentSnackbar = registry.ui.snackbar.create(data).show();
+  }
+  if (currentSnackbar) {
+    currentSnackbar.dismiss({
+      complete: show
+    });
+  }
+  else {
+    show();
+  }
+}
+
 /*let screenStack = [];
 
 export function setActiveScreen(screen, options = {}) {

@@ -336,7 +336,7 @@
 
   --loading-percent: 0;
 
-  .contents {
+  & > .contents {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -741,7 +741,7 @@
     }
   }
 
-  &.loading .contents .header:before {
+  &.loading > .contents .header:before {
     content: "";
     width: var(--loading-percent);
     height: 3px;

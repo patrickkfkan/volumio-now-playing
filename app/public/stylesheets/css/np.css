@@ -125,7 +125,7 @@
 #now-playing .action-panel-trigger button.expand:hover {
   color: #24a4f3;
 }
-#now-playing .contents {
+#now-playing > .contents {
   display: flex;
   width: 100%;
   height: 100%;
@@ -430,7 +430,7 @@
     --default-track-info-max-width: 100vw;
     --default-playback-buttons-margin: 1em 0px 2em 0px;
   }
-  #now-playing .contents {
+  #now-playing > .contents {
     flex-direction: column;
   }
   #now-playing .albumart {

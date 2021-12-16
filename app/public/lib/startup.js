@@ -38,6 +38,7 @@ export function init(data) {
     });
   }
   registry.screens.manager = ScreenManager.init();
+  registry.ui.snackbar = Components.snackbar;
 }
 
 let _socket;

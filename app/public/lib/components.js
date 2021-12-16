@@ -774,3 +774,112 @@ export class VolumePanel {
     });
   }
 }
+
+class Snackbar {
+
+  constructor(data) {
+    this.type = data.type;
+    this.message = data.message;
+    this.title = data.title;
+  }
+
+  show() {
+    let html = `
+      <div class="snackbar-wrapper">
+        <div class="snackbar">
+          <div class="icon"></div>
+          <div class="contents">
+            <div class="title"></div>
+            <div class="message"></div>
+          </div>
+          <div class="actions">
+            <button class="action close"><span class="material-icons">close</span></button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    let snackbarEl = $(html);
+    let icon;
+    switch(this.type) {
+      case 'success':
+        icon = 'check_circle_outline';
+        break;
+      case 'info':
+        icon = 'info';
+        break;
+      case 'warning':
+        icon = 'warning_amber';
+        break;
+      case 'error':
+      case 'stickyerror':
+        icon = 'error_outline';
+        break;
+    }
+    if (icon) {
+      $('.icon', snackbarEl).html(`<span class="material-icons">${ icon }</span>`);
+    }
+    if (this.title) {
+      $('.title', snackbarEl).html(this.title);
+    }
+    else {
+      $('.title', snackbarEl).remove();
+    }
+    if (this.message) {
+      $('.message', snackbarEl).html(this.message);
+    }
+    if (this.type) {
+      $('.snackbar', snackbarEl).addClass(this.type);
+    }
+    snackbarEl.hide();
+
+    $('body').append(snackbarEl);
+    this.el = snackbarEl;
+
+    let self = this;
+    snackbarEl.show('drop', { direction: 'down' }, 100, () => {
+      self.dismissTimer = setTimeout(self.dismiss.bind(self), 5000);
+    });
+
+    $('.action.close', snackbarEl).on('click', () => {
+      self.dismiss();
+    });
+
+    snackbarEl.swipe({
+      swipeLeft: () => { self.dismiss({ effect: 'dropLeft' }); },
+      swipeRight: () => { self.dismiss({ effect: 'dropRight' }); }
+    });
+
+    return this;
+  }
+
+  dismiss(options = {}) {
+    let self = this;
+    if (self.dismissTimer) {
+      clearTimeout(self.dismissTimer);
+      self.dismissTimer = null;
+    }
+
+    const onHide = () => {
+      self.el.remove();
+      if (options.complete) {
+        options.complete();
+      }
+    };
+
+    switch(options.effect) {
+      case 'dropLeft':
+        self.el.hide('drop', { direction: 'left' }, 200, onHide);
+        break;
+      case 'dropRight':
+        self.el.hide('drop', { direction: 'right' }, 200, onHide);
+        break;
+      default:
+        self.el.hide('fade', 200, onHide);
+    }
+  }
+}
+
+export const snackbar = { 
+  create: data => new Snackbar(data)
+};

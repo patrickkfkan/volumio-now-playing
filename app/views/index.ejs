@@ -89,6 +89,10 @@
   socket.on('nowPlayingSetTheme', theme => {
     settings.applyTheme(theme);
   })
+  socket.on('pushToastMessage', data => {
+      // this.$log.debug('pushToastMessage', data);
+      util.showSnackbar(data);
+    });
 
   window.registry = registry;
   window.util = util;

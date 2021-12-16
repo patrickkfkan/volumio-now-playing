@@ -112,7 +112,7 @@
   box-sizing: border-box;
   /*background: #202020;*/
 
-  .contents {
+  & > .contents {
     display: flex;
     flex-direction: column;
     width: 100%;

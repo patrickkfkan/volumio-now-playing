@@ -125,14 +125,21 @@
 }
 
 #volume-panel .contents .volume {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(32, 32, 32, 0.7);
 }
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   #volume-panel {
     -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
   }
-  #volume-panel .contents .volume {
-    background: rgba(0, 0, 0, 0.5);
+}
+
+.snackbar-wrapper .snackbar {
+  background: rgba(32, 32, 32, 0.7);
+}
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+  .snackbar-wrapper .snackbar {
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
   }
 }/*# sourceMappingURL=glass.css.map */

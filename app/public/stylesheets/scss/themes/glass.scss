@@ -177,14 +177,18 @@
 
 #volume-panel {
   & .contents .volume {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(32, 32, 32, 0.7);
   }
 
   @supports (backdrop-filter: none) {
     backdrop-filter: blur(10px);
+  }
+}
 
-    & .contents .volume {
-      background: rgba(0, 0, 0, 0.5);
-    }
+.snackbar-wrapper .snackbar {
+  background: rgb(32, 32, 32, 0.7);
+
+  @supports (backdrop-filter: none) {
+    backdrop-filter: blur(10px);
   }
 }
