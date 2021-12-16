@@ -629,7 +629,14 @@ export class BrowseMusicScreen {
       let requestUrl = `${ registry.app.host }/api/v1/browse?uri=${ encodeURIComponent(encodeURIComponent(location.uri)) }`;
       self.startFakeLoadingBar();
       self.requestRestApi(requestUrl, data => {
-        if (data.navigation && self.currentRequest && self.currentRequest.type === 'browse' && self.currentRequest.uri === location.uri) {
+        if (data.error) {
+          self.stopFakeLoadingBar(true);
+          util.showSnackbar({
+            type: 'error',
+            message: data.error
+          });
+        }
+        else if (data.navigation && self.currentRequest && self.currentRequest.type === 'browse' && self.currentRequest.uri === location.uri) {
           self.currentLocation.scrollPosition = self.getScrollPosition();
           self.showBrowseResults(data);
           self.addToBackHistory(self.currentLocation);
