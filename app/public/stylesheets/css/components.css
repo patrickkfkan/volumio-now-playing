@@ -530,12 +530,8 @@
   position: absolute;
   bottom: 5.5em;
   right: 0.8em;
-  min-height: 0px !important;
   filter: drop-shadow(0 0 8px #00000080);
   pointer-events: none;
-  max-width: 480px;
-  min-width: 240px;
-  width: 60%;
   overflow: hidden;
 }
 #volume-panel .contents .volume {
@@ -561,7 +557,6 @@
   line-height: 1.5em;
   cursor: pointer;
   color: #ccc;
-  margin-right: 10px;
 }
 #volume-panel .contents .volume .mute.active {
   color: #24a4f3;
@@ -571,7 +566,6 @@
   line-height: 1.5em;
   cursor: pointer;
   color: #ccc;
-  margin-left: 10px;
 }
 #volume-panel .contents .volume .volume-slider-wrapper {
   flex-grow: 1;
@@ -581,10 +575,6 @@
 }
 #volume-panel .contents .volume .volume-slider-wrapper .volume-slider.ui-widget-content {
   background: #ccc;
-}
-#volume-panel .contents .volume .volume-slider-wrapper .volume-slider.ui-slider-horizontal {
-  height: 1.5em !important;
-  border: none;
 }
 #volume-panel .contents .volume .volume-slider-wrapper .volume-slider .ui-slider-range {
   background: #24a4f3;
@@ -611,11 +601,148 @@
   text-align: center;
   color: #fff;
 }
+#volume-panel.horizontal {
+  min-height: 0px !important;
+  max-width: 480px;
+  min-width: 240px;
+  width: 60%;
+}
+#volume-panel.horizontal .contents .volume {
+  flex-direction: row;
+}
+#volume-panel.horizontal .contents .volume .mute {
+  margin-right: 10px;
+}
+#volume-panel.horizontal .contents .volume .max {
+  margin-left: 10px;
+}
+#volume-panel.horizontal .contents .volume .volume-slider-wrapper .volume-slider.ui-slider-horizontal {
+  height: 1.5em !important;
+  border: none;
+}
+#volume-panel.vertical {
+  bottom: 4.8em;
+  min-width: 0px !important;
+  max-height: 320px;
+  height: 60%;
+}
+#volume-panel.vertical .contents {
+  height: 100%;
+}
+#volume-panel.vertical .contents .volume {
+  height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+#volume-panel.vertical .contents .volume .volume-slider-wrapper .volume-slider.ui-slider-vertical {
+  width: 1.5em !important;
+  height: 100%;
+  border: none;
+}
 
+/*#volume-panel {
+  position: absolute;
+  bottom: 5.5em; // 4.5em: track bar height
+  right: 0.8em;
+  min-height: 0px !important;
+  filter: drop-shadow(0 0 8px #00000080);
+  pointer-events: none;
+  max-width: 480px;
+  min-width: 240px;
+  width: 60%;
+  overflow: hidden;
+
+  .contents {
+    .volume {
+      background: #202020;
+      border-radius: 0.5em;
+      display: flex;
+      align-items: center;
+      padding: 1em;
+      pointer-events: auto;
+      position: relative;
+
+      &.disabled:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+      }
+
+      @mixin volume-button {
+        font-size: 1.3em;
+        line-height: 1.5em;
+        cursor: pointer;
+        color: #ccc;
+      }
+
+      .mute {
+        @include volume-button;
+
+        margin-right: 10px;
+        &.active {
+          color: #24a4f3;
+        }
+      }
+
+      .max {
+        @include volume-button;
+        margin-left: 10px;
+      }
+
+      .volume-slider-wrapper {
+        flex-grow: 1;
+        border-radius: 1em;
+        overflow: hidden;
+        position: relative;
+
+        .volume-slider {
+          &.ui-widget-content {
+            background: #ccc;
+          }
+          &.ui-slider-horizontal {
+            height: 1.5em !important;
+            border: none;
+          }
+          .ui-slider-range {
+            background: #24a4f3;
+            border-radius: 0px;
+          }
+          .ui-slider-handle {
+            visibility: hidden;
+          }
+          &.muted .ui-slider-range {
+            background: #aaa;
+          }
+        }
+
+      }
+
+      &.disabled .volume-slider-wrapper:after {
+        content: "\e14b";
+        font-family: "Material Icons";
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        text-align: center;
+        color: #fff;
+      }
+    }
+  }
+}*/
 /* Snackbar */
 .snackbar-wrapper {
   position: absolute;
-  bottom: 3em;
+  bottom: 6em;
   left: 0;
   width: 100%;
   text-align: center;

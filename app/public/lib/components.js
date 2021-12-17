@@ -618,7 +618,7 @@ export class TrackBar {
 }
 
 export class VolumePanel {
-  constructor(panel) {
+  constructor(panel, orientation = 'vertical') {
     this.el = panel;
     this.slideVolumeTimer = null;
     this.slideVolumeValue = 0;
@@ -637,13 +637,20 @@ export class VolumePanel {
         <span class="material-icons max">volume_up</span>
       </div>
     </div>
-    `;
+    `; // This is for hoizontal orientation
 
     let self = this;
     let panelEl = $(this.el);
 
+    panelEl.addClass(orientation);
     panelEl.hide();
     panelEl.html(html);
+
+    if (orientation == 'vertical') {
+      let sliderWrapperEl = $('.volume-slider-wrapper', panelEl);
+      sliderWrapperEl.before($('.max', panelEl));
+      sliderWrapperEl.after($('.mute', panelEl));
+    }
 
     // Socket events
     registry.state.on('stateChanged', state => {
@@ -652,7 +659,7 @@ export class VolumePanel {
     
     $(document).ready( () => {
       $('.volume-slider', panelEl).slider({
-        orientation: 'horizontal',
+        orientation,
         range: 'min',
         min: 0,
         max: 100,
