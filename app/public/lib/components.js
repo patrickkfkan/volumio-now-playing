@@ -4,6 +4,14 @@ import { registry } from './registry.js';
 export class Background {
   constructor(el) {
     this.el = el;
+    this.currentSrc = null;
+    // Non-webkit based browsers do not support 
+    // CSS 'transition: background-image'. Use manual.
+    this.useManualTransition = navigator.userAgent.indexOf('AppleWebKit') < 0;
+
+    if (this.useManualTransition) {
+      $(this.el).addClass('manual-transition');
+    }
   }
 
   static init(el) {
@@ -11,8 +19,42 @@ export class Background {
   }
 
   setImage(src) {
-    util.setCSSVariable('--default-background-image', `url("${ src }")`, this);
+    if (this.currentSrc === src) {
+      return;
+    }
+    this.currentSrc = src;
+    let bgEl = $(this.el);
+    if (this.useManualTransition && !bgEl.hasClass('fixed')) {
+      this.updateByManualTransition();
+    }
+    else {
+      util.setCSSVariable('--default-background-image', `url("${ src }")`, this);
+    }
   }
+
+  updateByManualTransition() {
+    let self = this;
+    let bgEl = $(self.el);
+    let transitionBg = $('.transition-bg', bgEl);
+    let transitioning = transitionBg.length > 0;
+    
+    if (!transitioning) {
+      transitionBg = $('<div class="transition-bg"></div>');
+      bgEl.append(transitionBg);
+    }
+    
+    transitionBg.css('background-image', `url("${ self.currentSrc }")`);
+
+    if (transitioning) {
+      transitionBg.stop();
+    }
+
+    transitionBg.show('fade', 1000, () => {
+      util.setCSSVariable('--default-background-image', `url("${ self.currentSrc }")`, self);
+      transitionBg.remove();
+    })
+  }
+
 }
 
 export class ActionPanel {

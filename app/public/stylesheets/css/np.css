@@ -559,12 +559,7 @@
 }
 @media (orientation: portrait) and (min-width: 400px) and (min-height: 800px) {
   #now-playing {
-    --default-base-font-size: 20px;
-  }
-}
-@media (orientation: portrait) and (min-width: 400px) and (min-height: 900px) {
-  #now-playing {
-    --default-base-font-size: 24px;
+    --default-base-font-size: 19px;
   }
 }
 @media (orientation: portrait) and (min-width: 480px) and (min-height: 960px) {

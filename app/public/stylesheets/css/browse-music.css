@@ -241,6 +241,7 @@
   background: #2828284d;
   transition: 0.2s ease-out;
   cursor: pointer;
+  padding-left: 0;
 }
 #browse-music > .contents .info-header .main .info .buttons button.play span.material-icons {
   font-size: 1.2em;

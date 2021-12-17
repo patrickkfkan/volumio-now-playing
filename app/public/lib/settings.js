@@ -132,6 +132,7 @@ export function applyCustomStyles(styles = {}, target) {
     css['albumart-border-radius'] = styles.albumartBorderRadius;
   } 
 
+  let bgEl = $(registry.ui.background.el);
   if (styles.backgroundType == 'albumart') { 
     let albumartBackgroundFit = styles.albumartBackgroundFit || 'cover'; 
     let backgroundSize = albumartBackgroundFit == 'fill' ? '100% 100%' : albumartBackgroundFit; 
@@ -142,6 +143,7 @@ export function applyCustomStyles(styles = {}, target) {
     css['background-position'] = backgroundPosition;
     css['background-blur'] = backgroundBlur;
     css['background-scale'] = backgroundScale;
+    bgEl.removeClass('fixed');
   }
   else if (styles.backgroundType == 'volumioBackground' && styles.volumioBackgroundImage !== '') { 
     let volumioBackgroundFit = styles.volumioBackgroundFit || 'cover'; 
@@ -154,11 +156,16 @@ export function applyCustomStyles(styles = {}, target) {
     css['background-position'] = backgroundPosition;
     css['background-blur'] = backgroundBlur;
     css['background-scale'] = backgroundScale;
+    bgEl.addClass('fixed');
   }
   else if (styles.backgroundType == 'color') {
     css['background-image'] = 'none';
     css['background-color'] = styles.backgroundColor || '#000';
-  } 
+    bgEl.addClass('fixed');
+  }
+  else {
+    bgEl.removeClass('fixed');
+  }
 
   if (styles.backgroundOverlay == 'custom') { 
     css['background-overlay-color'] = styles.backgroundOverlayColor;

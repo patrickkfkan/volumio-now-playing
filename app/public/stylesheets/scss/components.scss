@@ -32,7 +32,21 @@
     background-position: var(--background-position);
     transition: background-image 1s ease-in-out /*, filter 0.2s ease-in*/;
 
-    &:before {
+    &.manual-transition {
+      transition: background-image 0s;
+    }
+
+    .transition-bg {
+      width: 100%;
+      height: 100%;
+      display: none;
+      background-color: var(--background-color);
+      background-size: var(--background-size);
+      background-position: var(--background-position);
+    }
+
+    // background overlay
+    &:after {
       content: "";
       display: var(--background-overlay-display);
       position: absolute;
