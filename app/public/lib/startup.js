@@ -16,7 +16,7 @@ export function init(data) {
     registry.ui = {};
     registry.ui.background = Components.Background.init(data.ui.background);
     registry.ui.actionPanel = Components.ActionPanel.init(data.ui.actionPanel);
-    registry.ui.volumeIndicator = Components.VolumeIndicator.init(data.ui.volumeIndicator);
+    registry.ui.volumeIndicatorOverlay = Components.VolumeIndicatorPanel.init(data.ui.volumeIndicatorOverlay);
     registry.ui.disconnectIndicator = Components.DisconnectIndicator.init(data.ui.disconnectIndicator);
     registry.ui.trackBar = Components.TrackBar.init(data.ui.trackBar);
     registry.ui.volumePanel = Components.VolumePanel.init(data.ui.volumePanel);

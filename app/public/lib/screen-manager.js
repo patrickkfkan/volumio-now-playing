@@ -60,10 +60,16 @@ export class ScreenManager {
       let currentEl = $(current.el);
       if (!options.keepCurrentOpen) {
         currentEl.fadeOut(100, 'swing', function () {
+          if (typeof current.beforeInactive === 'function') {
+            current.beforeInactive();
+          }
           $(this).removeClass('active');
         });
       }
       else {
+        if (typeof current.beforeInactive === 'function') {
+          current.beforeInactive();
+        }
         currentEl.removeClass('active');
         currentEl.addClass('visible-under-active');
       }
@@ -84,6 +90,9 @@ export class ScreenManager {
 
     if (!screenEl.hasClass('visible-under-active')) {
       screenEl.hide(); // So that it remains hidden when 'active' class is added
+      if (typeof screen.beforeActive === 'function') {
+        screen.beforeActive();
+      }
       screenEl.addClass('active');
       let showEffect = options.showEffect || defaultShowEffect;
       switch (showEffect) {
@@ -108,6 +117,9 @@ export class ScreenManager {
     }
     else {
       screenEl.removeClass('visible-under-active');
+      if (typeof screen.beforeActive === 'function') {
+        screen.beforeActive();
+      }
       screenEl.addClass('active');
     }
 

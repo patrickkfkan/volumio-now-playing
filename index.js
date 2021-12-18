@@ -36,8 +36,9 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         let widgetStylesUIConf = uiconf.sections[2];
         let albumartStylesUIConf = uiconf.sections[3];
         let backgroundStylesUIConf = uiconf.sections[4];
-        let extraScreensUIConf = uiconf.sections[5];
-        let kioskUIConf = uiconf.sections[6];
+        let volumeIndicatorTweaksUIConf = uiconf.sections[5];
+        let extraScreensUIConf = uiconf.sections[6];
+        let kioskUIConf = uiconf.sections[7];
 
         /**
          * Daemon conf
@@ -329,6 +330,44 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         backgroundStylesUIConf.content[13].value = styles.backgroundOverlayOpacity || '';
 
         /**
+         * Volume Indicator Tweaks
+         */
+        let volumeIndicatorStyles = styles.volumeIndicator || {};
+        let volumeIndicatorAlwaysVisible = volumeIndicatorStyles.visibility == 'always' ? true : false;
+        let volumeIndicatorPlacement = volumeIndicatorStyles.placement || 'bottom-right';
+        volumeIndicatorTweaksUIConf.content[0].value = volumeIndicatorAlwaysVisible;
+        volumeIndicatorTweaksUIConf.content[1].value = {
+            value: volumeIndicatorPlacement
+        };
+        switch (volumeIndicatorPlacement) {
+            case 'top-left':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+                break;
+            case 'top':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                break;
+            case 'top-right':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+                break;
+            case 'left': 
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                break;
+            case 'right':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                break;
+            case 'bottom-left':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+                break;
+            case 'bottom':
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                break;
+            default: 
+                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+        }
+        volumeIndicatorTweaksUIConf.content[2].value = volumeIndicatorStyles.fontSize || '';
+        volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.margin || '';
+
+        /**
          * Extra Screens conf
          */
         let theme = np.getConfigValue('theme', 'default');
@@ -592,6 +631,23 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
         backgroundOverlay: data.backgroundOverlay.value,
         backgroundOverlayColor: data.backgroundOverlayColor,
         backgroundOverlayOpacity: data.backgroundOverlayOpacity
+    };
+    let currentStyles = np.getConfigValue('styles', {}, true);
+    let updatedStyles = Object.assign(currentStyles, styles);
+    this.config.set('styles', JSON.stringify(updatedStyles));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+}
+
+ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function(data) {
+    let styles = {
+        volumeIndicator: {
+            visibility: data.volumeIndicatorAlwaysVisible ? 'always' : 'default',
+            placement: data.volumeIndicatorPlacement.value,
+            fontSize: data.volumeIndicatorFontSize,
+            margin: data.volumeIndicatorMargin
+        }
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);

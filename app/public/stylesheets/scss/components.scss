@@ -291,9 +291,7 @@
 
 /* Volume Indicator */
 
-#volume-indicator {
-  --volume-level: 0px;
-
+#volume-indicator-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -303,6 +301,14 @@
   align-items: center;
   justify-content: center;
   z-index: 200;
+}
+
+.volume-indicator {
+  --volume-level: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .circle-wrapper {
     width: 11em;
@@ -355,6 +361,12 @@
 
     .level-text {
       font-size: 1.8em;
+    }
+  }
+
+  &.no-dial {
+    .level-text {
+      position: unset;
     }
   }
 }

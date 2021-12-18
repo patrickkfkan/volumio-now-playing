@@ -1,5 +1,8 @@
 import { registry } from './registry.js';
 
+let _customStyles = {};
+let _theme = null;
+
 function setCSSVariables(data, target = 'root') {
   let style = target === 'root' ? document.documentElement.style : $(target.el).prop('style');
   let bgStyle = $(registry.ui.background.el).prop('style');
@@ -176,9 +179,30 @@ export function applyCustomStyles(styles = {}, target) {
   }
 
   setCSSVariables(css, target);
+
+  registry.screens.nowPlaying.applyVolumeIndicatorTweaks(styles.volumeIndicator);
+
+  let targetName = getTargetName(target);
+  if (targetName) {
+    _customStyles[targetName] = styles;
+  }
 }
 
 export function applyTheme(theme) {
   let styleSheetPath = theme === 'default' ? '' : `/stylesheets/css/themes/${ theme }.css`;
   $('head link#theme-stylesheet').attr('href', styleSheetPath);
+  _theme = theme;
+}
+
+export function getCurrentTheme() {
+  return _theme;
+}
+
+export function getCustomStyles(target) {
+  let targetName = getTargetName(target);
+  return targetName ? (_customStyles[targetName] || {}) : {};
+}
+
+function getTargetName(target) {
+  return typeof target === 'string' ? target : (target.el || '');
 }

@@ -100,6 +100,56 @@
   *  Portrait Orientation
   */
 }
+#now-playing .dock {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 1em;
+  z-index: 2;
+}
+#now-playing .dock.top-left, #now-playing .dock.top, #now-playing .dock.top-right, #now-playing .dock.bottom-left, #now-playing .dock.bottom, #now-playing .dock.bottom-right {
+  flex-direction: row;
+}
+#now-playing .dock.top-left {
+  top: 0;
+  left: 0;
+}
+#now-playing .dock.top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#now-playing .dock.top-right {
+  top: 0;
+  right: 0;
+}
+#now-playing .dock.bottom-left {
+  bottom: 0;
+  left: 0;
+}
+#now-playing .dock.bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#now-playing .dock.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+#now-playing .dock.left, #now-playing .dock.right {
+  flex-direction: column;
+}
+#now-playing .dock.left {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#now-playing .dock.right {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
 #now-playing .action-panel-trigger {
   width: 100%;
   height: 3em;

@@ -256,8 +256,7 @@
 }
 
 /* Volume Indicator */
-#volume-indicator {
-  --volume-level: 0px;
+#volume-indicator-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -268,39 +267,46 @@
   justify-content: center;
   z-index: 200;
 }
-#volume-indicator .circle-wrapper {
+
+.volume-indicator {
+  --volume-level: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.volume-indicator .circle-wrapper {
   width: 11em;
   height: 11em;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 50%;
 }
-#volume-indicator .circle-wrapper svg {
+.volume-indicator .circle-wrapper svg {
   width: 100%;
   height: 100%;
 }
-#volume-indicator .circle-wrapper svg circle {
+.volume-indicator .circle-wrapper svg circle {
   width: 100%;
   height: 100%;
   fill: none;
   stroke-width: 0.7em;
   stroke-linecap: round;
 }
-#volume-indicator .circle-wrapper svg circle.primary {
+.volume-indicator .circle-wrapper svg circle.primary {
   stroke: #ccc;
 }
-#volume-indicator .circle-wrapper svg circle.highlight {
+.volume-indicator .circle-wrapper svg circle.highlight {
   stroke-dasharray: 100;
   stroke-dashoffset: calc(100px - var(--volume-level));
   stroke: #24a4f3;
 }
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-  #volume-indicator .circle-wrapper {
+  .volume-indicator .circle-wrapper {
     background: rgba(0, 0, 0, 0.6);
     -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
   }
 }
-#volume-indicator .level-text {
+.volume-indicator .level-text {
   position: absolute;
   color: #ccc;
   font-size: 1.4em;
@@ -308,11 +314,14 @@
   align-items: center;
   justify-content: center;
 }
-#volume-indicator.muted .circle-wrapper svg circle.highlight {
+.volume-indicator.muted .circle-wrapper svg circle.highlight {
   stroke: #aaa;
 }
-#volume-indicator.muted .level-text {
+.volume-indicator.muted .level-text {
   font-size: 1.8em;
+}
+.volume-indicator.no-dial .level-text {
+  position: unset;
 }
 
 /* Disconnect Indicator */

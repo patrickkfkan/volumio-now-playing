@@ -1,4 +1,6 @@
 import { registry } from './../registry.js';
+import * as Components from './../components.js';
+import * as settings from '/lib/settings.js';
 import * as util from './../util.js';
 
 export class NowPlayingScreen {
@@ -7,6 +9,14 @@ export class NowPlayingScreen {
     this.albumartHandle = null;
 
     const html = `
+    <div class="dock top-left"></div>
+    <div class="dock top"></div>
+    <div class="dock top-right"></div>
+    <div class="dock left"></div>
+    <div class="dock right"></div>
+    <div class="dock bottom-left"></div>
+    <div class="dock bottom"></div>
+    <div class="dock bottom-right"></div>
     <div class="action-panel-trigger">
       <button class="expand"><span class="material-icons">expand_more</span></button>
     </div>
@@ -290,5 +300,54 @@ export class NowPlayingScreen {
     let screen = $(this.el);
     let seek = ui.value;
     $('.seekbar-wrapper .seek', screen).text(util.timeToString(seek));
+  }
+
+  beforeInactive() {
+    registry.ui.volumeIndicatorOverlay.setEnabled(true);
+  }
+
+  beforeActive() {
+    let styles = settings.getCustomStyles(this);
+    if (styles.volumeIndicatorVisibility == 'always') {
+      registry.ui.volumeIndicatorOverlay.setEnabled(false);
+    }
+  }
+
+  applyVolumeIndicatorTweaks(options = {}) {
+    if (options.visibility !== 'always') {
+      if (this.dockedVolumeIndicator) {
+        this.dockedVolumeIndicator.remove();
+        this.dockedVolumeIndicator = null;
+      }
+      registry.ui.volumeIndicatorOverlay.setEnabled(true);
+      return;
+    }
+    else {
+      if (this.dockedVolumeIndicator) {
+        this.dockedVolumeIndicator.detach();
+      }
+      else {
+        this.dockedVolumeIndicator = Components.VolumeIndicator.create({
+          showDial: false
+        });
+      }
+      if (options.fontSize) {
+        this.dockedVolumeIndicator.css('font-size', options.fontSize);
+      }
+      else {
+        this.dockedVolumeIndicator.css('font-size', '');
+      }
+      if (options.margin) {
+        this.dockedVolumeIndicator.css('margin', options.margin);
+      }
+      else {
+        this.dockedVolumeIndicator.css('margin', '');
+      }
+      let dockPosition = options.placement || 'bottom-right';
+      let screen = $(this.el);
+      let dockEl = $(`.dock.${ dockPosition }`, screen);
+      dockEl.append(this.dockedVolumeIndicator);
+      registry.ui.volumeIndicatorOverlay.setEnabled(false);
+    }
   }
 }

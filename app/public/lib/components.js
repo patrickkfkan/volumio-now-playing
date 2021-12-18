@@ -37,7 +37,7 @@ export class Background {
     let bgEl = $(self.el);
     let transitionBg = $('.transition-bg', bgEl);
     let transitioning = transitionBg.length > 0;
-    
+
     if (!transitioning) {
       transitionBg = $('<div class="transition-bg"></div>');
       bgEl.append(transitionBg);
@@ -271,25 +271,99 @@ export class ActionPanel {
 
 export class VolumeIndicator {
 
-  constructor(el) {
-    this.el = el;
+  constructor(options = {}) {
     this.oldVolume = null;
-    this.autohideTimer = null;
-
-    const html = `
+    
+    let showDial = options.showDial !== undefined ? options.showDial : true;
+    let dialHtml = showDial ? `
     <div class="circle-wrapper">
       <svg>
         <circle class="primary" cx="50%" cy="50%" r="3.5em"></circle>
         <circle class="highlight" cx="50%" cy="50%" r="3.5em" pathLength="100"></circle>
       </svg>
-    </div>
-    <div class="level-text"></div>
+    </div>` : '';
+
+    let id = VolumeIndicator.generateId();
+    this.el = '#' + id;
+    let html = `
+      <div id="${ id }" class="volume-indicator${ !showDial ? ' no-dial' : ''}">
+        ${ dialHtml }
+        <div class="level-text"></div>
+      </div>
     `;
+    this.element = $(html);
+    
+    // Socket events
+    registry.state.on('stateChanged', state => {
+      this.update(state);
+    });
+
+    this.update(registry.state.get());
+  }
+
+  static create(options) {
+    return new VolumeIndicator(options).getElement();
+  }
+
+  static generateId() {
+    if (this.id == undefined) {
+      this.id = 0;
+    }
+    else {
+      this.id++;
+    }
+
+    return 'volume-indicator-' + this.id;
+  }
+
+  getElement() {
+    return this.element;
+  }
+
+  update(state) {
+    if (!state) {
+      state = {
+        volume: '0',
+        mute: false
+      }
+    }
+    let oldVolume = this.oldVolume;
+    let volumeChanged = oldVolume ? (oldVolume.level !== state.volume || oldVolume.mute !== state.mute) : true;
+    if (volumeChanged) {
+      let volumeIndicator = this.getElement();
+      util.setCSSVariable('--volume-level', state.volume + 'px', volumeIndicator);
+      let levelText;
+      if (state.mute) {
+        levelText = `<span class="material-icons">volume_off</span>`;
+        volumeIndicator.addClass('muted');
+      }
+      else {
+        levelText = `<span class="material-icons">volume_up</span> ${ state.volume }%`;
+        volumeIndicator.removeClass('muted');
+      }
+      $('.level-text', volumeIndicator).html(levelText);
+      this.oldVolume = {
+        level: state.volume,
+        mute: state.mute
+      };
+    }
+  }
+}
+
+export class VolumeIndicatorPanel {
+  constructor(el, options = {}) {
+    this.el = el;
+    this.oldVolume = null;
+    this.autohideTimer = null;
+    this.autohide = options.autohide !== undefined ? options.autohide : true;
+    this.enabled = true;
+
+    let volumeIndicator = VolumeIndicator.create();
+    let _el = $(this.el);
+    _el.hide();
+    _el.html('').append(volumeIndicator);
     
     let self = this;
-    let _el = $(self.el);
-    _el.html(html);
-    
     // Socket events
     registry.state.on('stateChanged', state => {
       self.update(state);
@@ -303,28 +377,16 @@ export class VolumeIndicator {
   }
 
   static init(el) {
-    return new VolumeIndicator(el);
+    return new VolumeIndicatorPanel(el);
   }
 
   update(state) {
-    if (registry.ui.actionPanel.isOpen() || registry.ui.volumePanel.isOpen()) {
+    if (!this.isEnabled() || registry.ui.actionPanel.isOpen() || registry.ui.volumePanel.isOpen()) {
       return;
     }
     let oldVolume = this.oldVolume;
     let volumeChanged = oldVolume ? (oldVolume.level !== state.volume || oldVolume.mute !== state.mute) : true;
     if (volumeChanged) {
-      let volumeIndicator = $(this.el);
-      util.setCSSVariable('--volume-level', state.volume + 'px', this);
-      let levelText;
-      if (state.mute) {
-        levelText = `<span class="material-icons">volume_off</span>`;
-        volumeIndicator.addClass('muted');
-      }
-      else {
-        levelText = `<span class="material-icons">volume_up</span> ${ state.volume }%`;
-        volumeIndicator.removeClass('muted');
-      }
-      $('.level-text', volumeIndicator).html(levelText);
       if (oldVolume) {
         this.show();
       }
@@ -344,9 +406,11 @@ export class VolumeIndicator {
     else {
       $(self.el).fadeIn(200);
     }
-    self.autohideTimer = setTimeout( () => {
-      self.hide();
-    }, 1500);
+    if (self.autohide) {
+      self.autohideTimer = setTimeout( () => {
+        self.hide();
+      }, 1500);
+    }
   }
 
   hide(duration = 200) {
@@ -355,6 +419,14 @@ export class VolumeIndicator {
       this.autohideTimer = null;
     }
     $(this.el).fadeOut(duration);
+  }
+
+  isEnabled() {
+    return this.enabled;
+  }
+
+  setEnabled(value) {
+    this.enabled = value ? true : false;
   }
 }
 
@@ -665,7 +737,6 @@ export class VolumePanel {
     this.slideVolumeTimer = null;
     this.slideVolumeValue = 0;
     this.autoCloseHandler = (e) => {
-      console.log(e);
       this.hide();
     };
 

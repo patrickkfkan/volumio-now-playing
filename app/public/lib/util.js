@@ -164,7 +164,17 @@ export function getMediaFormatIcon(trackType) {
 }
 
 export function setCSSVariable(varName, value, target = 'root') {
-  let style = target === 'root' ? document.documentElement.style : $(target.el).prop('style');
+  let style;
+  if (target === 'root') {
+    style = document.documentElement.style;
+  }
+  else if (target instanceof jQuery) {
+    style = target.prop('style');
+  }
+  else if (target.el) {
+    style = $(target.el).prop('style');
+  }
+
   if (style) {
     style.setProperty(varName, value);
   }

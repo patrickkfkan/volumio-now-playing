@@ -45,7 +45,7 @@
   <div id="disconnected-overlay"></div>
   <div id="action-panel"></div>
   <div id="volume-panel"></div>
-  <div id="volume-indicator" style="display: none;"></div>
+  <div id="volume-indicator-overlay"></div>
 </body>
 
 <script type="module">
@@ -63,7 +63,7 @@
     ui: {
       background: '#screen-wrapper .bg',
       actionPanel: '#action-panel',
-      volumeIndicator: '#volume-indicator',
+      volumeIndicatorOverlay: '#volume-indicator-overlay',
       disconnectIndicator: '#disconnected-overlay',
       trackBar: '#track-bar',
       volumePanel: '#volume-panel'
@@ -78,8 +78,6 @@
       'SWITCH_TO_VOLUMIO': <%- JSON.stringify(i18n('NOW_PLAYING_SWITCH_TO_VOLUMIO')) %>
     }
   });
-
-  registry.screens.manager.switch(registry.screens.nowPlaying);
 
   let socket = registry.socket;
 
@@ -100,6 +98,7 @@
   $(document).ready( () => {
     settings.applyCustomStyles(<%- JSON.stringify(styles || {}) %>, registry.screens.nowPlaying);
     settings.applyTheme(<%- JSON.stringify(theme || 'default') %>);
+    registry.screens.manager.switch(registry.screens.nowPlaying);
     socket.connect();
   });
 </script>
