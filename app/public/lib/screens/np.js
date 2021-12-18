@@ -10,16 +10,15 @@ export class NowPlayingScreen {
 
     const html = `
     <div class="dock top-left"></div>
-    <div class="dock top"></div>
+    <div class="dock top">
+      <button class="action-panel-trigger no-margin"><span class="material-icons">expand_more</span></button>
+    </div>
     <div class="dock top-right"></div>
     <div class="dock left"></div>
     <div class="dock right"></div>
     <div class="dock bottom-left"></div>
     <div class="dock bottom"></div>
     <div class="dock bottom-right"></div>
-    <div class="action-panel-trigger">
-      <button class="expand"><span class="material-icons">expand_more</span></button>
-    </div>
     <div class="contents">
       <div class="albumart"></div>
       <div class="track-info">
@@ -68,7 +67,7 @@ export class NowPlayingScreen {
     });
 
     $(document).ready( () => {
-      $('.action-panel-trigger .expand', screen).on('click', () => {
+      $('.action-panel-trigger', screen).on('click', () => {
         registry.ui.actionPanel.show();
       });
 
