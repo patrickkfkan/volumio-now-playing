@@ -10,7 +10,8 @@ app.use(express.json());
 
 // Routes
 app.use(router);
-app.use(express.static(__dirname + '/public'));
+app.use('/preview', express.static(__dirname + '/preview/build'));
+app.use(express.static(__dirname + '/client/build'));
 app.use( (req, res, next) => {
     next(404);
 });
