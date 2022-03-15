@@ -82,6 +82,7 @@
           "mediaInfoMargin",
           "textAlignmentH",
           "textAlignmentV",
+          "textAlignmentLyrics",
           "maxLines",
           "maxTitleLines",
           "maxArtistLines",
@@ -343,6 +344,29 @@
             {
               "value": "space-between", 
               "label": "TRANSLATE.NOW_PLAYING_SPREAD"
+            }
+          ]
+        },
+        {
+          "id": "textAlignmentLyrics",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ALIGNMENT_LYRICS",
+          "value": {
+            "value": "left", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+          },
+          "options": [
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
             }
           ]
         },
@@ -1105,6 +1129,32 @@
             "field": "volumeIndicatorAlwaysVisible",
             "value": true
           }
+        }
+      ]
+    },
+    {
+      "id": "section_metadata_service",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_METADATA_SERVICE",
+      "icon": "fa-plug",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveMetadataServiceSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "geniusAccessToken"
+        ]
+      },
+      "content": [
+        {
+          "id": "geniusAccessToken",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_GENIUS_ACCESS_TOKEN",
+          "value": ""
         }
       ]
     },

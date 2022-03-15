@@ -24,6 +24,7 @@
   "NOW_PLAYING_FONT_COLORS": "Font Colors",
   "NOW_PLAYING_ALIGNMENT_H": "Alignment (Horizontal)",
   "NOW_PLAYING_ALIGNMENT_V": "Alignment (Vertical)",
+  "NOW_PLAYING_ALIGNMENT_LYRICS": "Alignment (Lyrics)",
   "NOW_PLAYING_MARGINS": "Margins",
   "NOW_PLAYING_MAX_LINES": "Max Lines",
   "NOW_PLAYING_WIDGET_COLORS": "Widget Colors",
@@ -79,6 +80,9 @@
   "NOW_PLAYING_PLACEMENT": "Placement",
   "NOW_PLAYING_FONT_SIZE": "Font Size",
   "NOW_PLAYING_MARGIN": "Margin",
+  "NOW_PLAYING_METADATA_SERVICE": "Metadata Service",
+  "NOW_PLAYING_GENIUS_ACCESS_TOKEN": "Genius Access Token",
+  "NOW_PLAYING_ACCESS_TOKEN_GUIDE": "Access Token Guide",
   "NOW_PLAYING_EXTRA_SCREENS": "Extra Screens (Super Early Preview)",
   "NOW_PLAYING_THEME": "Theme",
   "NOW_PLAYING_GLASS": "Glass",
@@ -116,5 +120,7 @@
   "NOW_PLAYING_REFRESH": "Refresh",
   "NOW_PLAYING_SWITCH_TO_VOLUMIO": "Switch to Volumio interface",
   "NOW_PLAYING_SWITCH_TO_NP": "Switch to Now Playing",
-  "NOW_PLAYING_PREVIEW_TITLE": "Volumio Now Playing (Preview)"
+  "NOW_PLAYING_PREVIEW_TITLE": "Volumio Now Playing (Preview)",
+  "NOW_PLAYING_ERR_METADATA_FETCH": "Could not fetch info",
+  "NOW_PLAYING_ERR_METADATA_NO_TOKEN": "Token missing - Please provide a Genius Access Token in the Now Playing plugin settings."
 }

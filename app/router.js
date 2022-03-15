@@ -17,4 +17,9 @@ router.get('/volumio', (req, res) => {
     handler.volumio(req, res);
 });
 
+router.post('/api/:namespace/:method', (req, res) => {
+    const {namespace, method} = req.params;
+    handler.api(namespace, method, req.body, res);
+});
+
 module.exports = router;

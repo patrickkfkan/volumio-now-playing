@@ -1,10 +1,12 @@
 const express = require('express');
+var cors = require('cors');
 const router = require(__dirname + '/router');
 
 const np = require(nowPlayingPluginLibRoot + '/np');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 

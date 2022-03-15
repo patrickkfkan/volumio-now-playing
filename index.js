@@ -6,6 +6,7 @@ global.nowPlayingPluginLibRoot = path.resolve(__dirname) + '/lib';
 const libQ = require('kew');
 const np = require(nowPlayingPluginLibRoot + '/np');
 const util = require(nowPlayingPluginLibRoot + '/util');
+const metadata = require(nowPlayingPluginLibRoot + '/metadata');
 const app = require(__dirname + '/app');
 
 const volumioKioskPath = '/opt/volumiokiosk.sh';
@@ -37,8 +38,9 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         let albumartStylesUIConf = uiconf.sections[3];
         let backgroundStylesUIConf = uiconf.sections[4];
         let volumeIndicatorTweaksUIConf = uiconf.sections[5];
-        let extraScreensUIConf = uiconf.sections[6];
-        let kioskUIConf = uiconf.sections[7];
+        let metadataServiceUIConf = uiconf.sections[6];
+        let extraScreensUIConf = uiconf.sections[7];
+        let kioskUIConf = uiconf.sections[8];
 
         /**
          * Daemon conf
@@ -122,14 +124,29 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                 textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
         }
 
-        let maxLines = styles.maxLines || 'auto';
+        let textAlignmentLyrics = styles.textAlignmentLyrics || 'center';
         textStylesUIConf.content[17].value = {
+            value: textAlignmentLyrics
+        };
+        switch (textAlignmentLyrics) {
+            case 'center':
+                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                break;
+            case 'right':
+                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                break;
+            default: 
+                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+        }
+
+        let maxLines = styles.maxLines || 'auto';
+        textStylesUIConf.content[18].value = {
             value: maxLines,
             label: maxLines == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
         };
-        textStylesUIConf.content[18].value = styles.maxTitleLines || '';
-        textStylesUIConf.content[19].value = styles.maxArtistLines || '';
-        textStylesUIConf.content[20].value = styles.maxAlbumLines || '';
+        textStylesUIConf.content[19].value = styles.maxTitleLines || '';
+        textStylesUIConf.content[20].value = styles.maxArtistLines || '';
+        textStylesUIConf.content[21].value = styles.maxAlbumLines || '';
         
         /**
          * Widget Styles conf
@@ -368,6 +385,11 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.margin || '';
 
         /**
+         * Metadata Service conf
+         */
+        metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
+
+        /**
          * Extra Screens conf
          */
         let theme = np.getConfigValue('theme', 'default');
@@ -543,6 +565,7 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         mediaInfoFontColor: data.mediaInfoFontColor,
         textAlignmentH: data.textAlignmentH.value,
         textAlignmentV: data.textAlignmentV.value,
+        textAlignmentLyrics: data.textAlignmentLyrics.value,
         textMargins: data.textMargins.value,
         titleMargin: data.titleMargin,
         artistMargin: data.artistMargin,
@@ -655,6 +678,13 @@ ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+}
+
+ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function(data) {
+    let token = data['geniusAccessToken'].trim();
+    this.config.set('geniusAccessToken', token);
+    metadata.setAccessToken(token);
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 }
 
 ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function(data) {
@@ -786,6 +816,8 @@ ControllerNowPlaying.prototype.onStart = function() {
 
     np.init(self.context, self.config);
 
+    metadata.setAccessToken(np.getConfigValue('geniusAccessToken', ''));
+    
     return self.startApp().then( () => {
         let display = np.getConfigValue('kioskDisplay', 'default');
         if (display == 'nowPlaying') {
