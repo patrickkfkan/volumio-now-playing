@@ -6,7 +6,7 @@ global.nowPlayingPluginLibRoot = path.resolve(__dirname) + '/lib';
 const libQ = require('kew');
 const np = require(nowPlayingPluginLibRoot + '/np');
 const util = require(nowPlayingPluginLibRoot + '/util');
-const metadata = require(nowPlayingPluginLibRoot + '/metadata');
+const metadata = require(nowPlayingPluginLibRoot + '/api/metadata');
 const app = require(__dirname + '/app');
 
 const volumioKioskPath = '/opt/volumiokiosk.sh';
@@ -31,7 +31,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
     self.commandRouter.i18nJson(__dirname + '/i18n/strings_' + lang_code + '.json',
         __dirname + '/i18n/strings_en.json',
         __dirname + '/UIConfig.json')
-    .then( async uiconf => {
+    .then(uiconf => {
         let daemonUIConf = uiconf.sections[0];
         let textStylesUIConf = uiconf.sections[1];
         let widgetStylesUIConf = uiconf.sections[2];
@@ -49,8 +49,8 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         daemonUIConf.content[0].value = port;
 
         // Get Now Playing Url
-        let systemInfo = await self.commandRouter.executeOnPlugin('system_controller', 'system', 'getSystemInfo');
-        let url = `${ systemInfo.host }:${ port }`;
+        let thisDevice = np.getDeviceInfo();
+        let url = `${ thisDevice.host }:${ port }`;
         let previewUrl = `${ url }/preview`
         daemonUIConf.content[1].value = url;
         daemonUIConf.content[2].value = previewUrl;
@@ -533,6 +533,11 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
     self.restartApp().then( () => {
         np.toast('success', np.getI18n('NOW_PLAYING_RESTARTED'));
 
+        // Update cached plugin info and broadcast it
+        np.set('pluginInfo', util.getPluginInfo());
+        let bc = self.getPluginInfo();
+        np.broadcastMessage(bc.message, bc.payload);
+
         // Check if kiosk script was set to show Now Playing, and update 
         // to new port (do not restart volumio-kiosk service because 
         // the screen will reload itself when app is started)
@@ -780,19 +785,12 @@ ControllerNowPlaying.prototype.broadcastRefresh = function() {
     np.toast('success', np.getI18n('NOW_PLAYING_BROADCASTED_COMMAND'));
 }
 
-let broadcastPluginInfoTimer = null;
-ControllerNowPlaying.prototype.broadcastPluginInfo = function() {
-    // Multiple screens could be calling this function, so we send after two seconds.
-    // During this time, ignore all other requests.
-    if (broadcastPluginInfoTimer) {
-        return;
-    }
-    broadcastPluginInfoTimer = setTimeout( () => {
-        let appPort = np.getConfigValue('port', 4004);
-        let pluginVersion = util.getPluginVersion();
-        np.broadcastMessage('nowPlayingPluginInfo', { pluginVersion, appPort });
-        broadcastPluginInfoTimer = null;
-    }, 2000);
+// Socket callMethod
+ControllerNowPlaying.prototype.getPluginInfo = function() {
+    return {
+        message: 'nowPlayingPluginInfo',
+        payload: np.get('pluginInfo')
+    };
 }
 
 ControllerNowPlaying.prototype.refreshUIConfig = function() {
@@ -817,6 +815,8 @@ ControllerNowPlaying.prototype.onStart = function() {
     np.init(self.context, self.config);
 
     metadata.setAccessToken(np.getConfigValue('geniusAccessToken', ''));
+
+    np.set('pluginInfo', util.getPluginInfo());
     
     return self.startApp().then( () => {
         let display = np.getConfigValue('kioskDisplay', 'default');
@@ -833,10 +833,6 @@ ControllerNowPlaying.prototype.onStart = function() {
 
 ControllerNowPlaying.prototype.onStop = function() {
     this.stopApp();
-
-    if (broadcastPluginInfoTimer) {
-        clearTimeout(broadcastPluginInfoTimer);
-    }
 
     // If kiosk is set to Now Playing, restore it back to default
     let restoreKiosk;
@@ -858,20 +854,12 @@ ControllerNowPlaying.prototype.getConfigurationFiles = function() {
 }
 
 ControllerNowPlaying.prototype.startApp = function() {
-    let self = this;
     let defer = libQ.defer();
 
     app.start({
         port: np.getConfigValue('port', 4004)
     })
     .then( () => {
-        // This is for active Now Playing screens to reload themselves
-        // if plugin version or port has changed.
-        // Note: if Volumio has just restarted, the socket
-        // on client side might not have reconnected and will not receive the message.
-        // So on the client side we request plugin info upon socket reconnect.
-        self.broadcastPluginInfo();
-
         defer.resolve();
     })
     .catch( error => {

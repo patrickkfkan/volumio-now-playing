@@ -1,11 +1,10 @@
 'use strict';
 
 const ejs = require('ejs');
-const e = require('express');
 const np = require(nowPlayingPluginLibRoot + '/np');
-const util = require(nowPlayingPluginLibRoot + '/util');
 const apiHandlers = {
-    'metadata': require(nowPlayingPluginLibRoot + '/metadata')
+    'metadata': require(nowPlayingPluginLibRoot + '/api/metadata'),
+    'settings': require(nowPlayingPluginLibRoot + '/api/settings')
 };
 
 async function index(req, res) {
@@ -34,7 +33,6 @@ async function api(namespace, method, params, res) {
     const apiHandler = namespace && method ? apiHandlers[namespace] : null;
     const fn = apiHandler && typeof apiHandler[method] === 'function' ? apiHandler[method] : null;
     if (fn) {
-        console.log(`handler: found apiHandler for ${namespace}`);
         try {
             const result = await fn(params);
             res.json({
@@ -49,7 +47,6 @@ async function api(namespace, method, params, res) {
         }
     }
     else {
-        console.log(`handler not found for ${namespace}`);
         res.json({
             success: false,
             error: `Invalid API endpoint ${namespace}/${method}`
@@ -68,14 +65,8 @@ function renderView(name, req, data = {}) {
     if (!data.host) {
         data.host = `${req.protocol}://${ req.hostname }:3000`;
     }
-    if (!data.pluginVersion) {
-        data.pluginVersion = util.getPluginVersion();
-    }
-    if (!data.appPort) {
-        data.appPort = np.getConfigValue('port', 4004);
-    }
-    if (!data.apiPath) {
-        data.apiPath = `${req.protocol}://${ req.hostname }:${data.appPort}/api`;
+    if (!data.pluginInfo) {
+        data.pluginInfo = np.get('pluginInfo');
     }
     return new Promise( (resolve, reject) => {
         ejs.renderFile(`${ __dirname }/../views/${ name }.ejs`, data, {}, (err, str) => {
