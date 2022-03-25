@@ -10,7 +10,8 @@ const apiHandlers = {
 async function index(req, res) {
     let html = await renderView('index', req, {
         styles: np.getConfigValue('styles', {}, true),
-        theme: np.getConfigValue('theme', 'default')
+        theme: np.getConfigValue('theme', 'default'),
+        performanceSettings: np.getConfigValue('performance', null, true)
     });
     res.send(html);
 }

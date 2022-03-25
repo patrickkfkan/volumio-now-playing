@@ -41,6 +41,7 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         let metadataServiceUIConf = uiconf.sections[6];
         let extraScreensUIConf = uiconf.sections[7];
         let kioskUIConf = uiconf.sections[8];
+        let performanceUIConf = uiconf.sections[9];
 
         /**
          * Daemon conf
@@ -473,7 +474,21 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         if (kioskButton) {
             kioskUIConf.content = [ kioskButton ];
         }
-        
+
+        // Performance conf
+        let performanceSettings = np.getConfigValue('performance', {}, true);
+        performanceUIConf.content[0].value = performanceSettings.transitionEffectsKiosk || false;
+        performanceUIConf.content[1].value = performanceSettings.transitionEffectsOtherDevices == undefined ? true : performanceSettings.transitionEffectsOtherDevices;
+        let unmountScreensOnExit = performanceSettings.unmountScreensOnExit || 'default';
+        performanceUIConf.content[2].value = {
+            value: unmountScreensOnExit,
+            label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+        };
+        performanceUIConf.content[3].value = performanceSettings.unmountNowPlayingScreenOnExit == undefined ? true : performanceSettings.unmountNowPlayingScreenOnExit;
+        performanceUIConf.content[4].value = performanceSettings.unmountBrowseScreenOnExit || false;
+        performanceUIConf.content[5].value = performanceSettings.unmountQueueScreenOnExit || false;
+        performanceUIConf.content[6].value = performanceSettings.unmountVolumioScreenOnExit == undefined ? true : performanceSettings.unmountVolumioScreenOnExit;
+
         defer.resolve(uiconf);
     })
     .fail( error => {
@@ -778,6 +793,22 @@ ControllerNowPlaying.prototype.restartVolumioKioskService = function() {
     });
 
     return defer.promise;
+}
+
+ControllerNowPlaying.prototype.configSavePerformanceSettings = function(data) {
+    let performanceSettings = {
+        transitionEffectsKiosk: data.transitionEffectsKiosk,
+        transitionEffectsOtherDevices: data.transitionEffectsOtherDevices,
+        unmountScreensOnExit: data.unmountScreensOnExit.value,
+        unmountNowPlayingScreenOnExit: data.unmountNowPlayingScreenOnExit,
+        unmountBrowseScreenOnExit: data.unmountBrowseScreenOnExit,
+        unmountQueueScreenOnExit: data.unmountQueueScreenOnExit,
+        unmountVolumioScreenOnExit: data.unmountVolumioScreenOnExit
+    };
+    this.config.set('performance', JSON.stringify(performanceSettings));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingSetPerformanceSettings', performanceSettings);
 }
 
 ControllerNowPlaying.prototype.broadcastRefresh = function() {

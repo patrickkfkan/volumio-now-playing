@@ -1203,6 +1203,102 @@
       "icon": "fa-television"
     },
     {
+      "id": "section_performance",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_PERFORMANCE",
+      "icon": "fa-bolt",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSavePerformanceSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "transitionEffectsKiosk",
+          "transitionEffectsOtherDevices",
+          "unmountScreensOnExit",
+          "unmountNowPlayingScreenOnExit",
+          "unmountBrowseScreenOnExit",
+          "unmountQueueScreenOnExit",
+          "unmountVolumioScreenOnExit"
+        ]
+      },
+      "content": [
+        {
+          "id": "transitionEffectsKiosk",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_TRANSITION_EFFECTS_KIOSK",
+          "value": false
+        },
+        {
+          "id": "transitionEffectsOtherDevices",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_TRANSITION_EFFECTS_OTHER",
+          "value": true
+        },
+        {
+          "id": "unmountScreensOnExit",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_UNMOUNT_SCREENS",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "unmountNowPlayingScreenOnExit",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_NP",
+          "value": "",
+          "visibleIf": {
+            "field": "unmountScreensOnExit",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "unmountBrowseScreenOnExit",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_BROWSE",
+          "value": "",
+          "visibleIf": {
+            "field": "unmountScreensOnExit",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "unmountQueueScreenOnExit",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_QUEUE",
+          "value": "",
+          "visibleIf": {
+            "field": "unmountScreensOnExit",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "unmountVolumioScreenOnExit",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_VOLUMIO",
+          "value": "",
+          "visibleIf": {
+            "field": "unmountScreensOnExit",
+            "value": "custom"
+          }
+        }
+      ]
+    },
+    {
       "id": "section_other",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_OTHER",
