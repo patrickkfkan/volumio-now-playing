@@ -83,6 +83,8 @@
   "NOW_PLAYING_METADATA_SERVICE": "Metadata Service",
   "NOW_PLAYING_GENIUS_ACCESS_TOKEN": "Genius Access Token",
   "NOW_PLAYING_ACCESS_TOKEN_GUIDE": "Access Token Guide",
+  "NOW_PLAYING_CLEAR_CACHE": "Clear Cache",
+  "NOW_PLAYING_CACHE_CLEARED": "Cache Cleared",
   "NOW_PLAYING_EXTRA_SCREENS": "Extra Screens (Super Early Preview)",
   "NOW_PLAYING_THEME": "Theme",
   "NOW_PLAYING_GLASS": "Glass",

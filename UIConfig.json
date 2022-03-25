@@ -1155,6 +1155,19 @@
           "element": "input",
           "label": "TRANSLATE.NOW_PLAYING_GENIUS_ACCESS_TOKEN",
           "value": ""
+        },
+        {
+          "id": "clearMetadataCache",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
+          "onClick": {
+            "type": "emit",
+            "message": "callMethod",
+            "data": {
+                "endpoint": "user_interface/now_playing",
+                "method": "clearMetadataCache"
+            }
+          }
         }
       ]
     },

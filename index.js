@@ -707,6 +707,11 @@ ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function(data
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 }
 
+ControllerNowPlaying.prototype.clearMetadataCache = function() {
+    metadata.clearCache();
+    np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
+}
+
 ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function(data) {
     let theme = data.theme.value;
     this.config.set('theme', theme);
