@@ -389,6 +389,8 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
          * Metadata Service conf
          */
         metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
+        let accessTokenSetupUrl = `${ url }/genius_setup`;
+        metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
 
         /**
          * Extra Screens conf

@@ -1157,6 +1157,14 @@
           "value": ""
         },
         {
+          "id": "accessTokenGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_ACCESS_TOKEN_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
           "id": "clearMetadataCache",
           "element": "button",
           "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
