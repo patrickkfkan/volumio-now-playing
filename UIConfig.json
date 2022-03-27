@@ -1154,6 +1154,7 @@
           "type": "text",
           "element": "input",
           "label": "TRANSLATE.NOW_PLAYING_GENIUS_ACCESS_TOKEN",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_GENIUS_ACCESS_TOKEN",
           "value": ""
         },
         {
@@ -1250,18 +1251,21 @@
           "id": "transitionEffectsKiosk",
           "element": "switch",
           "label": "TRANSLATE.NOW_PLAYING_TRANSITION_EFFECTS_KIOSK",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_TRANSITION_EFFECTS",
           "value": false
         },
         {
           "id": "transitionEffectsOtherDevices",
           "element": "switch",
           "label": "TRANSLATE.NOW_PLAYING_TRANSITION_EFFECTS_OTHER",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_TRANSITION_EFFECTS",
           "value": true
         },
         {
           "id": "unmountScreensOnExit",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_UNMOUNT_SCREENS",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_UNMOUNT_SCREENS",
           "value": {
             "value": "default", 
             "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
