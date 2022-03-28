@@ -77,6 +77,11 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.2.1
+- Add metadata service
+- Add performance settings
+- Update web client: v0.1.1
+
 0.2.0
 - Migrate to ReactJS implementation for web client and preview page (see Technical Notes for more info)
     - Web client: v0.1.0
