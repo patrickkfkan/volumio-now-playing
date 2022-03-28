@@ -77,6 +77,9 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.2.2
+- Update preview page: v0.1.2
+
 0.2.1
 - Add metadata service
 - Add performance settings
