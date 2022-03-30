@@ -148,6 +148,16 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         textStylesUIConf.content[19].value = styles.maxTitleLines || '';
         textStylesUIConf.content[20].value = styles.maxArtistLines || '';
         textStylesUIConf.content[21].value = styles.maxAlbumLines || '';
+
+        let trackInfoOrder = styles.trackInfoOrder || 'default';
+        textStylesUIConf.content[22].value = {
+            value: trackInfoOrder,
+            label: trackInfoOrder == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+        };
+        textStylesUIConf.content[23].value = styles.trackInfoTitleOrder || '';
+        textStylesUIConf.content[24].value = styles.trackInfoArtistOrder || '';
+        textStylesUIConf.content[25].value = styles.trackInfoAlbumOrder || '';
+        textStylesUIConf.content[26].value = styles.trackInfoMediaInfoOrder || '';
         
         /**
          * Widget Styles conf
@@ -574,6 +584,10 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
     let maxTitleLines = data.maxTitleLines ? parseInt(data.maxTitleLines, 10) : '';
     let maxArtistLines = data.maxArtistLines ? parseInt(data.maxArtistLines, 10) : '';
     let maxAlbumLines = data.maxAlbumLines ? parseInt(data.maxAlbumLines, 10) : '';
+    let trackInfoTitleOrder = data.trackInfoTitleOrder ? parseInt(data.trackInfoTitleOrder, 10) : '';
+    let trackInfoArtistOrder = data.trackInfoArtistOrder ? parseInt(data.trackInfoArtistOrder, 10) : '';
+    let trackInfoAlbumOrder = data.trackInfoAlbumOrder ? parseInt(data.trackInfoAlbumOrder, 10) : '';
+    let trackInfoMediaInfoOrder = data.trackInfoMediaInfoOrder ? parseInt(data.trackInfoMediaInfoOrder, 10) : '';
     let styles = {
         fontSizes: data.fontSizes.value,
         titleFontSize: data.titleFontSize,
@@ -596,7 +610,12 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         maxLines: data.maxLines.value,
         maxTitleLines,
         maxArtistLines,
-        maxAlbumLines
+        maxAlbumLines,
+        trackInfoOrder: data.trackInfoOrder.value,
+        trackInfoTitleOrder,
+        trackInfoArtistOrder,
+        trackInfoAlbumOrder,
+        trackInfoMediaInfoOrder
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);
