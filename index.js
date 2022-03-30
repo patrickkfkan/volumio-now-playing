@@ -221,7 +221,8 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
             default: 
                 albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
         }
-        albumartStylesUIConf.content[5].value = styles.albumartBorderRadius || '';
+        albumartStylesUIConf.content[5].value = styles.albumartBorder || '';
+        albumartStylesUIConf.content[6].value = styles.albumartBorderRadius || '';
         if (!albumartVisibility) {
             albumartStylesUIConf.content = [ albumartStylesUIConf.content[0] ];
             albumartStylesUIConf.saveButton.data = [ 'albumartVisibility' ];
