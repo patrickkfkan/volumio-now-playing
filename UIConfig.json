@@ -827,7 +827,9 @@
           "volumioBackgroundScale",
           "backgroundOverlay",
           "backgroundOverlayColor",
-          "backgroundOverlayOpacity"
+          "backgroundOverlayColorOpacity",
+          "backgroundOverlayGradient",
+          "backgroundOverlayGradientOpacity"
         ]
       },
       "content": [
@@ -1075,8 +1077,12 @@
               "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
             },
             {
-              "value": "custom", 
-              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+              "value": "customColor", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_COLOR"
+            },
+            {
+              "value": "customGradient", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_GRADIENT"
             },
             {
               "value": "none", 
@@ -1093,11 +1099,11 @@
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
-            "value": "custom"
+            "value": "customColor"
           }
         },
         {
-          "id": "backgroundOverlayOpacity",
+          "id": "backgroundOverlayColorOpacity",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
@@ -1105,7 +1111,31 @@
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
-            "value": "custom"
+            "value": "customColor"
+          }
+        },
+        {
+          "id": "backgroundOverlayGradient",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_GRADIENT",
+          "label": "TRANSLATE.NOW_PLAYING_GRADIENT",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customGradient"
+          }
+        },
+        {
+          "id": "backgroundOverlayGradientOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customGradient"
           }
         }
       ]

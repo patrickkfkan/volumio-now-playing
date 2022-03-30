@@ -342,12 +342,19 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
         backgroundStylesUIConf.content[10].value = styles.volumioBackgroundScale || '';
 
         let backgroundOverlay = styles.backgroundOverlay || 'default';
+        // Revert obsolete value 'custom' to 'default'
+        if (backgroundOverlay === 'custom') {
+            backgroundOverlay = 'default';
+        }
         backgroundStylesUIConf.content[11].value = {
             value: backgroundOverlay
         };
         switch (backgroundOverlay) {
-            case 'custom':
-                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM');
+            case 'customColor':
+                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+                break;
+            case 'customGradient':
+                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
                 break;
             case 'none': 
                 backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_NONE');
@@ -356,7 +363,9 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                 backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
         }
         backgroundStylesUIConf.content[12].value = styles.backgroundOverlayColor || '#000000';
-        backgroundStylesUIConf.content[13].value = styles.backgroundOverlayOpacity || '';
+        backgroundStylesUIConf.content[13].value = styles.backgroundOverlayColorOpacity || '';
+        backgroundStylesUIConf.content[14].value = styles.backgroundOverlayGradient || '';
+        backgroundStylesUIConf.content[15].value = styles.backgroundOverlayGradientOpacity || '';
 
         /**
          * Volume Indicator Tweaks
@@ -695,7 +704,9 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
         volumioBackgroundScale: data.volumioBackgroundScale,
         backgroundOverlay: data.backgroundOverlay.value,
         backgroundOverlayColor: data.backgroundOverlayColor,
-        backgroundOverlayOpacity: data.backgroundOverlayOpacity
+        backgroundOverlayColorOpacity: data.backgroundOverlayColorOpacity,
+        backgroundOverlayGradient: data.backgroundOverlayGradient,
+        backgroundOverlayGradientOpacity: data.backgroundOverlayGradientOpacity
     };
     let currentStyles = np.getConfigValue('styles', {}, true);
     let updatedStyles = Object.assign(currentStyles, styles);
