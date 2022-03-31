@@ -403,7 +403,10 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
                 volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
         }
         volumeIndicatorTweaksUIConf.content[2].value = volumeIndicatorStyles.fontSize || '';
-        volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.margin || '';
+        volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.iconSize || '';
+        volumeIndicatorTweaksUIConf.content[4].value = volumeIndicatorStyles.fontColor || '#CCCCCC';
+        volumeIndicatorTweaksUIConf.content[5].value = volumeIndicatorStyles.iconColor || '#CCCCCC';
+        volumeIndicatorTweaksUIConf.content[6].value = volumeIndicatorStyles.margin || '';
 
         /**
          * Metadata Service conf
@@ -722,6 +725,9 @@ ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function
             visibility: data.volumeIndicatorAlwaysVisible ? 'always' : 'default',
             placement: data.volumeIndicatorPlacement.value,
             fontSize: data.volumeIndicatorFontSize,
+            iconSize: data.volumeIndicatorIconSize,
+            fontColor: data.volumeIndicatorFontColor,
+            iconColor: data.volumeIndicatorIconColor,
             margin: data.volumeIndicatorMargin
         }
     };

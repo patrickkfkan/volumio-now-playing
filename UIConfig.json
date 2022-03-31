@@ -1156,6 +1156,9 @@
           "volumeIndicatorAlwaysVisible",
           "volumeIndicatorPlacement",
           "volumeIndicatorFontSize",
+          "volumeIndicatorIconSize",
+          "volumeIndicatorFontColor",
+          "volumeIndicatorIconColor",
           "volumeIndicatorMargin"
         ]
       },
@@ -1220,6 +1223,42 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "volumeIndicatorAlwaysVisible",
+            "value": true
+          }
+        },
+        {
+          "id": "volumeIndicatorIconSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "volumeIndicatorAlwaysVisible",
+            "value": true
+          }
+        },
+        {
+          "id": "volumeIndicatorFontColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "volumeIndicatorAlwaysVisible",
+            "value": true
+          }
+        },
+        {
+          "id": "volumeIndicatorIconColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_COLOR",
           "value": "",
           "visibleIf": {
             "field": "volumeIndicatorAlwaysVisible",
