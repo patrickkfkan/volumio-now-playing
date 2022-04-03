@@ -1141,37 +1141,37 @@
       ]
     },
     {
-      "id": "section_volume_indicator_tweaks",
+      "id": "section_docked_volume_indicator",
       "element": "section",
-      "label": "TRANSLATE.NOW_PLAYING_VOLUME_INDICATOR_TWEAKS",
+      "label": "TRANSLATE.NOW_PLAYING_DOCKED_VOLUME_INDICATOR",
       "icon": "fa-wrench",
       "onSave": {
         "type": "controller",
         "endpoint": "user_interface/now_playing",
-        "method": "configSaveVolumeIndicatorTweakSettings"
+        "method": "configSaveDockedVolumeIndicatorSettings"
       },
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "volumeIndicatorAlwaysVisible",
-          "volumeIndicatorPlacement",
-          "volumeIndicatorFontSize",
-          "volumeIndicatorIconSize",
-          "volumeIndicatorFontColor",
-          "volumeIndicatorIconColor",
-          "volumeIndicatorMargin"
+          "dockedVolumeIndicatorEnabled",
+          "dockedVolumeIndicatorPlacement",
+          "dockedVolumeIndicatorFontSize",
+          "dockedVolumeIndicatorIconSize",
+          "dockedVolumeIndicatorFontColor",
+          "dockedVolumeIndicatorIconColor",
+          "dockedVolumeIndicatorMargin"
         ]
       },
       "content": [
         {
-          "id": "volumeIndicatorAlwaysVisible",
+          "id": "dockedVolumeIndicatorEnabled",
           "element": "switch",
           "doc": "",
-          "label": "TRANSLATE.NOW_PLAYING_ALWAYS_VISIBLE",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": false
         },
         {
-          "id": "volumeIndicatorPlacement",
+          "id": "dockedVolumeIndicatorPlacement",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
           "value": {
@@ -1213,67 +1213,67 @@
             }
           ],
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         },
         {
-          "id": "volumeIndicatorFontSize",
+          "id": "dockedVolumeIndicatorFontSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         },
         {
-          "id": "volumeIndicatorIconSize",
+          "id": "dockedVolumeIndicatorIconSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         },
         {
-          "id": "volumeIndicatorFontColor",
+          "id": "dockedVolumeIndicatorFontColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_FONT_COLOR",
           "value": "",
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         },
         {
-          "id": "volumeIndicatorIconColor",
+          "id": "dockedVolumeIndicatorIconColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_ICON_COLOR",
           "value": "",
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         },
         {
-          "id": "volumeIndicatorMargin",
+          "id": "dockedVolumeIndicatorMargin",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
           "label": "TRANSLATE.NOW_PLAYING_MARGIN",
           "value": "",
           "visibleIf": {
-            "field": "volumeIndicatorAlwaysVisible",
+            "field": "dockedVolumeIndicatorEnabled",
             "value": true
           }
         }

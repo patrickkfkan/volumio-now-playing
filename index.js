@@ -37,7 +37,7 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let widgetStylesUIConf = uiconf.sections[2];
             let albumartStylesUIConf = uiconf.sections[3];
             let backgroundStylesUIConf = uiconf.sections[4];
-            let volumeIndicatorTweaksUIConf = uiconf.sections[5];
+            let dockedVolumeIndicatorUIConf = uiconf.sections[5];
             let metadataServiceUIConf = uiconf.sections[6];
             let extraScreensUIConf = uiconf.sections[7];
             let kioskUIConf = uiconf.sections[8];
@@ -369,45 +369,44 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             backgroundStylesUIConf.content[15].value = backgroundSettings.backgroundOverlayGradientOpacity || '';
 
             /**
-             * Volume Indicator Tweaks
+             * Docked Volume Indicator
              */
-        let volumeIndicatorStyles = nowPlayingScreenSettings.volumeIndicator || {};
-        let volumeIndicatorAlwaysVisible = volumeIndicatorStyles.visibility == 'always' ? true : false;
-        let volumeIndicatorPlacement = volumeIndicatorStyles.placement || 'bottom-right';
-        volumeIndicatorTweaksUIConf.content[0].value = volumeIndicatorAlwaysVisible;
-        volumeIndicatorTweaksUIConf.content[1].value = {
-            value: volumeIndicatorPlacement
+            let dockedVolumeIndicator = nowPlayingScreenSettings.dockedVolumeIndicator || {};
+            let dockedvolumeIndicatorPlacement = dockedVolumeIndicator.placement || 'bottom-right';
+            dockedVolumeIndicatorUIConf.content[0].value = dockedVolumeIndicator.enabled ? true : false;
+            dockedVolumeIndicatorUIConf.content[1].value = {
+                value: dockedvolumeIndicatorPlacement
             };
-            switch (volumeIndicatorPlacement) {
+            switch (dockedvolumeIndicatorPlacement) {
                 case 'top-left':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
                     break;
                 case 'top':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
                     break;
                 case 'top-right':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
                     break;
                 case 'left':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
                     break;
                 case 'right':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
                     break;
                 case 'bottom-left':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
                     break;
                 case 'bottom':
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
                     break;
                 default:
-                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+                    dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
             }
-            volumeIndicatorTweaksUIConf.content[2].value = volumeIndicatorStyles.fontSize || '';
-            volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.iconSize || '';
-            volumeIndicatorTweaksUIConf.content[4].value = volumeIndicatorStyles.fontColor || '#CCCCCC';
-            volumeIndicatorTweaksUIConf.content[5].value = volumeIndicatorStyles.iconColor || '#CCCCCC';
-            volumeIndicatorTweaksUIConf.content[6].value = volumeIndicatorStyles.margin || '';
+            dockedVolumeIndicatorUIConf.content[2].value = dockedVolumeIndicator.fontSize || '';
+            dockedVolumeIndicatorUIConf.content[3].value = dockedVolumeIndicator.iconSize || '';
+            dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.fontColor || '#CCCCCC';
+            dockedVolumeIndicatorUIConf.content[5].value = dockedVolumeIndicator.iconColor || '#CCCCCC';
+            dockedVolumeIndicatorUIConf.content[6].value = dockedVolumeIndicator.margin || '';
 
             /**
              * Metadata Service conf
@@ -720,16 +719,16 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function (data) {
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'background', data: updated });
 }
 
-ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function (data) {
+ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = function (data) {
     let apply = {
-        volumeIndicator: {
-            visibility: data.volumeIndicatorAlwaysVisible ? 'always' : 'default',
-            placement: data.volumeIndicatorPlacement.value,
-            fontSize: data.volumeIndicatorFontSize,
-            iconSize: data.volumeIndicatorIconSize,
-            fontColor: data.volumeIndicatorFontColor,
-            iconColor: data.volumeIndicatorIconColor,
-            margin: data.volumeIndicatorMargin
+        dockedVolumeIndicator: {
+            enabled: data.dockedVolumeIndicatorEnabled,
+            placement: data.dockedVolumeIndicatorPlacement.value,
+            fontSize: data.dockedVolumeIndicatorFontSize,
+            iconSize: data.dockedVolumeIndicatorIconSize,
+            fontColor: data.dockedVolumeIndicatorFontColor,
+            iconColor: data.dockedVolumeIndicatorIconColor,
+            margin: data.dockedVolumeIndicatorMargin
         }
     };
     let current = np.getConfigValue('screen.nowPlaying', {}, true);
