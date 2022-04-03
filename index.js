@@ -16,13 +16,13 @@ const volumioBackgroundPath = '/data/backgrounds';
 module.exports = ControllerNowPlaying;
 
 function ControllerNowPlaying(context) {
-	this.context = context;
-	this.commandRouter = this.context.coreCommand;
-	this.logger = this.context.logger;
+    this.context = context;
+    this.commandRouter = this.context.coreCommand;
+    this.logger = this.context.logger;
     this.configManager = this.context.configManager;
 }
 
-ControllerNowPlaying.prototype.getUIConfig = function() {
+ControllerNowPlaying.prototype.getUIConfig = function () {
     let self = this;
     let defer = libQ.defer();
 
@@ -31,501 +31,502 @@ ControllerNowPlaying.prototype.getUIConfig = function() {
     self.commandRouter.i18nJson(__dirname + '/i18n/strings_' + lang_code + '.json',
         __dirname + '/i18n/strings_en.json',
         __dirname + '/UIConfig.json')
-    .then(uiconf => {
-        let daemonUIConf = uiconf.sections[0];
-        let textStylesUIConf = uiconf.sections[1];
-        let widgetStylesUIConf = uiconf.sections[2];
-        let albumartStylesUIConf = uiconf.sections[3];
-        let backgroundStylesUIConf = uiconf.sections[4];
-        let volumeIndicatorTweaksUIConf = uiconf.sections[5];
-        let metadataServiceUIConf = uiconf.sections[6];
-        let extraScreensUIConf = uiconf.sections[7];
-        let kioskUIConf = uiconf.sections[8];
-        let performanceUIConf = uiconf.sections[9];
+        .then(uiconf => {
+            let daemonUIConf = uiconf.sections[0];
+            let textStylesUIConf = uiconf.sections[1];
+            let widgetStylesUIConf = uiconf.sections[2];
+            let albumartStylesUIConf = uiconf.sections[3];
+            let backgroundStylesUIConf = uiconf.sections[4];
+            let volumeIndicatorTweaksUIConf = uiconf.sections[5];
+            let metadataServiceUIConf = uiconf.sections[6];
+            let extraScreensUIConf = uiconf.sections[7];
+            let kioskUIConf = uiconf.sections[8];
+            let performanceUIConf = uiconf.sections[9];
 
-        /**
-         * Daemon conf
-         */
-        let port = np.getConfigValue('port', 4004);
-        daemonUIConf.content[0].value = port;
+            /**
+             * Daemon conf
+             */
+            let port = np.getConfigValue('port', 4004);
+            daemonUIConf.content[0].value = port;
 
-        // Get Now Playing Url
-        let thisDevice = np.getDeviceInfo();
-        let url = `${ thisDevice.host }:${ port }`;
-        let previewUrl = `${ url }/preview`
-        daemonUIConf.content[1].value = url;
-        daemonUIConf.content[2].value = previewUrl;
-        daemonUIConf.content[3].onClick.url = previewUrl;
+            // Get Now Playing Url
+            let thisDevice = np.getDeviceInfo();
+            let url = `${thisDevice.host}:${port}`;
+            let previewUrl = `${url}/preview`
+            daemonUIConf.content[1].value = url;
+            daemonUIConf.content[2].value = previewUrl;
+            daemonUIConf.content[3].onClick.url = previewUrl;
 
-        /**
-         * Text Styles conf
-         */
-        let styles = np.getConfigValue('styles', {}, true);
+            /**
+             * Text Styles conf
+             */
+            let nowPlayingScreenSettings = np.getConfigValue('screen.nowPlaying', {}, true);
 
-        let fontSizes = styles.fontSizes || 'auto';
-        textStylesUIConf.content[0].value = {
-            value: fontSizes,
-            label: fontSizes == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        textStylesUIConf.content[1].value = styles.titleFontSize || '';
-        textStylesUIConf.content[2].value = styles.artistFontSize || '';
-        textStylesUIConf.content[3].value = styles.albumFontSize || '';
-        textStylesUIConf.content[4].value = styles.mediaInfoFontSize || '';
+            let fontSizes = nowPlayingScreenSettings.fontSizes || 'auto';
+            textStylesUIConf.content[0].value = {
+                value: fontSizes,
+                label: fontSizes == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            textStylesUIConf.content[1].value = nowPlayingScreenSettings.titleFontSize || '';
+            textStylesUIConf.content[2].value = nowPlayingScreenSettings.artistFontSize || '';
+            textStylesUIConf.content[3].value = nowPlayingScreenSettings.albumFontSize || '';
+            textStylesUIConf.content[4].value = nowPlayingScreenSettings.mediaInfoFontSize || '';
 
-        let fontColors = styles.fontColors || 'default';
-        textStylesUIConf.content[5].value = {
-            value: fontColors,
-            label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        textStylesUIConf.content[6].value = styles.titleFontColor || '#FFFFFF';
-        textStylesUIConf.content[7].value = styles.artistFontColor || '#CCCCCC';
-        textStylesUIConf.content[8].value = styles.albumFontColor || '#CCCCCC';
-        textStylesUIConf.content[9].value = styles.mediaInfoFontColor || '#CCCCCC';
+            let fontColors = nowPlayingScreenSettings.fontColors || 'default';
+            textStylesUIConf.content[5].value = {
+                value: fontColors,
+                label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            textStylesUIConf.content[6].value = nowPlayingScreenSettings.titleFontColor || '#FFFFFF';
+            textStylesUIConf.content[7].value = nowPlayingScreenSettings.artistFontColor || '#CCCCCC';
+            textStylesUIConf.content[8].value = nowPlayingScreenSettings.albumFontColor || '#CCCCCC';
+            textStylesUIConf.content[9].value = nowPlayingScreenSettings.mediaInfoFontColor || '#CCCCCC';
 
-        let textMargins = styles.textMargins || 'auto';
-        textStylesUIConf.content[10].value = {
-            value: textMargins,
-            label: textMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        textStylesUIConf.content[11].value = styles.titleMargin || '';
-        textStylesUIConf.content[12].value = styles.artistMargin || '';
-        textStylesUIConf.content[13].value = styles.albumMargin || '';
-        textStylesUIConf.content[14].value = styles.mediaInfoMargin || '';
+            let textMargins = nowPlayingScreenSettings.textMargins || 'auto';
+            textStylesUIConf.content[10].value = {
+                value: textMargins,
+                label: textMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            textStylesUIConf.content[11].value = nowPlayingScreenSettings.titleMargin || '';
+            textStylesUIConf.content[12].value = nowPlayingScreenSettings.artistMargin || '';
+            textStylesUIConf.content[13].value = nowPlayingScreenSettings.albumMargin || '';
+            textStylesUIConf.content[14].value = nowPlayingScreenSettings.mediaInfoMargin || '';
 
-        let textAlignmentH = styles.textAlignmentH || 'left';
-        textStylesUIConf.content[15].value = {
-            value: textAlignmentH
-        };
-        switch (textAlignmentH) {
-            case 'center':
-                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-                break;
-            case 'right':
-                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                break;
-            default: 
-                textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-        }
+            let textAlignmentH = nowPlayingScreenSettings.textAlignmentH || 'left';
+            textStylesUIConf.content[15].value = {
+                value: textAlignmentH
+            };
+            switch (textAlignmentH) {
+                case 'center':
+                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'right':
+                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+            }
 
-        let textAlignmentV = styles.textAlignmentV || 'flex-start';
-        textStylesUIConf.content[16].value = {
-            value: textAlignmentV
-        };
-        switch (textAlignmentV) {
-            case 'center':
-                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-                break;
-            case 'flex-end':
-                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
-                break;
-            case 'space-between':
-                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_SPREAD');
-                break;
-            default: 
-                textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
-        }
+            let textAlignmentV = nowPlayingScreenSettings.textAlignmentV || 'flex-start';
+            textStylesUIConf.content[16].value = {
+                value: textAlignmentV
+            };
+            switch (textAlignmentV) {
+                case 'center':
+                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'flex-end':
+                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                case 'space-between':
+                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_SPREAD');
+                    break;
+                default:
+                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+            }
 
-        let textAlignmentLyrics = styles.textAlignmentLyrics || 'center';
-        textStylesUIConf.content[17].value = {
-            value: textAlignmentLyrics
-        };
-        switch (textAlignmentLyrics) {
-            case 'center':
-                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-                break;
-            case 'right':
-                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                break;
-            default: 
-                textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-        }
+            let textAlignmentLyrics = nowPlayingScreenSettings.textAlignmentLyrics || 'center';
+            textStylesUIConf.content[17].value = {
+                value: textAlignmentLyrics
+            };
+            switch (textAlignmentLyrics) {
+                case 'center':
+                    textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'right':
+                    textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+            }
 
-        let maxLines = styles.maxLines || 'auto';
-        textStylesUIConf.content[18].value = {
-            value: maxLines,
-            label: maxLines == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        textStylesUIConf.content[19].value = styles.maxTitleLines !== undefined ? styles.maxTitleLines : '';
-        textStylesUIConf.content[20].value = styles.maxArtistLines !== undefined ? styles.maxArtistLines : '';
-        textStylesUIConf.content[21].value = styles.maxAlbumLines !== undefined ? styles.maxAlbumLines : '';
+            let maxLines = nowPlayingScreenSettings.maxLines || 'auto';
+            textStylesUIConf.content[18].value = {
+                value: maxLines,
+                label: maxLines == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            textStylesUIConf.content[19].value = nowPlayingScreenSettings.maxTitleLines !== undefined ? nowPlayingScreenSettings.maxTitleLines : '';
+            textStylesUIConf.content[20].value = nowPlayingScreenSettings.maxArtistLines !== undefined ? nowPlayingScreenSettings.maxArtistLines : '';
+            textStylesUIConf.content[21].value = nowPlayingScreenSettings.maxAlbumLines !== undefined ? nowPlayingScreenSettings.maxAlbumLines : '';
 
-        let trackInfoOrder = styles.trackInfoOrder || 'default';
-        textStylesUIConf.content[22].value = {
-            value: trackInfoOrder,
-            label: trackInfoOrder == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        textStylesUIConf.content[23].value = styles.trackInfoTitleOrder !== undefined ? styles.trackInfoTitleOrder : '';
-        textStylesUIConf.content[24].value = styles.trackInfoArtistOrder !== undefined ? styles.trackInfoArtistOrder : '';
-        textStylesUIConf.content[25].value = styles.trackInfoAlbumOrder !== undefined ? styles.trackInfoAlbumOrder : '';
-        textStylesUIConf.content[26].value = styles.trackInfoMediaInfoOrder !== undefined ? styles.trackInfoMediaInfoOrder : '';
-        
-        /**
-         * Widget Styles conf
-         */
-        let widgetColors = styles.widgetColors || 'default';
-        widgetStylesUIConf.content[0].value = {
-            value: widgetColors,
-            label: widgetColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        widgetStylesUIConf.content[1].value = styles.widgetPrimaryColor || '#CCCCCC';
-        widgetStylesUIConf.content[2].value = styles.widgetHighlightColor || '#24A4F3';
+            let trackInfoOrder = nowPlayingScreenSettings.trackInfoOrder || 'default';
+            textStylesUIConf.content[22].value = {
+                value: trackInfoOrder,
+                label: trackInfoOrder == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            textStylesUIConf.content[23].value = nowPlayingScreenSettings.trackInfoTitleOrder !== undefined ? nowPlayingScreenSettings.trackInfoTitleOrder : '';
+            textStylesUIConf.content[24].value = nowPlayingScreenSettings.trackInfoArtistOrder !== undefined ? nowPlayingScreenSettings.trackInfoArtistOrder : '';
+            textStylesUIConf.content[25].value = nowPlayingScreenSettings.trackInfoAlbumOrder !== undefined ? nowPlayingScreenSettings.trackInfoAlbumOrder : '';
+            textStylesUIConf.content[26].value = nowPlayingScreenSettings.trackInfoMediaInfoOrder !== undefined ? nowPlayingScreenSettings.trackInfoMediaInfoOrder : '';
 
-        let widgetVisibility = styles.widgetVisibility || 'default';
-        widgetStylesUIConf.content[3].value = {
-            value: widgetVisibility,
-            label: widgetVisibility == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        let playbackButtonsVisibility = styles.playbackButtonsVisibility == undefined ? true : styles.playbackButtonsVisibility;
-        let seekbarVisibility = styles.seekbarVisibility == undefined ? true : styles.seekbarVisibility;
-        widgetStylesUIConf.content[4].value = playbackButtonsVisibility ? true : false;
-        widgetStylesUIConf.content[5].value = seekbarVisibility ? true : false;
-        let playbackButtonSizeType = styles.playbackButtonSizeType || 'auto';
-        widgetStylesUIConf.content[6].value = {
-            value: playbackButtonSizeType,
-            label: playbackButtonSizeType == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        widgetStylesUIConf.content[7].value = styles.playbackButtonSize || '';
+            /**
+             * Widget Styles conf
+             */
+            let widgetColors = nowPlayingScreenSettings.widgetColors || 'default';
+            widgetStylesUIConf.content[0].value = {
+                value: widgetColors,
+                label: widgetColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            widgetStylesUIConf.content[1].value = nowPlayingScreenSettings.widgetPrimaryColor || '#CCCCCC';
+            widgetStylesUIConf.content[2].value = nowPlayingScreenSettings.widgetHighlightColor || '#24A4F3';
 
-        let widgetMargins = styles.widgetMargins || 'auto';
-        widgetStylesUIConf.content[8].value = {
-            value: widgetMargins,
-            label: widgetMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        widgetStylesUIConf.content[9].value = styles.playbackButtonsMargin || '';
-        widgetStylesUIConf.content[10].value = styles.seekbarMargin || '';
+            let widgetVisibility = nowPlayingScreenSettings.widgetVisibility || 'default';
+            widgetStylesUIConf.content[3].value = {
+                value: widgetVisibility,
+                label: widgetVisibility == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            let playbackButtonsVisibility = nowPlayingScreenSettings.playbackButtonsVisibility == undefined ? true : nowPlayingScreenSettings.playbackButtonsVisibility;
+            let seekbarVisibility = nowPlayingScreenSettings.seekbarVisibility == undefined ? true : nowPlayingScreenSettings.seekbarVisibility;
+            widgetStylesUIConf.content[4].value = playbackButtonsVisibility ? true : false;
+            widgetStylesUIConf.content[5].value = seekbarVisibility ? true : false;
+            let playbackButtonSizeType = nowPlayingScreenSettings.playbackButtonSizeType || 'auto';
+            widgetStylesUIConf.content[6].value = {
+                value: playbackButtonSizeType,
+                label: playbackButtonSizeType == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            widgetStylesUIConf.content[7].value = nowPlayingScreenSettings.playbackButtonSize || '';
 
-        /**
-         * Albumart Styles conf
-         */
-        let albumartVisibility = styles.albumartVisibility == undefined ? true : styles.albumartVisibility;
-        albumartStylesUIConf.content[0].value = albumartVisibility ? true : false;
-        let albumartSize = styles.albumartSize || 'auto';
-        albumartStylesUIConf.content[1].value = {
-            value: albumartSize,
-            label: albumartSize == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        albumartStylesUIConf.content[2].value = styles.albumartWidth || '';
-        albumartStylesUIConf.content[3].value = styles.albumartHeight || '';
+            let widgetMargins = nowPlayingScreenSettings.widgetMargins || 'auto';
+            widgetStylesUIConf.content[8].value = {
+                value: widgetMargins,
+                label: widgetMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            widgetStylesUIConf.content[9].value = nowPlayingScreenSettings.playbackButtonsMargin || '';
+            widgetStylesUIConf.content[10].value = nowPlayingScreenSettings.seekbarMargin || '';
 
-        let albumartFit = styles.albumartFit || 'cover';
-        albumartStylesUIConf.content[4].value = {
-            value: albumartFit
-        };
-        switch (albumartFit) {
-            case 'contain':
-                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
-                break;
-            case 'fill': 
-                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
-                break;
-            default: 
-                albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
-        }
-        albumartStylesUIConf.content[5].value = styles.albumartBorder || '';
-        albumartStylesUIConf.content[6].value = styles.albumartBorderRadius || '';
-        if (!albumartVisibility) {
-            albumartStylesUIConf.content = [ albumartStylesUIConf.content[0] ];
-            albumartStylesUIConf.saveButton.data = [ 'albumartVisibility' ];
-        }
+            /**
+             * Albumart Styles conf
+             */
+            let albumartVisibility = nowPlayingScreenSettings.albumartVisibility == undefined ? true : nowPlayingScreenSettings.albumartVisibility;
+            albumartStylesUIConf.content[0].value = albumartVisibility ? true : false;
+            let albumartSize = nowPlayingScreenSettings.albumartSize || 'auto';
+            albumartStylesUIConf.content[1].value = {
+                value: albumartSize,
+                label: albumartSize == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            albumartStylesUIConf.content[2].value = nowPlayingScreenSettings.albumartWidth || '';
+            albumartStylesUIConf.content[3].value = nowPlayingScreenSettings.albumartHeight || '';
 
-        /**
-         * Background Styles Conf
-         */
-        let backgroundType = styles.backgroundType || 'default';
-        backgroundStylesUIConf.content[0].value = {
-            value: backgroundType,
-        };
-        switch (backgroundType) {
-            case 'albumart': 
-                backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_ALBUM_ART');
-                break;
-            case 'color':
-                backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_COLOR');
-                break;
-            case 'volumioBackground':
-                backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
-                break;
-            default:
-                backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
-        }
+            let albumartFit = nowPlayingScreenSettings.albumartFit || 'cover';
+            albumartStylesUIConf.content[4].value = {
+                value: albumartFit
+            };
+            switch (albumartFit) {
+                case 'contain':
+                    albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
+                    break;
+                case 'fill':
+                    albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
+                    break;
+                default:
+                    albumartStylesUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
+            }
+            albumartStylesUIConf.content[5].value = nowPlayingScreenSettings.albumartBorder || '';
+            albumartStylesUIConf.content[6].value = nowPlayingScreenSettings.albumartBorderRadius || '';
+            if (!albumartVisibility) {
+                albumartStylesUIConf.content = [albumartStylesUIConf.content[0]];
+                albumartStylesUIConf.saveButton.data = ['albumartVisibility'];
+            }
 
-        backgroundStylesUIConf.content[1].value = styles.backgroundColor || '#000000';
+            /**
+            * Background Styles Conf
+            */
+            let backgroundSettings = np.getConfigValue('background', {}, true);
+            let backgroundType = backgroundSettings.backgroundType || 'default';
+            backgroundStylesUIConf.content[0].value = {
+                value: backgroundType,
+            };
+            switch (backgroundType) {
+                case 'albumart':
+                    backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_ALBUM_ART');
+                    break;
+                case 'color':
+                    backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_COLOR');
+                    break;
+                case 'volumioBackground':
+                    backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+            }
 
-        let albumartBackgroundFit = styles.albumartBackgroundFit || 'cover';
-        backgroundStylesUIConf.content[2].value = {
-            value: albumartBackgroundFit
-        };
-        switch (albumartBackgroundFit) {
-            case 'contain':
-                backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
-                break;
-            case 'fill': 
-                backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
-                break;
-            default: 
-                backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
-        }
-        let albumartBackgroundPosition = styles.albumartBackgroundPosition || 'center';
-        backgroundStylesUIConf.content[3].value = {
-            value: albumartBackgroundPosition
-        };
-        switch (albumartBackgroundPosition) {
-            case 'top':
-                backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
-                break;
-            case 'left': 
-                backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-                break;
-            case 'bottom':
-                backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
-                break;
-            case 'right':
-                backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                break;
-            default: 
-                backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-        }
-        backgroundStylesUIConf.content[4].value = styles.albumartBackgroundBlur || '';
-        backgroundStylesUIConf.content[5].value = styles.albumartBackgroundScale || '';
+            backgroundStylesUIConf.content[1].value = backgroundSettings.backgroundColor || '#000000';
 
-        let volumioBackgrounds = getVolumioBackgrounds();
-        let volumioBackgroundImage = styles.volumioBackgroundImage || '';
-        if (volumioBackgroundImage !== '' && !volumioBackgrounds.includes(volumioBackgroundImage)) {
-            volumioBackgroundImage = '';  // img no longer exists
-        }
-        backgroundStylesUIConf.content[6].value = {
-            value: volumioBackgroundImage,
-            label: volumioBackgroundImage
-        };
-        backgroundStylesUIConf.content[6].options = [];
-        volumioBackgrounds.forEach( bg => {
-            backgroundStylesUIConf.content[6].options.push({
-                value: bg,
-                label: bg
+            let albumartBackgroundFit = backgroundSettings.albumartBackgroundFit || 'cover';
+            backgroundStylesUIConf.content[2].value = {
+                value: albumartBackgroundFit
+            };
+            switch (albumartBackgroundFit) {
+                case 'contain':
+                    backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
+                    break;
+                case 'fill':
+                    backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
+            }
+            let albumartBackgroundPosition = backgroundSettings.albumartBackgroundPosition || 'center';
+            backgroundStylesUIConf.content[3].value = {
+                value: albumartBackgroundPosition
+            };
+            switch (albumartBackgroundPosition) {
+                case 'top':
+                    backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    break;
+                case 'left':
+                    backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    break;
+                case 'bottom':
+                    backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                case 'right':
+                    backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+            }
+            backgroundStylesUIConf.content[4].value = backgroundSettings.albumartBackgroundBlur || '';
+            backgroundStylesUIConf.content[5].value = backgroundSettings.albumartBackgroundScale || '';
+
+            let volumioBackgrounds = getVolumioBackgrounds();
+            let volumioBackgroundImage = backgroundSettings.volumioBackgroundImage || '';
+            if (volumioBackgroundImage !== '' && !volumioBackgrounds.includes(volumioBackgroundImage)) {
+                volumioBackgroundImage = '';  // img no longer exists
+            }
+            backgroundStylesUIConf.content[6].value = {
+                value: volumioBackgroundImage,
+                label: volumioBackgroundImage
+            };
+            backgroundStylesUIConf.content[6].options = [];
+            volumioBackgrounds.forEach(bg => {
+                backgroundStylesUIConf.content[6].options.push({
+                    value: bg,
+                    label: bg
+                });
             });
-        });
-        let volumioBackgroundFit = styles.volumioBackgroundFit || 'cover';
-        backgroundStylesUIConf.content[7].value = {
-            value: volumioBackgroundFit
-        };
-        switch (volumioBackgroundFit) {
-            case 'contain':
-                backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
-                break;
-            case 'fill': 
-                backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
-                break;
-            default: 
-                backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
-        }
-        let volumioBackgroundPosition = styles.volumioBackgroundPosition || 'center';
-        backgroundStylesUIConf.content[8].value = {
-            value: volumioBackgroundPosition
-        };
-        switch (volumioBackgroundPosition) {
-            case 'top':
-                backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
-                break;
-            case 'left': 
-                backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-                break;
-            case 'bottom':
-                backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
-                break;
-            case 'right':
-                backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                break;
-            default: 
-                backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-        }
-        backgroundStylesUIConf.content[9].value = styles.volumioBackgroundBlur || '';
-        backgroundStylesUIConf.content[10].value = styles.volumioBackgroundScale || '';
+            let volumioBackgroundFit = backgroundSettings.volumioBackgroundFit || 'cover';
+            backgroundStylesUIConf.content[7].value = {
+                value: volumioBackgroundFit
+            };
+            switch (volumioBackgroundFit) {
+                case 'contain':
+                    backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
+                    break;
+                case 'fill':
+                    backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
+            }
+            let volumioBackgroundPosition = backgroundSettings.volumioBackgroundPosition || 'center';
+            backgroundStylesUIConf.content[8].value = {
+                value: volumioBackgroundPosition
+            };
+            switch (volumioBackgroundPosition) {
+                case 'top':
+                    backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    break;
+                case 'left':
+                    backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    break;
+                case 'bottom':
+                    backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                case 'right':
+                    backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+            }
+            backgroundStylesUIConf.content[9].value = backgroundSettings.volumioBackgroundBlur || '';
+            backgroundStylesUIConf.content[10].value = backgroundSettings.volumioBackgroundScale || '';
 
-        let backgroundOverlay = styles.backgroundOverlay || 'default';
-        // Revert obsolete value 'custom' to 'default'
-        if (backgroundOverlay === 'custom') {
-            backgroundOverlay = 'default';
-        }
-        backgroundStylesUIConf.content[11].value = {
-            value: backgroundOverlay
-        };
-        switch (backgroundOverlay) {
-            case 'customColor':
-                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_COLOR');
-                break;
-            case 'customGradient':
-                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
-                break;
-            case 'none': 
-                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_NONE');
-                break;
-            default: 
-                backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
-        }
-        backgroundStylesUIConf.content[12].value = styles.backgroundOverlayColor || '#000000';
-        backgroundStylesUIConf.content[13].value = styles.backgroundOverlayColorOpacity || '';
-        backgroundStylesUIConf.content[14].value = styles.backgroundOverlayGradient || '';
-        backgroundStylesUIConf.content[15].value = styles.backgroundOverlayGradientOpacity || '';
+            let backgroundOverlay = backgroundSettings.backgroundOverlay || 'default';
+            // Revert obsolete value 'custom' to 'default'
+            if (backgroundOverlay === 'custom') {
+                backgroundOverlay = 'default';
+            }
+            backgroundStylesUIConf.content[11].value = {
+                value: backgroundOverlay
+            };
+            switch (backgroundOverlay) {
+                case 'customColor':
+                    backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+                    break;
+                case 'customGradient':
+                    backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+                    break;
+                case 'none':
+                    backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_NONE');
+                    break;
+                default:
+                    backgroundStylesUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+            }
+            backgroundStylesUIConf.content[12].value = backgroundSettings.backgroundOverlayColor || '#000000';
+            backgroundStylesUIConf.content[13].value = backgroundSettings.backgroundOverlayColorOpacity || '';
+            backgroundStylesUIConf.content[14].value = backgroundSettings.backgroundOverlayGradient || '';
+            backgroundStylesUIConf.content[15].value = backgroundSettings.backgroundOverlayGradientOpacity || '';
 
-        /**
-         * Volume Indicator Tweaks
-         */
-        let volumeIndicatorStyles = styles.volumeIndicator || {};
+            /**
+             * Volume Indicator Tweaks
+             */
+        let volumeIndicatorStyles = nowPlayingScreenSettings.volumeIndicator || {};
         let volumeIndicatorAlwaysVisible = volumeIndicatorStyles.visibility == 'always' ? true : false;
         let volumeIndicatorPlacement = volumeIndicatorStyles.placement || 'bottom-right';
         volumeIndicatorTweaksUIConf.content[0].value = volumeIndicatorAlwaysVisible;
         volumeIndicatorTweaksUIConf.content[1].value = {
             value: volumeIndicatorPlacement
-        };
-        switch (volumeIndicatorPlacement) {
-            case 'top-left':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
-                break;
-            case 'top':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
-                break;
-            case 'top-right':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
-                break;
-            case 'left': 
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-                break;
-            case 'right':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                break;
-            case 'bottom-left':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
-                break;
-            case 'bottom':
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
-                break;
-            default: 
-                volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
-        }
-        volumeIndicatorTweaksUIConf.content[2].value = volumeIndicatorStyles.fontSize || '';
-        volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.iconSize || '';
-        volumeIndicatorTweaksUIConf.content[4].value = volumeIndicatorStyles.fontColor || '#CCCCCC';
-        volumeIndicatorTweaksUIConf.content[5].value = volumeIndicatorStyles.iconColor || '#CCCCCC';
-        volumeIndicatorTweaksUIConf.content[6].value = volumeIndicatorStyles.margin || '';
-
-        /**
-         * Metadata Service conf
-         */
-        metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
-        let accessTokenSetupUrl = `${ url }/genius_setup`;
-        metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
-
-        /**
-         * Extra Screens conf
-         */
-        let theme = np.getConfigValue('theme', 'default');
-        extraScreensUIConf.content[0].value = {
-            value: theme
-        };
-        switch (theme) {
-            case 'glass':
-                extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_GLASS');
-                break;
-            default: 
-                extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
-        }
-
-        /**
-         * Kiosk conf
-         */
-        let kiosk = checkVolumioKiosk();
-        let kioskDesc, kioskButton;
-        if (!kiosk.exists) {
-            kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_NOT_FOUND');
-        }
-        else if (kiosk.display == 'default') {
-            kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_DEFAULT');
-            kioskButton = {
-                id: 'kioskSetToNowPlaying',
-                element: 'button',
-                label: np.getI18n('NOW_PLAYING_KIOSK_SET_TO_NOW_PLAYING'),
-                onClick: {
-                    type: 'emit',
-                    message: 'callMethod',
-                    data: {
-                        endpoint: 'user_interface/now_playing',
-                        method: 'configureVolumioKiosk',
-                        data: {
-                            display: 'nowPlaying'
-                        }
-                    }
-                }
             };
-        }
-        else if (kiosk.display == 'nowPlaying') {
-            kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_NOW_PLAYING');
-            kioskButton = {
-                id: 'kioskRestore',
-                element: 'button',
-                label: np.getI18n('NOW_PLAYING_KIOSK_RESTORE'),
-                onClick: {
-                    type: 'emit',
-                    message: 'callMethod',
-                    data: {
-                        endpoint: 'user_interface/now_playing',
-                        method: 'configureVolumioKiosk',
-                        data: {
-                            display: 'default'
-                        }
-                    }
-                }
+            switch (volumeIndicatorPlacement) {
+                case 'top-left':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+                    break;
+                case 'top':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    break;
+                case 'top-right':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+                    break;
+                case 'left':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    break;
+                case 'right':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                case 'bottom-left':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+                    break;
+                case 'bottom':
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                default:
+                    volumeIndicatorTweaksUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+            }
+            volumeIndicatorTweaksUIConf.content[2].value = volumeIndicatorStyles.fontSize || '';
+            volumeIndicatorTweaksUIConf.content[3].value = volumeIndicatorStyles.iconSize || '';
+            volumeIndicatorTweaksUIConf.content[4].value = volumeIndicatorStyles.fontColor || '#CCCCCC';
+            volumeIndicatorTweaksUIConf.content[5].value = volumeIndicatorStyles.iconColor || '#CCCCCC';
+            volumeIndicatorTweaksUIConf.content[6].value = volumeIndicatorStyles.margin || '';
+
+            /**
+             * Metadata Service conf
+             */
+            metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
+            let accessTokenSetupUrl = `${url}/genius_setup`;
+            metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
+
+            /**
+             * Extra Screens conf
+             */
+            let theme = np.getConfigValue('theme', 'default');
+            extraScreensUIConf.content[0].value = {
+                value: theme
             };
-        }
-        else {
-            kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_UNKNOWN');
-            if (util.fileExists(volumioKioskBackupPath)) {
-                kioskDesc += ' ' + np.getI18n('NOW_PLAYING_DOC_KIOSK_RESTORE_BAK');
+            switch (theme) {
+                case 'glass':
+                    extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_GLASS');
+                    break;
+                default:
+                    extraScreensUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+            }
+
+            /**
+             * Kiosk conf
+             */
+            let kiosk = checkVolumioKiosk();
+            let kioskDesc, kioskButton;
+            if (!kiosk.exists) {
+                kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_NOT_FOUND');
+            }
+            else if (kiosk.display == 'default') {
+                kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_DEFAULT');
                 kioskButton = {
-                    id: 'kioskRestoreBak',
+                    id: 'kioskSetToNowPlaying',
                     element: 'button',
-                    label: np.getI18n('NOW_PLAYING_KIOSK_RESTORE_BAK'),
+                    label: np.getI18n('NOW_PLAYING_KIOSK_SET_TO_NOW_PLAYING'),
                     onClick: {
                         type: 'emit',
                         message: 'callMethod',
                         data: {
                             endpoint: 'user_interface/now_playing',
-                            method: 'restoreVolumioKioskBak'
+                            method: 'configureVolumioKiosk',
+                            data: {
+                                display: 'nowPlaying'
+                            }
                         }
-                    }   
+                    }
                 };
             }
-        }
-        kioskUIConf.description = kioskDesc;
-        if (kioskButton) {
-            kioskUIConf.content = [ kioskButton ];
-        }
+            else if (kiosk.display == 'nowPlaying') {
+                kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_NOW_PLAYING');
+                kioskButton = {
+                    id: 'kioskRestore',
+                    element: 'button',
+                    label: np.getI18n('NOW_PLAYING_KIOSK_RESTORE'),
+                    onClick: {
+                        type: 'emit',
+                        message: 'callMethod',
+                        data: {
+                            endpoint: 'user_interface/now_playing',
+                            method: 'configureVolumioKiosk',
+                            data: {
+                                display: 'default'
+                            }
+                        }
+                    }
+                };
+            }
+            else {
+                kioskDesc = np.getI18n('NOW_PLAYING_KIOSK_SHOWING_UNKNOWN');
+                if (util.fileExists(volumioKioskBackupPath)) {
+                    kioskDesc += ' ' + np.getI18n('NOW_PLAYING_DOC_KIOSK_RESTORE_BAK');
+                    kioskButton = {
+                        id: 'kioskRestoreBak',
+                        element: 'button',
+                        label: np.getI18n('NOW_PLAYING_KIOSK_RESTORE_BAK'),
+                        onClick: {
+                            type: 'emit',
+                            message: 'callMethod',
+                            data: {
+                                endpoint: 'user_interface/now_playing',
+                                method: 'restoreVolumioKioskBak'
+                            }
+                        }
+                    };
+                }
+            }
+            kioskUIConf.description = kioskDesc;
+            if (kioskButton) {
+                kioskUIConf.content = [kioskButton];
+            }
 
-        // Performance conf
-        let performanceSettings = np.getConfigValue('performance', {}, true);
-        performanceUIConf.content[0].value = performanceSettings.transitionEffectsKiosk || false;
-        performanceUIConf.content[1].value = performanceSettings.transitionEffectsOtherDevices == undefined ? true : performanceSettings.transitionEffectsOtherDevices;
-        let unmountScreensOnExit = performanceSettings.unmountScreensOnExit || 'default';
-        performanceUIConf.content[2].value = {
-            value: unmountScreensOnExit,
-            label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
-        };
-        performanceUIConf.content[3].value = performanceSettings.unmountNowPlayingScreenOnExit == undefined ? true : performanceSettings.unmountNowPlayingScreenOnExit;
-        performanceUIConf.content[4].value = performanceSettings.unmountBrowseScreenOnExit || false;
-        performanceUIConf.content[5].value = performanceSettings.unmountQueueScreenOnExit || false;
-        performanceUIConf.content[6].value = performanceSettings.unmountVolumioScreenOnExit == undefined ? true : performanceSettings.unmountVolumioScreenOnExit;
+            // Performance conf
+            let performanceSettings = np.getConfigValue('performance', {}, true);
+            performanceUIConf.content[0].value = performanceSettings.transitionEffectsKiosk || false;
+            performanceUIConf.content[1].value = performanceSettings.transitionEffectsOtherDevices == undefined ? true : performanceSettings.transitionEffectsOtherDevices;
+            let unmountScreensOnExit = performanceSettings.unmountScreensOnExit || 'default';
+            performanceUIConf.content[2].value = {
+                value: unmountScreensOnExit,
+                label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            performanceUIConf.content[3].value = performanceSettings.unmountNowPlayingScreenOnExit == undefined ? true : performanceSettings.unmountNowPlayingScreenOnExit;
+            performanceUIConf.content[4].value = performanceSettings.unmountBrowseScreenOnExit || false;
+            performanceUIConf.content[5].value = performanceSettings.unmountQueueScreenOnExit || false;
+            performanceUIConf.content[6].value = performanceSettings.unmountVolumioScreenOnExit == undefined ? true : performanceSettings.unmountVolumioScreenOnExit;
 
-        defer.resolve(uiconf);
-    })
-    .fail( error => {
+            defer.resolve(uiconf);
+        })
+        .fail(error => {
             np.getLogger().error(np.getErrorMessage('[now-playing] getUIConfig(): Cannot populate Now Playing configuration:', error));
             defer.reject(new Error());
         }
-    );
+        );
 
     return defer.promise;
 };
 
-ControllerNowPlaying.prototype.configSaveDaemon = function(data) {
+ControllerNowPlaying.prototype.configSaveDaemon = function (data) {
     let oldPort = np.getConfigValue('port', 4004);
     let port = parseInt(data['port'], 10);
     if (port < 1024 || port > 65353) {
@@ -534,25 +535,25 @@ ControllerNowPlaying.prototype.configSaveDaemon = function(data) {
     }
 
     if (oldPort !== port) {
-            var modalData = {
+        var modalData = {
             title: np.getI18n('NOW_PLAYING_CONFIGURATION'),
             message: np.getI18n('NOW_PLAYING_CONF_RESTART_CONFIRM'),
             size: 'lg',
             buttons: [
                 {
-                name: np.getI18n('NOW_PLAYING_NO'),
-                class: 'btn btn-warning',
+                    name: np.getI18n('NOW_PLAYING_NO'),
+                    class: 'btn btn-warning',
                 },
                 {
-                name: np.getI18n('NOW_PLAYING_YES'),
-                class: 'btn btn-info',
-                emit: 'callMethod',
-                payload: {
-                    'endpoint': 'user_interface/now_playing',
-                    'method': 'configConfirmSaveDaemon',
-                    'data': { port, oldPort }
+                    name: np.getI18n('NOW_PLAYING_YES'),
+                    class: 'btn btn-info',
+                    emit: 'callMethod',
+                    payload: {
+                        'endpoint': 'user_interface/now_playing',
+                        'method': 'configConfirmSaveDaemon',
+                        'data': { port, oldPort }
+                    }
                 }
-                }  
             ]
         };
         this.commandRouter.broadcastMessage("openModal", modalData);
@@ -562,7 +563,7 @@ ControllerNowPlaying.prototype.configSaveDaemon = function(data) {
     }
 }
 
-ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
+ControllerNowPlaying.prototype.configConfirmSaveDaemon = function (data) {
     let self = this;
 
     // Obtain kiosk info before saving new port
@@ -570,7 +571,7 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
 
     self.config.set('port', data['port']);
 
-    self.restartApp().then( () => {
+    self.restartApp().then(() => {
         np.toast('success', np.getI18n('NOW_PLAYING_RESTARTED'));
 
         // Update cached plugin info and broadcast it
@@ -587,13 +588,13 @@ ControllerNowPlaying.prototype.configConfirmSaveDaemon = function(data) {
 
         self.refreshUIConfig();
     })
-    .fail( error => {
-        self.config.set('port', data['oldPort']);
-        self.refreshUIConfig();
-    });
+        .fail(error => {
+            self.config.set('port', data['oldPort']);
+            self.refreshUIConfig();
+        });
 }
 
-ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
+ControllerNowPlaying.prototype.configSaveTextStyles = function (data) {
     let maxTitleLines = data.maxTitleLines !== '' ? parseInt(data.maxTitleLines, 10) : '';
     let maxArtistLines = data.maxArtistLines !== '' ? parseInt(data.maxArtistLines, 10) : '';
     let maxAlbumLines = data.maxAlbumLines !== '' ? parseInt(data.maxAlbumLines, 10) : '';
@@ -601,7 +602,7 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
     let trackInfoArtistOrder = data.trackInfoArtistOrder !== '' ? parseInt(data.trackInfoArtistOrder, 10) : '';
     let trackInfoAlbumOrder = data.trackInfoAlbumOrder !== '' ? parseInt(data.trackInfoAlbumOrder, 10) : '';
     let trackInfoMediaInfoOrder = data.trackInfoMediaInfoOrder !== '' ? parseInt(data.trackInfoMediaInfoOrder, 10) : '';
-    let styles = {
+    let apply = {
         fontSizes: data.fontSizes.value,
         titleFontSize: data.titleFontSize,
         artistFontSize: data.artistFontSize,
@@ -630,16 +631,16 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function(data) {
         trackInfoAlbumOrder,
         trackInfoMediaInfoOrder
     };
-    let currentStyles = np.getConfigValue('styles', {}, true);
-    let updatedStyles = Object.assign(currentStyles, styles);
-    this.config.set('styles', JSON.stringify(updatedStyles));
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
-ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
-    let styles = {
+ControllerNowPlaying.prototype.configSaveWidgetStyles = function (data) {
+    let apply = {
         widgetColors: data.widgetColors.value,
         widgetPrimaryColor: data.widgetPrimaryColor,
         widgetHighlightColor: data.widgetHighlightColor,
@@ -652,22 +653,22 @@ ControllerNowPlaying.prototype.configSaveWidgetStyles = function(data) {
         playbackButtonsMargin: data.playbackButtonsMargin,
         seekbarMargin: data.seekbarMargin
     };
-    let currentStyles = np.getConfigValue('styles', {}, true);
-    let updatedStyles = Object.assign(currentStyles, styles);
-    this.config.set('styles', JSON.stringify(updatedStyles));
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
-ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
-    let styles = {};
+ControllerNowPlaying.prototype.configSaveAlbumartStyles = function (data) {
+    let apply = {};
     for (const [key, value] of Object.entries(data)) {
         if (typeof value === 'object' && value.value !== undefined) {
-            styles[key] = value.value;
+            apply[key] = value.value;
         }
         else {
-            styles[key] = value;
+            apply[key] = value;
         }
     }
     /*let styles = {
@@ -678,22 +679,22 @@ ControllerNowPlaying.prototype.configSaveAlbumartStyles = function(data) {
         albumartFit: data.albumartFit.value,
         albumartBorderRadius: data.albumartBorderRadius
     };*/
-    let currentStyles = np.getConfigValue('styles', {}, true);
-    let currentAlbumartVisibility = (currentStyles.albumartVisibility == undefined ? true : currentStyles.albumartVisibility) ? true : false;
-    let refresh = currentAlbumartVisibility !== styles.albumartVisibility;
-    let updatedStyles = Object.assign(currentStyles, styles);
-    this.config.set('styles', JSON.stringify(updatedStyles));
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let currentAlbumartVisibility = (current.albumartVisibility == undefined ? true : current.albumartVisibility) ? true : false;
+    let refresh = currentAlbumartVisibility !== apply.albumartVisibility;
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 
     if (refresh) {
         this.refreshUIConfig();
     }
 }
 
-ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
-    let styles = {
+ControllerNowPlaying.prototype.configSaveBackgroundStyles = function (data) {
+    let settings = {
         backgroundType: data.backgroundType.value,
         backgroundColor: data.backgroundColor,
         albumartBackgroundFit: data.albumartBackgroundFit.value,
@@ -711,16 +712,16 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function(data) {
         backgroundOverlayGradient: data.backgroundOverlayGradient,
         backgroundOverlayGradientOpacity: data.backgroundOverlayGradientOpacity
     };
-    let currentStyles = np.getConfigValue('styles', {}, true);
-    let updatedStyles = Object.assign(currentStyles, styles);
-    this.config.set('styles', JSON.stringify(updatedStyles));
+    let current = np.getConfigValue('background', {}, true);
+    let updated = Object.assign(current, settings);
+    this.config.set('background', JSON.stringify(updated));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'background', data: updated });
 }
 
-ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function(data) {
-    let styles = {
+ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function (data) {
+    let apply = {
         volumeIndicator: {
             visibility: data.volumeIndicatorAlwaysVisible ? 'always' : 'default',
             placement: data.volumeIndicatorPlacement.value,
@@ -731,35 +732,35 @@ ControllerNowPlaying.prototype.configSaveVolumeIndicatorTweakSettings = function
             margin: data.volumeIndicatorMargin
         }
     };
-    let currentStyles = np.getConfigValue('styles', {}, true);
-    let updatedStyles = Object.assign(currentStyles, styles);
-    this.config.set('styles', JSON.stringify(updatedStyles));
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetCustomCSS', updatedStyles);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
-ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function(data) {
+ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function (data) {
     let token = data['geniusAccessToken'].trim();
     this.config.set('geniusAccessToken', token);
     metadata.setAccessToken(token);
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 }
 
-ControllerNowPlaying.prototype.clearMetadataCache = function() {
+ControllerNowPlaying.prototype.clearMetadataCache = function () {
     metadata.clearCache();
     np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
 }
 
-ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function(data) {
+ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function (data) {
     let theme = data.theme.value;
     this.config.set('theme', theme);
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetTheme', theme);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'theme', data: theme });
 }
 
-ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {
+ControllerNowPlaying.prototype.configureVolumioKiosk = function (data) {
     let self = this;
     let oldPort, newPort;
     if (data.display == 'nowPlaying') {
@@ -770,14 +771,14 @@ ControllerNowPlaying.prototype.configureVolumioKiosk = function(data) {
         oldPort = np.getConfigValue('port', 4004);
         newPort = 3000;
     }
-    
-    self.modifyVolumioKioskScript(oldPort, newPort).then( () => {
+
+    self.modifyVolumioKioskScript(oldPort, newPort).then(() => {
         self.config.set('kioskDisplay', data.display);
     });
     self.refreshUIConfig();
 }
 
-ControllerNowPlaying.prototype.restoreVolumioKioskBak = function() {
+ControllerNowPlaying.prototype.restoreVolumioKioskBak = function () {
     if (!util.fileExists(volumioKioskBackupPath)) {
         np.toast('error', np.getI18n('NOW_PLAYING_KIOSK_BAK_NOT_FOUND'));
         return;
@@ -792,13 +793,13 @@ ControllerNowPlaying.prototype.restoreVolumioKioskBak = function() {
     this.refreshUIConfig();
 }
 
-ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newPort, restartService = true) {
+ControllerNowPlaying.prototype.modifyVolumioKioskScript = function (oldPort, newPort, restartService = true) {
     try {
         if (oldPort == 3000) {
-            np.getLogger().info(`[now-playing] Backing up ${ volumioKioskPath } to ${ volumioKioskBackupPath }`);
+            np.getLogger().info(`[now-playing] Backing up ${volumioKioskPath} to ${volumioKioskBackupPath}`);
             util.copyFile(volumioKioskPath, volumioKioskBackupPath, { createDestDirIfNotExists: true });
         }
-        util.replaceInFile(volumioKioskPath, `localhost:${ oldPort }`, `localhost:${ newPort }`);
+        util.replaceInFile(volumioKioskPath, `localhost:${oldPort}`, `localhost:${newPort}`);
         np.toast('success', np.getI18n('NOW_PLAYING_KIOSK_MODIFIED'));
     } catch (error) {
         np.getLogger().error(np.getErrorMessage('[now-playing] Error modifying Volumio Kiosk script:', error));
@@ -814,32 +815,32 @@ ControllerNowPlaying.prototype.modifyVolumioKioskScript = function(oldPort, newP
     }
 }
 
-ControllerNowPlaying.prototype.restartVolumioKioskService = function() {
+ControllerNowPlaying.prototype.restartVolumioKioskService = function () {
     let defer = libQ.defer();
 
     // Restart volumio-kiosk service if it is active
-    util.isSystemdServiceActive('volumio-kiosk').then( isActive => {
+    util.isSystemdServiceActive('volumio-kiosk').then(isActive => {
         if (isActive) {
             np.toast('info', 'Restarting Volumio Kiosk service...');
             util.restartSystemdService('volumio-kiosk')
-            .then( () => { defer.resolve(); })
-            .catch( error => {
-                np.toast('error', 'Failed to restart Volumio Kiosk service.');
-                defer.resolve();
-            });
+                .then(() => { defer.resolve(); })
+                .catch(error => {
+                    np.toast('error', 'Failed to restart Volumio Kiosk service.');
+                    defer.resolve();
+                });
         }
         else {
             defer.resolve();
         }
     })
-    .catch( error => {
-        defer.resolve();
-    });
+        .catch(error => {
+            defer.resolve();
+        });
 
     return defer.promise;
 }
 
-ControllerNowPlaying.prototype.configSavePerformanceSettings = function(data) {
+ControllerNowPlaying.prototype.configSavePerformanceSettings = function (data) {
     let performanceSettings = {
         transitionEffectsKiosk: data.transitionEffectsKiosk,
         transitionEffectsOtherDevices: data.transitionEffectsOtherDevices,
@@ -852,39 +853,39 @@ ControllerNowPlaying.prototype.configSavePerformanceSettings = function(data) {
     this.config.set('performance', JSON.stringify(performanceSettings));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingSetPerformanceSettings', performanceSettings);
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'performance', data: performanceSettings });
 }
 
-ControllerNowPlaying.prototype.broadcastRefresh = function() {
+ControllerNowPlaying.prototype.broadcastRefresh = function () {
     np.broadcastMessage('nowPlayingRefresh');
     np.toast('success', np.getI18n('NOW_PLAYING_BROADCASTED_COMMAND'));
 }
 
 // Socket callMethod
-ControllerNowPlaying.prototype.getPluginInfo = function() {
+ControllerNowPlaying.prototype.getPluginInfo = function () {
     return {
         message: 'nowPlayingPluginInfo',
         payload: np.get('pluginInfo')
     };
 }
 
-ControllerNowPlaying.prototype.refreshUIConfig = function() {
+ControllerNowPlaying.prototype.refreshUIConfig = function () {
     let self = this;
-    
-    self.commandRouter.getUIConfigOnPlugin('user_interface', 'now_playing', {}).then( config => {
+
+    self.commandRouter.getUIConfigOnPlugin('user_interface', 'now_playing', {}).then(config => {
         self.commandRouter.broadcastMessage('pushUiConfig', config);
     });
 }
 
-ControllerNowPlaying.prototype.onVolumioStart = function() {
-	let configFile = this.commandRouter.pluginManager.getConfigurationFile(this.context, 'config.json');
-	this.config = new (require('v-conf'))();
+ControllerNowPlaying.prototype.onVolumioStart = function () {
+    let configFile = this.commandRouter.pluginManager.getConfigurationFile(this.context, 'config.json');
+    this.config = new (require('v-conf'))();
     this.config.loadFile(configFile);
 
     return libQ.resolve();
 }
 
-ControllerNowPlaying.prototype.onStart = function() {
+ControllerNowPlaying.prototype.onStart = function () {
     let self = this;
 
     np.init(self.context, self.config);
@@ -892,8 +893,8 @@ ControllerNowPlaying.prototype.onStart = function() {
     metadata.setAccessToken(np.getConfigValue('geniusAccessToken', ''));
 
     np.set('pluginInfo', util.getPluginInfo());
-    
-    return self.startApp().then( () => {
+
+    return self.startApp().then(() => {
         let display = np.getConfigValue('kioskDisplay', 'default');
         if (display == 'nowPlaying') {
             let kiosk = checkVolumioKiosk();
@@ -901,12 +902,12 @@ ControllerNowPlaying.prototype.onStart = function() {
                 self.modifyVolumioKioskScript(3000, np.getConfigValue('port', 4004));
             }
         }
-        
+
         return libQ.resolve();
     });
 };
 
-ControllerNowPlaying.prototype.onStop = function() {
+ControllerNowPlaying.prototype.onStop = function () {
     this.stopApp();
 
     // If kiosk is set to Now Playing, restore it back to default
@@ -919,37 +920,37 @@ ControllerNowPlaying.prototype.onStop = function() {
         restoreKiosk = libQ.resolve();
     }
 
-    return restoreKiosk.fin( () => {
+    return restoreKiosk.fin(() => {
         np.reset();
     });
 };
 
-ControllerNowPlaying.prototype.getConfigurationFiles = function() {
+ControllerNowPlaying.prototype.getConfigurationFiles = function () {
     return ['config.json'];
 }
 
-ControllerNowPlaying.prototype.startApp = function() {
+ControllerNowPlaying.prototype.startApp = function () {
     let defer = libQ.defer();
 
     app.start({
         port: np.getConfigValue('port', 4004)
     })
-    .then( () => {
-        defer.resolve();
-    })
-    .catch( error => {
-        np.toast('error', np.getI18n('NOW_PLAYING_DAEMON_START_ERR', error.message));
-        defer.reject(error);
-    });
+        .then(() => {
+            defer.resolve();
+        })
+        .catch(error => {
+            np.toast('error', np.getI18n('NOW_PLAYING_DAEMON_START_ERR', error.message));
+            defer.reject(error);
+        });
 
     return defer.promise;
 }
 
-ControllerNowPlaying.prototype.stopApp = function() {
+ControllerNowPlaying.prototype.stopApp = function () {
     app.stop();
 }
 
-ControllerNowPlaying.prototype.restartApp = function() {
+ControllerNowPlaying.prototype.restartApp = function () {
     this.stopApp();
     return this.startApp();
 }
@@ -969,7 +970,7 @@ function checkVolumioKiosk() {
             };
         }
 
-        if (util.findInFile(volumioKioskPath, `localhost:${ np.getConfigValue('port', 4004) }`)) {
+        if (util.findInFile(volumioKioskPath, `localhost:${np.getConfigValue('port', 4004)}`)) {
             return {
                 exists: true,
                 display: 'nowPlaying'
@@ -994,7 +995,7 @@ function getVolumioBackgrounds() {
     try {
         return util.readdir(volumioBackgroundPath, 'thumbnail-');
     } catch (error) {
-        np.getLogger().error(np.getErrorMessage(`[now-playing] Error getting Volumio backgrounds from ${ volumioBackgroundPath }: `, error));
+        np.getLogger().error(np.getErrorMessage(`[now-playing] Error getting Volumio backgrounds from ${volumioBackgroundPath}: `, error));
         np.toast('error', np.getI18n('NOW_PLAYING_GET_VOLUMIO_BG_ERR'));
         return [];
     }

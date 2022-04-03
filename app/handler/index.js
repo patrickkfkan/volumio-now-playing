@@ -9,9 +9,12 @@ const apiHandlers = {
 
 async function index(req, res) {
     let html = await renderView('index', req, {
-        styles: np.getConfigValue('styles', {}, true),
-        theme: np.getConfigValue('theme', 'default'),
-        performanceSettings: np.getConfigValue('performance', null, true)
+        settings: {
+            'screen.nowPlaying': np.getConfigValue('screen.nowPlaying', {}, true),
+            background: np.getConfigValue('background', {}, true),
+            theme: np.getConfigValue('theme', 'default'),
+            performance: np.getConfigValue('performance', null, true)
+        }
     });
     res.send(html);
 }
