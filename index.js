@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const geoTZ = require('geo-tz');
 global.nowPlayingPluginLibRoot = path.resolve(__dirname) + '/lib';
 
 const libQ = require('kew');
@@ -455,20 +456,22 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              */
             let localization = config.getLocalizationSettings();
 
+            localizationUIConf.content[0].value = localization.geoCoordinates || '';
+
             // Locale type
-            localizationUIConf.content[0].options[0].label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
-            localizationUIConf.content[0].value = {
+            localizationUIConf.content[1].options[0].label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
+            localizationUIConf.content[1].value = {
                 value: localization.localeType
             };
             switch (localization.localeType) {
                 case 'client':
-                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_CLIENT');
+                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_CLIENT');
                     break;
                 case 'custom':
-                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_CUSTOM');
+                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_CUSTOM');
                     break;
                 default:
-                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
+                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
             }
             
             // Populate locale list
@@ -476,26 +479,29 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let locale = localization.locale;
             let matchLocale = localeList.find(lc => lc.value === locale);
             if (matchLocale) {
-                localizationUIConf.content[1].value = matchLocale;
+                localizationUIConf.content[2].value = matchLocale;
             }
             else {
-                localizationUIConf.content[1].value = {
+                localizationUIConf.content[2].value = {
                     value: locale,
                     label: locale
                 }
             }
-            localizationUIConf.content[1].options = localeList;
+            localizationUIConf.content[2].options = localeList;
 
             // Timezone type
-            localizationUIConf.content[2].value = {
+            localizationUIConf.content[3].value = {
                 value: localization.timezoneType
             };
             switch (localization.timezoneType) {
                 case 'custom':
-                    localizationUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CUSTOM');
+                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CUSTOM');
+                    break;
+                case 'geoCoordinates':
+                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_GEO_COORD');
                     break;
                 default:
-                    localizationUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CLIENT');
+                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CLIENT');
             }
 
             // Populate timezone list
@@ -503,15 +509,15 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let timezone = localization.timezone;
             let matchTimezone = timezoneList.find(tz => tz.value === timezone);
             if (matchTimezone) {
-                localizationUIConf.content[3].value = matchTimezone;
+                localizationUIConf.content[4].value = matchTimezone;
             }
             else {
-                localizationUIConf.content[3].value = {
+                localizationUIConf.content[4].value = {
                     value: timezone,
                     label: timezone
                 }
             }
-            localizationUIConf.content[3].options = timezoneList;
+            localizationUIConf.content[4].options = timezoneList;
 
             /**
              * Metadata Service conf
@@ -864,14 +870,46 @@ ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
 }
 
 ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
+    const validateCoord = (coord) => {
+        if (!coord) {
+            return false;
+        }
+        let parts = coord.split(',');
+        if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) {
+            return false;
+        }
+        return parts;
+    }
     let settings = {
+        geoCoordinates: data.geoCoordinates,
         localeType: data.localeType.value,
         locale: data.locale.value,
         timezoneType: data.timezoneType.value,
         timezone: data.timezone.value
     };
+    let successMessage = np.getI18n('NOW_PLAYING_SETTINGS_SAVED');
+    if (settings.timezoneType === 'geoCoordinates') {
+        const coord = validateCoord(settings.geoCoordinates);
+        if (!coord) {
+            np.toast('error', np.getI18n('NOW_PLAYING_INVALID_GEO_COORD'));
+            return;
+        }
+        let matchTimezones = geoTZ.find(...coord);
+        if (Array.isArray(matchTimezones) && matchTimezones.length > 0) {
+            settings.geoTimezone = matchTimezones[0];
+            successMessage = np.getI18n('NOW_PLAYING_TZ_SET_BY_GEO_COORD', matchTimezones[0]);
+        }
+        else {
+            settings.geoTimezone = null;
+            successMessage = null;
+            np.toast('warning', np.getI18n('NOW_PLAYING_TZ_BY_GEO_COORD_NOT_FOUND'));
+        }
+    }
+    
     this.config.set('localization', JSON.stringify(settings));
-    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+    if (successMessage) {
+        np.toast('success', successMessage);
+    }
 
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'localization', data: config.getLocalizationSettings() });
 }

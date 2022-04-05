@@ -1418,6 +1418,7 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
+          "geoCoordinates",
           "localeType",
           "locale",
           "timezoneType",
@@ -1425,6 +1426,13 @@
         ]
       },
       "content": [
+        {
+          "id": "geoCoordinates",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD",
+          "value": ""
+        },
         {
           "id": "localeType",
           "element": "select",
@@ -1473,6 +1481,10 @@
             {
               "value": "client", 
               "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CLIENT"
+            },
+            {
+              "value": "geoCoordinates", 
+              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_GEO_COORD"
             },
             {
               "value": "custom", 
