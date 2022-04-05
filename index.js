@@ -458,66 +458,35 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
 
             localizationUIConf.content[0].value = localization.geoCoordinates || '';
 
-            // Locale type
-            localizationUIConf.content[1].options[0].label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
-            localizationUIConf.content[1].value = {
-                value: localization.localeType
-            };
-            switch (localization.localeType) {
-                case 'client':
-                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_CLIENT');
-                    break;
-                case 'custom':
-                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_CUSTOM');
-                    break;
-                default:
-                    localizationUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
-            }
-            
-            // Populate locale list
+            // Locale list
             let localeList = config.getLocaleList();
             let locale = localization.locale;
             let matchLocale = localeList.find(lc => lc.value === locale);
             if (matchLocale) {
-                localizationUIConf.content[2].value = matchLocale;
+                localizationUIConf.content[1].value = matchLocale;
             }
             else {
-                localizationUIConf.content[2].value = {
+                localizationUIConf.content[1].value = {
                     value: locale,
                     label: locale
                 }
             }
-            localizationUIConf.content[2].options = localeList;
+            localizationUIConf.content[1].options = localeList;
 
-            // Timezone type
-            localizationUIConf.content[3].value = {
-                value: localization.timezoneType
-            };
-            switch (localization.timezoneType) {
-                case 'custom':
-                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CUSTOM');
-                    break;
-                case 'geoCoordinates':
-                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_GEO_COORD');
-                    break;
-                default:
-                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CLIENT');
-            }
-
-            // Populate timezone list
+            // Timezone list
             let timezoneList = config.getTimezoneList();
             let timezone = localization.timezone;
             let matchTimezone = timezoneList.find(tz => tz.value === timezone);
             if (matchTimezone) {
-                localizationUIConf.content[4].value = matchTimezone;
+                localizationUIConf.content[2].value = matchTimezone;
             }
             else {
-                localizationUIConf.content[4].value = {
+                localizationUIConf.content[2].value = {
                     value: timezone,
                     label: timezone
                 }
             }
-            localizationUIConf.content[4].options = timezoneList;
+            localizationUIConf.content[2].options = timezoneList;
 
             /**
              * Metadata Service conf
@@ -880,15 +849,24 @@ ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
         }
         return parts;
     }
+    
     let settings = {
         geoCoordinates: data.geoCoordinates,
-        localeType: data.localeType.value,
         locale: data.locale.value,
-        timezoneType: data.timezoneType.value,
         timezone: data.timezone.value
     };
+
+    if (settings.locale === 'localeListDivider') {
+        np.toast('error', np.getI18n('NOW_PLAYING_LOCALE_SELECTION_INVALID'));
+        return;
+    }
+    if (settings.timezone === 'timezoneListDivider') {
+        np.toast('error', np.getI18n('NOW_PLAYING_TIMEZONE_SELECTION_INVALID'));
+        return;
+    }
+    
     let successMessage = np.getI18n('NOW_PLAYING_SETTINGS_SAVED');
-    if (settings.timezoneType === 'geoCoordinates') {
+    if (settings.timezone === 'matchGeoCoordinates') {
         const coord = validateCoord(settings.geoCoordinates);
         if (!coord) {
             np.toast('error', np.getI18n('NOW_PLAYING_INVALID_GEO_COORD'));

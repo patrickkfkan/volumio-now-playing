@@ -1419,9 +1419,7 @@
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
           "geoCoordinates",
-          "localeType",
           "locale",
-          "timezoneType",
           "timezone"
         ]
       },
@@ -1434,76 +1432,22 @@
           "value": ""
         },
         {
-          "id": "localeType",
+          "id": "locale",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_LOCALE",
           "value": {
-            "value": "volumio", 
-            "label": "TRANSLATE.NOW_PLAYING_LOCALE_VOLUMIO"
           },
           "options": [
-            {
-              "value": "volumio", 
-              "label": "TRANSLATE.NOW_PLAYING_LOCALE_VOLUMIO"
-            },
-            {
-              "value": "client", 
-              "label": "TRANSLATE.NOW_PLAYING_LOCALE_CLIENT"
-            },
-            {
-              "value": "custom", 
-              "label": "TRANSLATE.NOW_PLAYING_LOCALE_CUSTOM"
-            }
-          ]
-        },
-        {
-          "id": "locale",
-          "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_LOCALE_SELECT",
-          "value": {
-          },
-          "options": [
-          ],
-          "visibleIf": {
-            "field": "localeType",
-            "value": "custom"
-          }
-        },
-        {
-          "id": "timezoneType",
-          "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
-          "value": {
-            "value": "client", 
-            "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CLIENT"
-          },
-          "options": [
-            {
-              "value": "client", 
-              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CLIENT"
-            },
-            {
-              "value": "geoCoordinates", 
-              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_GEO_COORD"
-            },
-            {
-              "value": "custom", 
-              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CUSTOM"
-            }
           ]
         },
         {
           "id": "timezone",
           "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_SELECT",
+          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
           "value": {
           },
           "options": [
-          ],
-          "visibleIf": {
-            "field": "timezoneType",
-            "value": "custom"
-          }
+          ]
         }
       ]
     },
