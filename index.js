@@ -38,10 +38,11 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let albumartStylesUIConf = uiconf.sections[3];
             let backgroundStylesUIConf = uiconf.sections[4];
             let dockedVolumeIndicatorUIConf = uiconf.sections[5];
-            let metadataServiceUIConf = uiconf.sections[6];
-            let extraScreensUIConf = uiconf.sections[7];
-            let kioskUIConf = uiconf.sections[8];
-            let performanceUIConf = uiconf.sections[9];
+            let dockedClockUIConf = uiconf.sections[6];
+            let metadataServiceUIConf = uiconf.sections[7];
+            let extraScreensUIConf = uiconf.sections[8];
+            let kioskUIConf = uiconf.sections[9];
+            let performanceUIConf = uiconf.sections[10];
 
             /**
              * Daemon conf
@@ -409,6 +410,45 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             dockedVolumeIndicatorUIConf.content[6].value = dockedVolumeIndicator.margin || '';
 
             /**
+             * Docked Clock
+             */
+            let dockedClock = nowPlayingScreenSettings.dockedClock || {};
+            let dockedClockPlacement = dockedClock.placement || 'top-left';
+            dockedClockUIConf.content[0].value = dockedClock.enabled ? true : false;
+            dockedClockUIConf.content[1].value = {
+                value: dockedClockPlacement
+            };
+            switch (dockedClockPlacement) {
+                case 'top-left':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+                    break;
+                case 'top':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    break;
+                case 'top-right':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+                    break;
+                case 'left':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    break;
+                case 'right':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                case 'bottom-left':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+                    break;
+                case 'bottom':
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                default:
+                    dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+            }
+            dockedClockUIConf.content[2].value = dockedClock.fontSize || '';
+            dockedClockUIConf.content[3].value = dockedClock.dateColor || '#CCCCCC';
+            dockedClockUIConf.content[4].value = dockedClock.timeColor || '#CCCCCC';
+            dockedClockUIConf.content[5].value = dockedClock.margin || '';
+
+            /**
              * Metadata Service conf
              */
             metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
@@ -729,6 +769,25 @@ ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = functio
             fontColor: data.dockedVolumeIndicatorFontColor,
             iconColor: data.dockedVolumeIndicatorIconColor,
             margin: data.dockedVolumeIndicatorMargin
+        }
+    };
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+}
+
+ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
+    let apply = {
+        dockedClock: {
+            enabled: data.dockedClockEnabled,
+            placement: data.dockedClockPlacement.value,
+            fontSize: data.dockedClockFontSize,
+            dateColor: data.dockedClockDateColor,
+            timeColor: data.dockedClockTimeColor,
+            margin: data.dockedClockMargin
         }
     };
     let current = np.getConfigValue('screen.nowPlaying', {}, true);

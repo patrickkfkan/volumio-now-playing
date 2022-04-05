@@ -1280,6 +1280,132 @@
       ]
     },
     {
+      "id": "section_docked_clock",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_DOCKED_CLOCK",
+      "icon": "fa-wrench",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveDockedClockSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "dockedClockEnabled",
+          "dockedClockPlacement",
+          "dockedClockFontSize",
+          "dockedClockDateColor",
+          "dockedClockTimeColor",
+          "dockedClockMargin"
+        ]
+      },
+      "content": [
+        {
+          "id": "dockedClockEnabled",
+          "element": "switch",
+          "doc": "",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": false
+        },
+        {
+          "id": "dockedClockPlacement",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
+          "value": {
+            "value": "bottom-right", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
+          },
+          "options": [
+            {
+              "value": "top-left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP_LEFT"
+            },
+            {
+              "value": "top", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "top-right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP_RIGHT"
+            },
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            },
+            {
+              "value": "bottom-left",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_LEFT"
+            },
+            {
+              "value": "bottom",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "bottom-right",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockDateColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_DATE_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockTimeColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_TIME_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MARGIN",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
       "id": "section_metadata_service",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_METADATA_SERVICE",
