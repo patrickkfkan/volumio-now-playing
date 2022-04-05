@@ -34,6 +34,7 @@
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
+		"countries-and-timezones": "^3.3.0",
 		"ejs": "^3.1.6",
 		"express": "^4.17.1",
 		"genius-fetch": "^0.1.0",
@@ -42,6 +43,7 @@
 		"md5": "^2.3.0",
 		"node-cache": "^5.1.2",
 		"string-format": "^2.0.0",
-		"v-conf": "^1.4.2"
+		"v-conf": "^1.4.2",
+		"windows-locale": "^1.1.2"
 	}
 }

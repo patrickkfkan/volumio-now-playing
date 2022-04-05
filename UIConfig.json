@@ -1406,6 +1406,96 @@
       ]
     },
     {
+      "id": "section_localization",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_LOCALIZATION",
+      "icon": "fa-globe",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveLocalizationSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "localeType",
+          "locale",
+          "timezoneType",
+          "timezone"
+        ]
+      },
+      "content": [
+        {
+          "id": "localeType",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_LOCALE",
+          "value": {
+            "value": "volumio", 
+            "label": "TRANSLATE.NOW_PLAYING_LOCALE_VOLUMIO"
+          },
+          "options": [
+            {
+              "value": "volumio", 
+              "label": "TRANSLATE.NOW_PLAYING_LOCALE_VOLUMIO"
+            },
+            {
+              "value": "client", 
+              "label": "TRANSLATE.NOW_PLAYING_LOCALE_CLIENT"
+            },
+            {
+              "value": "custom", 
+              "label": "TRANSLATE.NOW_PLAYING_LOCALE_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "locale",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_LOCALE_SELECT",
+          "value": {
+          },
+          "options": [
+          ],
+          "visibleIf": {
+            "field": "localeType",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "timezoneType",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
+          "value": {
+            "value": "client", 
+            "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CLIENT"
+          },
+          "options": [
+            {
+              "value": "client", 
+              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CLIENT"
+            },
+            {
+              "value": "custom", 
+              "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "timezone",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE_SELECT",
+          "value": {
+          },
+          "options": [
+          ],
+          "visibleIf": {
+            "field": "timezoneType",
+            "value": "custom"
+          }
+        }
+      ]
+    },
+    {
       "id": "section_metadata_service",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_METADATA_SERVICE",

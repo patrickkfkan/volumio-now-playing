@@ -2,6 +2,7 @@
 
 const ejs = require('ejs');
 const np = require(nowPlayingPluginLibRoot + '/np');
+const config = require(nowPlayingPluginLibRoot + '/config');
 const apiHandlers = {
     'metadata': require(nowPlayingPluginLibRoot + '/api/metadata'),
     'settings': require(nowPlayingPluginLibRoot + '/api/settings')
@@ -13,7 +14,8 @@ async function index(req, res) {
             'screen.nowPlaying': np.getConfigValue('screen.nowPlaying', {}, true),
             background: np.getConfigValue('background', {}, true),
             theme: np.getConfigValue('theme', 'default'),
-            performance: np.getConfigValue('performance', null, true)
+            performance: np.getConfigValue('performance', null, true),
+            localization: config.getLocalizationSettings()
         }
     });
     res.send(html);

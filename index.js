@@ -8,6 +8,7 @@ const np = require(nowPlayingPluginLibRoot + '/np');
 const util = require(nowPlayingPluginLibRoot + '/util');
 const metadata = require(nowPlayingPluginLibRoot + '/api/metadata');
 const app = require(__dirname + '/app');
+const config = require(nowPlayingPluginLibRoot + '/config');
 
 const volumioKioskPath = '/opt/volumiokiosk.sh';
 const volumioKioskBackupPath = '/home/volumio/.now_playing/volumiokiosk.sh.bak';
@@ -39,10 +40,11 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let backgroundStylesUIConf = uiconf.sections[4];
             let dockedVolumeIndicatorUIConf = uiconf.sections[5];
             let dockedClockUIConf = uiconf.sections[6];
-            let metadataServiceUIConf = uiconf.sections[7];
-            let extraScreensUIConf = uiconf.sections[8];
-            let kioskUIConf = uiconf.sections[9];
-            let performanceUIConf = uiconf.sections[10];
+            let localizationUIConf = uiconf.sections[7];
+            let metadataServiceUIConf = uiconf.sections[8];
+            let extraScreensUIConf = uiconf.sections[9];
+            let kioskUIConf = uiconf.sections[10];
+            let performanceUIConf = uiconf.sections[11];
 
             /**
              * Daemon conf
@@ -449,6 +451,69 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             dockedClockUIConf.content[5].value = dockedClock.margin || '';
 
             /**
+             * Localization conf
+             */
+            let localization = config.getLocalizationSettings();
+
+            // Locale type
+            localizationUIConf.content[0].options[0].label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
+            localizationUIConf.content[0].value = {
+                value: localization.localeType
+            };
+            switch (localization.localeType) {
+                case 'client':
+                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_CLIENT');
+                    break;
+                case 'custom':
+                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_CUSTOM');
+                    break;
+                default:
+                    localizationUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_LOCALE_VOLUMIO', localization.volumioLocale);
+            }
+            
+            // Populate locale list
+            let localeList = config.getLocaleList();
+            let locale = localization.locale;
+            let matchLocale = localeList.find(lc => lc.value === locale);
+            if (matchLocale) {
+                localizationUIConf.content[1].value = matchLocale;
+            }
+            else {
+                localizationUIConf.content[1].value = {
+                    value: locale,
+                    label: locale
+                }
+            }
+            localizationUIConf.content[1].options = localeList;
+
+            // Timezone type
+            localizationUIConf.content[2].value = {
+                value: localization.timezoneType
+            };
+            switch (localization.timezoneType) {
+                case 'custom':
+                    localizationUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CUSTOM');
+                    break;
+                default:
+                    localizationUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIMEZONE_CLIENT');
+            }
+
+            // Populate timezone list
+            let timezoneList = config.getTimezoneList();
+            let timezone = localization.timezone;
+            let matchTimezone = timezoneList.find(tz => tz.value === timezone);
+            if (matchTimezone) {
+                localizationUIConf.content[3].value = matchTimezone;
+            }
+            else {
+                localizationUIConf.content[3].value = {
+                    value: timezone,
+                    label: timezone
+                }
+            }
+            localizationUIConf.content[3].options = timezoneList;
+
+            /**
              * Metadata Service conf
              */
             metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
@@ -798,6 +863,19 @@ ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
+ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
+    let settings = {
+        localeType: data.localeType.value,
+        locale: data.locale.value,
+        timezoneType: data.timezoneType.value,
+        timezone: data.timezone.value
+    };
+    this.config.set('localization', JSON.stringify(settings));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'localization', data: config.getLocalizationSettings() });
+}
+
 ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function (data) {
     let token = data['geniusAccessToken'].trim();
     this.config.set('geniusAccessToken', token);
@@ -952,6 +1030,10 @@ ControllerNowPlaying.prototype.onStart = function () {
 
     np.set('pluginInfo', util.getPluginInfo());
 
+    // Register language change listener
+    self.volumioLanguageChangeCallback = self.onVolumioLanguageChanged.bind(self);
+    self.context.coreCommand.sharedVars.registerCallback('language_code', self.volumioLanguageChangeCallback);
+
     return self.startApp().then(() => {
         let display = np.getConfigValue('kioskDisplay', 'default');
         if (display == 'nowPlaying') {
@@ -976,6 +1058,12 @@ ControllerNowPlaying.prototype.onStop = function () {
     }
     else {
         restoreKiosk = libQ.resolve();
+    }
+
+    // Remove language change listener (this is hacky but prevents a potential
+    // memory leak)
+    if (this.config.callbacks && this.volumioLanguageChangeCallback) {
+        this.config.callbacks.delete('language_code', this.volumioLanguageChangeCallback);
     }
 
     return restoreKiosk.fin(() => {
@@ -1011,6 +1099,12 @@ ControllerNowPlaying.prototype.stopApp = function () {
 ControllerNowPlaying.prototype.restartApp = function () {
     this.stopApp();
     return this.startApp();
+}
+
+ControllerNowPlaying.prototype.onVolumioLanguageChanged = function () {
+    // Push localization settings
+    np.getLogger().info('[now-playing] Volumio language changed - pushing localization settings');
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'localization', data: config.getLocalizationSettings() });
 }
 
 function checkVolumioKiosk() {
