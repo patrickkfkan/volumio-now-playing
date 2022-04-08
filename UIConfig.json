@@ -1598,7 +1598,8 @@
         "data": [
           "geoCoordinates",
           "locale",
-          "timezone"
+          "timezone",
+          "unitSystem"
         ]
       },
       "content": [
@@ -1625,6 +1626,25 @@
           "value": {
           },
           "options": [
+          ]
+        },
+        {
+          "id": "unitSystem",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_UNIT_SYSTEM",
+          "value": {
+            "value": "metric", 
+            "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
+          },
+          "options": [
+            {
+              "value": "metric", 
+              "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
+            },
+            {
+              "value": "imperial", 
+              "label": "TRANSLATE.NOW_PLAYING_UNITS_IMPERIAL"
+            }
           ]
         }
       ]

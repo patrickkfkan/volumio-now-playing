@@ -546,6 +546,19 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             }
             localizationUIConf.content[2].options = timezoneList;
 
+            // Unit system
+            let unitSystem = localization.unitSystem;
+            localizationUIConf.content[3].value = {
+                value: unitSystem
+            };
+            switch (unitSystem) {
+                case 'imperial':
+                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
+                    break;
+                default:
+                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_UNITS_METRIC');
+            }
+
             /**
              * Metadata Service conf
              */
@@ -929,7 +942,8 @@ ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
     let settings = {
         geoCoordinates: data.geoCoordinates,
         locale: data.locale.value,
-        timezone: data.timezone.value
+        timezone: data.timezone.value,
+        unitSystem: data.unitSystem.value
     };
 
     if (settings.locale === 'localeListDivider') {
@@ -1218,7 +1232,8 @@ ControllerNowPlaying.prototype.configureWeatherApi = function () {
     let localization = config.getLocalizationSettings();
     weather.config({
         apiKey: np.getConfigValue('openWeatherMapApiKey', ''),
-        coordinates: localization.geoCoordinates
+        coordinates: localization.geoCoordinates,
+        units: localization.unitSystem
     });
 }
 
