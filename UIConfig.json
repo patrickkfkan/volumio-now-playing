@@ -1406,6 +1406,184 @@
       ]
     },
     {
+      "id": "section_docked_weather",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_DOCKED_WEATHER",
+      "icon": "fa-wrench",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveDockedWeatherSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "dockedWeatherEnabled",
+          "dockedWeatherPlacement",
+          "dockedWeatherFontSize",
+          "dockedWeatherFontColor",
+          "dockedWeatherIconSize",
+          "dockedWeatherIconStyle",
+          "dockedWeatherIconAnimate",
+          "dockedWeatherIconMonoColor",
+          "dockedWeatherMargin"
+        ]
+      },
+      "content": [
+        {
+          "id": "dockedWeatherEnabled",
+          "element": "switch",
+          "doc": "",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": false
+        },
+        {
+          "id": "dockedWeatherPlacement",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
+          "value": {
+            "value": "bottom-right", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
+          },
+          "options": [
+            {
+              "value": "top-left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP_LEFT"
+            },
+            {
+              "value": "top", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "top-right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP_RIGHT"
+            },
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            },
+            {
+              "value": "bottom-left",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_LEFT"
+            },
+            {
+              "value": "bottom",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "bottom-right",
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherFontColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherIconSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherIconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "value": {
+            "value": "filled", 
+            "label": "TRANSLATE.NOW_PLAYING_FILLED"
+          },
+          "options": [
+            {
+              "value": "filled", 
+              "label": "TRANSLATE.NOW_PLAYING_FILLED"
+            },
+            {
+              "value": "outline", 
+              "label": "TRANSLATE.NOW_PLAYING_OUTLINE"
+            },
+            {
+              "value": "mono", 
+              "label": "TRANSLATE.NOW_PLAYING_MONOCHROME"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherIconAnimate",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_ANIMATE",
+          "value": false,
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherIconMonoColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_MONO_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MARGIN",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
       "id": "section_localization",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_LOCALIZATION",
@@ -1494,6 +1672,55 @@
             "data": {
                 "endpoint": "user_interface/now_playing",
                 "method": "clearMetadataCache"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "section_weather_service",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE",
+      "description": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE_DESC",
+      "icon": "fa-sun-o",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveWeatherServiceSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "openWeatherMapApiKey"
+        ]
+      },
+      "content": [
+        {
+          "id": "openWeatherMapApiKey",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_OPENWEATHERMAP_API_KEY",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_OPENWEATHERMAP_API_KEY",
+          "value": ""
+        },
+        {
+          "id": "apiKeyGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_API_KEY_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
+          "id": "clearWeatherCache",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
+          "onClick": {
+            "type": "emit",
+            "message": "callMethod",
+            "data": {
+                "endpoint": "user_interface/now_playing",
+                "method": "clearWeatherCache"
             }
           }
         }

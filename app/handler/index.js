@@ -5,7 +5,8 @@ const np = require(nowPlayingPluginLibRoot + '/np');
 const config = require(nowPlayingPluginLibRoot + '/config');
 const apiHandlers = {
     'metadata': require(nowPlayingPluginLibRoot + '/api/metadata'),
-    'settings': require(nowPlayingPluginLibRoot + '/api/settings')
+    'settings': require(nowPlayingPluginLibRoot + '/api/settings'),
+    'weather': require(nowPlayingPluginLibRoot + '/api/weather')
 };
 
 async function index(req, res) {

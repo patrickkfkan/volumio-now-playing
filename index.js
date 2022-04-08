@@ -8,6 +8,7 @@ const libQ = require('kew');
 const np = require(nowPlayingPluginLibRoot + '/np');
 const util = require(nowPlayingPluginLibRoot + '/util');
 const metadata = require(nowPlayingPluginLibRoot + '/api/metadata');
+const weather = require(nowPlayingPluginLibRoot + '/api/weather');
 const app = require(__dirname + '/app');
 const config = require(nowPlayingPluginLibRoot + '/config');
 
@@ -41,11 +42,13 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let backgroundStylesUIConf = uiconf.sections[4];
             let dockedVolumeIndicatorUIConf = uiconf.sections[5];
             let dockedClockUIConf = uiconf.sections[6];
-            let localizationUIConf = uiconf.sections[7];
-            let metadataServiceUIConf = uiconf.sections[8];
-            let extraScreensUIConf = uiconf.sections[9];
-            let kioskUIConf = uiconf.sections[10];
-            let performanceUIConf = uiconf.sections[11];
+            let dockedWeatherUIConf = uiconf.sections[7];
+            let localizationUIConf = uiconf.sections[8];
+            let metadataServiceUIConf = uiconf.sections[9];
+            let weatherServiceUIConf = uiconf.sections[10];
+            let extraScreensUIConf = uiconf.sections[11];
+            let kioskUIConf = uiconf.sections[12];
+            let performanceUIConf = uiconf.sections[13];
 
             /**
              * Daemon conf
@@ -452,6 +455,61 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             dockedClockUIConf.content[5].value = dockedClock.margin || '';
 
             /**
+             * Docked Weather
+             */
+             let dockedWeather = nowPlayingScreenSettings.dockedWeather || {};
+             let dockedWeatherPlacement = dockedWeather.placement || 'top-left';
+             let dockedWeatherIconStyle = dockedWeather.iconStyle || 'filled';
+             dockedWeatherUIConf.content[0].value = dockedWeather.enabled ? true : false;
+             dockedWeatherUIConf.content[1].value = {
+                 value: dockedWeatherPlacement
+             };
+             switch (dockedWeatherPlacement) {
+                 case 'top-left':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+                     break;
+                 case 'top':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                     break;
+                 case 'top-right':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+                     break;
+                 case 'left':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                     break;
+                 case 'right':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                     break;
+                 case 'bottom-left':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+                     break;
+                 case 'bottom':
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                     break;
+                 default:
+                     dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+             }
+             dockedWeatherUIConf.content[2].value = dockedWeather.fontSize || '';
+             dockedWeatherUIConf.content[3].value = dockedWeather.fontColor || '#CCCCCC';
+             dockedWeatherUIConf.content[4].value = dockedWeather.iconSize || '';
+             dockedWeatherUIConf.content[5].value = {
+                 value: dockedWeatherIconStyle
+             };
+             switch (dockedWeatherIconStyle) {
+                 case 'outline':
+                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
+                     break;
+                 case 'mono':
+                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
+                     break;
+                 default:
+                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_FILLED');
+             }
+             dockedWeatherUIConf.content[6].value = dockedWeather.iconAnimate || false;
+             dockedWeatherUIConf.content[7].value = dockedWeather.iconMonoColor || '#CCCCCC';
+             dockedWeatherUIConf.content[8].value = dockedWeather.margin || '';
+
+            /**
              * Localization conf
              */
             let localization = config.getLocalizationSettings();
@@ -494,6 +552,13 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
             let accessTokenSetupUrl = `${url}/genius_setup`;
             metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
+
+            /**
+             * Weather Service conf
+             */
+             weatherServiceUIConf.content[0].value = np.getConfigValue('openWeatherMapApiKey', '');
+             let apiKeySetupUrl = `${url}/openweathermap_setup`;
+             weatherServiceUIConf.content[1].onClick.url = apiKeySetupUrl;
 
             /**
              * Extra Screens conf
@@ -838,18 +903,29 @@ ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
+ControllerNowPlaying.prototype.configSaveDockedWeatherSettings = function (data) {
+    let apply = {
+        dockedWeather: {
+            enabled: data.dockedWeatherEnabled,
+            placement: data.dockedWeatherPlacement.value,
+            fontSize: data.dockedWeatherFontSize,
+            fontColor: data.dockedWeatherFontColor,
+            iconSize: data.dockedWeatherIconSize,
+            iconStyle: data.dockedWeatherIconStyle.value,
+            iconAnimate: data.dockedWeatherIconAnimate,
+            iconMonoColor: data.dockedWeatherIconMonoColor,
+            margin: data.dockedWeatherMargin
+        }
+    };
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+}
+
 ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
-    const validateCoord = (coord) => {
-        if (!coord) {
-            return false;
-        }
-        let parts = coord.split(',');
-        if (parts.length !== 2 || isNaN(parts[0]) || isNaN(parts[1])) {
-            return false;
-        }
-        return parts;
-    }
-    
     let settings = {
         geoCoordinates: data.geoCoordinates,
         locale: data.locale.value,
@@ -867,12 +943,12 @@ ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
     
     let successMessage = np.getI18n('NOW_PLAYING_SETTINGS_SAVED');
     if (settings.timezone === 'matchGeoCoordinates') {
-        const coord = validateCoord(settings.geoCoordinates);
+        let coord = config.parseCoordinates(settings.geoCoordinates);
         if (!coord) {
             np.toast('error', np.getI18n('NOW_PLAYING_INVALID_GEO_COORD'));
             return;
         }
-        let matchTimezones = geoTZ.find(...coord);
+        let matchTimezones = geoTZ.find(coord.lat, coord.lon);
         if (Array.isArray(matchTimezones) && matchTimezones.length > 0) {
             settings.geoTimezone = matchTimezones[0];
             successMessage = np.getI18n('NOW_PLAYING_TZ_SET_BY_GEO_COORD', matchTimezones[0]);
@@ -889,6 +965,8 @@ ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {
         np.toast('success', successMessage);
     }
 
+    this.configureWeatherApi();
+
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'localization', data: config.getLocalizationSettings() });
 }
 
@@ -899,8 +977,20 @@ ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function (dat
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 }
 
+ControllerNowPlaying.prototype.configSaveWeatherServiceSettings = function (data) {
+    let apiKey = data['openWeatherMapApiKey'].trim();
+    this.config.set('openWeatherMapApiKey', apiKey);
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+    this.configureWeatherApi();
+}
+
 ControllerNowPlaying.prototype.clearMetadataCache = function () {
     metadata.clearCache();
+    np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
+}
+
+ControllerNowPlaying.prototype.clearWeatherCache = function () {
+    weather.clearCache();
     np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
 }
 
@@ -1043,6 +1133,7 @@ ControllerNowPlaying.prototype.onStart = function () {
     np.init(self.context, self.config);
 
     metadata.setAccessToken(np.getConfigValue('geniusAccessToken', ''));
+    self.configureWeatherApi();
 
     np.set('pluginInfo', util.getPluginInfo());
 
@@ -1121,6 +1212,14 @@ ControllerNowPlaying.prototype.onVolumioLanguageChanged = function () {
     // Push localization settings
     np.getLogger().info('[now-playing] Volumio language changed - pushing localization settings');
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'localization', data: config.getLocalizationSettings() });
+}
+
+ControllerNowPlaying.prototype.configureWeatherApi = function () { 
+    let localization = config.getLocalizationSettings();
+    weather.config({
+        apiKey: np.getConfigValue('openWeatherMapApiKey', ''),
+        coordinates: localization.geoCoordinates
+    });
 }
 
 function checkVolumioKiosk() {

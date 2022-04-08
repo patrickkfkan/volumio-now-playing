@@ -45,6 +45,7 @@
 		"md5": "^2.3.0",
 		"node-cache": "^5.1.2",
 		"npm": "^8.6.0",
+		"openweather-api-node": "^1.4.0",
 		"string-format": "^2.0.0",
 		"v-conf": "^1.4.2",
 		"windows-locale": "^1.1.2"
