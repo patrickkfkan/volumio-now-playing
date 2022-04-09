@@ -569,25 +569,27 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                  default:
                      dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
              }
-             dockedWeatherUIConf.content[2].value = dockedWeather.fontSize || '';
-             dockedWeatherUIConf.content[3].value = dockedWeather.fontColor || '#CCCCCC';
-             dockedWeatherUIConf.content[4].value = dockedWeather.iconSize || '';
-             dockedWeatherUIConf.content[5].value = {
+             dockedWeatherUIConf.content[2].value = dockedWeather.showHumidity || false;
+             dockedWeatherUIConf.content[3].value = dockedWeather.showWindSpeed || false;
+             dockedWeatherUIConf.content[4].value = dockedWeather.fontSize || '';
+             dockedWeatherUIConf.content[5].value = dockedWeather.fontColor || '#CCCCCC';
+             dockedWeatherUIConf.content[6].value = dockedWeather.iconSize || '';
+             dockedWeatherUIConf.content[7].value = {
                  value: dockedWeatherIconStyle
              };
              switch (dockedWeatherIconStyle) {
                  case 'outline':
-                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
+                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
                      break;
                  case 'mono':
-                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
+                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
                      break;
                  default:
-                     dockedWeatherUIConf.content[5].value.label = np.getI18n('NOW_PLAYING_FILLED');
+                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FILLED');
              }
-             dockedWeatherUIConf.content[6].value = dockedWeather.iconAnimate || false;
-             dockedWeatherUIConf.content[7].value = dockedWeather.iconMonoColor || '#CCCCCC';
-             dockedWeatherUIConf.content[8].value = dockedWeather.margin || '';
+             dockedWeatherUIConf.content[8].value = dockedWeather.iconAnimate || false;
+             dockedWeatherUIConf.content[9].value = dockedWeather.iconMonoColor || '#CCCCCC';
+             dockedWeatherUIConf.content[10].value = dockedWeather.margin || '';
 
             /**
              * Localization conf
@@ -1011,6 +1013,8 @@ ControllerNowPlaying.prototype.configSaveDockedWeatherSettings = function (data)
         dockedWeather: {
             enabled: data.dockedWeatherEnabled,
             placement: data.dockedWeatherPlacement.value,
+            showHumidity: data.dockedWeatherShowHumidity,
+            showWindSpeed: data.dockedWeatherShowWindSpeed,
             fontSize: data.dockedWeatherFontSize,
             fontColor: data.dockedWeatherFontColor,
             iconSize: data.dockedWeatherIconSize,

@@ -1625,6 +1625,8 @@
         "data": [
           "dockedWeatherEnabled",
           "dockedWeatherPlacement",
+          "dockedWeatherShowHumidity",
+          "dockedWeatherShowWindSpeed",
           "dockedWeatherFontSize",
           "dockedWeatherFontColor",
           "dockedWeatherIconSize",
@@ -1684,6 +1686,26 @@
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
           ],
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherShowHumidity",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_HUMIDITY",
+          "value": false,
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherShowWindSpeed",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_WIND_SPEED",
+          "value": false,
           "visibleIf": {
             "field": "dockedWeatherEnabled",
             "value": true

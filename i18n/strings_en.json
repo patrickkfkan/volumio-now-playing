@@ -117,6 +117,8 @@
   "NOW_PLAYING_HOUR_24": "24-Hour Clock",
   "NOW_PLAYING_SHOW_SECONDS": "Show Seconds",
   "NOW_PLAYING_DOCKED_WEATHER": "Dock Component - Weather",
+  "NOW_PLAYING_SHOW_HUMIDITY": "Show Humidity",
+  "NOW_PLAYING_SHOW_WIND_SPEED": "Show Wind Speed",
   "NOW_PLAYING_ICON_STYLE": "Icon Style",
   "NOW_PLAYING_FILLED": "Filled",
   "NOW_PLAYING_OUTLINE": "Outline",
