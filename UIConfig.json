@@ -1294,9 +1294,19 @@
         "data": [
           "dockedClockEnabled",
           "dockedClockPlacement",
+          "dockedClockShowInfo",
           "dockedClockFontSize",
           "dockedClockDateColor",
           "dockedClockTimeColor",
+          "dockedClockShowYear",
+          "dockedClockShowDayOfWeek",
+          "dockedClockYearFormat",
+          "dockedClockMonthFormat",
+          "dockedClockDayFormat",
+          "dockedClockDayOfWeekFormat",
+          "dockedClockHourFormat",
+          "dockedClockHour24",
+          "dockedClockShowSeconds",
           "dockedClockMargin"
         ]
       },
@@ -1356,6 +1366,33 @@
           }
         },
         {
+          "id": "dockedClockShowInfo",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW",
+          "value": {
+            "value": "dateTime", 
+            "label": "TRANSLATE.NOW_PLAYING_DATE_TIME"
+          },
+          "options": [
+            {
+              "value": "dateTime", 
+              "label": "TRANSLATE.NOW_PLAYING_DATE_TIME"
+            },
+            {
+              "value": "time", 
+              "label": "TRANSLATE.NOW_PLAYING_TIME_ONLY"
+            },
+            {
+              "value": "date", 
+              "label": "TRANSLATE.NOW_PLAYING_DATE_ONLY"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
           "id": "dockedClockFontSize",
           "type": "text",
           "element": "input",
@@ -1386,6 +1423,174 @@
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_TIME_COLOR",
           "value": "",
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockShowYear",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_YEAR",
+          "value": false,
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockShowDayOfWeek",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_DAY_OF_WEEK",
+          "value": false,
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockYearFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_YEAR_FORMAT",
+          "value": {
+            "value": "numeric", 
+            "label": "TRANSLATE.NOW_PLAYING_NUMERIC_YEAR"
+          },
+          "options": [
+            {
+              "value": "numeric", 
+              "label": "TRANSLATE.NOW_PLAYING_NUMERIC_YEAR"
+            },
+            {
+              "value": "2-digit",
+              "label": "TRANSLATE.NOW_PLAYING_2DIGIT_YEAR"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockMonthFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_MONTH_FORMAT",
+          "value": {
+            "value": "short", 
+            "label": "TRANSLATE.NOW_PLAYING_SHORT_MONTH"
+          },
+          "options": [
+            {
+              "value": "numeric", 
+              "label": "TRANSLATE.NOW_PLAYING_NUMERIC_MONTH"
+            },
+            {
+              "value": "2-digit",
+              "label": "TRANSLATE.NOW_PLAYING_2DIGIT_MONTH"
+            },
+            {
+              "value": "long",
+              "label": "TRANSLATE.NOW_PLAYING_LONG_MONTH"
+            },
+            {
+              "value": "short",
+              "label": "TRANSLATE.NOW_PLAYING_SHORT_MONTH"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockDayFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_DAY_FORMAT",
+          "value": {
+            "value": "numeric", 
+            "label": "TRANSLATE.NOW_PLAYING_NUMERIC_DAY"
+          },
+          "options": [
+            {
+              "value": "numeric", 
+              "label": "TRANSLATE.NOW_PLAYING_NUMERIC_DAY"
+            },
+            {
+              "value": "2-digit",
+              "label": "TRANSLATE.NOW_PLAYING_2DIGIT_DAY"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockDayOfWeekFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_DAY_OF_WEEK_FORMAT",
+          "value": {
+            "value": "short", 
+            "label": "TRANSLATE.NOW_PLAYING_SHORT_DAY_OF_WEEK"
+          },
+          "options": [
+            {
+              "value": "long",
+              "label": "TRANSLATE.NOW_PLAYING_LONG_DAY_OF_WEEK"
+            },
+            {
+              "value": "short",
+              "label": "TRANSLATE.NOW_PLAYING_SHORT_DAY_OF_WEEK"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockHourFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_HOUR_FORMAT",
+          "value": {
+            "value": "numeric", 
+            "label": "TRANSLATE.NOW_PLAYING_NUMERIC_HOUR"
+          },
+          "options": [
+            {
+              "value": "numeric", 
+              "label": "TRANSLATE.NOW_PLAYING_NUMERIC_HOUR"
+            },
+            {
+              "value": "2-digit",
+              "label": "TRANSLATE.NOW_PLAYING_2DIGIT_HOUR"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockHour24",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_HOUR_24",
+          "value": false,
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockShowSeconds",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_SECONDS",
+          "value": false,
           "visibleIf": {
             "field": "dockedClockEnabled",
             "value": true

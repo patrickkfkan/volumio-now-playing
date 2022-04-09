@@ -420,6 +420,12 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              */
             let dockedClock = nowPlayingScreenSettings.dockedClock || {};
             let dockedClockPlacement = dockedClock.placement || 'top-left';
+            let dockedClockShowInfo = dockedClock.showInfo || 'dateTime';
+            let dockedClockYearFormat = dockedClock.yearFormat || 'numeric';
+            let dockedClockMonthFormat = dockedClock.monthFormat || 'short';
+            let dockedClockDayFormat = dockedClock.dayFormat || 'numeric';
+            let dockedClockDayOfWeekFormat = dockedClock.dayOfWeekFormat || 'short';
+            let dockedClockHourFormat = dockedClock.hourFormat || 'numeric';
             dockedClockUIConf.content[0].value = dockedClock.enabled ? true : false;
             dockedClockUIConf.content[1].value = {
                 value: dockedClockPlacement
@@ -449,10 +455,84 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                 default:
                     dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
             }
-            dockedClockUIConf.content[2].value = dockedClock.fontSize || '';
-            dockedClockUIConf.content[3].value = dockedClock.dateColor || '#CCCCCC';
-            dockedClockUIConf.content[4].value = dockedClock.timeColor || '#CCCCCC';
-            dockedClockUIConf.content[5].value = dockedClock.margin || '';
+            dockedClockUIConf.content[2].value = {
+                value: dockedClockShowInfo
+            };
+            switch (dockedClockShowInfo) {
+                case 'time':
+                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIME_ONLY');
+                    break;
+                case 'date':
+                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_DATE_ONLY');
+                    break;
+                default:
+                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_DATE_TIME');
+            }
+            
+            dockedClockUIConf.content[3].value = dockedClock.fontSize || '';
+            dockedClockUIConf.content[4].value = dockedClock.dateColor || '#CCCCCC';
+            dockedClockUIConf.content[5].value = dockedClock.timeColor || '#CCCCCC';
+            dockedClockUIConf.content[6].value = dockedClock.showYear || false;
+            dockedClockUIConf.content[7].value = dockedClock.showDayOfWeek || false;
+            dockedClockUIConf.content[8].value = {
+                value: dockedClockYearFormat
+            };
+            switch (dockedClockYearFormat) {
+                case '2-digit':
+                    dockedClockUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_2DIGIT_YEAR');
+                    break;
+                default:
+                    dockedClockUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_NUMERIC_YEAR');
+            }
+            dockedClockUIConf.content[9].value = {
+                value: dockedClockMonthFormat
+            };
+            switch (dockedClockMonthFormat) {
+                case 'numeric':
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NUMERIC_MONTH');
+                    break;
+                case '2-digit':
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_2DIGIT_MONTH');
+                    break;
+                case 'long':
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_LONG_MONTH');
+                    break;
+                default:
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_SHORT_MONTH');
+            }
+            dockedClockUIConf.content[10].value = {
+                value: dockedClockDayFormat
+            };
+            switch (dockedClockDayFormat) {                   
+                case '2-digit':
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_2DIGIT_DAY');
+                    break;
+                default:
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_NUMERIC_DAY');
+            }
+            dockedClockUIConf.content[11].value = {
+                value: dockedClockDayOfWeekFormat
+            };
+            switch (dockedClockDayOfWeekFormat) {
+                case 'long':
+                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
+                    break;
+                default:
+                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
+            }
+            dockedClockUIConf.content[12].value = {
+                value: dockedClockHourFormat
+            };
+            switch (dockedClockHourFormat) {                   
+                case '2-digit':
+                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_2DIGIT_HOUR');
+                    break;
+                default:
+                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_NUMERIC_HOUR');
+            }
+            dockedClockUIConf.content[13].value = dockedClock.hour24 || false;
+            dockedClockUIConf.content[14].value = dockedClock.showSeconds || false;
+            dockedClockUIConf.content[15].value = dockedClock.margin || '';
 
             /**
              * Docked Weather
@@ -902,9 +982,19 @@ ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
         dockedClock: {
             enabled: data.dockedClockEnabled,
             placement: data.dockedClockPlacement.value,
+            showInfo: data.dockedClockShowInfo.value,
             fontSize: data.dockedClockFontSize,
             dateColor: data.dockedClockDateColor,
             timeColor: data.dockedClockTimeColor,
+            showYear: data.dockedClockShowYear,
+            showDayOfWeek: data.dockedClockShowDayOfWeek,
+            yearFormat: data.dockedClockYearFormat.value,
+            monthFormat: data.dockedClockMonthFormat.value,
+            dayFormat: data.dockedClockDayFormat.value,
+            dayOfWeekFormat: data.dockedClockDayOfWeekFormat.value,
+            hourFormat: data.dockedClockHourFormat.value,
+            hour24: data.dockedClockHour24,
+            showSeconds: data.dockedClockShowSeconds,
             margin: data.dockedClockMargin
         }
     };
