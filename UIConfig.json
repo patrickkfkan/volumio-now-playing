@@ -1274,6 +1274,7 @@
         "data": [
           "dockedVolumeIndicatorEnabled",
           "dockedVolumeIndicatorPlacement",
+          "dockedVolumeIndicatorDisplayOrder",
           "dockedVolumeIndicatorFontSize",
           "dockedVolumeIndicatorIconSize",
           "dockedVolumeIndicatorFontColor",
@@ -1331,6 +1332,18 @@
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
           ],
+          "visibleIf": {
+            "field": "dockedVolumeIndicatorEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedVolumeIndicatorDisplayOrder",
+          "type": "number",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
+          "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
+          "value": "",
           "visibleIf": {
             "field": "dockedVolumeIndicatorEnabled",
             "value": true
@@ -1413,6 +1426,7 @@
         "data": [
           "dockedClockEnabled",
           "dockedClockPlacement",
+          "dockedClockDisplayOrder",
           "dockedClockShowInfo",
           "dockedClockFontSize",
           "dockedClockDateColor",
@@ -1479,6 +1493,18 @@
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
           ],
+          "visibleIf": {
+            "field": "dockedClockEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedClockDisplayOrder",
+          "type": "number",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
+          "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
+          "value": "",
           "visibleIf": {
             "field": "dockedClockEnabled",
             "value": true
@@ -1744,6 +1770,7 @@
         "data": [
           "dockedWeatherEnabled",
           "dockedWeatherPlacement",
+          "dockedWeatherDisplayOrder",
           "dockedWeatherShowHumidity",
           "dockedWeatherShowWindSpeed",
           "dockedWeatherFontSize",
@@ -1805,6 +1832,18 @@
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
           ],
+          "visibleIf": {
+            "field": "dockedWeatherEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedWeatherDisplayOrder",
+          "type": "number",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
+          "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
+          "value": "",
           "visibleIf": {
             "field": "dockedWeatherEnabled",
             "value": true

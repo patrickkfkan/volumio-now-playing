@@ -443,11 +443,12 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                 default:
                     dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
             }
-            dockedVolumeIndicatorUIConf.content[2].value = dockedVolumeIndicator.fontSize || '';
-            dockedVolumeIndicatorUIConf.content[3].value = dockedVolumeIndicator.iconSize || '';
-            dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.fontColor || '#CCCCCC';
-            dockedVolumeIndicatorUIConf.content[5].value = dockedVolumeIndicator.iconColor || '#CCCCCC';
-            dockedVolumeIndicatorUIConf.content[6].value = dockedVolumeIndicator.margin || '';
+            dockedVolumeIndicatorUIConf.content[2].value = dockedVolumeIndicator.displayOrder !== undefined ? dockedVolumeIndicator.displayOrder : '';
+            dockedVolumeIndicatorUIConf.content[3].value = dockedVolumeIndicator.fontSize || '';
+            dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.iconSize || '';
+            dockedVolumeIndicatorUIConf.content[5].value = dockedVolumeIndicator.fontColor || '#CCCCCC';
+            dockedVolumeIndicatorUIConf.content[6].value = dockedVolumeIndicator.iconColor || '#CCCCCC';
+            dockedVolumeIndicatorUIConf.content[7].value = dockedVolumeIndicator.margin || '';
 
             /**
              * Docked Clock
@@ -489,84 +490,85 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                 default:
                     dockedClockUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
             }
-            dockedClockUIConf.content[2].value = {
+            dockedClockUIConf.content[2].value = dockedClock.displayOrder !== undefined ? dockedClock.displayOrder : '';
+            dockedClockUIConf.content[3].value = {
                 value: dockedClockShowInfo
             };
             switch (dockedClockShowInfo) {
                 case 'time':
-                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_TIME_ONLY');
+                    dockedClockUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_TIME_ONLY');
                     break;
                 case 'date':
-                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_DATE_ONLY');
+                    dockedClockUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_DATE_ONLY');
                     break;
                 default:
-                    dockedClockUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_DATE_TIME');
+                    dockedClockUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_DATE_TIME');
             }
             
-            dockedClockUIConf.content[3].value = dockedClock.fontSize || '';
-            dockedClockUIConf.content[4].value = dockedClock.dateColor || '#CCCCCC';
-            dockedClockUIConf.content[5].value = dockedClock.timeColor || '#CCCCCC';
-            dockedClockUIConf.content[6].value = dockedClock.showYear || false;
-            dockedClockUIConf.content[7].value = dockedClock.showDayOfWeek || false;
-            dockedClockUIConf.content[8].value = {
+            dockedClockUIConf.content[4].value = dockedClock.fontSize || '';
+            dockedClockUIConf.content[5].value = dockedClock.dateColor || '#CCCCCC';
+            dockedClockUIConf.content[6].value = dockedClock.timeColor || '#CCCCCC';
+            dockedClockUIConf.content[7].value = dockedClock.showYear || false;
+            dockedClockUIConf.content[8].value = dockedClock.showDayOfWeek || false;
+            dockedClockUIConf.content[9].value = {
                 value: dockedClockYearFormat
             };
             switch (dockedClockYearFormat) {
                 case '2-digit':
-                    dockedClockUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_2DIGIT_YEAR');
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_2DIGIT_YEAR');
                     break;
                 default:
-                    dockedClockUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_NUMERIC_YEAR');
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NUMERIC_YEAR');
             }
-            dockedClockUIConf.content[9].value = {
+            dockedClockUIConf.content[10].value = {
                 value: dockedClockMonthFormat
             };
             switch (dockedClockMonthFormat) {
                 case 'numeric':
-                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NUMERIC_MONTH');
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_NUMERIC_MONTH');
                     break;
                 case '2-digit':
-                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_2DIGIT_MONTH');
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_2DIGIT_MONTH');
                     break;
                 case 'long':
-                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_LONG_MONTH');
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_LONG_MONTH');
                     break;
                 default:
-                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_SHORT_MONTH');
+                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_SHORT_MONTH');
             }
-            dockedClockUIConf.content[10].value = {
+            dockedClockUIConf.content[11].value = {
                 value: dockedClockDayFormat
             };
             switch (dockedClockDayFormat) {                   
                 case '2-digit':
-                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_2DIGIT_DAY');
+                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_2DIGIT_DAY');
                     break;
                 default:
-                    dockedClockUIConf.content[10].value.label = np.getI18n('NOW_PLAYING_NUMERIC_DAY');
+                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_NUMERIC_DAY');
             }
-            dockedClockUIConf.content[11].value = {
+            dockedClockUIConf.content[12].value = {
                 value: dockedClockDayOfWeekFormat
             };
             switch (dockedClockDayOfWeekFormat) {
                 case 'long':
-                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
+                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
                     break;
                 default:
-                    dockedClockUIConf.content[11].value.label = np.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
+                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
             }
-            dockedClockUIConf.content[12].value = {
+            dockedClockUIConf.content[13].value = {
                 value: dockedClockHourFormat
             };
             switch (dockedClockHourFormat) {                   
                 case '2-digit':
-                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_2DIGIT_HOUR');
+                    dockedClockUIConf.content[13].value.label = np.getI18n('NOW_PLAYING_2DIGIT_HOUR');
                     break;
                 default:
-                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_NUMERIC_HOUR');
+                    dockedClockUIConf.content[13].value.label = np.getI18n('NOW_PLAYING_NUMERIC_HOUR');
             }
-            dockedClockUIConf.content[13].value = dockedClock.hour24 || false;
-            dockedClockUIConf.content[14].value = dockedClock.showSeconds || false;
-            dockedClockUIConf.content[15].value = dockedClock.margin || '';
+            dockedClockUIConf.content[14].value = dockedClock.hour24 || false;
+            dockedClockUIConf.content[15].value = dockedClock.showSeconds || false;
+            dockedClockUIConf.content[16].value = dockedClock.margin || '';
 
             /**
              * Docked Weather
@@ -603,27 +605,28 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                  default:
                      dockedWeatherUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
              }
-             dockedWeatherUIConf.content[2].value = dockedWeather.showHumidity || false;
-             dockedWeatherUIConf.content[3].value = dockedWeather.showWindSpeed || false;
-             dockedWeatherUIConf.content[4].value = dockedWeather.fontSize || '';
-             dockedWeatherUIConf.content[5].value = dockedWeather.fontColor || '#CCCCCC';
-             dockedWeatherUIConf.content[6].value = dockedWeather.iconSize || '';
-             dockedWeatherUIConf.content[7].value = {
+             dockedWeatherUIConf.content[2].value = dockedWeather.displayOrder !== undefined ? dockedWeather.displayOrder : '';
+             dockedWeatherUIConf.content[3].value = dockedWeather.showHumidity || false;
+             dockedWeatherUIConf.content[4].value = dockedWeather.showWindSpeed || false;
+             dockedWeatherUIConf.content[5].value = dockedWeather.fontSize || '';
+             dockedWeatherUIConf.content[6].value = dockedWeather.fontColor || '#CCCCCC';
+             dockedWeatherUIConf.content[7].value = dockedWeather.iconSize || '';
+             dockedWeatherUIConf.content[8].value = {
                  value: dockedWeatherIconStyle
              };
              switch (dockedWeatherIconStyle) {
                  case 'outline':
-                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
+                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
                      break;
                  case 'mono':
-                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
+                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
                      break;
                  default:
-                     dockedWeatherUIConf.content[7].value.label = np.getI18n('NOW_PLAYING_FILLED');
+                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_FILLED');
              }
-             dockedWeatherUIConf.content[8].value = dockedWeather.iconAnimate || false;
-             dockedWeatherUIConf.content[9].value = dockedWeather.iconMonoColor || '#CCCCCC';
-             dockedWeatherUIConf.content[10].value = dockedWeather.margin || '';
+             dockedWeatherUIConf.content[9].value = dockedWeather.iconAnimate || false;
+             dockedWeatherUIConf.content[10].value = dockedWeather.iconMonoColor || '#CCCCCC';
+             dockedWeatherUIConf.content[11].value = dockedWeather.margin || '';
 
             /**
              * Localization conf
@@ -1014,10 +1017,12 @@ ControllerNowPlaying.prototype.configSaveDockedActionPanelTriggerSettings = func
 }
 
 ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = function (data) {
+    const displayOrder = data.dockedVolumeIndicatorDisplayOrder !== '' ? parseInt(data.dockedVolumeIndicatorDisplayOrder, 10) : '';
     let apply = {
         dockedVolumeIndicator: {
             enabled: data.dockedVolumeIndicatorEnabled,
             placement: data.dockedVolumeIndicatorPlacement.value,
+            displayOrder,
             fontSize: data.dockedVolumeIndicatorFontSize,
             iconSize: data.dockedVolumeIndicatorIconSize,
             fontColor: data.dockedVolumeIndicatorFontColor,
@@ -1034,10 +1039,12 @@ ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = functio
 }
 
 ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
+    const displayOrder = data.dockedClockDisplayOrder !== '' ? parseInt(data.dockedClockDisplayOrder, 10) : '';
     let apply = {
         dockedClock: {
             enabled: data.dockedClockEnabled,
             placement: data.dockedClockPlacement.value,
+            displayOrder,
             showInfo: data.dockedClockShowInfo.value,
             fontSize: data.dockedClockFontSize,
             dateColor: data.dockedClockDateColor,
@@ -1063,10 +1070,12 @@ ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
 }
 
 ControllerNowPlaying.prototype.configSaveDockedWeatherSettings = function (data) {
+    const displayOrder = data.dockedWeatherDisplayOrder !== '' ? parseInt(data.dockedWeatherDisplayOrder, 10) : '';
     let apply = {
         dockedWeather: {
             enabled: data.dockedWeatherEnabled,
             placement: data.dockedWeatherPlacement.value,
+            displayOrder,
             showHumidity: data.dockedWeatherShowHumidity,
             showWindSpeed: data.dockedWeatherShowWindSpeed,
             fontSize: data.dockedWeatherFontSize,
