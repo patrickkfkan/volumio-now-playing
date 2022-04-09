@@ -40,15 +40,16 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let widgetStylesUIConf = uiconf.sections[2];
             let albumartStylesUIConf = uiconf.sections[3];
             let backgroundStylesUIConf = uiconf.sections[4];
-            let dockedVolumeIndicatorUIConf = uiconf.sections[5];
-            let dockedClockUIConf = uiconf.sections[6];
-            let dockedWeatherUIConf = uiconf.sections[7];
-            let localizationUIConf = uiconf.sections[8];
-            let metadataServiceUIConf = uiconf.sections[9];
-            let weatherServiceUIConf = uiconf.sections[10];
-            let extraScreensUIConf = uiconf.sections[11];
-            let kioskUIConf = uiconf.sections[12];
-            let performanceUIConf = uiconf.sections[13];
+            let dockedActionPanelTriggerUIConf = uiconf.sections[5];
+            let dockedVolumeIndicatorUIConf = uiconf.sections[6];
+            let dockedClockUIConf = uiconf.sections[7];
+            let dockedWeatherUIConf = uiconf.sections[8];
+            let localizationUIConf = uiconf.sections[9];
+            let metadataServiceUIConf = uiconf.sections[10];
+            let weatherServiceUIConf = uiconf.sections[11];
+            let extraScreensUIConf = uiconf.sections[12];
+            let kioskUIConf = uiconf.sections[13];
+            let performanceUIConf = uiconf.sections[14];
 
             /**
              * Daemon conf
@@ -375,6 +376,39 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             backgroundStylesUIConf.content[14].value = backgroundSettings.backgroundOverlayGradient || '';
             backgroundStylesUIConf.content[15].value = backgroundSettings.backgroundOverlayGradientOpacity || '';
 
+            /**
+             * Docked Action Panel Trigger
+             */
+             let dockedActionPanelTrigger = nowPlayingScreenSettings.dockedActionPanelTrigger || {};
+             let dockedActionPanelTriggerIconStyle = dockedActionPanelTrigger.iconStyle || 'expand_more';
+             dockedActionPanelTriggerUIConf.content[0].value = dockedActionPanelTrigger.enabled === undefined ? true : dockedActionPanelTrigger.enabled;
+             dockedActionPanelTriggerUIConf.content[1].value = {
+                 value: dockedActionPanelTriggerIconStyle
+             };
+             switch (dockedActionPanelTriggerIconStyle) {
+                 case 'expand_circle_down':
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CHEVRON_CIRCLE');
+                     break;
+                 case 'arrow_drop_down':
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CARET');
+                     break;
+                 case 'arrow_drop_down_circle':
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CARET_CIRCLE');
+                     break;
+                 case 'arrow_downward':
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_ARROW');
+                     break;
+                 case 'arrow_circle_down':
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_ARROW_CIRCLE');
+                     break;
+                 default:
+                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CHEVRON');
+             }
+             dockedActionPanelTriggerUIConf.content[2].value = dockedActionPanelTrigger.iconSize || '';
+             dockedActionPanelTriggerUIConf.content[3].value = dockedActionPanelTrigger.iconColor || '#CCCCCC';
+             dockedActionPanelTriggerUIConf.content[4].value = dockedActionPanelTrigger.opacity || '';
+             dockedActionPanelTriggerUIConf.content[5].value = dockedActionPanelTrigger.margin || '';
+ 
             /**
              * Docked Volume Indicator
              */
@@ -957,6 +991,26 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function (data) {
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'background', data: updated });
+}
+
+ControllerNowPlaying.prototype.configSaveDockedActionPanelTriggerSettings = function (data) {
+    let apply = {
+        dockedActionPanelTrigger: {
+            enabled: data.dockedActionPanelTriggerEnabled,
+            iconStyle: data.dockedActionPanelTriggerIconStyle.value,
+            iconSize: data.dockedActionPanelTriggerIconSize,
+            fontColor: data.dockedActionPanelTriggerFontColor,
+            iconColor: data.dockedActionPanelTriggerIconColor,
+            opacity: data.dockedActionPanelTriggerOpacity,
+            margin: data.dockedActionPanelTriggerMargin
+        }
+    };
+    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
 }
 
 ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = function (data) {

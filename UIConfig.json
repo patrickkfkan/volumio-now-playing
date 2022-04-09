@@ -1141,6 +1141,125 @@
       ]
     },
     {
+      "id": "section_docked_action_panel_trigger",
+      "element": "section",
+      "description": "TRANSLATE.NOW_PLAYING_ACTION_PANEL_TRIGGER_DESC",
+      "label": "TRANSLATE.NOW_PLAYING_DOCKED_ACTION_PANEL_TRIGGER",
+      "icon": "fa-wrench",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveDockedActionPanelTriggerSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "dockedActionPanelTriggerEnabled",
+          "dockedActionPanelTriggerIconStyle",
+          "dockedActionPanelTriggerIconSize",
+          "dockedActionPanelTriggerIconColor",
+          "dockedActionPanelTriggerOpacity",
+          "dockedActionPanelTriggerMargin"
+        ]
+      },
+      "content": [
+        {
+          "id": "dockedActionPanelTriggerEnabled",
+          "element": "switch",
+          "doc": "",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": true
+        },
+        {
+          "id": "dockedActionPanelTriggerIconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "value": {
+            "value": "expand_more",
+            "label": "TRANSLATE.NOW_PLAYING_CHEVRON"
+          },
+          "options": [
+            {
+              "value": "expand_more", 
+              "label": "TRANSLATE.NOW_PLAYING_CHEVRON"
+            },
+            {
+              "value": "expand_circle_down", 
+              "label": "TRANSLATE.NOW_PLAYING_CHEVRON_CIRCLE"
+            },
+            {
+              "value": "arrow_drop_down", 
+              "label": "TRANSLATE.NOW_PLAYING_CARET"
+            },
+            {
+              "value": "arrow_drop_down_circle", 
+              "label": "TRANSLATE.NOW_PLAYING_CARET_CIRCLE"
+            },
+            {
+              "value": "arrow_downward", 
+              "label": "TRANSLATE.NOW_PLAYING_ARROW"
+            },
+            {
+              "value": "arrow_circle_down",
+              "label": "TRANSLATE.NOW_PLAYING_ARROW_CIRCLE"
+            }
+          ],
+          "visibleIf": {
+            "field": "dockedActionPanelTriggerEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedActionPanelTriggerIconSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedActionPanelTriggerEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedActionPanelTriggerIconColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedActionPanelTriggerEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedActionPanelTriggerOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedActionPanelTriggerEnabled",
+            "value": true
+          }
+        },
+        {
+          "id": "dockedActionPanelTriggerMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MARGIN",
+          "value": "",
+          "visibleIf": {
+            "field": "dockedActionPanelTriggerEnabled",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
       "id": "section_docked_volume_indicator",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_DOCKED_VOLUME_INDICATOR",
