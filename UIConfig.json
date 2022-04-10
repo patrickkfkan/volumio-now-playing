@@ -1145,7 +1145,7 @@
       "element": "section",
       "description": "TRANSLATE.NOW_PLAYING_ACTION_PANEL_TRIGGER_DESC",
       "label": "TRANSLATE.NOW_PLAYING_DOCKED_ACTION_PANEL_TRIGGER",
-      "icon": "fa-wrench",
+      "icon": "fa-chevron-circle-down",
       "onSave": {
         "type": "controller",
         "endpoint": "user_interface/now_playing",
@@ -1263,7 +1263,7 @@
       "id": "section_docked_volume_indicator",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_DOCKED_VOLUME_INDICATOR",
-      "icon": "fa-wrench",
+      "icon": "fa-volume-up",
       "onSave": {
         "type": "controller",
         "endpoint": "user_interface/now_playing",
@@ -1415,7 +1415,7 @@
       "id": "section_docked_clock",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_DOCKED_CLOCK",
-      "icon": "fa-wrench",
+      "icon": "fa-clock-o",
       "onSave": {
         "type": "controller",
         "endpoint": "user_interface/now_playing",
@@ -1759,7 +1759,7 @@
       "id": "section_docked_weather",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_DOCKED_WEATHER",
-      "icon": "fa-wrench",
+      "icon": "fa-sun-o",
       "onSave": {
         "type": "controller",
         "endpoint": "user_interface/now_playing",
@@ -1996,8 +1996,17 @@
           "value": ""
         },
         {
+          "id": "geoCoordinatesGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
           "id": "locale",
           "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_LOCALE",
           "label": "TRANSLATE.NOW_PLAYING_LOCALE",
           "value": {
           },
@@ -2007,6 +2016,7 @@
         {
           "id": "timezone",
           "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_TIMEZONE",
           "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
           "value": {
           },

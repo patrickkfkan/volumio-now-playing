@@ -634,48 +634,50 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let localization = config.getLocalizationSettings();
 
             localizationUIConf.content[0].value = localization.geoCoordinates || '';
+            let geoCoordSetupUrl = `${url}/geo_coord_setup`;
+            localizationUIConf.content[1].onClick.url = geoCoordSetupUrl;
 
             // Locale list
             let localeList = config.getLocaleList();
             let locale = localization.locale;
             let matchLocale = localeList.find(lc => lc.value === locale);
             if (matchLocale) {
-                localizationUIConf.content[1].value = matchLocale;
+                localizationUIConf.content[2].value = matchLocale;
             }
             else {
-                localizationUIConf.content[1].value = {
+                localizationUIConf.content[2].value = {
                     value: locale,
                     label: locale
                 }
             }
-            localizationUIConf.content[1].options = localeList;
+            localizationUIConf.content[2].options = localeList;
 
             // Timezone list
             let timezoneList = config.getTimezoneList();
             let timezone = localization.timezone;
             let matchTimezone = timezoneList.find(tz => tz.value === timezone);
             if (matchTimezone) {
-                localizationUIConf.content[2].value = matchTimezone;
+                localizationUIConf.content[3].value = matchTimezone;
             }
             else {
-                localizationUIConf.content[2].value = {
+                localizationUIConf.content[3].value = {
                     value: timezone,
                     label: timezone
                 }
             }
-            localizationUIConf.content[2].options = timezoneList;
+            localizationUIConf.content[3].options = timezoneList;
 
             // Unit system
             let unitSystem = localization.unitSystem;
-            localizationUIConf.content[3].value = {
+            localizationUIConf.content[4].value = {
                 value: unitSystem
             };
             switch (unitSystem) {
                 case 'imperial':
-                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
+                    localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
                     break;
                 default:
-                    localizationUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_UNITS_METRIC');
+                    localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_METRIC');
             }
 
             /**
