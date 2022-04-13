@@ -36,17 +36,17 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
         __dirname + '/UIConfig.json')
         .then(uiconf => {
             let daemonUIConf = uiconf.sections[0];
-            let textStylesUIConf = uiconf.sections[1];
-            let widgetStylesUIConf = uiconf.sections[2];
-            let albumartStylesUIConf = uiconf.sections[3];
-            let backgroundStylesUIConf = uiconf.sections[4];
-            let dockedActionPanelTriggerUIConf = uiconf.sections[5];
-            let dockedVolumeIndicatorUIConf = uiconf.sections[6];
-            let dockedClockUIConf = uiconf.sections[7];
-            let dockedWeatherUIConf = uiconf.sections[8];
-            let localizationUIConf = uiconf.sections[9];
-            let metadataServiceUIConf = uiconf.sections[10];
-            let weatherServiceUIConf = uiconf.sections[11];
+            let localizationUIConf = uiconf.sections[1];
+            let metadataServiceUIConf = uiconf.sections[2];
+            let weatherServiceUIConf = uiconf.sections[3];
+            let textStylesUIConf = uiconf.sections[4];
+            let widgetStylesUIConf = uiconf.sections[5];
+            let albumartStylesUIConf = uiconf.sections[6];
+            let backgroundStylesUIConf = uiconf.sections[7];
+            let dockedActionPanelTriggerUIConf = uiconf.sections[8];
+            let dockedVolumeIndicatorUIConf = uiconf.sections[9];
+            let dockedClockUIConf = uiconf.sections[10];
+            let dockedWeatherUIConf = uiconf.sections[11];
             let extraScreensUIConf = uiconf.sections[12];
             let kioskUIConf = uiconf.sections[13];
             let performanceUIConf = uiconf.sections[14];
@@ -65,6 +65,72 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             daemonUIConf.content[2].value = previewUrl;
             daemonUIConf.content[3].onClick.url = previewUrl;
 
+            /**
+             * Localization conf
+             */
+             let localization = config.getLocalizationSettings();
+
+             localizationUIConf.content[0].value = localization.geoCoordinates || '';
+             let geoCoordSetupUrl = `${url}/geo_coord_setup`;
+             localizationUIConf.content[1].onClick.url = geoCoordSetupUrl;
+ 
+             // Locale list
+             let localeList = config.getLocaleList();
+             let locale = localization.locale;
+             let matchLocale = localeList.find(lc => lc.value === locale);
+             if (matchLocale) {
+                 localizationUIConf.content[2].value = matchLocale;
+             }
+             else {
+                 localizationUIConf.content[2].value = {
+                     value: locale,
+                     label: locale
+                 }
+             }
+             localizationUIConf.content[2].options = localeList;
+ 
+             // Timezone list
+             let timezoneList = config.getTimezoneList();
+             let timezone = localization.timezone;
+             let matchTimezone = timezoneList.find(tz => tz.value === timezone);
+             if (matchTimezone) {
+                 localizationUIConf.content[3].value = matchTimezone;
+             }
+             else {
+                 localizationUIConf.content[3].value = {
+                     value: timezone,
+                     label: timezone
+                 }
+             }
+             localizationUIConf.content[3].options = timezoneList;
+ 
+             // Unit system
+             let unitSystem = localization.unitSystem;
+             localizationUIConf.content[4].value = {
+                 value: unitSystem
+             };
+             switch (unitSystem) {
+                 case 'imperial':
+                     localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
+                     break;
+                 default:
+                     localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_METRIC');
+             }
+ 
+             /**
+              * Metadata Service conf
+              */
+             metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
+             let accessTokenSetupUrl = `${url}/genius_setup`;
+             metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
+ 
+             /**
+              * Weather Service conf
+              */
+              weatherServiceUIConf.content[0].value = np.getConfigValue('openWeatherMapApiKey', '');
+              let apiKeySetupUrl = `${url}/openweathermap_setup`;
+              weatherServiceUIConf.content[1].onClick.url = apiKeySetupUrl;
+ 
             /**
              * Text Styles conf
              */
@@ -627,72 +693,6 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              dockedWeatherUIConf.content[9].value = dockedWeather.iconAnimate || false;
              dockedWeatherUIConf.content[10].value = dockedWeather.iconMonoColor || '#CCCCCC';
              dockedWeatherUIConf.content[11].value = dockedWeather.margin || '';
-
-            /**
-             * Localization conf
-             */
-            let localization = config.getLocalizationSettings();
-
-            localizationUIConf.content[0].value = localization.geoCoordinates || '';
-            let geoCoordSetupUrl = `${url}/geo_coord_setup`;
-            localizationUIConf.content[1].onClick.url = geoCoordSetupUrl;
-
-            // Locale list
-            let localeList = config.getLocaleList();
-            let locale = localization.locale;
-            let matchLocale = localeList.find(lc => lc.value === locale);
-            if (matchLocale) {
-                localizationUIConf.content[2].value = matchLocale;
-            }
-            else {
-                localizationUIConf.content[2].value = {
-                    value: locale,
-                    label: locale
-                }
-            }
-            localizationUIConf.content[2].options = localeList;
-
-            // Timezone list
-            let timezoneList = config.getTimezoneList();
-            let timezone = localization.timezone;
-            let matchTimezone = timezoneList.find(tz => tz.value === timezone);
-            if (matchTimezone) {
-                localizationUIConf.content[3].value = matchTimezone;
-            }
-            else {
-                localizationUIConf.content[3].value = {
-                    value: timezone,
-                    label: timezone
-                }
-            }
-            localizationUIConf.content[3].options = timezoneList;
-
-            // Unit system
-            let unitSystem = localization.unitSystem;
-            localizationUIConf.content[4].value = {
-                value: unitSystem
-            };
-            switch (unitSystem) {
-                case 'imperial':
-                    localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
-                    break;
-                default:
-                    localizationUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_UNITS_METRIC');
-            }
-
-            /**
-             * Metadata Service conf
-             */
-            metadataServiceUIConf.content[0].value = np.getConfigValue('geniusAccessToken', '');
-            let accessTokenSetupUrl = `${url}/genius_setup`;
-            metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
-
-            /**
-             * Weather Service conf
-             */
-             weatherServiceUIConf.content[0].value = np.getConfigValue('openWeatherMapApiKey', '');
-             let apiKeySetupUrl = `${url}/openweathermap_setup`;
-             weatherServiceUIConf.content[1].onClick.url = apiKeySetupUrl;
 
             /**
              * Extra Screens conf

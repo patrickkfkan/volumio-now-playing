@@ -53,6 +53,179 @@
       ]
     },
     {
+      "id": "section_localization",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_LOCALIZATION",
+      "icon": "fa-globe",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveLocalizationSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "geoCoordinates",
+          "locale",
+          "timezone",
+          "unitSystem"
+        ]
+      },
+      "content": [
+        {
+          "id": "geoCoordinates",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD",
+          "value": ""
+        },
+        {
+          "id": "geoCoordinatesGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
+          "id": "locale",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_LOCALE",
+          "label": "TRANSLATE.NOW_PLAYING_LOCALE",
+          "value": {
+          },
+          "options": [
+          ]
+        },
+        {
+          "id": "timezone",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_TIMEZONE",
+          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
+          "value": {
+          },
+          "options": [
+          ]
+        },
+        {
+          "id": "unitSystem",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_UNIT_SYSTEM",
+          "value": {
+            "value": "metric", 
+            "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
+          },
+          "options": [
+            {
+              "value": "metric", 
+              "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
+            },
+            {
+              "value": "imperial", 
+              "label": "TRANSLATE.NOW_PLAYING_UNITS_IMPERIAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section_metadata_service",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_METADATA_SERVICE",
+      "icon": "fa-plug",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveMetadataServiceSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "geniusAccessToken"
+        ]
+      },
+      "content": [
+        {
+          "id": "geniusAccessToken",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_GENIUS_ACCESS_TOKEN",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_GENIUS_ACCESS_TOKEN",
+          "value": ""
+        },
+        {
+          "id": "accessTokenGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_ACCESS_TOKEN_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
+          "id": "clearMetadataCache",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
+          "onClick": {
+            "type": "emit",
+            "message": "callMethod",
+            "data": {
+                "endpoint": "user_interface/now_playing",
+                "method": "clearMetadataCache"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "section_weather_service",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE",
+      "description": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE_DESC",
+      "icon": "fa-sun-o",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveWeatherServiceSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "openWeatherMapApiKey"
+        ]
+      },
+      "content": [
+        {
+          "id": "openWeatherMapApiKey",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_OPENWEATHERMAP_API_KEY",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_OPENWEATHERMAP_API_KEY",
+          "value": ""
+        },
+        {
+          "id": "apiKeyGuide",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_API_KEY_GUIDE",
+          "onClick": {
+            "type": "openUrl"
+          }
+        },
+        {
+          "id": "clearWeatherCache",
+          "element": "button",
+          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
+          "onClick": {
+            "type": "emit",
+            "message": "callMethod",
+            "data": {
+                "endpoint": "user_interface/now_playing",
+                "method": "clearWeatherCache"
+            }
+          }
+        }
+      ]
+    },
+    {
       "id": "section_text_styles",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_TEXT_STYLES",
@@ -1724,6 +1897,7 @@
         {
           "id": "dockedClockHour24",
           "element": "switch",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
           "label": "TRANSLATE.NOW_PLAYING_HOUR_24",
           "value": false,
           "visibleIf": {
@@ -1964,179 +2138,6 @@
           "visibleIf": {
             "field": "dockedWeatherEnabled",
             "value": true
-          }
-        }
-      ]
-    },
-    {
-      "id": "section_localization",
-      "element": "section",
-      "label": "TRANSLATE.NOW_PLAYING_LOCALIZATION",
-      "icon": "fa-globe",
-      "onSave": {
-        "type": "controller",
-        "endpoint": "user_interface/now_playing",
-        "method": "configSaveLocalizationSettings"
-      },
-      "saveButton": {
-        "label": "TRANSLATE.NOW_PLAYING_SAVE",
-        "data": [
-          "geoCoordinates",
-          "locale",
-          "timezone",
-          "unitSystem"
-        ]
-      },
-      "content": [
-        {
-          "id": "geoCoordinates",
-          "type": "text",
-          "element": "input",
-          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD",
-          "value": ""
-        },
-        {
-          "id": "geoCoordinatesGuide",
-          "element": "button",
-          "label": "TRANSLATE.NOW_PLAYING_GEO_COORD_GUIDE",
-          "onClick": {
-            "type": "openUrl"
-          }
-        },
-        {
-          "id": "locale",
-          "element": "select",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_LOCALE",
-          "label": "TRANSLATE.NOW_PLAYING_LOCALE",
-          "value": {
-          },
-          "options": [
-          ]
-        },
-        {
-          "id": "timezone",
-          "element": "select",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_TIMEZONE",
-          "label": "TRANSLATE.NOW_PLAYING_TIMEZONE",
-          "value": {
-          },
-          "options": [
-          ]
-        },
-        {
-          "id": "unitSystem",
-          "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_UNIT_SYSTEM",
-          "value": {
-            "value": "metric", 
-            "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
-          },
-          "options": [
-            {
-              "value": "metric", 
-              "label": "TRANSLATE.NOW_PLAYING_UNITS_METRIC"
-            },
-            {
-              "value": "imperial", 
-              "label": "TRANSLATE.NOW_PLAYING_UNITS_IMPERIAL"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "section_metadata_service",
-      "element": "section",
-      "label": "TRANSLATE.NOW_PLAYING_METADATA_SERVICE",
-      "icon": "fa-plug",
-      "onSave": {
-        "type": "controller",
-        "endpoint": "user_interface/now_playing",
-        "method": "configSaveMetadataServiceSettings"
-      },
-      "saveButton": {
-        "label": "TRANSLATE.NOW_PLAYING_SAVE",
-        "data": [
-          "geniusAccessToken"
-        ]
-      },
-      "content": [
-        {
-          "id": "geniusAccessToken",
-          "type": "text",
-          "element": "input",
-          "label": "TRANSLATE.NOW_PLAYING_GENIUS_ACCESS_TOKEN",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_GENIUS_ACCESS_TOKEN",
-          "value": ""
-        },
-        {
-          "id": "accessTokenGuide",
-          "element": "button",
-          "label": "TRANSLATE.NOW_PLAYING_ACCESS_TOKEN_GUIDE",
-          "onClick": {
-            "type": "openUrl"
-          }
-        },
-        {
-          "id": "clearMetadataCache",
-          "element": "button",
-          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
-          "onClick": {
-            "type": "emit",
-            "message": "callMethod",
-            "data": {
-                "endpoint": "user_interface/now_playing",
-                "method": "clearMetadataCache"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "section_weather_service",
-      "element": "section",
-      "label": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE",
-      "description": "TRANSLATE.NOW_PLAYING_WEATHER_SERVICE_DESC",
-      "icon": "fa-sun-o",
-      "onSave": {
-        "type": "controller",
-        "endpoint": "user_interface/now_playing",
-        "method": "configSaveWeatherServiceSettings"
-      },
-      "saveButton": {
-        "label": "TRANSLATE.NOW_PLAYING_SAVE",
-        "data": [
-          "openWeatherMapApiKey"
-        ]
-      },
-      "content": [
-        {
-          "id": "openWeatherMapApiKey",
-          "type": "text",
-          "element": "input",
-          "label": "TRANSLATE.NOW_PLAYING_OPENWEATHERMAP_API_KEY",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_OPENWEATHERMAP_API_KEY",
-          "value": ""
-        },
-        {
-          "id": "apiKeyGuide",
-          "element": "button",
-          "label": "TRANSLATE.NOW_PLAYING_API_KEY_GUIDE",
-          "onClick": {
-            "type": "openUrl"
-          }
-        },
-        {
-          "id": "clearWeatherCache",
-          "element": "button",
-          "label": "TRANSLATE.NOW_PLAYING_CLEAR_CACHE",
-          "onClick": {
-            "type": "emit",
-            "message": "callMethod",
-            "data": {
-                "endpoint": "user_interface/now_playing",
-                "method": "clearWeatherCache"
-            }
           }
         }
       ]
