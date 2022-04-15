@@ -13,6 +13,7 @@ async function index(req, res) {
     let html = await renderView('index', req, {
         settings: {
             'screen.nowPlaying': np.getConfigValue('screen.nowPlaying', {}, true),
+            'screen.idle': np.getConfigValue('screen.idle', {}, true),
             background: np.getConfigValue('background', {}, true),
             theme: np.getConfigValue('theme', 'default'),
             performance: np.getConfigValue('performance', null, true),

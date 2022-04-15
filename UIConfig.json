@@ -2071,7 +2071,6 @@
           "id": "dockedWeatherIconSize",
           "type": "text",
           "element": "input",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
           "value": "",
           "visibleIf": {
@@ -2138,6 +2137,782 @@
           "visibleIf": {
             "field": "dockedWeatherEnabled",
             "value": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "section_idle_view",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_IDLE_SCREEN",
+      "icon": "fa-lightbulb-o",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveIdleScreenSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "enabled",
+          "waitTime",
+          "showLocation",
+          "showWeather",
+          "mainAlignment",
+          "timeFormat",
+          "hour24",
+          "showSeconds",
+          "fontSizes",
+          "timeFontSize",
+          "dateFontSize",
+          "locationFontSize",
+          "weatherCurrentBaseFontSize",
+          "weatherForecastBaseFontSize",
+          "fontColors",
+          "timeColor",
+          "dateColor",
+          "locationColor",
+          "weatherCurrentColor",
+          "weatherForecastColor",
+          "weatherIconSettings",
+          "weatherIconStyle",
+          "weatherCurrentIconSize",
+          "weatherForecastIconSize",
+          "weatherCurrentIconMonoColor",
+          "weatherForecastIconMonoColor",
+          "weatherCurrentIconAnimate",
+          "backgroundType",
+          "backgroundColor",
+          "volumioBackgroundImage",
+          "volumioBackgroundFit",
+          "volumioBackgroundPosition",
+          "volumioBackgroundBlur",
+          "volumioBackgroundScale",
+          "unsplashKeywords",
+          "unsplashKeywordsAppendDayPeriod",
+          "unsplashMatchScreenSize",
+          "unsplashRefreshInterval",
+          "unsplashBackgroundBlur",
+          "backgroundOverlay",
+          "backgroundOverlayColor",
+          "backgroundOverlayColorOpacity",
+          "backgroundOverlayGradient",
+          "backgroundOverlayGradientOpacity",
+          "weatherBackground",
+          "weatherBackgroundColor",
+          "weatherBackgroundColorOpacity",
+          "weatherBackgroundGradient",
+          "weatherBackgroundGradientOpacity"
+        ]
+      },
+      "content": [
+        {
+          "id": "enabled",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_IDLE_SCREEN",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": {
+            "value": "kiosk",
+            "label": "TRANSLATE.NOW_PLAYING_KIOSK_ONLY"
+          },
+          "options": [
+            {
+              "value": "kiosk",
+              "label": "TRANSLATE.NOW_PLAYING_KIOSK_ONLY"
+            },
+            {
+              "value": "all",
+              "label": "TRANSLATE.NOW_PLAYING_ALL_CLIENTS"
+            },
+            {
+              "value": "disabled",
+              "label": "TRANSLATE.NOW_PLAYING_DISABLED"
+            }
+          ]
+        },
+        {
+          "id": "waitTime",
+          "type": "number",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_IDLE_SCREEN_WAIT_TIME",
+          "label": "TRANSLATE.NOW_PLAYING_WAIT_TIME",
+          "value": 30
+        },
+        {
+          "id": "showLocation",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_LOCATION",
+          "value": true
+        },
+        {
+          "id": "showWeather",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_WEATHER",
+          "value": true
+        },
+        {
+          "id": "mainAlignment",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_IDLE_SCREEN_MAIN_ALIGNMENT",
+          "value": {
+            "value": "flex-start", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+          },
+          "options": [
+            {
+              "value": "flex-start", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "flex-end", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            }
+          ]
+        },
+        {
+          "id": "timeFormat",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_TIME_FORMAT",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "hour24",
+          "element": "switch",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_HOUR_24",
+          "value": false,
+          "visibleIf": {
+            "field": "timeFormat",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "showSeconds",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_SECONDS",
+          "value": false,
+          "visibleIf": {
+            "field": "timeFormat",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "fontSizes",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZES",
+          "value": {
+            "value": "auto",
+            "label": "TRANSLATE.NOW_PLAYING_AUTO"
+          },
+          "options": [
+            {
+              "value": "auto",
+              "label": "TRANSLATE.NOW_PLAYING_AUTO"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "timeFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_TIME",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "dateFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_DATE",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "locationFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_LOCATION",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherCurrentBaseFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_CURRENT",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherForecastBaseFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_FORECAST",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "fontColors",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_COLORS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "timeColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_TIME",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "dateColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_DATE",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "locationColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_LOCATION",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherCurrentColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_CURRENT",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherForecastColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_FORECAST",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherIconSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_ICON_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "weatherIconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "value": {
+            "value": "filled", 
+            "label": "TRANSLATE.NOW_PLAYING_FILLED"
+          },
+          "options": [
+            {
+              "value": "filled", 
+              "label": "TRANSLATE.NOW_PLAYING_FILLED"
+            },
+            {
+              "value": "outline", 
+              "label": "TRANSLATE.NOW_PLAYING_OUTLINE"
+            },
+            {
+              "value": "mono", 
+              "label": "TRANSLATE.NOW_PLAYING_MONOCHROME"
+            }
+          ],
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherCurrentIconSize",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_CURRENT_ICON_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherForecastIconSize",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_FORECAST_ICON_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherCurrentIconMonoColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_CURRENT_ICON_MONO_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherForecastIconMonoColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_FORECAST_ICON_MONO_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "weatherCurrentIconAnimate",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_CURRENT_ICON_ANIMATE",
+          "value": true,
+          "visibleIf": {
+            "field": "weatherIconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "backgroundType",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_TYPE",
+          "value": {
+            "value": "unsplash",
+            "label": "TRANSLATE.NOW_PLAYING_UNSPLASH"
+          },
+          "options": [
+            {
+              "value": "unsplash",
+              "label": "TRANSLATE.NOW_PLAYING_UNSPLASH"
+            },
+            {
+              "value": "color",
+              "label": "TRANSLATE.NOW_PLAYING_COLOR"
+            },
+            {
+              "value": "volumioBackground",
+              "label": "TRANSLATE.NOW_PLAYING_VOLUMIO_BACKGROUND"
+            }
+          ]
+        },
+        {
+          "id": "backgroundColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BG_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "color"
+          }
+        },
+        {
+          "id": "volumioBackgroundImage",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_IMAGE",
+          "value": {
+            "value": "", 
+            "label": ""
+          },
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "volumioBackgroundFit",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_FIT",
+          "value": {
+            "value": "cover", 
+            "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+          },
+          "options": [
+            {
+              "value": "cover", 
+              "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+            },
+            {
+              "value": "contain",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_CONTAIN"
+            },
+            {
+              "value": "fill",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_FILL"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "volumioBackgroundPosition",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_POSITION",
+          "value": {
+            "value": "center", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+          },
+          "options": [
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "top", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "bottom", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "volumioBackgroundBlur",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BLUR",
+          "label": "TRANSLATE.NOW_PLAYING_BLUR_RADIUS",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "volumioBackgroundScale",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SCALE",
+          "label": "TRANSLATE.NOW_PLAYING_SCALE",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "unsplashKeywords",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_UNSPLASH_KEYWORDS",
+          "label": "TRANSLATE.NOW_PLAYING_UNSPLASH_KEYWORDS",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "unsplash"
+          }
+        },
+        {
+          "id": "unsplashKeywordsAppendDayPeriod",
+          "element": "switch",
+          "doc": "NOW_PLAYING_DOC_UNSPLASH_KEYWORDS_APPEND_DAY_PERIOD",
+          "label": "TRANSLATE.NOW_PLAYING_UNSPLASH_KEYWORDS_APPEND_DAY_PERIOD",
+          "value": false,
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "unsplash"
+          }
+        },
+        {
+          "id": "unsplashMatchScreenSize",
+          "element": "switch",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_UNSPLASH_MATCH_SCREEN_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_UNSPLASH_MATCH_SCREEN_SIZE",
+          "value": true,
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "unsplash"
+          }
+        },
+        {
+          "id": "unsplashRefreshInterval",
+          "type": "number",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_UNSPLASH_REFRESH_INTERVAL",
+          "label": "TRANSLATE.NOW_PLAYING_UNSPLASH_REFRESH_INTERVAL",
+          "value": 10,
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "unsplash"
+          }
+        },
+        {
+          "id": "unsplashBackgroundBlur",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BLUR",
+          "label": "TRANSLATE.NOW_PLAYING_BLUR_RADIUS",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "unsplash"
+          }
+        },
+        {
+          "id": "backgroundOverlay",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_OVERLAY",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default", 
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "customColor", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_COLOR"
+            },
+            {
+              "value": "customGradient", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_GRADIENT"
+            },
+            {
+              "value": "none", 
+              "label": "TRANSLATE.NOW_PLAYING_NONE"
+            }
+          ]
+        },
+        {
+          "id": "backgroundOverlayColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BG_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customColor"
+          }
+        },
+        {
+          "id": "backgroundOverlayColorOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customColor"
+          }
+        },
+        {
+          "id": "backgroundOverlayGradient",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_GRADIENT",
+          "label": "TRANSLATE.NOW_PLAYING_GRADIENT",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customGradient"
+          }
+        },
+        {
+          "id": "backgroundOverlayGradientOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundOverlay",
+            "value": "customGradient"
+          }
+        },
+        {
+          "id": "weatherBackground",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_BACKGROUND",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default", 
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "customColor", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_COLOR"
+            },
+            {
+              "value": "customGradient", 
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM_GRADIENT"
+            },
+            {
+              "value": "none", 
+              "label": "TRANSLATE.NOW_PLAYING_NONE"
+            }
+          ]
+        },
+        {
+          "id": "weatherBackgroundColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BG_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_COLOR",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherBackground",
+            "value": "customColor"
+          }
+        },
+        {
+          "id": "weatherBackgroundColorOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherBackground",
+            "value": "customColor"
+          }
+        },
+        {
+          "id": "weatherBackgroundGradient",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_GRADIENT",
+          "label": "TRANSLATE.NOW_PLAYING_GRADIENT",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherBackground",
+            "value": "customGradient"
+          }
+        },
+        {
+          "id": "weatherBackgroundGradientOpacity",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherBackground",
+            "value": "customGradient"
           }
         }
       ]

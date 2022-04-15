@@ -47,9 +47,10 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let dockedVolumeIndicatorUIConf = uiconf.sections[9];
             let dockedClockUIConf = uiconf.sections[10];
             let dockedWeatherUIConf = uiconf.sections[11];
-            let extraScreensUIConf = uiconf.sections[12];
-            let kioskUIConf = uiconf.sections[13];
-            let performanceUIConf = uiconf.sections[14];
+            let idleScreenUIConf = uiconf.sections[12];
+            let extraScreensUIConf = uiconf.sections[13];
+            let kioskUIConf = uiconf.sections[14];
+            let performanceUIConf = uiconf.sections[15];
 
             /**
              * Daemon conf
@@ -693,6 +694,214 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              dockedWeatherUIConf.content[9].value = dockedWeather.iconAnimate || false;
              dockedWeatherUIConf.content[10].value = dockedWeather.iconMonoColor || '#CCCCCC';
              dockedWeatherUIConf.content[11].value = dockedWeather.margin || '';
+             
+            /**
+             * Idle Screen conf
+             */
+            let idleScreen = np.getConfigValue('screen.idle', {}, true);
+            let idleScreenEnabled = idleScreen.enabled || 'kiosk';
+            let idleScreenMainAlignment = idleScreen.mainAlignment || 'flex-start';
+            let idleScreenTimeFormat = idleScreen.timeFormat || 'default';
+            let idleScreenFontSizes = idleScreen.fontSizes || 'auto';
+            let idleScreenFontColors = idleScreen.fontColors || 'default';
+            let idleScreenWeatherIconSettings = idleScreen.weatherIconSettings || 'default';
+            let idleScreenWeatherIconStyle = idleScreen.weatherIconStyle || 'filled';
+            let idleScreenBackgroundType = idleScreen.backgroundType || 'unsplash';
+            let idleScreenVolumioImage = idleScreen.volumioBackgroundImage || '';
+            let idleScreenVolumioBackgroundFit = idleScreen.volumioBackgroundFit || 'cover';
+            let idleScreenVolumioBackgroundPosition = idleScreen.volumioBackgroundPosition || 'center';
+            let idleScreenBackgroundOverlay = idleScreen.backgroundOverlay || 'default';
+            let idleScreenweatherBackground = idleScreen.weatherBackground || 'default';
+
+            idleScreenUIConf.content[0].value = {
+                value: idleScreenEnabled
+            };
+            switch(idleScreenEnabled) {
+                case 'all':
+                    idleScreenUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_ALL_CLIENTS');
+                    break;
+                case 'disabled':
+                    idleScreenUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_DISABLED');
+                    break;
+                default:
+                    idleScreenUIConf.content[0].value.label = np.getI18n('NOW_PLAYING_KIOSK_ONLY');
+                    break;
+            }
+            idleScreenUIConf.content[1].value = idleScreen.waitTime || 30;
+            idleScreenUIConf.content[2].value = idleScreen.showLocation !== undefined ? idleScreen.showLocation : true;
+            idleScreenUIConf.content[3].value = idleScreen.showWeather !== undefined ? idleScreen.showWeather : true;
+            idleScreenUIConf.content[4].value = {
+                value: idleScreenMainAlignment
+            };
+            switch (idleScreenMainAlignment) {
+                case 'center':
+                    idleScreenUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'flex-end':
+                    idleScreenUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:  // 'flex-start'
+                    idleScreenUIConf.content[4].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+            }
+            idleScreenUIConf.content[5].value = {
+                value: idleScreenTimeFormat,
+                label: idleScreenTimeFormat == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            idleScreenUIConf.content[6].value = idleScreen.hour24 ? true : false;
+            idleScreenUIConf.content[7].value = idleScreen.showSeconds ? true : false;
+            idleScreenUIConf.content[8].value = {
+                value: idleScreenFontSizes,
+                label: idleScreenFontSizes == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            idleScreenUIConf.content[9].value = idleScreen.timeFontSize || '';
+            idleScreenUIConf.content[10].value = idleScreen.dateFontSize || '';
+            idleScreenUIConf.content[11].value = idleScreen.locationFontSize || '';
+            idleScreenUIConf.content[12].value = idleScreen.weatherCurrentBaseFontSize || '';
+            idleScreenUIConf.content[13].value = idleScreen.weatherForecastBaseFontSize || '';
+            idleScreenUIConf.content[14].value = {
+                value: idleScreenFontColors,
+                label: idleScreenFontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            idleScreenUIConf.content[15].value = idleScreen.timeColor || '#FFFFFF';
+            idleScreenUIConf.content[16].value = idleScreen.dateColor || '#FFFFFF';
+            idleScreenUIConf.content[17].value = idleScreen.locationColor || '#FFFFFF';
+            idleScreenUIConf.content[18].value = idleScreen.weatherCurrentColor || '#FFFFFF';
+            idleScreenUIConf.content[19].value = idleScreen.weatherForecastColor || '#FFFFFF';
+            idleScreenUIConf.content[20].value = {
+                value: idleScreenWeatherIconSettings,
+                label: idleScreenWeatherIconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            idleScreenUIConf.content[21].value = {
+                value: idleScreenWeatherIconStyle
+            };
+            switch(idleScreenWeatherIconStyle) {
+                case 'outline':
+                    idleScreenUIConf.content[21].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
+                    break;
+                case 'mono':
+                    idleScreenUIConf.content[21].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
+                    break;
+                default:
+                    idleScreenUIConf.content[21].value.label = np.getI18n('NOW_PLAYING_FILLED');
+                    break;
+            }
+            idleScreenUIConf.content[22].value = idleScreen.weatherCurrentIconSize || '';
+            idleScreenUIConf.content[23].value = idleScreen.weatherForecastIconSize || '';
+            idleScreenUIConf.content[24].value = idleScreen.weatherCurrentIconMonoColor || '#FFFFFF';
+            idleScreenUIConf.content[25].value = idleScreen.weatherForecastIconMonoColor || '#FFFFFF';
+            idleScreenUIConf.content[26].value = idleScreen.weatherCurrentIconAnimate !== undefined ? idleScreen.weatherCurrentIconAnimate : true;
+            idleScreenUIConf.content[27].value = {
+                value: idleScreenBackgroundType,
+            };
+            switch (idleScreenBackgroundType) {
+                case 'color':
+                    idleScreenUIConf.content[27].value.label = np.getI18n('NOW_PLAYING_COLOR');
+                    break;
+                case 'volumioBackground':
+                    idleScreenUIConf.content[27].value.label = np.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
+                    break;
+                default:
+                    idleScreenUIConf.content[27].value.label = np.getI18n('NOW_PLAYING_UNSPLASH');
+            }
+            idleScreenUIConf.content[28].value = idleScreen.backgroundColor || '#000000';
+            if (idleScreenVolumioImage !== '' && !volumioBackgrounds.includes(idleScreenVolumioImage)) {
+                idleScreenVolumioImage = '';  // img no longer exists
+            }
+            idleScreenUIConf.content[29].value = {
+                value: idleScreenVolumioImage,
+                label: idleScreenVolumioImage
+            };
+            idleScreenUIConf.content[29].options = [];
+            volumioBackgrounds.forEach(bg => {
+                idleScreenUIConf.content[29].options.push({
+                    value: bg,
+                    label: bg
+                });
+            });
+            idleScreenUIConf.content[30].value = {
+                value: idleScreenVolumioBackgroundFit
+            };
+            switch (idleScreenVolumioBackgroundFit) {
+                case 'contain':
+                    idleScreenUIConf.content[30].value.label = np.getI18n('NOW_PLAYING_FIT_CONTAIN');
+                    break;
+                case 'fill':
+                    idleScreenUIConf.content[30].value.label = np.getI18n('NOW_PLAYING_FIT_FILL');
+                    break;
+                default:
+                    idleScreenUIConf.content[30].value.label = np.getI18n('NOW_PLAYING_FIT_COVER');
+            }
+            idleScreenUIConf.content[31].value = {
+                value: idleScreenVolumioBackgroundPosition
+            };
+            switch (idleScreenVolumioBackgroundPosition) {
+                case 'top':
+                    idleScreenUIConf.content[31].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+                    break;
+                case 'left':
+                    idleScreenUIConf.content[31].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+                    break;
+                case 'bottom':
+                    idleScreenUIConf.content[31].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                case 'right':
+                    idleScreenUIConf.content[31].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    idleScreenUIConf.content[31].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+            }
+            idleScreenUIConf.content[32].value = idleScreen.volumioBackgroundBlur || '';
+            idleScreenUIConf.content[33].value = idleScreen.volumioBackgroundScale || '';
+            idleScreenUIConf.content[34].value = idleScreen.unsplashKeywords || '';
+            idleScreenUIConf.content[35].value = idleScreen.unsplashKeywordsAppendDayPeriod || false;
+            idleScreenUIConf.content[36].value = idleScreen.unsplashMatchScreenSize !== undefined ? idleScreen.unsplashMatchScreenSize : true;
+            idleScreenUIConf.content[37].value = idleScreen.unsplashRefreshInterval !== undefined ? idleScreen.unsplashRefreshInterval : 10;
+            idleScreenUIConf.content[38].value = idleScreen.unsplashBackgroundBlur || '';
+            idleScreenUIConf.content[39].value = {
+                value: idleScreenBackgroundOverlay
+            };
+            switch (idleScreenBackgroundOverlay) {
+                case 'customColor':
+                    idleScreenUIConf.content[39].value.label = np.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+                    break;
+                case 'customGradient':
+                    idleScreenUIConf.content[39].value.label = np.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+                    break;
+                case 'none':
+                    idleScreenUIConf.content[39].value.label = np.getI18n('NOW_PLAYING_NONE');
+                    break;
+                default:
+                    idleScreenUIConf.content[39].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+            }
+            idleScreenUIConf.content[40].value = idleScreen.backgroundOverlayColor || '#000000';
+            idleScreenUIConf.content[41].value = idleScreen.backgroundOverlayColorOpacity || '';
+            idleScreenUIConf.content[42].value = idleScreen.backgroundOverlayGradient || '';
+            idleScreenUIConf.content[43].value = idleScreen.backgroundOverlayGradientOpacity || '';
+            idleScreenUIConf.content[44].value = {
+                value: idleScreenweatherBackground
+            };
+            switch (idleScreenweatherBackground) {
+                case 'customColor':
+                    idleScreenUIConf.content[44].value.label = np.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+                    break;
+                case 'customGradient':
+                    idleScreenUIConf.content[44].value.label = np.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+                    break;
+                case 'none':
+                    idleScreenUIConf.content[44].value.label = np.getI18n('NOW_PLAYING_NONE');
+                    break;
+                default:
+                    idleScreenUIConf.content[44].value.label = np.getI18n('NOW_PLAYING_DEFAULT');
+            }
+            idleScreenUIConf.content[45].value = idleScreen.weatherBackgroundColor || '#000000';
+            idleScreenUIConf.content[46].value = idleScreen.weatherBackgroundColorOpacity || '';
+            idleScreenUIConf.content[47].value = idleScreen.weatherBackgroundGradient || '';
+            idleScreenUIConf.content[48].value = idleScreen.weatherBackgroundGradientOpacity || '';
+
+            if (idleScreenEnabled === 'disabled') {
+                idleScreenUIConf.content = [idleScreenUIConf.content[0]];
+                idleScreenUIConf.saveButton.data = ['enabled'];
+            }
 
             /**
              * Extra Screens conf
@@ -1165,6 +1374,43 @@ ControllerNowPlaying.prototype.clearMetadataCache = function () {
 ControllerNowPlaying.prototype.clearWeatherCache = function () {
     weather.clearCache();
     np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
+}
+
+ControllerNowPlaying.prototype.configSaveIdleScreenSettings = function (data) {
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
+        }
+        else {
+            apply[key] = value;
+        }
+    }
+    if (apply.waitTime) {
+        apply.waitTime = parseInt(apply.waitTime, 10);
+    }
+    apply.unsplashRefreshInterval = data.unsplashRefreshInterval ? parseInt(apply.unsplashRefreshInterval, 10) : 10;
+    if (apply.waitTime < 10) {
+        np.toast('error', np.getI18n('NOW_PLAYING_ERR_IDLE_SCREEN_WAIT_TIME'));
+        return;
+    }
+    if (apply.unsplashRefreshInterval !== 0 && apply.unsplashRefreshInterval < 10) {
+        np.toast('error', np.getI18n('NOW_PLAYING_ERR_UNSPLASH_REFRESH_INTERVAL'));
+        return;
+    }
+    let current = np.getConfigValue('screen.idle', {}, true);
+    let currentEnabled = current.enabled == undefined ? 'kiosk' : current.enabled;
+    let refresh = (currentEnabled !== 'disabled' && apply.enabled === 'disabled') || 
+        (currentEnabled === 'disabled' && apply.enabled !== 'disabled');
+    let updated = Object.assign(current, apply);
+    this.config.set('screen.idle', JSON.stringify(updated));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.idle', data: updated });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveExtraScreenSettings = function (data) {
