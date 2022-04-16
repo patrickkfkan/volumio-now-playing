@@ -2024,7 +2024,7 @@
           "iconSettings",
           "iconStyle",
           "iconSize",
-          "IconMonoColor",
+          "iconMonoColor",
           "iconAnimate",
           "margin"
         ]
@@ -2201,7 +2201,7 @@
           }
         },
         {
-          "id": "IconMonoColor",
+          "id": "iconMonoColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
