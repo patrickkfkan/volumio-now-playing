@@ -244,11 +244,13 @@
           "artistFontSize",
           "albumFontSize",
           "mediaInfoFontSize",
+          "seekTimeFontSize",
           "fontColors",
           "titleFontColor",
           "artistFontColor",
           "albumFontColor",
           "mediaInfoFontColor",
+          "seekTimeFontColor",
           "textMargins",
           "titleMargin",
           "artistMargin",
@@ -331,6 +333,18 @@
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
           "value": "",
+          "visibleIf": {
+            "field": "fontSizes",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "seekTimeFontSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SEEK_TIME",
+          "value": "",
           "attributes": [
             { "style": "margin-bottom: 32px;" }
           ],
@@ -400,6 +414,18 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
+          "value": "",
+          "visibleIf": {
+            "field": "fontColors",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "seekTimeFontColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_SEEK_TIME",
           "value": "",
           "visibleIf": {
             "field": "fontColors",

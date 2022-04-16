@@ -146,65 +146,34 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             textStylesUIConf.content[2].value = nowPlayingScreenSettings.artistFontSize || '';
             textStylesUIConf.content[3].value = nowPlayingScreenSettings.albumFontSize || '';
             textStylesUIConf.content[4].value = nowPlayingScreenSettings.mediaInfoFontSize || '';
+            textStylesUIConf.content[5].value = nowPlayingScreenSettings.seekTimeFontSize || '';
 
             let fontColors = nowPlayingScreenSettings.fontColors || 'default';
-            textStylesUIConf.content[5].value = {
+            textStylesUIConf.content[6].value = {
                 value: fontColors,
                 label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
             };
-            textStylesUIConf.content[6].value = nowPlayingScreenSettings.titleFontColor || '#FFFFFF';
-            textStylesUIConf.content[7].value = nowPlayingScreenSettings.artistFontColor || '#CCCCCC';
-            textStylesUIConf.content[8].value = nowPlayingScreenSettings.albumFontColor || '#CCCCCC';
-            textStylesUIConf.content[9].value = nowPlayingScreenSettings.mediaInfoFontColor || '#CCCCCC';
+            textStylesUIConf.content[7].value = nowPlayingScreenSettings.titleFontColor || '#FFFFFF';
+            textStylesUIConf.content[8].value = nowPlayingScreenSettings.artistFontColor || '#CCCCCC';
+            textStylesUIConf.content[9].value = nowPlayingScreenSettings.albumFontColor || '#CCCCCC';
+            textStylesUIConf.content[10].value = nowPlayingScreenSettings.mediaInfoFontColor || '#CCCCCC';
+            textStylesUIConf.content[11].value = nowPlayingScreenSettings.seekTimeFontColor || '#CCCCCC';
 
             let textMargins = nowPlayingScreenSettings.textMargins || 'auto';
-            textStylesUIConf.content[10].value = {
+            textStylesUIConf.content[12].value = {
                 value: textMargins,
                 label: textMargins == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
             };
-            textStylesUIConf.content[11].value = nowPlayingScreenSettings.titleMargin || '';
-            textStylesUIConf.content[12].value = nowPlayingScreenSettings.artistMargin || '';
-            textStylesUIConf.content[13].value = nowPlayingScreenSettings.albumMargin || '';
-            textStylesUIConf.content[14].value = nowPlayingScreenSettings.mediaInfoMargin || '';
+            textStylesUIConf.content[13].value = nowPlayingScreenSettings.titleMargin || '';
+            textStylesUIConf.content[14].value = nowPlayingScreenSettings.artistMargin || '';
+            textStylesUIConf.content[15].value = nowPlayingScreenSettings.albumMargin || '';
+            textStylesUIConf.content[16].value = nowPlayingScreenSettings.mediaInfoMargin || '';
 
             let textAlignmentH = nowPlayingScreenSettings.textAlignmentH || 'left';
-            textStylesUIConf.content[15].value = {
+            textStylesUIConf.content[17].value = {
                 value: textAlignmentH
             };
             switch (textAlignmentH) {
-                case 'center':
-                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-                    break;
-                case 'right':
-                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
-                    break;
-                default:
-                    textStylesUIConf.content[15].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
-            }
-
-            let textAlignmentV = nowPlayingScreenSettings.textAlignmentV || 'flex-start';
-            textStylesUIConf.content[16].value = {
-                value: textAlignmentV
-            };
-            switch (textAlignmentV) {
-                case 'center':
-                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
-                    break;
-                case 'flex-end':
-                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
-                    break;
-                case 'space-between':
-                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_SPREAD');
-                    break;
-                default:
-                    textStylesUIConf.content[16].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
-            }
-
-            let textAlignmentLyrics = nowPlayingScreenSettings.textAlignmentLyrics || 'center';
-            textStylesUIConf.content[17].value = {
-                value: textAlignmentLyrics
-            };
-            switch (textAlignmentLyrics) {
                 case 'center':
                     textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
                     break;
@@ -215,24 +184,57 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                     textStylesUIConf.content[17].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
             }
 
-            let maxLines = nowPlayingScreenSettings.maxLines || 'auto';
+            let textAlignmentV = nowPlayingScreenSettings.textAlignmentV || 'flex-start';
             textStylesUIConf.content[18].value = {
+                value: textAlignmentV
+            };
+            switch (textAlignmentV) {
+                case 'center':
+                    textStylesUIConf.content[18].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'flex-end':
+                    textStylesUIConf.content[18].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+                    break;
+                case 'space-between':
+                    textStylesUIConf.content[18].value.label = np.getI18n('NOW_PLAYING_SPREAD');
+                    break;
+                default:
+                    textStylesUIConf.content[18].value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+            }
+
+            let textAlignmentLyrics = nowPlayingScreenSettings.textAlignmentLyrics || 'center';
+            textStylesUIConf.content[19].value = {
+                value: textAlignmentLyrics
+            };
+            switch (textAlignmentLyrics) {
+                case 'center':
+                    textStylesUIConf.content[19].value.label = np.getI18n('NOW_PLAYING_POSITION_CENTER');
+                    break;
+                case 'right':
+                    textStylesUIConf.content[19].value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+                    break;
+                default:
+                    textStylesUIConf.content[19].value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+            }
+
+            let maxLines = nowPlayingScreenSettings.maxLines || 'auto';
+            textStylesUIConf.content[20].value = {
                 value: maxLines,
                 label: maxLines == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
             };
-            textStylesUIConf.content[19].value = nowPlayingScreenSettings.maxTitleLines !== undefined ? nowPlayingScreenSettings.maxTitleLines : '';
-            textStylesUIConf.content[20].value = nowPlayingScreenSettings.maxArtistLines !== undefined ? nowPlayingScreenSettings.maxArtistLines : '';
-            textStylesUIConf.content[21].value = nowPlayingScreenSettings.maxAlbumLines !== undefined ? nowPlayingScreenSettings.maxAlbumLines : '';
+            textStylesUIConf.content[21].value = nowPlayingScreenSettings.maxTitleLines !== undefined ? nowPlayingScreenSettings.maxTitleLines : '';
+            textStylesUIConf.content[22].value = nowPlayingScreenSettings.maxArtistLines !== undefined ? nowPlayingScreenSettings.maxArtistLines : '';
+            textStylesUIConf.content[23].value = nowPlayingScreenSettings.maxAlbumLines !== undefined ? nowPlayingScreenSettings.maxAlbumLines : '';
 
             let trackInfoOrder = nowPlayingScreenSettings.trackInfoOrder || 'default';
-            textStylesUIConf.content[22].value = {
+            textStylesUIConf.content[24].value = {
                 value: trackInfoOrder,
                 label: trackInfoOrder == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
             };
-            textStylesUIConf.content[23].value = nowPlayingScreenSettings.trackInfoTitleOrder !== undefined ? nowPlayingScreenSettings.trackInfoTitleOrder : '';
-            textStylesUIConf.content[24].value = nowPlayingScreenSettings.trackInfoArtistOrder !== undefined ? nowPlayingScreenSettings.trackInfoArtistOrder : '';
-            textStylesUIConf.content[25].value = nowPlayingScreenSettings.trackInfoAlbumOrder !== undefined ? nowPlayingScreenSettings.trackInfoAlbumOrder : '';
-            textStylesUIConf.content[26].value = nowPlayingScreenSettings.trackInfoMediaInfoOrder !== undefined ? nowPlayingScreenSettings.trackInfoMediaInfoOrder : '';
+            textStylesUIConf.content[25].value = nowPlayingScreenSettings.trackInfoTitleOrder !== undefined ? nowPlayingScreenSettings.trackInfoTitleOrder : '';
+            textStylesUIConf.content[26].value = nowPlayingScreenSettings.trackInfoArtistOrder !== undefined ? nowPlayingScreenSettings.trackInfoArtistOrder : '';
+            textStylesUIConf.content[27].value = nowPlayingScreenSettings.trackInfoAlbumOrder !== undefined ? nowPlayingScreenSettings.trackInfoAlbumOrder : '';
+            textStylesUIConf.content[28].value = nowPlayingScreenSettings.trackInfoMediaInfoOrder !== undefined ? nowPlayingScreenSettings.trackInfoMediaInfoOrder : '';
 
             /**
              * Widget Styles conf
@@ -1157,11 +1159,13 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function (data) {
         artistFontSize: data.artistFontSize,
         albumFontSize: data.albumFontSize,
         mediaInfoFontSize: data.mediaInfoFontSize,
+        seekTimeFontSize: data.seekTimeFontSize,
         fontColors: data.fontColors.value,
         titleFontColor: data.titleFontColor,
         artistFontColor: data.artistFontColor,
         albumFontColor: data.albumFontColor,
         mediaInfoFontColor: data.mediaInfoFontColor,
+        seekTimeFontColor: data.seekTimeFontColor,
         textAlignmentH: data.textAlignmentH.value,
         textAlignmentV: data.textAlignmentV.value,
         textAlignmentLyrics: data.textAlignmentLyrics.value,
