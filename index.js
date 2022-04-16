@@ -446,42 +446,55 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             /**
              * Docked Action Panel Trigger
              */
-             let dockedActionPanelTrigger = nowPlayingScreenSettings.dockedActionPanelTrigger || {};
-             let dockedActionPanelTriggerIconStyle = dockedActionPanelTrigger.iconStyle || 'expand_more';
-             dockedActionPanelTriggerUIConf.content[0].value = dockedActionPanelTrigger.enabled === undefined ? true : dockedActionPanelTrigger.enabled;
-             dockedActionPanelTriggerUIConf.content[1].value = {
-                 value: dockedActionPanelTriggerIconStyle
-             };
-             switch (dockedActionPanelTriggerIconStyle) {
-                 case 'expand_circle_down':
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CHEVRON_CIRCLE');
-                     break;
-                 case 'arrow_drop_down':
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CARET');
-                     break;
-                 case 'arrow_drop_down_circle':
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CARET_CIRCLE');
-                     break;
-                 case 'arrow_downward':
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_ARROW');
-                     break;
-                 case 'arrow_circle_down':
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_ARROW_CIRCLE');
-                     break;
-                 default:
-                     dockedActionPanelTriggerUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_CHEVRON');
-             }
-             dockedActionPanelTriggerUIConf.content[2].value = dockedActionPanelTrigger.iconSize || '';
-             dockedActionPanelTriggerUIConf.content[3].value = dockedActionPanelTrigger.iconColor || '#CCCCCC';
-             dockedActionPanelTriggerUIConf.content[4].value = dockedActionPanelTrigger.opacity || '';
-             dockedActionPanelTriggerUIConf.content[5].value = dockedActionPanelTrigger.margin || '';
+            let dockedActionPanelTrigger = nowPlayingScreenSettings.dockedActionPanelTrigger || {};
+            let dockedActionPanelTriggerEnabled = dockedActionPanelTrigger.enabled === undefined ? true : dockedActionPanelTrigger.enabled;
+            let dockedActionPanelTrigerIconSettings = dockedActionPanelTrigger.iconSettings || 'default';
+            let dockedActionPanelTriggerIconStyle = dockedActionPanelTrigger.iconStyle || 'expand_more';
+            dockedActionPanelTriggerUIConf.content[0].value = dockedActionPanelTriggerEnabled ? true : false;
+            dockedActionPanelTriggerUIConf.content[1].value = {
+                value: dockedActionPanelTrigerIconSettings,
+                label: dockedActionPanelTrigerIconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedActionPanelTriggerUIConf.content[2].value = {
+                value: dockedActionPanelTriggerIconStyle
+            };
+            switch (dockedActionPanelTriggerIconStyle) {
+                case 'expand_circle_down':
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_CHEVRON_CIRCLE');
+                    break;
+                case 'arrow_drop_down':
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_CARET');
+                    break;
+                case 'arrow_drop_down_circle':
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_CARET_CIRCLE');
+                    break;
+                case 'arrow_downward':
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_ARROW');
+                    break;
+                case 'arrow_circle_down':
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_ARROW_CIRCLE');
+                    break;
+                default:
+                    dockedActionPanelTriggerUIConf.content[2].value.label = np.getI18n('NOW_PLAYING_CHEVRON');
+            }
+            dockedActionPanelTriggerUIConf.content[3].value = dockedActionPanelTrigger.iconSize || '';
+            dockedActionPanelTriggerUIConf.content[4].value = dockedActionPanelTrigger.iconColor || '#CCCCCC';
+            dockedActionPanelTriggerUIConf.content[5].value = dockedActionPanelTrigger.opacity || '';
+            dockedActionPanelTriggerUIConf.content[6].value = dockedActionPanelTrigger.margin || '';
+            if (!dockedActionPanelTriggerEnabled) {
+                dockedActionPanelTriggerUIConf.content = [dockedActionPanelTriggerUIConf.content[0]];
+                dockedActionPanelTriggerUIConf.saveButton.data = ['enabled'];
+            }
  
             /**
              * Docked Volume Indicator
              */
             let dockedVolumeIndicator = nowPlayingScreenSettings.dockedVolumeIndicator || {};
+            let dockedVolumeIndicatorEnabled = dockedVolumeIndicator.enabled || false;
+            let dockedVolumeIndicatorFontSettings = dockedVolumeIndicator.fontSettings || 'default';
+            let dockedVolumeIndicatorIconSettings = dockedVolumeIndicator.iconSettings || 'default';
             let dockedvolumeIndicatorPlacement = dockedVolumeIndicator.placement || 'bottom-right';
-            dockedVolumeIndicatorUIConf.content[0].value = dockedVolumeIndicator.enabled ? true : false;
+            dockedVolumeIndicatorUIConf.content[0].value = dockedVolumeIndicatorEnabled ? true : false;
             dockedVolumeIndicatorUIConf.content[1].value = {
                 value: dockedvolumeIndicatorPlacement
             };
@@ -511,24 +524,40 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                     dockedVolumeIndicatorUIConf.content[1].value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
             }
             dockedVolumeIndicatorUIConf.content[2].value = dockedVolumeIndicator.displayOrder !== undefined ? dockedVolumeIndicator.displayOrder : '';
-            dockedVolumeIndicatorUIConf.content[3].value = dockedVolumeIndicator.fontSize || '';
-            dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.iconSize || '';
+            dockedVolumeIndicatorUIConf.content[3].value = {
+                value: dockedVolumeIndicatorFontSettings,
+                label: dockedVolumeIndicatorFontSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.fontSize || '';
             dockedVolumeIndicatorUIConf.content[5].value = dockedVolumeIndicator.fontColor || '#CCCCCC';
-            dockedVolumeIndicatorUIConf.content[6].value = dockedVolumeIndicator.iconColor || '#CCCCCC';
-            dockedVolumeIndicatorUIConf.content[7].value = dockedVolumeIndicator.margin || '';
+            dockedVolumeIndicatorUIConf.content[6].value = {
+                value: dockedVolumeIndicatorIconSettings,
+                label: dockedVolumeIndicatorIconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedVolumeIndicatorUIConf.content[7].value = dockedVolumeIndicator.iconSize || '';
+            dockedVolumeIndicatorUIConf.content[8].value = dockedVolumeIndicator.iconColor || '#CCCCCC';
+            dockedVolumeIndicatorUIConf.content[9].value = dockedVolumeIndicator.margin || '';
+            if (!dockedVolumeIndicatorEnabled) {
+                dockedVolumeIndicatorUIConf.content = [dockedVolumeIndicatorUIConf.content[0]];
+                dockedVolumeIndicatorUIConf.saveButton.data = ['enabled'];
+            }
 
             /**
              * Docked Clock
              */
             let dockedClock = nowPlayingScreenSettings.dockedClock || {};
+            let dockedClockEnabled = dockedClock.enabled || false;
             let dockedClockPlacement = dockedClock.placement || 'top-left';
             let dockedClockShowInfo = dockedClock.showInfo || 'dateTime';
-            let dockedClockYearFormat = dockedClock.yearFormat || 'numeric';
+            let dockedClockFontSettings = dockedClock.fontSettings || 'default';
+            let dockedClockDateFormat = dockedClock.dateFormat || 'default';
+            let dockedClockYearFormat = dockedClock.yearFormat || 'none';
             let dockedClockMonthFormat = dockedClock.monthFormat || 'short';
             let dockedClockDayFormat = dockedClock.dayFormat || 'numeric';
-            let dockedClockDayOfWeekFormat = dockedClock.dayOfWeekFormat || 'short';
+            let dockedClockDayOfWeekFormat = dockedClock.dayOfWeekFormat || 'none';
+            let dockedClockTimeFormat = dockedClock.timeFormat || 'default';
             let dockedClockHourFormat = dockedClock.hourFormat || 'numeric';
-            dockedClockUIConf.content[0].value = dockedClock.enabled ? true : false;
+            dockedClockUIConf.content[0].value = dockedClockEnabled ? true : false;
             dockedClockUIConf.content[1].value = {
                 value: dockedClockPlacement
             };
@@ -571,21 +600,29 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                 default:
                     dockedClockUIConf.content[3].value.label = np.getI18n('NOW_PLAYING_DATE_TIME');
             }
-            
-            dockedClockUIConf.content[4].value = dockedClock.fontSize || '';
-            dockedClockUIConf.content[5].value = dockedClock.dateColor || '#CCCCCC';
-            dockedClockUIConf.content[6].value = dockedClock.timeColor || '#CCCCCC';
-            dockedClockUIConf.content[7].value = dockedClock.showYear || false;
-            dockedClockUIConf.content[8].value = dockedClock.showDayOfWeek || false;
+            dockedClockUIConf.content[4].value = {
+                value: dockedClockFontSettings,
+                label: dockedClockFontSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedClockUIConf.content[5].value = dockedClock.fontSize || '';
+            dockedClockUIConf.content[6].value = dockedClock.dateColor || '#CCCCCC';
+            dockedClockUIConf.content[7].value = dockedClock.timeColor || '#CCCCCC';
+            dockedClockUIConf.content[8].value = {
+                value: dockedClockDateFormat,
+                label: dockedClockDateFormat == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
             dockedClockUIConf.content[9].value = {
                 value: dockedClockYearFormat
             };
             switch (dockedClockYearFormat) {
+                case 'numeric':
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NUMERIC_YEAR');
+                    break;
                 case '2-digit':
                     dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_2DIGIT_YEAR');
                     break;
                 default:
-                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NUMERIC_YEAR');
+                    dockedClockUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_NONE');
             }
             dockedClockUIConf.content[10].value = {
                 value: dockedClockMonthFormat
@@ -620,30 +657,43 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
                 case 'long':
                     dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
                     break;
-                default:
+                case 'short':
                     dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
+                default:
+                    dockedClockUIConf.content[12].value.label = np.getI18n('NOW_PLAYING_NONE');
             }
             dockedClockUIConf.content[13].value = {
+                value: dockedClockTimeFormat,
+                label: dockedClockTimeFormat == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedClockUIConf.content[14].value = {
                 value: dockedClockHourFormat
             };
             switch (dockedClockHourFormat) {                   
                 case '2-digit':
-                    dockedClockUIConf.content[13].value.label = np.getI18n('NOW_PLAYING_2DIGIT_HOUR');
+                    dockedClockUIConf.content[14].value.label = np.getI18n('NOW_PLAYING_2DIGIT_HOUR');
                     break;
                 default:
-                    dockedClockUIConf.content[13].value.label = np.getI18n('NOW_PLAYING_NUMERIC_HOUR');
+                    dockedClockUIConf.content[14].value.label = np.getI18n('NOW_PLAYING_NUMERIC_HOUR');
             }
-            dockedClockUIConf.content[14].value = dockedClock.hour24 || false;
-            dockedClockUIConf.content[15].value = dockedClock.showSeconds || false;
-            dockedClockUIConf.content[16].value = dockedClock.margin || '';
+            dockedClockUIConf.content[15].value = dockedClock.hour24 || false;
+            dockedClockUIConf.content[16].value = dockedClock.showSeconds || false;
+            dockedClockUIConf.content[17].value = dockedClock.margin || '';
+            if (!dockedClockEnabled) {
+                dockedClockUIConf.content = [dockedClockUIConf.content[0]];
+                dockedClockUIConf.saveButton.data = ['enabled'];
+            }
 
             /**
              * Docked Weather
              */
              let dockedWeather = nowPlayingScreenSettings.dockedWeather || {};
+             let dockedWeatherEnabled = dockedWeather.enabled || false;
              let dockedWeatherPlacement = dockedWeather.placement || 'top-left';
+             let dockedWeatherFontSettings = dockedWeather.fontSettings || 'default';
+             let dockedWeatherIconSettings = dockedWeather.iconSettings || 'default';
              let dockedWeatherIconStyle = dockedWeather.iconStyle || 'filled';
-             dockedWeatherUIConf.content[0].value = dockedWeather.enabled ? true : false;
+             dockedWeatherUIConf.content[0].value = dockedWeatherEnabled ? true : false;
              dockedWeatherUIConf.content[1].value = {
                  value: dockedWeatherPlacement
              };
@@ -675,25 +725,37 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              dockedWeatherUIConf.content[2].value = dockedWeather.displayOrder !== undefined ? dockedWeather.displayOrder : '';
              dockedWeatherUIConf.content[3].value = dockedWeather.showHumidity || false;
              dockedWeatherUIConf.content[4].value = dockedWeather.showWindSpeed || false;
-             dockedWeatherUIConf.content[5].value = dockedWeather.fontSize || '';
-             dockedWeatherUIConf.content[6].value = dockedWeather.fontColor || '#CCCCCC';
-             dockedWeatherUIConf.content[7].value = dockedWeather.iconSize || '';
+             dockedWeatherUIConf.content[5].value = {
+                value: dockedWeatherFontSettings,
+                label: dockedWeatherFontSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+             dockedWeatherUIConf.content[6].value = dockedWeather.fontSize || '';
+             dockedWeatherUIConf.content[7].value = dockedWeather.fontColor || '#CCCCCC';
              dockedWeatherUIConf.content[8].value = {
-                 value: dockedWeatherIconStyle
-             };
-             switch (dockedWeatherIconStyle) {
-                 case 'outline':
-                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
-                     break;
-                 case 'mono':
-                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
-                     break;
-                 default:
-                     dockedWeatherUIConf.content[8].value.label = np.getI18n('NOW_PLAYING_FILLED');
-             }
-             dockedWeatherUIConf.content[9].value = dockedWeather.iconAnimate || false;
-             dockedWeatherUIConf.content[10].value = dockedWeather.iconMonoColor || '#CCCCCC';
-             dockedWeatherUIConf.content[11].value = dockedWeather.margin || '';
+                value: dockedWeatherIconSettings,
+                label: dockedWeatherIconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+            };
+            dockedWeatherUIConf.content[9].value = {
+                value: dockedWeatherIconStyle
+            };
+            switch (dockedWeatherIconStyle) {
+                case 'outline':
+                    dockedWeatherUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_OUTLINE');
+                    break;
+                case 'mono':
+                    dockedWeatherUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_MONOCHROME');
+                    break;
+                default:
+                    dockedWeatherUIConf.content[9].value.label = np.getI18n('NOW_PLAYING_FILLED');
+            }
+            dockedWeatherUIConf.content[10].value = dockedWeather.iconSize || '';
+            dockedWeatherUIConf.content[11].value = dockedWeather.iconMonoColor || '#CCCCCC';
+            dockedWeatherUIConf.content[12].value = dockedWeather.iconAnimate || false;
+            dockedWeatherUIConf.content[13].value = dockedWeather.margin || '';
+            if (!dockedWeatherEnabled) {
+                dockedWeatherUIConf.content = [dockedWeatherUIConf.content[0]];
+                dockedWeatherUIConf.saveButton.data = ['enabled'];
+            }
              
             /**
              * Idle Screen conf
@@ -1208,102 +1270,116 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function (data) {
 }
 
 ControllerNowPlaying.prototype.configSaveDockedActionPanelTriggerSettings = function (data) {
-    let apply = {
-        dockedActionPanelTrigger: {
-            enabled: data.dockedActionPanelTriggerEnabled,
-            iconStyle: data.dockedActionPanelTriggerIconStyle.value,
-            iconSize: data.dockedActionPanelTriggerIconSize,
-            fontColor: data.dockedActionPanelTriggerFontColor,
-            iconColor: data.dockedActionPanelTriggerIconColor,
-            opacity: data.dockedActionPanelTriggerOpacity,
-            margin: data.dockedActionPanelTriggerMargin
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
         }
-    };
-    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+        else {
+            apply[key] = value;
+        }
+    }
+    let screen = np.getConfigValue('screen.nowPlaying', {}, true);
+    let current = screen.dockedActionPanelTrigger || {};
+    let currentEnabled = current.enabled !== undefined ? current.enabled : true;
+    let refresh = currentEnabled !== apply.enabled;
     let updated = Object.assign(current, apply);
-    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    screen.dockedActionPanelTrigger = updated;
+    this.config.set('screen.nowPlaying', JSON.stringify(screen));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: screen });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveDockedVolumeIndicatorSettings = function (data) {
-    const displayOrder = data.dockedVolumeIndicatorDisplayOrder !== '' ? parseInt(data.dockedVolumeIndicatorDisplayOrder, 10) : '';
-    let apply = {
-        dockedVolumeIndicator: {
-            enabled: data.dockedVolumeIndicatorEnabled,
-            placement: data.dockedVolumeIndicatorPlacement.value,
-            displayOrder,
-            fontSize: data.dockedVolumeIndicatorFontSize,
-            iconSize: data.dockedVolumeIndicatorIconSize,
-            fontColor: data.dockedVolumeIndicatorFontColor,
-            iconColor: data.dockedVolumeIndicatorIconColor,
-            margin: data.dockedVolumeIndicatorMargin
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
         }
-    };
-    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+        else {
+            apply[key] = value;
+        }
+    }
+    let screen = np.getConfigValue('screen.nowPlaying', {}, true);
+    let current = screen.dockedVolumeIndicator || {};
+    let currentEnabled = current.enabled || false;
+    let refresh = currentEnabled !== apply.enabled;
+    if (apply.enabled) {
+        apply.displayOrder = data.displayOrder !== '' ? parseInt(data.displayOrder, 10) : '';
+    }
     let updated = Object.assign(current, apply);
-    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    screen.dockedVolumeIndicator = updated;
+    this.config.set('screen.nowPlaying', JSON.stringify(screen));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: screen });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveDockedClockSettings = function (data) {
-    const displayOrder = data.dockedClockDisplayOrder !== '' ? parseInt(data.dockedClockDisplayOrder, 10) : '';
-    let apply = {
-        dockedClock: {
-            enabled: data.dockedClockEnabled,
-            placement: data.dockedClockPlacement.value,
-            displayOrder,
-            showInfo: data.dockedClockShowInfo.value,
-            fontSize: data.dockedClockFontSize,
-            dateColor: data.dockedClockDateColor,
-            timeColor: data.dockedClockTimeColor,
-            showYear: data.dockedClockShowYear,
-            showDayOfWeek: data.dockedClockShowDayOfWeek,
-            yearFormat: data.dockedClockYearFormat.value,
-            monthFormat: data.dockedClockMonthFormat.value,
-            dayFormat: data.dockedClockDayFormat.value,
-            dayOfWeekFormat: data.dockedClockDayOfWeekFormat.value,
-            hourFormat: data.dockedClockHourFormat.value,
-            hour24: data.dockedClockHour24,
-            showSeconds: data.dockedClockShowSeconds,
-            margin: data.dockedClockMargin
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
         }
-    };
-    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+        else {
+            apply[key] = value;
+        }
+    }
+    let screen = np.getConfigValue('screen.nowPlaying', {}, true);
+    let current = screen.dockedClock || {};
+    let currentEnabled = current.enabled || false;
+    let refresh = currentEnabled !== apply.enabled;
+    if (apply.enabled) {
+        apply.displayOrder = data.displayOrder !== '' ? parseInt(data.displayOrder, 10) : '';
+    }
     let updated = Object.assign(current, apply);
-    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    screen.dockedClock = updated;
+    this.config.set('screen.nowPlaying', JSON.stringify(screen));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: screen });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveDockedWeatherSettings = function (data) {
-    const displayOrder = data.dockedWeatherDisplayOrder !== '' ? parseInt(data.dockedWeatherDisplayOrder, 10) : '';
-    let apply = {
-        dockedWeather: {
-            enabled: data.dockedWeatherEnabled,
-            placement: data.dockedWeatherPlacement.value,
-            displayOrder,
-            showHumidity: data.dockedWeatherShowHumidity,
-            showWindSpeed: data.dockedWeatherShowWindSpeed,
-            fontSize: data.dockedWeatherFontSize,
-            fontColor: data.dockedWeatherFontColor,
-            iconSize: data.dockedWeatherIconSize,
-            iconStyle: data.dockedWeatherIconStyle.value,
-            iconAnimate: data.dockedWeatherIconAnimate,
-            iconMonoColor: data.dockedWeatherIconMonoColor,
-            margin: data.dockedWeatherMargin
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
         }
-    };
-    let current = np.getConfigValue('screen.nowPlaying', {}, true);
+        else {
+            apply[key] = value;
+        }
+    }
+    let screen = np.getConfigValue('screen.nowPlaying', {}, true);
+    let current = screen.dockedWeather || {};
+    let currentEnabled = current.enabled || false;
+    let refresh = currentEnabled !== apply.enabled;
+    if (apply.enabled) {
+        apply.displayOrder = data.displayOrder !== '' ? parseInt(data.displayOrder, 10) : '';
+    }
     let updated = Object.assign(current, apply);
-    this.config.set('screen.nowPlaying', JSON.stringify(updated));
+    screen.dockedWeather = updated;
+    this.config.set('screen.nowPlaying', JSON.stringify(screen));
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
-    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: updated });
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: screen });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveLocalizationSettings = function(data) {

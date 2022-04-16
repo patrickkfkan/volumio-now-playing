@@ -76,6 +76,7 @@
           "id": "geoCoordinates",
           "type": "text",
           "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_GEO_COORD",
           "label": "TRANSLATE.NOW_PLAYING_GEO_COORD",
           "value": ""
         },
@@ -1280,7 +1281,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
@@ -1304,7 +1305,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
@@ -1327,26 +1328,46 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "dockedActionPanelTriggerEnabled",
-          "dockedActionPanelTriggerIconStyle",
-          "dockedActionPanelTriggerIconSize",
-          "dockedActionPanelTriggerIconColor",
-          "dockedActionPanelTriggerOpacity",
-          "dockedActionPanelTriggerMargin"
+          "enabled",
+          "iconSettings",
+          "iconStyle",
+          "iconSize",
+          "iconColor",
+          "opacity",
+          "margin"
         ]
       },
       "content": [
         {
-          "id": "dockedActionPanelTriggerEnabled",
+          "id": "enabled",
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": true
         },
         {
-          "id": "dockedActionPanelTriggerIconStyle",
+          "id": "iconSettings",
           "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "iconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_STYLE",
           "value": {
             "value": "expand_more",
             "label": "TRANSLATE.NOW_PLAYING_CHEVRON"
@@ -1378,57 +1399,49 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedActionPanelTriggerEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedActionPanelTriggerIconSize",
+          "id": "iconSize",
           "type": "text",
           "element": "input",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "dockedActionPanelTriggerEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedActionPanelTriggerIconColor",
+          "id": "iconColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_COLOR_LI",
           "value": "",
           "visibleIf": {
-            "field": "dockedActionPanelTriggerEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedActionPanelTriggerOpacity",
+          "id": "opacity",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
           "label": "TRANSLATE.NOW_PLAYING_OPACITY",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedActionPanelTriggerEnabled",
-            "value": true
-          }
+          "value": ""
         },
         {
-          "id": "dockedActionPanelTriggerMargin",
+          "id": "margin",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
           "label": "TRANSLATE.NOW_PLAYING_MARGIN",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedActionPanelTriggerEnabled",
-            "value": true
-          }
+          "value": ""
         }
       ]
     },
@@ -1445,26 +1458,28 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "dockedVolumeIndicatorEnabled",
-          "dockedVolumeIndicatorPlacement",
-          "dockedVolumeIndicatorDisplayOrder",
-          "dockedVolumeIndicatorFontSize",
-          "dockedVolumeIndicatorIconSize",
-          "dockedVolumeIndicatorFontColor",
-          "dockedVolumeIndicatorIconColor",
-          "dockedVolumeIndicatorMargin"
+          "enabled",
+          "placement",
+          "displayOrder",
+          "fontSettings",
+          "fontSize",
+          "fontColor",
+          "iconSettings",
+          "iconSize",
+          "iconColor",
+          "margin"
         ]
       },
       "content": [
         {
-          "id": "dockedVolumeIndicatorEnabled",
+          "id": "enabled",
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": false
         },
         {
-          "id": "dockedVolumeIndicatorPlacement",
+          "id": "placement",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
           "value": {
@@ -1504,83 +1519,109 @@
               "value": "bottom-right",
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
-          ],
-          "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
-          }
+          ]
         },
         {
-          "id": "dockedVolumeIndicatorDisplayOrder",
+          "id": "displayOrder",
           "type": "number",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
           "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
-          }
+          "value": ""
         },
         {
-          "id": "dockedVolumeIndicatorFontSize",
+          "id": "fontSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "fontSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
-          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedVolumeIndicatorIconSize",
+          "id": "fontColor",
+          "type": "color",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_COLOR_LI",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "iconSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "iconSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedVolumeIndicatorFontColor",
+          "id": "iconColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
-          "label": "TRANSLATE.NOW_PLAYING_FONT_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_COLOR_LI",
           "value": "",
           "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedVolumeIndicatorIconColor",
-          "type": "color",
-          "element": "input",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_COLOR",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
-          }
-        },
-        {
-          "id": "dockedVolumeIndicatorMargin",
+          "id": "margin",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
           "label": "TRANSLATE.NOW_PLAYING_MARGIN",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedVolumeIndicatorEnabled",
-            "value": true
-          }
+          "value": ""
         }
       ]
     },
@@ -1597,35 +1638,36 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "dockedClockEnabled",
-          "dockedClockPlacement",
-          "dockedClockDisplayOrder",
-          "dockedClockShowInfo",
-          "dockedClockFontSize",
-          "dockedClockDateColor",
-          "dockedClockTimeColor",
-          "dockedClockShowYear",
-          "dockedClockShowDayOfWeek",
-          "dockedClockYearFormat",
-          "dockedClockMonthFormat",
-          "dockedClockDayFormat",
-          "dockedClockDayOfWeekFormat",
-          "dockedClockHourFormat",
-          "dockedClockHour24",
-          "dockedClockShowSeconds",
-          "dockedClockMargin"
+          "enabled",
+          "placement",
+          "displayOrder",
+          "showInfo",
+          "fontSettings",
+          "fontSize",
+          "dateColor",
+          "timeColor",
+          "dateFormat",
+          "yearFormat",
+          "monthFormat",
+          "dayFormat",
+          "dayOfWeekFormat",
+          "timeFormat",
+          "hourFormat",
+          "hour24",
+          "showSeconds",
+          "margin"
         ]
       },
       "content": [
         {
-          "id": "dockedClockEnabled",
+          "id": "enabled",
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": false
         },
         {
-          "id": "dockedClockPlacement",
+          "id": "placement",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
           "value": {
@@ -1665,26 +1707,18 @@
               "value": "bottom-right",
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
-          ],
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
+          ]
         },
         {
-          "id": "dockedClockDisplayOrder",
+          "id": "displayOrder",
           "type": "number",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
           "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
+          "value": ""
         },
         {
-          "id": "dockedClockShowInfo",
+          "id": "showInfo",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_SHOW",
           "value": {
@@ -1704,78 +1738,96 @@
               "value": "date", 
               "label": "TRANSLATE.NOW_PLAYING_DATE_ONLY"
             }
-          ],
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
+          ]
         },
         {
-          "id": "dockedClockFontSize",
+          "id": "fontSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "fontSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
-          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockDateColor",
+          "id": "dateColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_DATE_COLOR",
           "value": "",
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockTimeColor",
+          "id": "timeColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_TIME_COLOR",
           "value": "",
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockShowYear",
-          "element": "switch",
-          "label": "TRANSLATE.NOW_PLAYING_SHOW_YEAR",
-          "value": false,
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
-        },
-        {
-          "id": "dockedClockShowDayOfWeek",
-          "element": "switch",
-          "label": "TRANSLATE.NOW_PLAYING_SHOW_DAY_OF_WEEK",
-          "value": false,
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
-        },
-        {
-          "id": "dockedClockYearFormat",
+          "id": "dateFormat",
           "element": "select",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
-          "label": "TRANSLATE.NOW_PLAYING_YEAR_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_DATE_FORMAT",
           "value": {
-            "value": "numeric", 
-            "label": "TRANSLATE.NOW_PLAYING_NUMERIC_YEAR"
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
           },
           "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "yearFormat",
+          "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_YEAR",
+          "value": {
+            "value": "none", 
+            "label": "TRANSLATE.NOW_PLAYING_NONE"
+          },
+          "options": [
+            {
+              "value": "none", 
+              "label": "TRANSLATE.NOW_PLAYING_NONE"
+            },
             {
               "value": "numeric", 
               "label": "TRANSLATE.NOW_PLAYING_NUMERIC_YEAR"
@@ -1786,15 +1838,15 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "dateFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockMonthFormat",
+          "id": "monthFormat",
           "element": "select",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
-          "label": "TRANSLATE.NOW_PLAYING_MONTH_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_MONTH",
           "value": {
             "value": "short", 
             "label": "TRANSLATE.NOW_PLAYING_SHORT_MONTH"
@@ -1818,15 +1870,15 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "dateFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockDayFormat",
+          "id": "dayFormat",
           "element": "select",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
-          "label": "TRANSLATE.NOW_PLAYING_DAY_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_DAY",
           "value": {
             "value": "numeric", 
             "label": "TRANSLATE.NOW_PLAYING_NUMERIC_DAY"
@@ -1842,20 +1894,24 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "dateFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockDayOfWeekFormat",
+          "id": "dayOfWeekFormat",
           "element": "select",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
-          "label": "TRANSLATE.NOW_PLAYING_DAY_OF_WEEK_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_DAY_OF_WEEK",
           "value": {
-            "value": "short", 
-            "label": "TRANSLATE.NOW_PLAYING_SHORT_DAY_OF_WEEK"
+            "value": "none", 
+            "label": "TRANSLATE.NOW_PLAYING_NONE"
           },
           "options": [
+            {
+              "value": "none", 
+              "label": "TRANSLATE.NOW_PLAYING_NONE"
+            },
             {
               "value": "long",
               "label": "TRANSLATE.NOW_PLAYING_LONG_DAY_OF_WEEK"
@@ -1866,15 +1922,34 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "dateFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockHourFormat",
+          "id": "timeFormat",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_TIME_FORMAT",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "hourFormat",
           "element": "select",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
-          "label": "TRANSLATE.NOW_PLAYING_HOUR_FORMAT",
+          "label": "TRANSLATE.NOW_PLAYING_HOUR",
           "value": {
             "value": "numeric", 
             "label": "TRANSLATE.NOW_PLAYING_NUMERIC_HOUR"
@@ -1890,42 +1965,38 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "timeFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockHour24",
+          "id": "hour24",
           "element": "switch",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DATE_TIME_FORMAT",
           "label": "TRANSLATE.NOW_PLAYING_HOUR_24",
           "value": false,
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "timeFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockShowSeconds",
+          "id": "showSeconds",
           "element": "switch",
           "label": "TRANSLATE.NOW_PLAYING_SHOW_SECONDS",
           "value": false,
           "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
+            "field": "timeFormat",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedClockMargin",
+          "id": "margin",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
           "label": "TRANSLATE.NOW_PLAYING_MARGIN",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedClockEnabled",
-            "value": true
-          }
+          "value": ""
         }
       ]
     },
@@ -1942,30 +2013,32 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "dockedWeatherEnabled",
-          "dockedWeatherPlacement",
-          "dockedWeatherDisplayOrder",
-          "dockedWeatherShowHumidity",
-          "dockedWeatherShowWindSpeed",
-          "dockedWeatherFontSize",
-          "dockedWeatherFontColor",
-          "dockedWeatherIconSize",
-          "dockedWeatherIconStyle",
-          "dockedWeatherIconAnimate",
-          "dockedWeatherIconMonoColor",
-          "dockedWeatherMargin"
+          "enabled",
+          "placement",
+          "displayOrder",
+          "showHumidity",
+          "showWindSpeed",
+          "fontSettings",
+          "fontSize",
+          "fontColor",
+          "iconSettings",
+          "iconStyle",
+          "iconSize",
+          "IconMonoColor",
+          "iconAnimate",
+          "margin"
         ]
       },
       "content": [
         {
-          "id": "dockedWeatherEnabled",
+          "id": "enabled",
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": false
         },
         {
-          "id": "dockedWeatherPlacement",
+          "id": "placement",
           "element": "select",
           "label": "TRANSLATE.NOW_PLAYING_PLACEMENT",
           "value": {
@@ -2005,83 +2078,94 @@
               "value": "bottom-right",
               "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM_RIGHT"
             }
-          ],
-          "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
-          }
+          ]
         },
         {
-          "id": "dockedWeatherDisplayOrder",
+          "id": "displayOrder",
           "type": "number",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_DOCK_COMPONENT_ORDER",
           "label": "TRANSLATE.NOW_PLAYING_DOCK_COMPONENT_ORDER",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
-          }
+          "value": ""
         },
         {
-          "id": "dockedWeatherShowHumidity",
+          "id": "showHumidity",
           "element": "switch",
           "label": "TRANSLATE.NOW_PLAYING_SHOW_HUMIDITY",
-          "value": false,
-          "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
-          }
+          "value": false
         },
         {
-          "id": "dockedWeatherShowWindSpeed",
+          "id": "showWindSpeed",
           "element": "switch",
           "label": "TRANSLATE.NOW_PLAYING_SHOW_WIND_SPEED",
-          "value": false,
-          "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
-          }
+          "value": false
         },
         {
-          "id": "dockedWeatherFontSize",
+          "id": "fontSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_FONT_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "fontSize",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
-          "label": "TRANSLATE.NOW_PLAYING_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
           "value": "",
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedWeatherFontColor",
+          "id": "fontColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
-          "label": "TRANSLATE.NOW_PLAYING_FONT_COLOR",
+          "label": "TRANSLATE.NOW_PLAYING_COLOR_LI",
           "value": "",
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "fontSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedWeatherIconSize",
-          "type": "text",
-          "element": "input",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_SIZE",
-          "value": "",
-          "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
-          }
-        },
-        {
-          "id": "dockedWeatherIconStyle",
+          "id": "iconSettings",
           "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "iconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_STYLE",
           "value": {
             "value": "filled", 
             "label": "TRANSLATE.NOW_PLAYING_FILLED"
@@ -2101,42 +2185,53 @@
             }
           ],
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedWeatherIconAnimate",
-          "element": "switch",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_ANIMATE",
-          "value": false,
+          "id": "iconSize",
+          "type": "text",
+          "element": "input",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
+          "value": "",
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedWeatherIconMonoColor",
+          "id": "IconMonoColor",
           "type": "color",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
           "label": "TRANSLATE.NOW_PLAYING_ICON_MONO_COLOR",
           "value": "",
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         },
         {
-          "id": "dockedWeatherMargin",
+          "id": "iconAnimate",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_ANIMATE",
+          "value": false,
+          "visibleIf": {
+            "field": "iconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "margin",
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
           "label": "TRANSLATE.NOW_PLAYING_MARGIN",
           "value": "",
           "visibleIf": {
-            "field": "dockedWeatherEnabled",
-            "value": true
+            "field": "iconSettings",
+            "value": "custom"
           }
         }
       ]
@@ -2493,7 +2588,7 @@
         {
           "id": "weatherIconStyle",
           "element": "select",
-          "label": "TRANSLATE.NOW_PLAYING_ICON_STYLE",
+          "label": "TRANSLATE.NOW_PLAYING_STYLE",
           "value": {
             "value": "filled", 
             "label": "TRANSLATE.NOW_PLAYING_FILLED"
@@ -2809,7 +2904,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
@@ -2833,7 +2928,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "backgroundOverlay",
@@ -2884,7 +2979,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "weatherBackground",
@@ -2908,7 +3003,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_OPACITY",
-          "label": "TRANSLATE.NOW_PLAYING_OPACITY",
+          "label": "TRANSLATE.NOW_PLAYING_OPACITY_LI",
           "value": "",
           "visibleIf": {
             "field": "weatherBackground",
