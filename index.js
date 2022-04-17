@@ -1224,14 +1224,6 @@ ControllerNowPlaying.prototype.configSaveAlbumartStyles = function (data) {
             apply[key] = value;
         }
     }
-    /*let styles = {
-        albumartVisibility: data.albumartVisibility,
-        albumartSize: data.albumartSize.value,
-        albumartWidth: data.albumartWidth,
-        albumartHeight: data.albumartHeight,
-        albumartFit: data.albumartFit.value,
-        albumartBorderRadius: data.albumartBorderRadius
-    };*/
     let current = np.getConfigValue('screen.nowPlaying', {}, true);
     let currentAlbumartVisibility = (current.albumartVisibility == undefined ? true : current.albumartVisibility) ? true : false;
     let refresh = currentAlbumartVisibility !== apply.albumartVisibility;
