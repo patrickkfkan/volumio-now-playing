@@ -1622,6 +1622,7 @@ ControllerNowPlaying.prototype.onStart = function () {
     let self = this;
 
     np.init(self.context, self.config);
+    config.checkConfig();
 
     metadata.setAccessToken(np.getConfigValue('geniusAccessToken', ''));
     self.configureWeatherApi();
