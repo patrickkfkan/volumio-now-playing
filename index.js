@@ -1053,7 +1053,7 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             }
 
             // Performance conf
-            let performanceSettings = np.getConfigValue('performance', {}, true);
+            let performanceSettings = config.getPerformanceSettings();
             performanceUIConf.content[0].value = performanceSettings.transitionEffectsKiosk || false;
             performanceUIConf.content[1].value = performanceSettings.transitionEffectsOtherDevices == undefined ? true : performanceSettings.transitionEffectsOtherDevices;
             let unmountScreensOnExit = performanceSettings.unmountScreensOnExit || 'default';
