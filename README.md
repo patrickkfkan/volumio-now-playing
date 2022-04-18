@@ -87,6 +87,10 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.3.1
+- Fix bug with empty performance settings causing client to crash on startup
+- Update web client v0.2.1
+
 0.3.0
 - Add localization settings
 - Add weather service
