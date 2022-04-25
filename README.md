@@ -87,6 +87,9 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.3.5
+- Update web client v0.2.3
+
 0.3.4
 - Add option to show volume bar when docked volume indicator is clicked
 - Implemented config update logic
