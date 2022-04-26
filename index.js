@@ -43,14 +43,15 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let widgetStylesUIConf = uiconf.sections[5];
             let albumartStylesUIConf = uiconf.sections[6];
             let backgroundStylesUIConf = uiconf.sections[7];
-            let dockedActionPanelTriggerUIConf = uiconf.sections[8];
-            let dockedVolumeIndicatorUIConf = uiconf.sections[9];
-            let dockedClockUIConf = uiconf.sections[10];
-            let dockedWeatherUIConf = uiconf.sections[11];
-            let idleScreenUIConf = uiconf.sections[12];
-            let extraScreensUIConf = uiconf.sections[13];
-            let kioskUIConf = uiconf.sections[14];
-            let performanceUIConf = uiconf.sections[15];
+            let actionPanelUIConf = uiconf.sections[8]
+            let dockedActionPanelTriggerUIConf = uiconf.sections[9];
+            let dockedVolumeIndicatorUIConf = uiconf.sections[10];
+            let dockedClockUIConf = uiconf.sections[11];
+            let dockedWeatherUIConf = uiconf.sections[12];
+            let idleScreenUIConf = uiconf.sections[13];
+            let extraScreensUIConf = uiconf.sections[14];
+            let kioskUIConf = uiconf.sections[15];
+            let performanceUIConf = uiconf.sections[16];
 
             /**
              * Daemon conf
@@ -444,6 +445,13 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             backgroundStylesUIConf.content[13].value = backgroundSettings.backgroundOverlayColorOpacity || '';
             backgroundStylesUIConf.content[14].value = backgroundSettings.backgroundOverlayGradient || '';
             backgroundStylesUIConf.content[15].value = backgroundSettings.backgroundOverlayGradientOpacity || '';
+
+            /**
+             * Action Panel
+             */
+             let actionPanelSettings = np.getConfigValue('actionPanel', {}, true);
+             let actionPanelShowVolumeSlider = actionPanelSettings.showVolumeSlider === undefined ? true : actionPanelSettings.showVolumeSlider;
+             actionPanelUIConf.content[0].value = actionPanelShowVolumeSlider ? true : false;
 
             /**
              * Docked Action Panel Trigger
@@ -1286,6 +1294,18 @@ ControllerNowPlaying.prototype.configSaveBackgroundStyles = function (data) {
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'background', data: updated });
+}
+
+ControllerNowPlaying.prototype.configSaveActionPanelSettings = function (data) {
+    let settings = {
+        showVolumeSlider: data.showVolumeSlider
+    };
+    let current = np.getConfigValue('actionPanel', {}, true);
+    let updated = Object.assign(current, settings);
+    this.config.set('actionPanel', JSON.stringify(updated));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'actionPanel', data: updated });
 }
 
 ControllerNowPlaying.prototype.configSaveDockedActionPanelTriggerSettings = function (data) {

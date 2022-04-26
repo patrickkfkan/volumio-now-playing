@@ -1341,6 +1341,31 @@
       ]
     },
     {
+      "id": "section_action_panel",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_ACTION_PANEL",
+      "icon": "fa-chevron-circle-down",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveActionPanelSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "showVolumeSlider"
+        ]
+      },
+      "content": [
+        {
+          "id": "showVolumeSlider",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_VOLUME_SLIDER",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "section_docked_action_panel_trigger",
       "element": "section",
       "description": "TRANSLATE.NOW_PLAYING_ACTION_PANEL_TRIGGER_DESC",
