@@ -884,7 +884,7 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             idleScreenUIConf.content[23].value = idleScreen.weatherForecastIconSize || '';
             idleScreenUIConf.content[24].value = idleScreen.weatherCurrentIconMonoColor || '#FFFFFF';
             idleScreenUIConf.content[25].value = idleScreen.weatherForecastIconMonoColor || '#FFFFFF';
-            idleScreenUIConf.content[26].value = idleScreen.weatherCurrentIconAnimate !== undefined ? idleScreen.weatherCurrentIconAnimate : true;
+            idleScreenUIConf.content[26].value = idleScreen.weatherCurrentIconAnimate !== undefined ? idleScreen.weatherCurrentIconAnimate : false;
             idleScreenUIConf.content[27].value = {
                 value: idleScreenBackgroundType,
             };
