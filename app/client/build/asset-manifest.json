@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f5de346d.css",
-    "main.js": "/static/js/main.5fc66b95.js",
+    "main.css": "/static/css/main.55f4489a.css",
+    "main.js": "/static/js/main.10821a56.js",
     "static/js/460.1f2db76c.chunk.js": "/static/js/460.1f2db76c.chunk.js",
     "static/js/78.cd224ff0.chunk.js": "/static/js/78.cd224ff0.chunk.js",
     "static/js/926.ebc281c2.chunk.js": "/static/js/926.ebc281c2.chunk.js",
@@ -15,12 +15,12 @@
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "static/media/volumio-icon.png": "/static/media/volumio-icon.3204cd4ee69f030fda73.png",
     "index.html": "/index.html",
-    "main.f5de346d.css.map": "/static/css/main.f5de346d.css.map",
-    "main.5fc66b95.js.map": "/static/js/main.5fc66b95.js.map",
+    "main.55f4489a.css.map": "/static/css/main.55f4489a.css.map",
+    "main.10821a56.js.map": "/static/js/main.10821a56.js.map",
     "460.1f2db76c.chunk.js.map": "/static/js/460.1f2db76c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f5de346d.css",
-    "static/js/main.5fc66b95.js"
+    "static/css/main.55f4489a.css",
+    "static/js/main.10821a56.js"
   ]
 }
