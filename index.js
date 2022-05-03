@@ -1092,7 +1092,7 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let unmountScreensOnExit = performanceSettings.unmountScreensOnExit || 'default';
             performanceUIConf.content[2].value = {
                 value: unmountScreensOnExit,
-                label: fontColors == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+                label: unmountScreensOnExit == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
             };
             performanceUIConf.content[3].value = performanceSettings.unmountNowPlayingScreenOnExit == undefined ? true : performanceSettings.unmountNowPlayingScreenOnExit;
             performanceUIConf.content[4].value = performanceSettings.unmountBrowseScreenOnExit || false;
