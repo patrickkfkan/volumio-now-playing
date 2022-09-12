@@ -86,6 +86,7 @@
   "NOW_PLAYING_GRADIENT": "- Gradient CSS",
   "NOW_PLAYING_GET_VOLUMIO_BG_ERR": "Error getting Volumio backgrounds",
   "NOW_PLAYING_SHOW_VOLUME_SLIDER": "Show Volume Slider",
+  "NOW_PLAYING_DOCKED_MENU": "Dock Component - Menu",
   "NOW_PLAYING_DOCKED_ACTION_PANEL_TRIGGER": "Dock Component - Action Panel Trigger",
   "NOW_PLAYING_ACTION_PANEL_TRIGGER_DESC": "Note: Even if disabled, you can still bring up the Action Panel by swiping down on the Now Playing screen.",
   "NOW_PLAYING_ICON_SETTINGS": "Icon Settings",

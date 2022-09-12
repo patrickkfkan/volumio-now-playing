@@ -38,20 +38,20 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             let daemonUIConf = uiconf.sections[0];
             let localizationUIConf = uiconf.sections[1];
             let metadataServiceUIConf = uiconf.sections[2];
-            let weatherServiceUIConf = uiconf.sections[3];
             let textStylesUIConf = uiconf.sections[4];
             let widgetStylesUIConf = uiconf.sections[5];
             let albumartStylesUIConf = uiconf.sections[6];
             let backgroundStylesUIConf = uiconf.sections[7];
             let actionPanelUIConf = uiconf.sections[8]
-            let dockedActionPanelTriggerUIConf = uiconf.sections[9];
-            let dockedVolumeIndicatorUIConf = uiconf.sections[10];
-            let dockedClockUIConf = uiconf.sections[11];
-            let dockedWeatherUIConf = uiconf.sections[12];
-            let idleScreenUIConf = uiconf.sections[13];
-            let extraScreensUIConf = uiconf.sections[14];
-            let kioskUIConf = uiconf.sections[15];
-            let performanceUIConf = uiconf.sections[16];
+            let dockedMenuUIConf = uiconf.sections[9];
+            let dockedActionPanelTriggerUIConf = uiconf.sections[10];
+            let dockedVolumeIndicatorUIConf = uiconf.sections[11];
+            let dockedClockUIConf = uiconf.sections[12];
+            let dockedWeatherUIConf = uiconf.sections[13];
+            let idleScreenUIConf = uiconf.sections[14];
+            let extraScreensUIConf = uiconf.sections[15];
+            let kioskUIConf = uiconf.sections[16];
+            let performanceUIConf = uiconf.sections[17];
 
             /**
              * Daemon conf
@@ -447,6 +447,13 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              let actionPanelSettings = np.getConfigValue('actionPanel', {}, true);
              let actionPanelShowVolumeSlider = actionPanelSettings.showVolumeSlider === undefined ? true : actionPanelSettings.showVolumeSlider;
              actionPanelUIConf.content[0].value = actionPanelShowVolumeSlider ? true : false;
+
+            /**
+             * Docked Menu
+             */
+            let dockedMenu = nowPlayingScreenSettings.dockedMenu || {};
+            let dockedMenuEnabled = dockedMenu.enabled === undefined ? true : dockedMenu.enabled;
+            dockedMenuUIConf.content[0].value = dockedMenuEnabled ? true : false;
 
             /**
              * Docked Action Panel Trigger
@@ -1303,6 +1310,32 @@ ControllerNowPlaying.prototype.configSaveActionPanelSettings = function (data) {
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     np.broadcastMessage('nowPlayingPushSettings', { namespace: 'actionPanel', data: updated });
+}
+
+ControllerNowPlaying.prototype.configSaveDockedMenuSettings = function (data) {
+    let apply = {};
+    for (const [key, value] of Object.entries(data)) {
+        if (typeof value === 'object' && value !== null && value.value !== undefined) {
+            apply[key] = value.value;
+        }
+        else {
+            apply[key] = value;
+        }
+    }
+    let screen = np.getConfigValue('screen.nowPlaying', {}, true);
+    let current = screen.dockedMenu || {};
+    let currentEnabled = current.enabled !== undefined ? current.enabled : true;
+    let refresh = currentEnabled !== apply.enabled;
+    let updated = Object.assign(current, apply);
+    screen.dockedMenu = updated;
+    this.config.set('screen.nowPlaying', JSON.stringify(screen));
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    np.broadcastMessage('nowPlayingPushSettings', { namespace: 'screen.nowPlaying', data: screen });
+
+    if (refresh) {
+        this.refreshUIConfig();
+    }
 }
 
 ControllerNowPlaying.prototype.configSaveDockedActionPanelTriggerSettings = function (data) {

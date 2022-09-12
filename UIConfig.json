@@ -1365,6 +1365,32 @@
       ]
     },
     {
+      "id": "section_docked_menu",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_DOCKED_MENU",
+      "icon": "fa-ellipsis-v",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveDockedMenuSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "enabled"
+        ]
+      },
+      "content": [
+        {
+          "id": "enabled",
+          "element": "switch",
+          "doc": "",
+          "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "section_docked_action_panel_trigger",
       "element": "section",
       "description": "TRANSLATE.NOW_PLAYING_ACTION_PANEL_TRIGGER_DESC",
