@@ -87,6 +87,12 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.3.7
+- Newer API keys do not work with the API calls made by Weather Service. Therefore, rewrite fetching of weather data and remove API key requirement.
+- Rewrite random image fetching from Unsplash due to frequent 503 response errors / timeouts occurring lately.
+- Add 'Dock Component - Menu' setting (enable / disable).
+- Update web client v0.2.5
+
 0.3.6
 - Add option to hide volume slider in Action Panel
 - Change default value of idle screen weather icon animation to "OFF" since animating icons can be resource-heavy
