@@ -76,7 +76,7 @@ The 'Preview URL' points to the preview page. Click the 'Open Preview' button to
 
 'Timezone' determines what date and time should be displayed in the Clock Dock Component and on the Idle Screen. If you have provided Geographic Coordinates, you can simply set this to 'Match Geographic Coordinates' - the plugin will determine the timezone based on the specified coordinates.
 
-*Display of weather information is optional. Note that to display weather, you also need to provide an OpenWeatherMap API key in the 'Weather Service' section of the plugin settings.
+*Display of weather information is optional. Data is obtained from [OpenWeather](https://openweathermap.org/).
 
 ## Technical Notes
 

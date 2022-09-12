@@ -126,13 +126,6 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
              let accessTokenSetupUrl = `${url}/genius_setup`;
              metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
  
-             /**
-              * Weather Service conf
-              */
-              weatherServiceUIConf.content[0].value = np.getConfigValue('openWeatherMapApiKey', '');
-              let apiKeySetupUrl = `${url}/openweathermap_setup`;
-              weatherServiceUIConf.content[1].onClick.url = apiKeySetupUrl;
- 
             /**
              * Text Styles conf
              */
@@ -1478,13 +1471,6 @@ ControllerNowPlaying.prototype.configSaveMetadataServiceSettings = function (dat
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 }
 
-ControllerNowPlaying.prototype.configSaveWeatherServiceSettings = function (data) {
-    let apiKey = data['openWeatherMapApiKey'].trim();
-    this.config.set('openWeatherMapApiKey', apiKey);
-    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
-    this.configureWeatherApi();
-}
-
 ControllerNowPlaying.prototype.clearMetadataCache = function () {
     metadata.clearCache();
     np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
@@ -1756,7 +1742,6 @@ ControllerNowPlaying.prototype.onVolumioLanguageChanged = function () {
 ControllerNowPlaying.prototype.configureWeatherApi = function () { 
     let localization = config.getLocalizationSettings();
     weather.config({
-        apiKey: np.getConfigValue('openWeatherMapApiKey', ''),
         coordinates: localization.geoCoordinates,
         units: localization.unitSystem
     });
