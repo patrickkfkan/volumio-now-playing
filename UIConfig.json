@@ -242,7 +242,8 @@
           "trackInfoTitleOrder",
           "trackInfoArtistOrder",
           "trackInfoAlbumOrder",
-          "trackInfoMediaInfoOrder"
+          "trackInfoMediaInfoOrder",
+          "trackInfoMarqueeTitle"
         ]
       },
       "content": [
@@ -690,6 +691,13 @@
             "field": "trackInfoOrder",
             "value": "custom"
           }
+        },
+        {
+          "id": "trackInfoMarqueeTitle",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_TRACK_INFO_MARQUEE_TITLE",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_TRACK_INFO_MARQUEE_TITLE",
+          "value": false
         }
       ]
     },

@@ -232,6 +232,9 @@ ControllerNowPlaying.prototype.getUIConfig = function () {
             textStylesUIConf.content[29].value = nowPlayingScreenSettings.trackInfoAlbumOrder !== undefined ? nowPlayingScreenSettings.trackInfoAlbumOrder : '';
             textStylesUIConf.content[30].value = nowPlayingScreenSettings.trackInfoMediaInfoOrder !== undefined ? nowPlayingScreenSettings.trackInfoMediaInfoOrder : '';
 
+            let trackInfoMarqueeTitle = nowPlayingScreenSettings.trackInfoMarqueeTitle !== undefined ? nowPlayingScreenSettings.trackInfoMarqueeTitle : false;
+            textStylesUIConf.content[31].value = trackInfoMarqueeTitle;
+
             /**
              * Widget Styles conf
              */
@@ -1217,7 +1220,8 @@ ControllerNowPlaying.prototype.configSaveTextStyles = function (data) {
         trackInfoTitleOrder,
         trackInfoArtistOrder,
         trackInfoAlbumOrder,
-        trackInfoMediaInfoOrder
+        trackInfoMediaInfoOrder,
+        trackInfoMarqueeTitle: data.trackInfoMarqueeTitle
     };
     let current = np.getConfigValue('screen.nowPlaying', {}, true);
     let updated = Object.assign(current, apply);
