@@ -83,6 +83,7 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 0.4.0
 - Migrate to TypeScript
 - Change settings handling
+- Update web client v0.4.0
 
 0.3.8
 - Add option to display track info title as marquee (under 'Text Styles')
