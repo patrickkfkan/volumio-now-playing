@@ -543,6 +543,7 @@ class ControllerNowPlaying {
       label: dockedVolumeIndicator.fontSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
     };
     dockedVolumeIndicatorUIConf.content.fontSize.value = dockedVolumeIndicator.fontSize;
+    dockedVolumeIndicatorUIConf.content.fontSizePercentSymbol.value = dockedVolumeIndicator.fontSizePercentSymbol;
     dockedVolumeIndicatorUIConf.content.fontColor.value = dockedVolumeIndicator.fontColor;
     dockedVolumeIndicatorUIConf.content.iconSettings.value = {
       value: dockedVolumeIndicator.iconSettings,

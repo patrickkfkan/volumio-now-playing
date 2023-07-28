@@ -139,6 +139,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'displayOrder' | 
     'fontSettings' | 
     'fontSize' | 
+    'fontSizePercentSymbol' | 
     'fontColor' | 
     'iconSettings' | 
     'iconSize' | 
@@ -393,6 +394,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'displayOrder' ? UIConfigInput<K, 'number'> :
     C extends 'fontSettings' ? UIConfigSelect<K> :
     C extends 'fontSize' ? UIConfigInput<K, 'text'> :
+    C extends 'fontSizePercentSymbol' ? UIConfigInput<K, 'text'> :
     C extends 'fontColor' ? UIConfigInput<K, 'color'> :
     C extends 'iconSettings' ? UIConfigSelect<K> :
     C extends 'iconSize' ? UIConfigInput<K, 'text'> :

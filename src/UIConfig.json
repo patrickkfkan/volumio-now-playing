@@ -1547,6 +1547,7 @@
           "displayOrder",
           "fontSettings",
           "fontSize",
+          "fontSizePercentSymbol",
           "fontColor",
           "iconSettings",
           "iconSize",
@@ -1641,6 +1642,18 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "fontSizePercentSymbol",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE_PERCENT_SYMBOL",
           "value": "",
           "visibleIf": {
             "field": "fontSettings",

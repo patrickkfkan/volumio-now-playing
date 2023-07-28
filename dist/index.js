@@ -872,6 +872,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         label: dockedVolumeIndicator.fontSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
     dockedVolumeIndicatorUIConf.content.fontSize.value = dockedVolumeIndicator.fontSize;
+    dockedVolumeIndicatorUIConf.content.fontSizePercentSymbol.value = dockedVolumeIndicator.fontSizePercentSymbol;
     dockedVolumeIndicatorUIConf.content.fontColor.value = dockedVolumeIndicator.fontColor;
     dockedVolumeIndicatorUIConf.content.iconSettings.value = {
         value: dockedVolumeIndicator.iconSettings,
