@@ -5,7 +5,8 @@
 	"main": "./dist/index.js",
 	"scripts": {
 		"build": "npm run prepare",
-		"prepare": "rm -rf dist && npx tsc --build src && bash fixup.sh",
+		"build:uiconf": "node ./scripts/buildUIConfigSchema.js > ./src/lib/config/UIConfigSchema.ts",
+		"prepare": "rm -rf dist && npm run build:uiconf && npx tsc --build src && bash fixup.sh",
 		"lint": "npx eslint ./src",
 		"lint:fix": "npx eslint ./src --fix"
 	},

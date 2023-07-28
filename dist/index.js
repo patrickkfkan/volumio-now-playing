@@ -55,6 +55,7 @@ const ConfigUpdater_1 = __importDefault(require("./lib/config/ConfigUpdater"));
 const MetadataAPI_1 = __importDefault(require("./lib/api/MetadataAPI"));
 const WeatherAPI_1 = __importDefault(require("./lib/api/WeatherAPI"));
 const now_playing_common_1 = require("now-playing-common");
+const UIConfigHelper_1 = __importDefault(require("./lib/config/UIConfigHelper"));
 class ControllerNowPlaying {
     constructor(context) {
         _ControllerNowPlaying_instances.add(this);
@@ -408,882 +409,938 @@ class ControllerNowPlaying {
 }
 _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = new WeakMap(), _ControllerNowPlaying_commandRouter = new WeakMap(), _ControllerNowPlaying_volumioLanguageChangeCallback = new WeakMap(), _ControllerNowPlaying_instances = new WeakSet(), _ControllerNowPlaying_doGetUIConfig = async function _ControllerNowPlaying_doGetUIConfig() {
     const langCode = __classPrivateFieldGet(this, _ControllerNowPlaying_commandRouter, "f").sharedVars.get('language_code');
-    const uiconf = await (0, Misc_1.kewToJSPromise)(__classPrivateFieldGet(this, _ControllerNowPlaying_commandRouter, "f").i18nJson(`${__dirname}/i18n/strings_${langCode}.json`, `${__dirname}/i18n/strings_en.json`, `${__dirname}/UIConfig.json`));
-    const daemonUIConf = uiconf.sections[0];
-    const localizationUIConf = uiconf.sections[1];
-    const metadataServiceUIConf = uiconf.sections[2];
-    const textStylesUIConf = uiconf.sections[4];
-    const widgetStylesUIConf = uiconf.sections[5];
-    const albumartStylesUIConf = uiconf.sections[6];
-    const backgroundStylesUIConf = uiconf.sections[7];
-    const actionPanelUIConf = uiconf.sections[8];
-    const dockedMenuUIConf = uiconf.sections[9];
-    const dockedActionPanelTriggerUIConf = uiconf.sections[10];
-    const dockedVolumeIndicatorUIConf = uiconf.sections[11];
-    const dockedClockUIConf = uiconf.sections[12];
-    const dockedWeatherUIConf = uiconf.sections[13];
-    const idleScreenUIConf = uiconf.sections[14];
-    const extraScreensUIConf = uiconf.sections[15];
-    const kioskUIConf = uiconf.sections[16];
-    const performanceUIConf = uiconf.sections[17];
+    const _uiconf = await (0, Misc_1.kewToJSPromise)(__classPrivateFieldGet(this, _ControllerNowPlaying_commandRouter, "f").i18nJson(`${__dirname}/i18n/strings_${langCode}.json`, `${__dirname}/i18n/strings_en.json`, `${__dirname}/UIConfig.json`));
+    const uiconf = UIConfigHelper_1.default.observe(_uiconf);
+    //Const daemonUIConf = uiconf.findSectionById('section_daemon');
+    const daemonUIConf = uiconf.section_daemon;
+    const localizationUIConf = uiconf.section_localization;
+    const metadataServiceUIConf = uiconf.section_metadata_service;
+    const textStylesUIConf = uiconf.section_text_styles;
+    const widgetStylesUIConf = uiconf.section_widget_styles;
+    const albumartStylesUIConf = uiconf.section_album_art_style;
+    const backgroundStylesUIConf = uiconf.section_background_style;
+    const actionPanelUIConf = uiconf.section_action_panel;
+    const dockedMenuUIConf = uiconf.section_docked_menu;
+    const dockedActionPanelTriggerUIConf = uiconf.section_docked_action_panel_trigger;
+    const dockedVolumeIndicatorUIConf = uiconf.section_docked_volume_indicator;
+    const dockedClockUIConf = uiconf.section_docked_clock;
+    const dockedWeatherUIConf = uiconf.section_docked_weather;
+    const idleScreenUIConf = uiconf.section_idle_view;
+    const extraScreensUIConf = uiconf.section_extra_screens;
+    const kioskUIConf = uiconf.section_kiosk;
+    const performanceUIConf = uiconf.section_performance;
     /**
      * Daemon conf
      */
     const port = NowPlayingContext_1.default.getConfigValue('port');
-    daemonUIConf.content[0].value = port;
+    daemonUIConf.content.port.value = port;
     // Get Now Playing Url
     const thisDevice = NowPlayingContext_1.default.getDeviceInfo();
     const url = `${thisDevice.host}:${port}`;
     const previewUrl = `${url}/preview`;
-    daemonUIConf.content[1].value = url;
-    daemonUIConf.content[2].value = previewUrl;
-    daemonUIConf.content[3].onClick.url = previewUrl;
+    daemonUIConf.content.url.value = url;
+    daemonUIConf.content.previewUrl.value = previewUrl;
+    daemonUIConf.content.openPreview.onClick = {
+        type: 'openUrl',
+        url: previewUrl
+    };
     /**
      * Localization conf
      */
     const localization = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.Localization);
     const geoCoordSetupUrl = `${url}/geo_coord_setup`;
-    localizationUIConf.content[0].value = localization.geoCoordinates;
-    localizationUIConf.content[1].onClick.url = geoCoordSetupUrl;
+    localizationUIConf.content.geoCoordinates.value = localization.geoCoordinates;
+    localizationUIConf.content.geoCoordinatesGuide.onClick = {
+        type: 'openUrl',
+        url: geoCoordSetupUrl
+    };
     // Locale list
     const localeList = ConfigHelper_1.default.getLocaleList();
     const matchLocale = localeList.find((lc) => lc.value === localization.locale);
     if (matchLocale) {
-        localizationUIConf.content[2].value = matchLocale;
+        localizationUIConf.content.locale.value = matchLocale;
     }
     else {
-        localizationUIConf.content[2].value = {
+        localizationUIConf.content.locale.value = {
             value: localization.locale,
             label: localization.locale
         };
     }
-    localizationUIConf.content[2].options = localeList;
+    localizationUIConf.content.locale.options = localeList;
     // Timezone list
     const timezoneList = await ConfigHelper_1.default.getTimezoneList();
     const matchTimezone = timezoneList.find((tz) => tz.value === localization.timezone);
     if (matchTimezone) {
-        localizationUIConf.content[3].value = matchTimezone;
+        localizationUIConf.content.timezone.value = matchTimezone;
     }
     else {
-        localizationUIConf.content[3].value = {
+        localizationUIConf.content.timezone.value = {
             value: localization.timezone,
             label: localization.timezone
         };
     }
-    localizationUIConf.content[3].options = timezoneList;
+    localizationUIConf.content.timezone.options = timezoneList;
     // Unit system
-    localizationUIConf.content[4].value = {
-        value: localization.unitSystem
+    localizationUIConf.content.unitSystem.value = {
+        value: localization.unitSystem,
+        label: ''
     };
     switch (localization.unitSystem) {
         case 'imperial':
-            localizationUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
+            localizationUIConf.content.unitSystem.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNITS_IMPERIAL');
             break;
         default: // Metric
-            localizationUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNITS_METRIC');
+            localizationUIConf.content.unitSystem.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNITS_METRIC');
     }
     /**
      * Metadata Service conf
      */
-    metadataServiceUIConf.content[0].value = NowPlayingContext_1.default.getConfigValue('geniusAccessToken');
+    metadataServiceUIConf.content.geniusAccessToken.value = NowPlayingContext_1.default.getConfigValue('geniusAccessToken');
     const accessTokenSetupUrl = `${url}/genius_setup`;
-    metadataServiceUIConf.content[1].onClick.url = accessTokenSetupUrl;
+    metadataServiceUIConf.content.accessTokenGuide.onClick = {
+        type: 'openUrl',
+        url: accessTokenSetupUrl
+    };
     /**
      * Text Styles conf
      */
     const nowPlayingScreen = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.NowPlayingScreen);
-    textStylesUIConf.content[0].value = {
+    textStylesUIConf.content.fontSizes.value = {
         value: nowPlayingScreen.fontSizes,
         label: nowPlayingScreen.fontSizes == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    textStylesUIConf.content[1].value = nowPlayingScreen.titleFontSize;
-    textStylesUIConf.content[2].value = nowPlayingScreen.artistFontSize;
-    textStylesUIConf.content[3].value = nowPlayingScreen.albumFontSize;
-    textStylesUIConf.content[4].value = nowPlayingScreen.mediaInfoFontSize;
-    textStylesUIConf.content[5].value = nowPlayingScreen.seekTimeFontSize;
-    textStylesUIConf.content[6].value = nowPlayingScreen.metadataFontSize;
-    textStylesUIConf.content[7].value = {
+    textStylesUIConf.content.titleFontSize.value = nowPlayingScreen.titleFontSize;
+    textStylesUIConf.content.artistFontSize.value = nowPlayingScreen.artistFontSize;
+    textStylesUIConf.content.albumFontSize.value = nowPlayingScreen.albumFontSize;
+    textStylesUIConf.content.mediaInfoFontSize.value = nowPlayingScreen.mediaInfoFontSize;
+    textStylesUIConf.content.seekTimeFontSize.value = nowPlayingScreen.seekTimeFontSize;
+    textStylesUIConf.content.metadataFontSize.value = nowPlayingScreen.metadataFontSize;
+    textStylesUIConf.content.fontColors.value = {
         value: nowPlayingScreen.fontColors,
         label: nowPlayingScreen.fontColors == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    textStylesUIConf.content[8].value = nowPlayingScreen.titleFontColor;
-    textStylesUIConf.content[9].value = nowPlayingScreen.artistFontColor;
-    textStylesUIConf.content[10].value = nowPlayingScreen.albumFontColor;
-    textStylesUIConf.content[11].value = nowPlayingScreen.mediaInfoFontColor;
-    textStylesUIConf.content[12].value = nowPlayingScreen.seekTimeFontColor;
-    textStylesUIConf.content[13].value = nowPlayingScreen.metadataFontColor;
-    textStylesUIConf.content[14].value = {
+    textStylesUIConf.content.titleFontColor.value = nowPlayingScreen.titleFontColor;
+    textStylesUIConf.content.artistFontColor.value = nowPlayingScreen.artistFontColor;
+    textStylesUIConf.content.albumFontColor.value = nowPlayingScreen.albumFontColor;
+    textStylesUIConf.content.mediaInfoFontColor.value = nowPlayingScreen.mediaInfoFontColor;
+    textStylesUIConf.content.seekTimeFontColor.value = nowPlayingScreen.seekTimeFontColor;
+    textStylesUIConf.content.metadataFontColor.value = nowPlayingScreen.metadataFontColor;
+    textStylesUIConf.content.textMargins.value = {
         value: nowPlayingScreen.textMargins,
         label: nowPlayingScreen.textMargins == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    textStylesUIConf.content[15].value = nowPlayingScreen.titleMargin;
-    textStylesUIConf.content[16].value = nowPlayingScreen.artistMargin;
-    textStylesUIConf.content[17].value = nowPlayingScreen.albumMargin;
-    textStylesUIConf.content[18].value = nowPlayingScreen.mediaInfoMargin;
-    textStylesUIConf.content[19].value = {
-        value: nowPlayingScreen.textAlignmentH
+    textStylesUIConf.content.titleMargin.value = nowPlayingScreen.titleMargin;
+    textStylesUIConf.content.artistMargin.value = nowPlayingScreen.artistMargin;
+    textStylesUIConf.content.albumMargin.value = nowPlayingScreen.albumMargin;
+    textStylesUIConf.content.mediaInfoMargin.value = nowPlayingScreen.mediaInfoMargin;
+    textStylesUIConf.content.textAlignmentH.value = {
+        value: nowPlayingScreen.textAlignmentH,
+        label: ''
     };
     switch (nowPlayingScreen.textAlignmentH) {
         case 'center':
-            textStylesUIConf.content[19].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            textStylesUIConf.content.textAlignmentH.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
             break;
         case 'right':
-            textStylesUIConf.content[19].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            textStylesUIConf.content.textAlignmentH.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         default: // Left
-            textStylesUIConf.content[19].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            textStylesUIConf.content.textAlignmentH.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
     }
-    textStylesUIConf.content[20].value = {
-        value: nowPlayingScreen.textAlignmentV
+    textStylesUIConf.content.textAlignmentV.value = {
+        value: nowPlayingScreen.textAlignmentV,
+        label: ''
     };
     switch (nowPlayingScreen.textAlignmentV) {
         case 'center':
-            textStylesUIConf.content[20].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            textStylesUIConf.content.textAlignmentV.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
             break;
         case 'flex-end':
-            textStylesUIConf.content[20].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            textStylesUIConf.content.textAlignmentV.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         case 'space-between':
-            textStylesUIConf.content[20].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SPREAD');
+            textStylesUIConf.content.textAlignmentV.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SPREAD');
             break;
         default: // Top
-            textStylesUIConf.content[20].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            textStylesUIConf.content.textAlignmentV.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
     }
-    textStylesUIConf.content[21].value = {
-        value: nowPlayingScreen.textAlignmentLyrics
+    textStylesUIConf.content.textAlignmentLyrics.value = {
+        value: nowPlayingScreen.textAlignmentLyrics,
+        label: ''
     };
     switch (nowPlayingScreen.textAlignmentLyrics) {
         case 'center':
-            textStylesUIConf.content[21].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            textStylesUIConf.content.textAlignmentLyrics.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
             break;
         case 'right':
-            textStylesUIConf.content[21].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            textStylesUIConf.content.textAlignmentLyrics.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         default: // Left
-            textStylesUIConf.content[21].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            textStylesUIConf.content.textAlignmentLyrics.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
     }
-    textStylesUIConf.content[22].value = {
+    textStylesUIConf.content.maxLines.value = {
         value: nowPlayingScreen.maxLines,
         label: nowPlayingScreen.maxLines == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    textStylesUIConf.content[23].value = nowPlayingScreen.maxTitleLines;
-    textStylesUIConf.content[24].value = nowPlayingScreen.maxArtistLines;
-    textStylesUIConf.content[25].value = nowPlayingScreen.maxAlbumLines;
-    textStylesUIConf.content[26].value = {
+    textStylesUIConf.content.maxTitleLines.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.maxTitleLines);
+    textStylesUIConf.content.maxArtistLines.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.maxArtistLines);
+    textStylesUIConf.content.maxAlbumLines.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.maxAlbumLines);
+    textStylesUIConf.content.trackInfoOrder.value = {
         value: nowPlayingScreen.trackInfoOrder,
         label: nowPlayingScreen.trackInfoOrder == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    textStylesUIConf.content[27].value = nowPlayingScreen.trackInfoTitleOrder;
-    textStylesUIConf.content[28].value = nowPlayingScreen.trackInfoArtistOrder;
-    textStylesUIConf.content[29].value = nowPlayingScreen.trackInfoAlbumOrder;
-    textStylesUIConf.content[30].value = nowPlayingScreen.trackInfoMediaInfoOrder;
-    textStylesUIConf.content[31].value = nowPlayingScreen.trackInfoMarqueeTitle;
+    textStylesUIConf.content.trackInfoTitleOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.trackInfoTitleOrder);
+    textStylesUIConf.content.trackInfoArtistOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.trackInfoArtistOrder);
+    textStylesUIConf.content.trackInfoAlbumOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.trackInfoAlbumOrder);
+    textStylesUIConf.content.trackInfoMediaInfoOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(nowPlayingScreen.trackInfoMediaInfoOrder);
+    textStylesUIConf.content.trackInfoMarqueeTitle.value = nowPlayingScreen.trackInfoMarqueeTitle;
     /**
      * Widget Styles conf
      */
-    widgetStylesUIConf.content[0].value = {
+    widgetStylesUIConf.content.widgetColors.value = {
         value: nowPlayingScreen.widgetColors,
         label: nowPlayingScreen.widgetColors == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    widgetStylesUIConf.content[1].value = nowPlayingScreen.widgetPrimaryColor;
-    widgetStylesUIConf.content[2].value = nowPlayingScreen.widgetHighlightColor;
-    widgetStylesUIConf.content[3].value = {
+    widgetStylesUIConf.content.widgetPrimaryColor.value = nowPlayingScreen.widgetPrimaryColor;
+    widgetStylesUIConf.content.widgetHighlightColor.value = nowPlayingScreen.widgetHighlightColor;
+    widgetStylesUIConf.content.widgetVisibility.value = {
         value: nowPlayingScreen.widgetVisibility,
         label: nowPlayingScreen.widgetVisibility == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    widgetStylesUIConf.content[4].value = nowPlayingScreen.playbackButtonsVisibility;
-    widgetStylesUIConf.content[5].value = nowPlayingScreen.seekbarVisibility;
-    widgetStylesUIConf.content[6].value = {
+    widgetStylesUIConf.content.playbackButtonsVisibility.value = nowPlayingScreen.playbackButtonsVisibility;
+    widgetStylesUIConf.content.seekbarVisibility.value = nowPlayingScreen.seekbarVisibility;
+    widgetStylesUIConf.content.playbackButtonSizeType.value = {
         value: nowPlayingScreen.playbackButtonSizeType,
         label: nowPlayingScreen.playbackButtonSizeType == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    widgetStylesUIConf.content[7].value = nowPlayingScreen.playbackButtonSize;
-    widgetStylesUIConf.content[8].value = {
+    widgetStylesUIConf.content.playbackButtonSize.value = nowPlayingScreen.playbackButtonSize;
+    widgetStylesUIConf.content.widgetMargins.value = {
         value: nowPlayingScreen.widgetMargins,
         label: nowPlayingScreen.widgetMargins == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    widgetStylesUIConf.content[9].value = nowPlayingScreen.playbackButtonsMargin;
-    widgetStylesUIConf.content[10].value = nowPlayingScreen.seekbarMargin;
+    widgetStylesUIConf.content.playbackButtonsMargin.value = nowPlayingScreen.playbackButtonsMargin;
+    widgetStylesUIConf.content.seekbarMargin.value = nowPlayingScreen.seekbarMargin;
     /**
      * Albumart Styles conf
      */
-    albumartStylesUIConf.content[0].value = nowPlayingScreen.albumartVisibility;
-    albumartStylesUIConf.content[1].value = {
+    albumartStylesUIConf.content.albumartVisibility.value = nowPlayingScreen.albumartVisibility;
+    albumartStylesUIConf.content.albumartSize.value = {
         value: nowPlayingScreen.albumartSize,
         label: nowPlayingScreen.albumartSize == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    albumartStylesUIConf.content[2].value = nowPlayingScreen.albumartWidth;
-    albumartStylesUIConf.content[3].value = nowPlayingScreen.albumartHeight;
-    albumartStylesUIConf.content[4].value = {
-        value: nowPlayingScreen.albumartFit
+    albumartStylesUIConf.content.albumartWidth.value = nowPlayingScreen.albumartWidth;
+    albumartStylesUIConf.content.albumartHeight.value = nowPlayingScreen.albumartHeight;
+    albumartStylesUIConf.content.albumartFit.value = {
+        value: nowPlayingScreen.albumartFit,
+        label: ''
     };
     switch (nowPlayingScreen.albumartFit) {
         case 'contain':
-            albumartStylesUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
+            albumartStylesUIConf.content.albumartFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
             break;
         case 'fill':
-            albumartStylesUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
+            albumartStylesUIConf.content.albumartFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
             break;
         default:
-            albumartStylesUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
+            albumartStylesUIConf.content.albumartFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
     }
-    albumartStylesUIConf.content[5].value = nowPlayingScreen.albumartBorder;
-    albumartStylesUIConf.content[6].value = nowPlayingScreen.albumartBorderRadius;
+    albumartStylesUIConf.content.albumartBorder.value = nowPlayingScreen.albumartBorder;
+    albumartStylesUIConf.content.albumartBorderRadius.value = nowPlayingScreen.albumartBorderRadius;
     if (!nowPlayingScreen.albumartVisibility) {
-        albumartStylesUIConf.content = [albumartStylesUIConf.content[0]];
-        albumartStylesUIConf.saveButton.data = ['albumartVisibility'];
+        albumartStylesUIConf.content = [albumartStylesUIConf.content.albumartVisibility];
+        if (albumartStylesUIConf.saveButton) {
+            albumartStylesUIConf.saveButton.data = ['albumartVisibility'];
+        }
     }
     /**
     * Background Styles Conf
     */
     const backgroundSettings = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.Background);
-    backgroundStylesUIConf.content[0].value = {
-        value: backgroundSettings.backgroundType
+    backgroundStylesUIConf.content.backgroundType.value = {
+        value: backgroundSettings.backgroundType,
+        label: ''
     };
     switch (backgroundSettings.backgroundType) {
         case 'albumart':
-            backgroundStylesUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ALBUM_ART');
+            backgroundStylesUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ALBUM_ART');
             break;
         case 'color':
-            backgroundStylesUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_COLOR');
+            backgroundStylesUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_COLOR');
             break;
         case 'volumioBackground':
-            backgroundStylesUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
+            backgroundStylesUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
             break;
         default:
-            backgroundStylesUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
+            backgroundStylesUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
     }
-    backgroundStylesUIConf.content[1].value = backgroundSettings.backgroundColor;
-    backgroundStylesUIConf.content[2].value = {
-        value: backgroundSettings.albumartBackgroundFit
+    backgroundStylesUIConf.content.backgroundColor.value = backgroundSettings.backgroundColor;
+    backgroundStylesUIConf.content.albumartBackgroundFit.value = {
+        value: backgroundSettings.albumartBackgroundFit,
+        label: ''
     };
     switch (backgroundSettings.albumartBackgroundFit) {
         case 'contain':
-            backgroundStylesUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
+            backgroundStylesUIConf.content.albumartBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
             break;
         case 'fill':
-            backgroundStylesUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
+            backgroundStylesUIConf.content.albumartBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
             break;
         default:
-            backgroundStylesUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
+            backgroundStylesUIConf.content.albumartBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
     }
-    backgroundStylesUIConf.content[3].value = {
-        value: backgroundSettings.albumartBackgroundPosition
+    backgroundStylesUIConf.content.albumartBackgroundPosition.value = {
+        value: backgroundSettings.albumartBackgroundPosition,
+        label: ''
     };
     switch (backgroundSettings.albumartBackgroundPosition) {
         case 'top':
-            backgroundStylesUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            backgroundStylesUIConf.content.albumartBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'left':
-            backgroundStylesUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            backgroundStylesUIConf.content.albumartBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'bottom':
-            backgroundStylesUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            backgroundStylesUIConf.content.albumartBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         case 'right':
-            backgroundStylesUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            backgroundStylesUIConf.content.albumartBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         default:
-            backgroundStylesUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            backgroundStylesUIConf.content.albumartBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
     }
-    backgroundStylesUIConf.content[4].value = backgroundSettings.albumartBackgroundBlur || '';
-    backgroundStylesUIConf.content[5].value = backgroundSettings.albumartBackgroundScale || '';
+    backgroundStylesUIConf.content.albumartBackgroundBlur.value = backgroundSettings.albumartBackgroundBlur;
+    backgroundStylesUIConf.content.albumartBackgroundScale.value = backgroundSettings.albumartBackgroundScale;
     const volumioBackgrounds = (0, Misc_1.getVolumioBackgrounds)();
     let volumioBackgroundImage = backgroundSettings.volumioBackgroundImage;
     if (volumioBackgroundImage !== '' && !volumioBackgrounds.includes(volumioBackgroundImage)) {
         volumioBackgroundImage = ''; // Image no longer exists
     }
-    backgroundStylesUIConf.content[6].value = {
+    backgroundStylesUIConf.content.volumioBackgroundImage.value = {
         value: volumioBackgroundImage,
         label: volumioBackgroundImage
     };
-    backgroundStylesUIConf.content[6].options = volumioBackgrounds.map((bg) => ({
+    backgroundStylesUIConf.content.volumioBackgroundImage.options = volumioBackgrounds.map((bg) => ({
         value: bg,
         label: bg
     }));
-    backgroundStylesUIConf.content[7].value = {
-        value: backgroundSettings.volumioBackgroundFit
+    backgroundStylesUIConf.content.volumioBackgroundFit.value = {
+        value: backgroundSettings.volumioBackgroundFit,
+        label: ''
     };
     switch (backgroundSettings.volumioBackgroundFit) {
         case 'contain':
-            backgroundStylesUIConf.content[7].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
+            backgroundStylesUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
             break;
         case 'fill':
-            backgroundStylesUIConf.content[7].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
+            backgroundStylesUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
             break;
         default:
-            backgroundStylesUIConf.content[7].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
+            backgroundStylesUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
     }
-    backgroundStylesUIConf.content[8].value = {
-        value: backgroundSettings.volumioBackgroundPosition
+    backgroundStylesUIConf.content.volumioBackgroundPosition.value = {
+        value: backgroundSettings.volumioBackgroundPosition,
+        label: ''
     };
     switch (backgroundSettings.volumioBackgroundPosition) {
         case 'top':
-            backgroundStylesUIConf.content[8].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            backgroundStylesUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'left':
-            backgroundStylesUIConf.content[8].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            backgroundStylesUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'bottom':
-            backgroundStylesUIConf.content[8].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            backgroundStylesUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         case 'right':
-            backgroundStylesUIConf.content[8].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            backgroundStylesUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         default:
-            backgroundStylesUIConf.content[8].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            backgroundStylesUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
     }
-    backgroundStylesUIConf.content[9].value = backgroundSettings.volumioBackgroundBlur;
-    backgroundStylesUIConf.content[10].value = backgroundSettings.volumioBackgroundScale;
-    backgroundStylesUIConf.content[11].value = {
-        value: backgroundSettings.backgroundOverlay
+    backgroundStylesUIConf.content.volumioBackgroundBlur.value = backgroundSettings.volumioBackgroundBlur;
+    backgroundStylesUIConf.content.volumioBackgroundScale.value = backgroundSettings.volumioBackgroundScale;
+    backgroundStylesUIConf.content.backgroundOverlay.value = {
+        value: backgroundSettings.backgroundOverlay,
+        label: ''
     };
     switch (backgroundSettings.backgroundOverlay) {
         case 'customColor':
-            backgroundStylesUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+            backgroundStylesUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
             break;
         case 'customGradient':
-            backgroundStylesUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+            backgroundStylesUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
             break;
         case 'none':
-            backgroundStylesUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
+            backgroundStylesUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
             break;
         default:
-            backgroundStylesUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
+            backgroundStylesUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
     }
-    backgroundStylesUIConf.content[12].value = backgroundSettings.backgroundOverlayColor;
-    backgroundStylesUIConf.content[13].value = backgroundSettings.backgroundOverlayColorOpacity;
-    backgroundStylesUIConf.content[14].value = backgroundSettings.backgroundOverlayGradient;
-    backgroundStylesUIConf.content[15].value = backgroundSettings.backgroundOverlayGradientOpacity;
+    backgroundStylesUIConf.content.backgroundOverlayColor.value = backgroundSettings.backgroundOverlayColor;
+    backgroundStylesUIConf.content.backgroundOverlayColorOpacity.value = backgroundSettings.backgroundOverlayColorOpacity;
+    backgroundStylesUIConf.content.backgroundOverlayGradient.value = backgroundSettings.backgroundOverlayGradient;
+    backgroundStylesUIConf.content.backgroundOverlayGradientOpacity.value = backgroundSettings.backgroundOverlayGradientOpacity;
     /**
      * Action Panel
      */
     const actionPanelSettings = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.ActionPanel);
-    actionPanelUIConf.content[0].value = actionPanelSettings.showVolumeSlider;
+    actionPanelUIConf.content.showVolumeSlider.value = actionPanelSettings.showVolumeSlider;
     /**
      * Docked Menu
      */
     const dockedMenu = nowPlayingScreen.dockedMenu;
-    dockedMenuUIConf.content[0].value = dockedMenu.enabled;
+    dockedMenuUIConf.content.enabled.value = dockedMenu.enabled;
     /**
      * Docked Action Panel Trigger
      */
     const dockedActionPanelTrigger = nowPlayingScreen.dockedActionPanelTrigger;
-    dockedActionPanelTriggerUIConf.content[0].value = dockedActionPanelTrigger.enabled;
-    dockedActionPanelTriggerUIConf.content[1].value = {
+    dockedActionPanelTriggerUIConf.content.enabled.value = dockedActionPanelTrigger.enabled;
+    dockedActionPanelTriggerUIConf.content.iconSettings.value = {
         value: dockedActionPanelTrigger.iconSettings,
         label: dockedActionPanelTrigger.iconSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedActionPanelTriggerUIConf.content[2].value = {
-        value: dockedActionPanelTrigger.iconStyle
+    dockedActionPanelTriggerUIConf.content.iconStyle.value = {
+        value: dockedActionPanelTrigger.iconStyle,
+        label: ''
     };
     switch (dockedActionPanelTrigger.iconStyle) {
         case 'expand_circle_down':
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CHEVRON_CIRCLE');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CHEVRON_CIRCLE');
             break;
         case 'arrow_drop_down':
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CARET');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CARET');
             break;
         case 'arrow_drop_down_circle':
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CARET_CIRCLE');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CARET_CIRCLE');
             break;
         case 'arrow_downward':
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ARROW');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ARROW');
             break;
         case 'arrow_circle_down':
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ARROW_CIRCLE');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ARROW_CIRCLE');
             break;
         default:
-            dockedActionPanelTriggerUIConf.content[2].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CHEVRON');
+            dockedActionPanelTriggerUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CHEVRON');
     }
-    dockedActionPanelTriggerUIConf.content[3].value = dockedActionPanelTrigger.iconSize;
-    dockedActionPanelTriggerUIConf.content[4].value = dockedActionPanelTrigger.iconColor;
-    dockedActionPanelTriggerUIConf.content[5].value = dockedActionPanelTrigger.opacity;
-    dockedActionPanelTriggerUIConf.content[6].value = dockedActionPanelTrigger.margin;
+    dockedActionPanelTriggerUIConf.content.iconSize.value = dockedActionPanelTrigger.iconSize;
+    dockedActionPanelTriggerUIConf.content.iconColor.value = dockedActionPanelTrigger.iconColor;
+    dockedActionPanelTriggerUIConf.content.opacity.value = dockedActionPanelTrigger.opacity;
+    dockedActionPanelTriggerUIConf.content.margin.value = dockedActionPanelTrigger.margin;
     if (!dockedActionPanelTrigger.enabled) {
-        dockedActionPanelTriggerUIConf.content = [dockedActionPanelTriggerUIConf.content[0]];
-        dockedActionPanelTriggerUIConf.saveButton.data = ['enabled'];
+        dockedActionPanelTriggerUIConf.content = [dockedActionPanelTriggerUIConf.content.enabled];
+        if (dockedActionPanelTriggerUIConf.saveButton) {
+            dockedActionPanelTriggerUIConf.saveButton.data = ['enabled'];
+        }
     }
     /**
      * Docked Volume Indicator
      */
     const dockedVolumeIndicator = nowPlayingScreen.dockedVolumeIndicator;
-    dockedVolumeIndicatorUIConf.content[0].value = dockedVolumeIndicator.enabled;
-    dockedVolumeIndicatorUIConf.content[1].value = {
-        value: dockedVolumeIndicator.placement
+    dockedVolumeIndicatorUIConf.content.enabled.value = dockedVolumeIndicator.enabled;
+    dockedVolumeIndicatorUIConf.content.placement.value = {
+        value: dockedVolumeIndicator.placement,
+        label: ''
     };
     switch (dockedVolumeIndicator.placement) {
         case 'top-left':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
             break;
         case 'top':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'top-right':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
             break;
         case 'left':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'right':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         case 'bottom-left':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
             break;
         case 'bottom':
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         default:
-            dockedVolumeIndicatorUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+            dockedVolumeIndicatorUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
     }
-    dockedVolumeIndicatorUIConf.content[2].value = dockedVolumeIndicator.displayOrder;
-    dockedVolumeIndicatorUIConf.content[3].value = {
+    dockedVolumeIndicatorUIConf.content.displayOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(dockedVolumeIndicator.displayOrder);
+    dockedVolumeIndicatorUIConf.content.fontSettings.value = {
         value: dockedVolumeIndicator.fontSettings,
         label: dockedVolumeIndicator.fontSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedVolumeIndicatorUIConf.content[4].value = dockedVolumeIndicator.fontSize;
-    dockedVolumeIndicatorUIConf.content[5].value = dockedVolumeIndicator.fontColor;
-    dockedVolumeIndicatorUIConf.content[6].value = {
+    dockedVolumeIndicatorUIConf.content.fontSize.value = dockedVolumeIndicator.fontSize;
+    dockedVolumeIndicatorUIConf.content.fontColor.value = dockedVolumeIndicator.fontColor;
+    dockedVolumeIndicatorUIConf.content.iconSettings.value = {
         value: dockedVolumeIndicator.iconSettings,
         label: dockedVolumeIndicator.iconSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedVolumeIndicatorUIConf.content[7].value = dockedVolumeIndicator.iconSize;
-    dockedVolumeIndicatorUIConf.content[8].value = dockedVolumeIndicator.iconColor;
-    dockedVolumeIndicatorUIConf.content[9].value = dockedVolumeIndicator.margin;
-    dockedVolumeIndicatorUIConf.content[10].value = dockedVolumeIndicator.showVolumeBarOnClick;
-    dockedVolumeIndicatorUIConf.content[11].value = {
-        value: dockedVolumeIndicator.volumeBarPosition
+    dockedVolumeIndicatorUIConf.content.iconSize.value = dockedVolumeIndicator.iconSize;
+    dockedVolumeIndicatorUIConf.content.iconColor.value = dockedVolumeIndicator.iconColor;
+    dockedVolumeIndicatorUIConf.content.margin.value = dockedVolumeIndicator.margin;
+    dockedVolumeIndicatorUIConf.content.showVolumeBarOnClick.value = dockedVolumeIndicator.showVolumeBarOnClick;
+    dockedVolumeIndicatorUIConf.content.volumeBarPosition.value = {
+        value: dockedVolumeIndicator.volumeBarPosition,
+        label: ''
     };
     switch (dockedVolumeIndicator.volumeBarPosition) {
         case 'anchored':
-            dockedVolumeIndicatorUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOL_BAR_ANCHORED');
+            dockedVolumeIndicatorUIConf.content.volumeBarPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOL_BAR_ANCHORED');
             break;
         default:
-            dockedVolumeIndicatorUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOL_BAR_CENTER');
+            dockedVolumeIndicatorUIConf.content.volumeBarPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOL_BAR_CENTER');
     }
-    dockedVolumeIndicatorUIConf.content[12].value = {
-        value: dockedVolumeIndicator.volumeBarOrientation
+    dockedVolumeIndicatorUIConf.content.volumeBarOrientation.value = {
+        value: dockedVolumeIndicator.volumeBarOrientation,
+        label: ''
     };
     switch (dockedVolumeIndicator.volumeBarOrientation) {
         case 'vertical':
-            dockedVolumeIndicatorUIConf.content[12].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VERTICAL');
+            dockedVolumeIndicatorUIConf.content.volumeBarOrientation.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VERTICAL');
             break;
         default:
-            dockedVolumeIndicatorUIConf.content[12].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_HORIZONTAL');
+            dockedVolumeIndicatorUIConf.content.volumeBarOrientation.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_HORIZONTAL');
     }
     if (!dockedVolumeIndicator.enabled) {
-        dockedVolumeIndicatorUIConf.content = [dockedVolumeIndicatorUIConf.content[0]];
-        dockedVolumeIndicatorUIConf.saveButton.data = ['enabled'];
+        dockedVolumeIndicatorUIConf.content = [dockedVolumeIndicatorUIConf.content.enabled];
+        if (dockedVolumeIndicatorUIConf.saveButton) {
+            dockedVolumeIndicatorUIConf.saveButton.data = ['enabled'];
+        }
     }
     /**
      * Docked Clock
      */
     const dockedClock = nowPlayingScreen.dockedClock;
-    dockedClockUIConf.content[0].value = dockedClock.enabled;
-    dockedClockUIConf.content[1].value = {
-        value: dockedClock.placement
+    dockedClockUIConf.content.enabled.value = dockedClock.enabled;
+    dockedClockUIConf.content.placement.value = {
+        value: dockedClock.placement,
+        label: ''
     };
     switch (dockedClock.placement) {
         case 'top-left':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
             break;
         case 'top':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'top-right':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
             break;
         case 'left':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'right':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         case 'bottom-left':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
             break;
         case 'bottom':
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         default:
-            dockedClockUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+            dockedClockUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
     }
-    dockedClockUIConf.content[2].value = dockedClock.displayOrder;
-    dockedClockUIConf.content[3].value = {
-        value: dockedClock.showInfo
+    dockedClockUIConf.content.displayOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(dockedClock.displayOrder);
+    dockedClockUIConf.content.showInfo.value = {
+        value: dockedClock.showInfo,
+        label: ''
     };
     switch (dockedClock.showInfo) {
         case 'time':
-            dockedClockUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_TIME_ONLY');
+            dockedClockUIConf.content.showInfo.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_TIME_ONLY');
             break;
         case 'date':
-            dockedClockUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DATE_ONLY');
+            dockedClockUIConf.content.showInfo.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DATE_ONLY');
             break;
         default:
-            dockedClockUIConf.content[3].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DATE_TIME');
+            dockedClockUIConf.content.showInfo.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DATE_TIME');
     }
-    dockedClockUIConf.content[4].value = {
+    dockedClockUIConf.content.fontSettings.value = {
         value: dockedClock.fontSettings,
         label: dockedClock.fontSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedClockUIConf.content[5].value = dockedClock.fontSize;
-    dockedClockUIConf.content[6].value = dockedClock.dateColor;
-    dockedClockUIConf.content[7].value = dockedClock.timeColor;
-    dockedClockUIConf.content[8].value = {
+    dockedClockUIConf.content.fontSize.value = dockedClock.fontSize;
+    dockedClockUIConf.content.dateColor.value = dockedClock.dateColor;
+    dockedClockUIConf.content.timeColor.value = dockedClock.timeColor;
+    dockedClockUIConf.content.dateFormat.value = {
         value: dockedClock.dateFormat,
         label: dockedClock.dateFormat == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedClockUIConf.content[9].value = {
-        value: dockedClock.yearFormat
+    dockedClockUIConf.content.yearFormat.value = {
+        value: dockedClock.yearFormat,
+        label: ''
     };
     switch (dockedClock.yearFormat) {
         case 'numeric':
-            dockedClockUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_YEAR');
+            dockedClockUIConf.content.yearFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_YEAR');
             break;
         case '2-digit':
-            dockedClockUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_YEAR');
+            dockedClockUIConf.content.yearFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_YEAR');
             break;
         default:
-            dockedClockUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
+            dockedClockUIConf.content.yearFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
     }
-    dockedClockUIConf.content[10].value = {
-        value: dockedClock.monthFormat
+    dockedClockUIConf.content.monthFormat.value = {
+        value: dockedClock.monthFormat,
+        label: ''
     };
     switch (dockedClock.monthFormat) {
         case 'numeric':
-            dockedClockUIConf.content[10].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_MONTH');
+            dockedClockUIConf.content.monthFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_MONTH');
             break;
         case '2-digit':
-            dockedClockUIConf.content[10].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_MONTH');
+            dockedClockUIConf.content.monthFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_MONTH');
             break;
         case 'long':
-            dockedClockUIConf.content[10].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_LONG_MONTH');
+            dockedClockUIConf.content.monthFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_LONG_MONTH');
             break;
         default:
-            dockedClockUIConf.content[10].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SHORT_MONTH');
+            dockedClockUIConf.content.monthFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SHORT_MONTH');
     }
-    dockedClockUIConf.content[11].value = {
-        value: dockedClock.dayFormat
+    dockedClockUIConf.content.dayFormat.value = {
+        value: dockedClock.dayFormat,
+        label: ''
     };
     switch (dockedClock.dayFormat) {
         case '2-digit':
-            dockedClockUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_DAY');
+            dockedClockUIConf.content.dayFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_DAY');
             break;
         default:
-            dockedClockUIConf.content[11].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_DAY');
+            dockedClockUIConf.content.dayFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_DAY');
     }
-    dockedClockUIConf.content[12].value = {
-        value: dockedClock.dayOfWeekFormat
+    dockedClockUIConf.content.dayOfWeekFormat.value = {
+        value: dockedClock.dayOfWeekFormat,
+        label: ''
     };
     switch (dockedClock.dayOfWeekFormat) {
         case 'long':
-            dockedClockUIConf.content[12].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
+            dockedClockUIConf.content.dayOfWeekFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_LONG_DAY_OF_WEEK');
             break;
         case 'short':
-            dockedClockUIConf.content[12].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
+            dockedClockUIConf.content.dayOfWeekFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_SHORT_DAY_OF_WEEK');
             break;
         default:
-            dockedClockUIConf.content[12].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
+            dockedClockUIConf.content.dayOfWeekFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
     }
-    dockedClockUIConf.content[13].value = {
+    dockedClockUIConf.content.timeFormat.value = {
         value: dockedClock.timeFormat,
         label: dockedClock.timeFormat == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedClockUIConf.content[14].value = {
-        value: dockedClock.hourFormat
+    dockedClockUIConf.content.hourFormat.value = {
+        value: dockedClock.hourFormat,
+        label: ''
     };
     switch (dockedClock.hourFormat) {
         case '2-digit':
-            dockedClockUIConf.content[14].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_HOUR');
+            dockedClockUIConf.content.hourFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_2DIGIT_HOUR');
             break;
         default:
-            dockedClockUIConf.content[14].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_HOUR');
+            dockedClockUIConf.content.hourFormat.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NUMERIC_HOUR');
     }
-    dockedClockUIConf.content[15].value = dockedClock.hour24;
-    dockedClockUIConf.content[16].value = dockedClock.showSeconds;
-    dockedClockUIConf.content[17].value = dockedClock.margin;
+    dockedClockUIConf.content.hour24.value = dockedClock.hour24;
+    dockedClockUIConf.content.showSeconds.value = dockedClock.showSeconds;
+    dockedClockUIConf.content.margin.value = dockedClock.margin;
     if (!dockedClock.enabled) {
-        dockedClockUIConf.content = [dockedClockUIConf.content[0]];
-        dockedClockUIConf.saveButton.data = ['enabled'];
+        dockedClockUIConf.content = [dockedClockUIConf.content.enabled];
+        if (dockedClockUIConf.saveButton) {
+            dockedClockUIConf.saveButton.data = ['enabled'];
+        }
     }
     /**
      * Docked Weather
      */
     const dockedWeather = nowPlayingScreen.dockedWeather;
-    dockedWeatherUIConf.content[0].value = dockedWeather.enabled;
-    dockedWeatherUIConf.content[1].value = {
-        value: dockedWeather.placement
+    dockedWeatherUIConf.content.enabled.value = dockedWeather.enabled;
+    dockedWeatherUIConf.content.placement.value = {
+        value: dockedWeather.placement,
+        label: ''
     };
     switch (dockedWeather.placement) {
         case 'top-left':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
             break;
         case 'top':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'top-right':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
             break;
         case 'left':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'right':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         case 'bottom-left':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
             break;
         case 'bottom':
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         default:
-            dockedWeatherUIConf.content[1].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+            dockedWeatherUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
     }
-    dockedWeatherUIConf.content[2].value = dockedWeather.displayOrder;
-    dockedWeatherUIConf.content[3].value = dockedWeather.showHumidity;
-    dockedWeatherUIConf.content[4].value = dockedWeather.showWindSpeed;
-    dockedWeatherUIConf.content[5].value = {
+    dockedWeatherUIConf.content.displayOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(dockedWeather.displayOrder);
+    dockedWeatherUIConf.content.showHumidity.value = dockedWeather.showHumidity;
+    dockedWeatherUIConf.content.showWindSpeed.value = dockedWeather.showWindSpeed;
+    dockedWeatherUIConf.content.fontSettings.value = {
         value: dockedWeather.fontSettings,
         label: dockedWeather.fontSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedWeatherUIConf.content[6].value = dockedWeather.fontSize;
-    dockedWeatherUIConf.content[7].value = dockedWeather.fontColor;
-    dockedWeatherUIConf.content[8].value = {
+    dockedWeatherUIConf.content.fontSize.value = dockedWeather.fontSize;
+    dockedWeatherUIConf.content.fontColor.value = dockedWeather.fontColor;
+    dockedWeatherUIConf.content.iconSettings.value = {
         value: dockedWeather.iconSettings,
         label: dockedWeather.iconSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    dockedWeatherUIConf.content[9].value = {
-        value: dockedWeather.iconStyle
+    dockedWeatherUIConf.content.iconStyle.value = {
+        value: dockedWeather.iconStyle,
+        label: ''
     };
     switch (dockedWeather.iconStyle) {
         case 'outline':
-            dockedWeatherUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_OUTLINE');
+            dockedWeatherUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_OUTLINE');
             break;
         case 'mono':
-            dockedWeatherUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_MONOCHROME');
+            dockedWeatherUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_MONOCHROME');
             break;
         default:
-            dockedWeatherUIConf.content[9].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FILLED');
+            dockedWeatherUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FILLED');
     }
-    dockedWeatherUIConf.content[10].value = dockedWeather.iconSize;
-    dockedWeatherUIConf.content[11].value = dockedWeather.iconMonoColor;
-    dockedWeatherUIConf.content[12].value = dockedWeather.iconAnimate;
-    dockedWeatherUIConf.content[13].value = dockedWeather.margin;
+    dockedWeatherUIConf.content.iconSize.value = dockedWeather.iconSize;
+    dockedWeatherUIConf.content.iconMonoColor.value = dockedWeather.iconMonoColor;
+    dockedWeatherUIConf.content.iconAnimate.value = dockedWeather.iconAnimate;
+    dockedWeatherUIConf.content.margin.value = dockedWeather.margin;
     if (!dockedWeather.enabled) {
-        dockedWeatherUIConf.content = [dockedWeatherUIConf.content[0]];
-        dockedWeatherUIConf.saveButton.data = ['enabled'];
+        dockedWeatherUIConf.content = [dockedWeatherUIConf.content.enabled];
+        if (dockedWeatherUIConf.saveButton) {
+            dockedWeatherUIConf.saveButton.data = ['enabled'];
+        }
     }
     /**
      * Idle Screen conf
      */
     const idleScreen = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.IdleScreen);
     let idleScreenVolumioImage = idleScreen.volumioBackgroundImage;
-    idleScreenUIConf.content[0].value = {
-        value: idleScreen.enabled
+    idleScreenUIConf.content.enabled.value = {
+        value: idleScreen.enabled,
+        label: ''
     };
     switch (idleScreen.enabled) {
         case 'all':
-            idleScreenUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ALL_CLIENTS');
+            idleScreenUIConf.content.enabled.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ALL_CLIENTS');
             break;
         case 'disabled':
-            idleScreenUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DISABLED');
+            idleScreenUIConf.content.enabled.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DISABLED');
             break;
         default:
-            idleScreenUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_KIOSK_ONLY');
+            idleScreenUIConf.content.enabled.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_KIOSK_ONLY');
             break;
     }
-    idleScreenUIConf.content[1].value = idleScreen.waitTime;
-    idleScreenUIConf.content[2].value = idleScreen.showLocation;
-    idleScreenUIConf.content[3].value = idleScreen.showWeather;
-    idleScreenUIConf.content[4].value = {
-        value: idleScreen.mainAlignment
+    idleScreenUIConf.content.waitTime.value = idleScreen.waitTime;
+    idleScreenUIConf.content.showLocation.value = idleScreen.showLocation;
+    idleScreenUIConf.content.showWeather.value = idleScreen.showWeather;
+    idleScreenUIConf.content.mainAlignment.value = {
+        value: idleScreen.mainAlignment,
+        label: ''
     };
     switch (idleScreen.mainAlignment) {
         case 'center':
-            idleScreenUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            idleScreenUIConf.content.mainAlignment.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
             break;
         case 'flex-end':
-            idleScreenUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            idleScreenUIConf.content.mainAlignment.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         case 'cycle':
-            idleScreenUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CYCLE');
+            idleScreenUIConf.content.mainAlignment.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CYCLE');
             break;
         default: // 'flex-start'
-            idleScreenUIConf.content[4].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            idleScreenUIConf.content.mainAlignment.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
     }
-    idleScreenUIConf.content[5].value = idleScreen.mainAlignmentCycleInterval;
-    idleScreenUIConf.content[6].value = {
+    idleScreenUIConf.content.mainAlignmentCycleInterval.value = UIConfigHelper_1.default.sanitizeNumberInput(idleScreen.mainAlignmentCycleInterval.toString());
+    idleScreenUIConf.content.timeFormat.value = {
         value: idleScreen.timeFormat,
         label: idleScreen.timeFormat == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    idleScreenUIConf.content[7].value = idleScreen.hour24;
-    idleScreenUIConf.content[8].value = idleScreen.showSeconds;
-    idleScreenUIConf.content[9].value = {
+    idleScreenUIConf.content.hour24.value = idleScreen.hour24;
+    idleScreenUIConf.content.showSeconds.value = idleScreen.showSeconds;
+    idleScreenUIConf.content.fontSizes.value = {
         value: idleScreen.fontSizes,
         label: idleScreen.fontSizes == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    idleScreenUIConf.content[10].value = idleScreen.timeFontSize;
-    idleScreenUIConf.content[11].value = idleScreen.dateFontSize;
-    idleScreenUIConf.content[12].value = idleScreen.locationFontSize;
-    idleScreenUIConf.content[13].value = idleScreen.weatherCurrentBaseFontSize;
-    idleScreenUIConf.content[14].value = idleScreen.weatherForecastBaseFontSize;
-    idleScreenUIConf.content[15].value = {
+    idleScreenUIConf.content.timeFontSize.value = idleScreen.timeFontSize;
+    idleScreenUIConf.content.dateFontSize.value = idleScreen.dateFontSize;
+    idleScreenUIConf.content.locationFontSize.value = idleScreen.locationFontSize;
+    idleScreenUIConf.content.weatherCurrentBaseFontSize.value = idleScreen.weatherCurrentBaseFontSize;
+    idleScreenUIConf.content.weatherForecastBaseFontSize.value = idleScreen.weatherForecastBaseFontSize;
+    idleScreenUIConf.content.fontColors.value = {
         value: idleScreen.fontColors,
         label: idleScreen.fontColors == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    idleScreenUIConf.content[16].value = idleScreen.timeColor;
-    idleScreenUIConf.content[17].value = idleScreen.dateColor;
-    idleScreenUIConf.content[18].value = idleScreen.locationColor;
-    idleScreenUIConf.content[19].value = idleScreen.weatherCurrentColor;
-    idleScreenUIConf.content[20].value = idleScreen.weatherForecastColor;
-    idleScreenUIConf.content[21].value = {
+    idleScreenUIConf.content.timeColor.value = idleScreen.timeColor;
+    idleScreenUIConf.content.dateColor.value = idleScreen.dateColor;
+    idleScreenUIConf.content.locationColor.value = idleScreen.locationColor;
+    idleScreenUIConf.content.weatherCurrentColor.value = idleScreen.weatherCurrentColor;
+    idleScreenUIConf.content.weatherForecastColor.value = idleScreen.weatherForecastColor;
+    idleScreenUIConf.content.weatherIconSettings.value = {
         value: idleScreen.weatherIconSettings,
         label: idleScreen.weatherIconSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    idleScreenUIConf.content[22].value = {
-        value: idleScreen.weatherIconStyle
+    idleScreenUIConf.content.weatherIconStyle.value = {
+        value: idleScreen.weatherIconStyle,
+        label: ''
     };
     switch (idleScreen.weatherIconStyle) {
         case 'outline':
-            idleScreenUIConf.content[22].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_OUTLINE');
+            idleScreenUIConf.content.weatherIconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_OUTLINE');
             break;
         case 'mono':
-            idleScreenUIConf.content[22].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_MONOCHROME');
+            idleScreenUIConf.content.weatherIconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_MONOCHROME');
             break;
         default:
-            idleScreenUIConf.content[22].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FILLED');
+            idleScreenUIConf.content.weatherIconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FILLED');
             break;
     }
-    idleScreenUIConf.content[23].value = idleScreen.weatherCurrentIconSize;
-    idleScreenUIConf.content[24].value = idleScreen.weatherForecastIconSize;
-    idleScreenUIConf.content[25].value = idleScreen.weatherCurrentIconMonoColor;
-    idleScreenUIConf.content[26].value = idleScreen.weatherForecastIconMonoColor;
-    idleScreenUIConf.content[27].value = idleScreen.weatherCurrentIconAnimate;
-    idleScreenUIConf.content[28].value = {
-        value: idleScreen.backgroundType
+    idleScreenUIConf.content.weatherCurrentIconSize.value = idleScreen.weatherCurrentIconSize;
+    idleScreenUIConf.content.weatherForecastIconSize.value = idleScreen.weatherForecastIconSize;
+    idleScreenUIConf.content.weatherCurrentIconMonoColor.value = idleScreen.weatherCurrentIconMonoColor;
+    idleScreenUIConf.content.weatherForecastIconMonoColor.value = idleScreen.weatherForecastIconMonoColor;
+    idleScreenUIConf.content.weatherCurrentIconAnimate.value = idleScreen.weatherCurrentIconAnimate;
+    idleScreenUIConf.content.backgroundType.value = {
+        value: idleScreen.backgroundType,
+        label: ''
     };
     switch (idleScreen.backgroundType) {
         case 'color':
-            idleScreenUIConf.content[28].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_COLOR');
+            idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_COLOR');
             break;
         case 'volumioBackground':
-            idleScreenUIConf.content[28].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
+            idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
             break;
         default:
-            idleScreenUIConf.content[28].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNSPLASH');
+            idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNSPLASH');
     }
-    idleScreenUIConf.content[29].value = idleScreen.backgroundColor;
+    idleScreenUIConf.content.backgroundColor.value = idleScreen.backgroundColor;
     if (idleScreenVolumioImage !== '' && !volumioBackgrounds.includes(idleScreenVolumioImage)) {
         idleScreenVolumioImage = ''; // Image no longer exists
     }
-    idleScreenUIConf.content[30].value = {
+    idleScreenUIConf.content.volumioBackgroundImage.value = {
         value: idleScreenVolumioImage,
         label: idleScreenVolumioImage
     };
-    idleScreenUIConf.content[30].options = [];
+    idleScreenUIConf.content.volumioBackgroundImage.options = [];
     volumioBackgrounds.forEach((bg) => {
-        idleScreenUIConf.content[30].options.push({
+        idleScreenUIConf.content.volumioBackgroundImage.options.push({
             value: bg,
             label: bg
         });
     });
-    idleScreenUIConf.content[31].value = {
-        value: idleScreen.volumioBackgroundFit
+    idleScreenUIConf.content.volumioBackgroundFit.value = {
+        value: idleScreen.volumioBackgroundFit,
+        label: ''
     };
     switch (idleScreen.volumioBackgroundFit) {
         case 'contain':
-            idleScreenUIConf.content[31].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
+            idleScreenUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
             break;
         case 'fill':
-            idleScreenUIConf.content[31].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
+            idleScreenUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
             break;
         default:
-            idleScreenUIConf.content[31].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
+            idleScreenUIConf.content.volumioBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
     }
-    idleScreenUIConf.content[32].value = {
-        value: idleScreen.volumioBackgroundPosition
+    idleScreenUIConf.content.volumioBackgroundPosition.value = {
+        value: idleScreen.volumioBackgroundPosition,
+        label: ''
     };
     switch (idleScreen.volumioBackgroundPosition) {
         case 'top':
-            idleScreenUIConf.content[32].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            idleScreenUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
             break;
         case 'left':
-            idleScreenUIConf.content[32].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            idleScreenUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
             break;
         case 'bottom':
-            idleScreenUIConf.content[32].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            idleScreenUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
             break;
         case 'right':
-            idleScreenUIConf.content[32].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            idleScreenUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
             break;
         default:
-            idleScreenUIConf.content[32].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+            idleScreenUIConf.content.volumioBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
     }
-    idleScreenUIConf.content[33].value = idleScreen.volumioBackgroundBlur;
-    idleScreenUIConf.content[34].value = idleScreen.volumioBackgroundScale;
-    idleScreenUIConf.content[35].value = idleScreen.unsplashKeywords;
-    idleScreenUIConf.content[36].value = idleScreen.unsplashKeywordsAppendDayPeriod;
-    idleScreenUIConf.content[37].value = idleScreen.unsplashMatchScreenSize;
-    idleScreenUIConf.content[38].value = idleScreen.unsplashRefreshInterval;
-    idleScreenUIConf.content[39].value = idleScreen.unsplashBackgroundBlur;
-    idleScreenUIConf.content[40].value = {
-        value: idleScreen.backgroundOverlay
+    idleScreenUIConf.content.volumioBackgroundBlur.value = idleScreen.volumioBackgroundBlur;
+    idleScreenUIConf.content.volumioBackgroundScale.value = idleScreen.volumioBackgroundScale;
+    idleScreenUIConf.content.unsplashKeywords.value = idleScreen.unsplashKeywords;
+    idleScreenUIConf.content.unsplashKeywordsAppendDayPeriod.value = idleScreen.unsplashKeywordsAppendDayPeriod;
+    idleScreenUIConf.content.unsplashMatchScreenSize.value = idleScreen.unsplashMatchScreenSize;
+    idleScreenUIConf.content.unsplashRefreshInterval.value = idleScreen.unsplashRefreshInterval;
+    idleScreenUIConf.content.unsplashBackgroundBlur.value = idleScreen.unsplashBackgroundBlur;
+    idleScreenUIConf.content.backgroundOverlay.value = {
+        value: idleScreen.backgroundOverlay,
+        label: ''
     };
     switch (idleScreen.backgroundOverlay) {
         case 'customColor':
-            idleScreenUIConf.content[40].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+            idleScreenUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
             break;
         case 'customGradient':
-            idleScreenUIConf.content[40].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+            idleScreenUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
             break;
         case 'none':
-            idleScreenUIConf.content[40].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
+            idleScreenUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
             break;
         default:
-            idleScreenUIConf.content[40].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
+            idleScreenUIConf.content.backgroundOverlay.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
     }
-    idleScreenUIConf.content[41].value = idleScreen.backgroundOverlayColor;
-    idleScreenUIConf.content[42].value = idleScreen.backgroundOverlayColorOpacity;
-    idleScreenUIConf.content[43].value = idleScreen.backgroundOverlayGradient;
-    idleScreenUIConf.content[44].value = idleScreen.backgroundOverlayGradientOpacity;
-    idleScreenUIConf.content[45].value = {
-        value: idleScreen.weatherBackground
+    idleScreenUIConf.content.backgroundOverlayColor.value = idleScreen.backgroundOverlayColor;
+    idleScreenUIConf.content.backgroundOverlayColorOpacity.value = idleScreen.backgroundOverlayColorOpacity;
+    idleScreenUIConf.content.backgroundOverlayGradient.value = idleScreen.backgroundOverlayGradient;
+    idleScreenUIConf.content.backgroundOverlayGradientOpacity.value = idleScreen.backgroundOverlayGradientOpacity;
+    idleScreenUIConf.content.weatherBackground.value = {
+        value: idleScreen.weatherBackground,
+        label: ''
     };
     switch (idleScreen.weatherBackground) {
         case 'customColor':
-            idleScreenUIConf.content[45].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
+            idleScreenUIConf.content.weatherBackground.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_COLOR');
             break;
         case 'customGradient':
-            idleScreenUIConf.content[45].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
+            idleScreenUIConf.content.weatherBackground.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM_GRADIENT');
             break;
         case 'none':
-            idleScreenUIConf.content[45].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
+            idleScreenUIConf.content.weatherBackground.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NONE');
             break;
         default:
-            idleScreenUIConf.content[45].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
+            idleScreenUIConf.content.weatherBackground.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
     }
-    idleScreenUIConf.content[46].value = idleScreen.weatherBackgroundColor;
-    idleScreenUIConf.content[47].value = idleScreen.weatherBackgroundColorOpacity;
-    idleScreenUIConf.content[48].value = idleScreen.weatherBackgroundGradient;
-    idleScreenUIConf.content[49].value = idleScreen.weatherBackgroundGradientOpacity;
+    idleScreenUIConf.content.weatherBackgroundColor.value = idleScreen.weatherBackgroundColor;
+    idleScreenUIConf.content.weatherBackgroundColorOpacity.value = idleScreen.weatherBackgroundColorOpacity;
+    idleScreenUIConf.content.weatherBackgroundGradient.value = idleScreen.weatherBackgroundGradient;
+    idleScreenUIConf.content.weatherBackgroundGradientOpacity.value = idleScreen.weatherBackgroundGradientOpacity;
     if (idleScreen.enabled === 'disabled') {
-        idleScreenUIConf.content = [idleScreenUIConf.content[0]];
-        idleScreenUIConf.saveButton.data = ['enabled'];
+        idleScreenUIConf.content = [idleScreenUIConf.content.enabled];
+        if (idleScreenUIConf.saveButton) {
+            idleScreenUIConf.saveButton.data = ['enabled'];
+        }
     }
     /**
      * Extra Screens conf
      */
     const theme = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.Theme);
-    extraScreensUIConf.content[0].value = {
-        value: theme
+    extraScreensUIConf.content.theme.value = {
+        value: theme.active,
+        label: ''
     };
     switch (theme.active) {
         case 'glass':
-            extraScreensUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_GLASS');
+            extraScreensUIConf.content.theme.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_GLASS');
             break;
         default:
-            extraScreensUIConf.content[0].value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
+            extraScreensUIConf.content.theme.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT');
     }
     /**
      * Kiosk conf
@@ -1356,16 +1413,16 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     }
     // Performance conf
     const performanceSettings = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.Performance);
-    performanceUIConf.content[0].value = performanceSettings.transitionEffectsKiosk;
-    performanceUIConf.content[1].value = performanceSettings.transitionEffectsOtherDevices;
-    performanceUIConf.content[2].value = {
+    performanceUIConf.content.transitionEffectsKiosk.value = performanceSettings.transitionEffectsKiosk;
+    performanceUIConf.content.transitionEffectsOtherDevices.value = performanceSettings.transitionEffectsOtherDevices;
+    performanceUIConf.content.unmountScreensOnExit.value = {
         value: performanceSettings.unmountScreensOnExit,
         label: performanceSettings.unmountScreensOnExit == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
-    performanceUIConf.content[3].value = performanceSettings.unmountNowPlayingScreenOnExit;
-    performanceUIConf.content[4].value = performanceSettings.unmountBrowseScreenOnExit;
-    performanceUIConf.content[5].value = performanceSettings.unmountQueueScreenOnExit;
-    performanceUIConf.content[6].value = performanceSettings.unmountVolumioScreenOnExit;
+    performanceUIConf.content.unmountNowPlayingScreenOnExit.value = performanceSettings.unmountNowPlayingScreenOnExit;
+    performanceUIConf.content.unmountBrowseScreenOnExit.value = performanceSettings.unmountBrowseScreenOnExit;
+    performanceUIConf.content.unmountQueueScreenOnExit.value = performanceSettings.unmountQueueScreenOnExit;
+    performanceUIConf.content.unmountVolumioScreenOnExit.value = performanceSettings.unmountVolumioScreenOnExit;
     return uiconf;
 }, _ControllerNowPlaying_parseConfigSaveData = function _ControllerNowPlaying_parseConfigSaveData(data) {
     const apply = {};
