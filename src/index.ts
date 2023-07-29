@@ -18,6 +18,7 @@ import metadataAPI from './lib/api/MetadataAPI';
 import weatherAPI from './lib/api/WeatherAPI';
 import { CommonSettingsCategory, LocalizationSettings, NowPlayingScreenSettings, PerformanceSettings, ThemeSettings } from 'now-playing-common';
 import UIConfigHelper from './lib/config/UIConfigHelper';
+import ConfigBackupHelper from './lib/config/ConfigBackupHelper';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type DockedComponentKey<T = keyof NowPlayingScreenSettings> = T extends `docked${infer _X}` ? T : never;
@@ -68,6 +69,7 @@ class ControllerNowPlaying {
     const extraScreensUIConf = uiconf.section_extra_screens;
     const kioskUIConf = uiconf.section_kiosk;
     const performanceUIConf = uiconf.section_performance;
+    const backupConfigUIConf = uiconf.section_backup_config;
 
     /**
      * Daemon conf
@@ -1113,6 +1115,66 @@ class ControllerNowPlaying {
     performanceUIConf.content.unmountQueueScreenOnExit.value = performanceSettings.unmountQueueScreenOnExit;
     performanceUIConf.content.unmountVolumioScreenOnExit.value = performanceSettings.unmountVolumioScreenOnExit;
 
+    // Backup Config conf
+    const backups = await ConfigBackupHelper.getBackupNames();
+    if (backups.length > 0) {
+      const restoreBackupSelect = {
+        id: 'previousBackup',
+        element: 'select',
+        label: np.getI18n('NOW_PLAYING_PREVIOUS_BACKUPS'),
+        value: {
+          value: backups[0],
+          label: backups.length === 1 ? backups[0] : np.getI18n('NOW_PLAYING_LATEST_BACKUP', backups[0])
+        },
+        options: backups.map((bak, i) => ({
+          value: bak,
+          label: backups.length === 1 || i > 0 ? bak : np.getI18n('NOW_PLAYING_LATEST_BACKUP', bak)
+        }))
+      };
+      const restoreButtons = backups.map((bak) => ({
+        id: `restoreButton-${bak}`,
+        element: 'button',
+        label: np.getI18n('NOW_PLAYING_RESTORE_SELECTED'),
+        onClick: {
+          type: 'emit',
+          message: 'callMethod',
+          data: {
+            endpoint: 'user_interface/now_playing',
+            method: 'configRestoreConfigFromBackup',
+            data: {
+              backupName: bak
+            }
+          }
+        },
+        visibleIf: {
+          field: 'previousBackup',
+          value: bak
+        }
+      }));
+      const deleteButtons = backups.map((bak) => ({
+        id: `restoreButton-${bak}`,
+        element: 'button',
+        label: np.getI18n('NOW_PLAYING_DELETE_SELECTED'),
+        onClick: {
+          type: 'emit',
+          message: 'callMethod',
+          data: {
+            endpoint: 'user_interface/now_playing',
+            method: 'configDeleteConfigBackup',
+            data: {
+              backupName: bak
+            }
+          }
+        },
+        visibleIf: {
+          field: 'previousBackup',
+          value: bak
+        }
+      }));
+
+      backupConfigUIConf.content.unshift(restoreBackupSelect, ...restoreButtons, ...deleteButtons);
+    }
+
     return uiconf;
   }
 
@@ -1497,6 +1559,74 @@ class ControllerNowPlaying {
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 
     this.#notifyCommonSettingsUpdated(CommonSettingsCategory.Performance);
+  }
+
+  configBackupConfig(data: any) {
+    const backupName = data.backupName?.trim();
+    if (!backupName) {
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_NO_BACKUP_NAME'));
+      return;
+    }
+    try {
+      ConfigBackupHelper.createBackup(backupName);
+    }
+    catch (error: any) {
+      np.getLogger().error(`[now-playing] Failed to backup config: ${error.message}`);
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_BACKUP_CONFIG', np.getErrorMessage('', error, false)));
+      return;
+    }
+    np.toast('success', np.getI18n('NOW_PLAYING_BACKUP_CREATED'));
+    np.refreshUIConfig();
+  }
+
+  async configRestoreConfigFromBackup(data: any) {
+    const backupName = data.backupName?.trim();
+    if (!backupName) {
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_NO_BACKUP_NAME'));
+      return;
+    }
+
+    try {
+      await ConfigBackupHelper.replacePluginConfigWithBackup(backupName);
+    }
+    catch (error: any) {
+      np.getLogger().error(`[now-playing] Failed to restore config: ${error.message}`);
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_RESTORE_CONFIG', np.getErrorMessage('', error, false)));
+      return;
+    }
+
+    /**
+     * ConfigBackupHelper only replaces the plugin config with backup. We still need
+     * to restart the plugin for changed config to take effect.
+     */
+    const configFilePath = np.getConfigFilePath();
+    await this.#doOnStop();
+    this.#config.loadFile(configFilePath);
+    await this.#doOnStart();
+
+    this.broadcastRefresh();
+    np.toast('success', np.getI18n('NOW_PLAYING_CONFIG_RESTORED', backupName));
+    np.refreshUIConfig();
+  }
+
+  configDeleteConfigBackup(data: any) {
+    const backupName = data.backupName?.trim();
+    if (!backupName) {
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_NO_BACKUP_NAME'));
+      return;
+    }
+
+    try {
+      ConfigBackupHelper.deleteBackup(backupName);
+    }
+    catch (error: any) {
+      np.getLogger().error(`[now-playing] Failed to delete config backup: ${error.message}`);
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_DELETE_BACKUP', np.getErrorMessage('', error, false)));
+      return;
+    }
+
+    np.toast('success', np.getI18n('NOW_PLAYING_BACKUP_DELETED'));
+    np.refreshUIConfig();
   }
 
   clearMetadataCache() {

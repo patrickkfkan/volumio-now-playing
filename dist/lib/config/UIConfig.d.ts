@@ -60,6 +60,7 @@ export interface UIConfigButton<K extends UIConfigSectionKey> extends UIConfigEl
         data: {
             endpoint: string;
             method: string;
+            data?: any;
         };
     } | {
         type: 'openUrl';

@@ -149,6 +149,10 @@ class NowPlayingContext {
     this.#pluginConfig.set(key, schema.json ? JSON.stringify(value) : value);
   }
 
+  getConfigFilePath(): string {
+    return this.#pluginConfig.filePath;
+  }
+
   reset() {
     this.#pluginContext = null;
     this.#pluginConfig = null;

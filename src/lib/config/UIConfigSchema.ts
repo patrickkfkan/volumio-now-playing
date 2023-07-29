@@ -20,6 +20,7 @@ export type UIConfigSectionKey =
               'section_extra_screens' | 
               'section_kiosk' | 
               'section_performance' | 
+              'section_backup_config' | 
               'section_other';
 
 export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
@@ -253,6 +254,9 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'unmountBrowseScreenOnExit' | 
     'unmountQueueScreenOnExit' | 
     'unmountVolumioScreenOnExit' :
+
+  K extends 'section_backup_config' ?
+    'backupName' :
 
   K extends 'section_other' ?
     'broadcastRefresh' | 
@@ -523,6 +527,11 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'unmountBrowseScreenOnExit' ? UIConfigSwitch<K> :
     C extends 'unmountQueueScreenOnExit' ? UIConfigSwitch<K> :
     C extends 'unmountVolumioScreenOnExit' ? UIConfigSwitch<K> :
+    never
+  ) : 
+
+  K extends 'section_backup_config' ? (
+    C extends 'backupName' ? UIConfigInput<K, 'text'> :
     never
   ) : 
 

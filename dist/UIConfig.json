@@ -3392,6 +3392,33 @@
       ]
     },
     {
+      "id": "section_backup_config",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_BACKUP_CONFIG",
+      "icon": "fa-file-o",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configBackupConfig"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_CREATE_BACKUP",
+        "data": [
+          "backupName"
+        ]
+      },
+      "content": [
+        {
+          "id": "backupName",
+          "element": "input",
+          "type": "text",
+          "label": "TRANSLATE.NOW_PLAYING_CREATE_NEW_BACKUP",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CREATE_NEW_BACKUP",
+          "value": ""
+        }
+      ]
+    },
+    {
       "id": "section_other",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_OTHER",
