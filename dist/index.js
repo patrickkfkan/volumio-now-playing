@@ -152,6 +152,11 @@ class ControllerNowPlaying {
         const trackInfoAlbumOrder = data.trackInfoAlbumOrder !== '' ? parseInt(data.trackInfoAlbumOrder, 10) : '';
         const trackInfoMediaInfoOrder = data.trackInfoMediaInfoOrder !== '' ? parseInt(data.trackInfoMediaInfoOrder, 10) : '';
         const apply = {
+            trackInfoVisibility: data.trackInfoVisibility.value,
+            titleVisibility: data.titleVisibility,
+            artistVisibility: data.artistVisibility,
+            albumVisibility: data.albumVisibility,
+            mediaInfoVisibility: data.mediaInfoVisibility,
             fontSizes: data.fontSizes.value,
             titleFontSize: data.titleFontSize,
             artistFontSize: data.artistFontSize,
@@ -505,6 +510,14 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
      * Text Styles conf
      */
     const nowPlayingScreen = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.NowPlayingScreen);
+    textStylesUIConf.content.trackInfoVisibility.value = {
+        value: nowPlayingScreen.trackInfoVisibility,
+        label: nowPlayingScreen.trackInfoVisibility == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    textStylesUIConf.content.titleVisibility.value = nowPlayingScreen.titleVisibility;
+    textStylesUIConf.content.artistVisibility.value = nowPlayingScreen.artistVisibility;
+    textStylesUIConf.content.albumVisibility.value = nowPlayingScreen.albumVisibility;
+    textStylesUIConf.content.mediaInfoVisibility.value = nowPlayingScreen.mediaInfoVisibility;
     textStylesUIConf.content.fontSizes.value = {
         value: nowPlayingScreen.fontSizes,
         label: nowPlayingScreen.fontSizes == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')

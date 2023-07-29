@@ -154,6 +154,15 @@ class ControllerNowPlaying {
      */
     const nowPlayingScreen = CommonSettingsLoader.get(CommonSettingsCategory.NowPlayingScreen);
 
+    textStylesUIConf.content.trackInfoVisibility.value = {
+      value: nowPlayingScreen.trackInfoVisibility,
+      label: nowPlayingScreen.trackInfoVisibility == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    textStylesUIConf.content.titleVisibility.value = nowPlayingScreen.titleVisibility;
+    textStylesUIConf.content.artistVisibility.value = nowPlayingScreen.artistVisibility;
+    textStylesUIConf.content.albumVisibility.value = nowPlayingScreen.albumVisibility;
+    textStylesUIConf.content.mediaInfoVisibility.value = nowPlayingScreen.mediaInfoVisibility;
+
     textStylesUIConf.content.fontSizes.value = {
       value: nowPlayingScreen.fontSizes,
       label: nowPlayingScreen.fontSizes == 'auto' ? np.getI18n('NOW_PLAYING_AUTO') : np.getI18n('NOW_PLAYING_CUSTOM')
@@ -1194,7 +1203,12 @@ class ControllerNowPlaying {
     const trackInfoArtistOrder = data.trackInfoArtistOrder !== '' ? parseInt(data.trackInfoArtistOrder, 10) : '';
     const trackInfoAlbumOrder = data.trackInfoAlbumOrder !== '' ? parseInt(data.trackInfoAlbumOrder, 10) : '';
     const trackInfoMediaInfoOrder = data.trackInfoMediaInfoOrder !== '' ? parseInt(data.trackInfoMediaInfoOrder, 10) : '';
-    const apply = {
+    const apply: {[k in keyof NowPlayingScreenSettings]: any} = {
+      trackInfoVisibility: data.trackInfoVisibility.value,
+      titleVisibility: data.titleVisibility,
+      artistVisibility: data.artistVisibility,
+      albumVisibility: data.albumVisibility,
+      mediaInfoVisibility: data.mediaInfoVisibility,
       fontSizes: data.fontSizes.value,
       titleFontSize: data.titleFontSize,
       artistFontSize: data.artistFontSize,

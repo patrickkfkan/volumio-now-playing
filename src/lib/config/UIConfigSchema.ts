@@ -45,6 +45,11 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'clearWeatherCache' :
 
   K extends 'section_text_styles' ?
+    'trackInfoVisibility' | 
+    'titleVisibility' | 
+    'artistVisibility' | 
+    'albumVisibility' | 
+    'mediaInfoVisibility' | 
     'fontSizes' | 
     'titleFontSize' | 
     'artistFontSize' | 
@@ -286,6 +291,11 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
   ) : 
 
   K extends 'section_text_styles' ? (
+    C extends 'trackInfoVisibility' ? UIConfigSelect<K> :
+    C extends 'titleVisibility' ? UIConfigSwitch<K> :
+    C extends 'artistVisibility' ? UIConfigSwitch<K> :
+    C extends 'albumVisibility' ? UIConfigSwitch<K> :
+    C extends 'mediaInfoVisibility' ? UIConfigSwitch<K> :
     C extends 'fontSizes' ? UIConfigSelect<K> :
     C extends 'titleFontSize' ? UIConfigInput<K, 'text'> :
     C extends 'artistFontSize' ? UIConfigInput<K, 'text'> :

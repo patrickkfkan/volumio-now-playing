@@ -21,6 +21,7 @@
   "NOW_PLAYING_INVALID_PORT": "Port number must be between 1024 and 65353",
   "NOW_PLAYING_RESTARTED": "Daemon restarted",
   "NOW_PLAYING_DAEMON_START_ERR": "Failed to start daemon: {}",
+  "NOW_PLAYING_VISIBILITY": "Visibility",
   "NOW_PLAYING_FONT_SIZES": "Font Sizes",
   "NOW_PLAYING_FONT_COLORS": "Font Colors",
   "NOW_PLAYING_ALIGNMENT_H": "Alignment (Horizontal)",

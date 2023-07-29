@@ -212,6 +212,11 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
+          "trackInfoVisibility",
+          "titleVisibility",
+          "artistVisibility",
+          "albumVisibility",
+          "mediaInfoVisibility",
           "fontSizes",
           "titleFontSize",
           "artistFontSize",
@@ -247,6 +252,65 @@
         ]
       },
       "content": [
+        {
+          "id": "trackInfoVisibility",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_VISIBILITY",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "titleVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_TITLE",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "artistVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ARTIST",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "albumVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ALBUM",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "mediaInfoVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
         {
           "id": "fontSizes",
           "element": "select",
