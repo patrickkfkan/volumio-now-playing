@@ -247,7 +247,9 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'weatherBackgroundColor' | 
     'weatherBackgroundColorOpacity' | 
     'weatherBackgroundGradient' | 
-    'weatherBackgroundGradientOpacity' :
+    'weatherBackgroundGradientOpacity' | 
+    'weatherAreaHeightType' | 
+    'weatherAreaHeight' :
 
   K extends 'section_extra_screens' ?
     'theme' :
@@ -523,6 +525,8 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'weatherBackgroundColorOpacity' ? UIConfigInput<K, 'text'> :
     C extends 'weatherBackgroundGradient' ? UIConfigInput<K, 'text'> :
     C extends 'weatherBackgroundGradientOpacity' ? UIConfigInput<K, 'text'> :
+    C extends 'weatherAreaHeightType' ? UIConfigSelect<K> :
+    C extends 'weatherAreaHeight' ? UIConfigInput<K, 'text'> :
     never
   ) : 
 

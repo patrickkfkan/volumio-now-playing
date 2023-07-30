@@ -1479,6 +1479,11 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     idleScreenUIConf.content.weatherBackgroundColorOpacity.value = idleScreen.weatherBackgroundColorOpacity;
     idleScreenUIConf.content.weatherBackgroundGradient.value = idleScreen.weatherBackgroundGradient;
     idleScreenUIConf.content.weatherBackgroundGradientOpacity.value = idleScreen.weatherBackgroundGradientOpacity;
+    idleScreenUIConf.content.weatherAreaHeightType.value = {
+        value: idleScreen.weatherAreaHeightType,
+        label: idleScreen.weatherAreaHeightType == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    idleScreenUIConf.content.weatherAreaHeight.value = idleScreen.weatherAreaHeight;
     if (idleScreen.enabled === 'disabled') {
         idleScreenUIConf.content = [idleScreenUIConf.content.enabled];
         if (idleScreenUIConf.saveButton) {

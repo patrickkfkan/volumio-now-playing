@@ -2523,7 +2523,9 @@
           "weatherBackgroundColor",
           "weatherBackgroundColorOpacity",
           "weatherBackgroundGradient",
-          "weatherBackgroundGradientOpacity"
+          "weatherBackgroundGradientOpacity",
+          "weatherAreaHeightType",
+          "weatherAreaHeight"
         ]
       },
       "content": [
@@ -3371,6 +3373,37 @@
           "visibleIf": {
             "field": "weatherBackground",
             "value": "customGradient"
+          }
+        },
+        {
+          "id": "weatherAreaHeightType",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_AREA_HEIGHT",
+          "value": {
+            "value": "auto", 
+            "label": "TRANSLATE.NOW_PLAYING_AUTO"
+          },
+          "options": [
+            {
+              "value": "auto",
+              "label": "TRANSLATE.NOW_PLAYING_AUTO"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "weatherAreaHeight",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_HEIGHT",
+          "label": "TRANSLATE.NOW_PLAYING_HEIGHT",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherAreaHeightType",
+            "value": "custom"
           }
         }
       ]
