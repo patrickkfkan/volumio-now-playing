@@ -227,6 +227,12 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'volumioBackgroundPosition' | 
     'volumioBackgroundBlur' | 
     'volumioBackgroundScale' | 
+    'myBackgroundImage' | 
+    'myBackgroundRandomRefreshInterval' | 
+    'myBackgroundFit' | 
+    'myBackgroundPosition' | 
+    'myBackgroundBlur' | 
+    'myBackgroundScale' | 
     'unsplashKeywords' | 
     'unsplashKeywordsAppendDayPeriod' | 
     'unsplashMatchScreenSize' | 
@@ -496,6 +502,12 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'volumioBackgroundPosition' ? UIConfigSelect<K> :
     C extends 'volumioBackgroundBlur' ? UIConfigInput<K, 'text'> :
     C extends 'volumioBackgroundScale' ? UIConfigInput<K, 'text'> :
+    C extends 'myBackgroundImage' ? UIConfigSelect<K> :
+    C extends 'myBackgroundRandomRefreshInterval' ? UIConfigInput<K, 'number'> :
+    C extends 'myBackgroundFit' ? UIConfigSelect<K> :
+    C extends 'myBackgroundPosition' ? UIConfigSelect<K> :
+    C extends 'myBackgroundBlur' ? UIConfigInput<K, 'text'> :
+    C extends 'myBackgroundScale' ? UIConfigInput<K, 'text'> :
     C extends 'unsplashKeywords' ? UIConfigInput<K, 'text'> :
     C extends 'unsplashKeywordsAppendDayPeriod' ? UIConfigSwitch<K> :
     C extends 'unsplashMatchScreenSize' ? UIConfigSwitch<K> :

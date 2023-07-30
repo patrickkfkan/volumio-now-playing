@@ -2503,6 +2503,12 @@
           "volumioBackgroundPosition",
           "volumioBackgroundBlur",
           "volumioBackgroundScale",
+          "myBackgroundImage",
+          "myBackgroundRandomRefreshInterval",
+          "myBackgroundFit",
+          "myBackgroundPosition",
+          "myBackgroundBlur",
+          "myBackgroundScale",
           "unsplashKeywords",
           "unsplashKeywordsAppendDayPeriod",
           "unsplashMatchScreenSize",
@@ -2924,6 +2930,10 @@
             {
               "value": "volumioBackground",
               "label": "TRANSLATE.NOW_PLAYING_VOLUMIO_BACKGROUND"
+            },
+            {
+              "value": "myBackground",
+              "label": "TRANSLATE.NOW_PLAYING_MY_BACKGROUND"
             }
           ]
         },
@@ -3036,6 +3046,123 @@
           "visibleIf": {
             "field": "backgroundType",
             "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "myBackgroundImage",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_IMAGE",
+          "value": {
+            "value": "/RANDOM/", 
+            "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+          },
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          },
+          "options": [
+            {
+              "value": "/RANDOM/", 
+              "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+            }
+          ]
+        },
+        {
+          "id": "myBackgroundRandomRefreshInterval",
+          "element": "input",
+          "type": "number",
+          "label": "TRANSLATE.NOW_PLAYING_MY_BG_RND_REFRESH_INTERVAL",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_MY_BG_RND_REFRESH_INTERVAL",
+          "value": 10,
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundFit",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_FIT",
+          "value": {
+            "value": "cover", 
+            "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+          },
+          "options": [
+            {
+              "value": "cover", 
+              "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+            },
+            {
+              "value": "contain",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_CONTAIN"
+            },
+            {
+              "value": "fill",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_FILL"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundPosition",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_POSITION",
+          "value": {
+            "value": "center", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+          },
+          "options": [
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "top", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "bottom", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundBlur",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BLUR",
+          "label": "TRANSLATE.NOW_PLAYING_BLUR_RADIUS",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundScale",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SCALE",
+          "label": "TRANSLATE.NOW_PLAYING_SCALE",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
           }
         },
         {

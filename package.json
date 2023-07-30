@@ -54,6 +54,7 @@
 		"winston": "^3.8.2"
 	},
 	"dependencies": {
+		"chokidar": "^3.5.3",
 		"cors": "^2.8.5",
 		"countries-and-timezones": "^3.5.1",
 		"ejs": "^3.1.9",
@@ -67,7 +68,7 @@
 		"md5": "^2.3.0",
 		"node-cache": "^5.1.2",
 		"node-fetch": "^2.6.9",
-		"now-playing-common": "github:patrickkfkan/volumio-now-playing-common#next",
+		"now-playing-common": "file:../now-playing-common/tests/now-playing-common-0.1.0.tgz",
 		"semver": "^7.5.4",
 		"string-format": "^2.0.0",
 		"v-conf": "^1.4.3",

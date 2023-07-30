@@ -57,6 +57,7 @@ const WeatherAPI_1 = __importDefault(require("./lib/api/WeatherAPI"));
 const now_playing_common_1 = require("now-playing-common");
 const UIConfigHelper_1 = __importDefault(require("./lib/config/UIConfigHelper"));
 const ConfigBackupHelper_1 = __importDefault(require("./lib/config/ConfigBackupHelper"));
+const MyBackgroundMonitor_1 = __importDefault(require("./lib/utils/MyBackgroundMonitor"));
 class ControllerNowPlaying {
     constructor(context) {
         _ControllerNowPlaying_instances.add(this);
@@ -331,9 +332,21 @@ class ControllerNowPlaying {
         if (apply.waitTime) {
             apply.waitTime = parseInt(apply.waitTime, 10);
         }
+        if (apply.myBackgroundImage === '/RANDOM/') {
+            apply.myBackgroundImageType = 'random';
+            apply.myBackgroundImage = '';
+        }
+        else {
+            apply.myBackgroundImageType = 'fixed';
+        }
+        apply.myBackgroundRandomRefreshInterval = apply.myBackgroundRandomRefreshInterval ? parseInt(apply.myBackgroundRandomRefreshInterval, 10) : 10;
         apply.unsplashRefreshInterval = data.unsplashRefreshInterval ? parseInt(apply.unsplashRefreshInterval, 10) : 10;
         if (apply.waitTime < 10) {
             NowPlayingContext_1.default.toast('error', NowPlayingContext_1.default.getI18n('NOW_PLAYING_ERR_IDLE_SCREEN_WAIT_TIME'));
+            return;
+        }
+        if (apply.myBackgroundImage === '/SEPARATOR/') {
+            NowPlayingContext_1.default.toast('error', NowPlayingContext_1.default.getI18n('NOW_PLAYING_ERR_INVALID_BACKGROUND'));
             return;
         }
         if (apply.unsplashRefreshInterval !== 0 && apply.unsplashRefreshInterval < 10) {
@@ -1200,7 +1213,9 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
      * Idle Screen conf
      */
     const idleScreen = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.IdleScreen);
+    const myBackgrounds = MyBackgroundMonitor_1.default.getImages();
     let idleScreenVolumioImage = idleScreen.volumioBackgroundImage;
+    let idleScreenMyBackgroundImage = idleScreen.myBackgroundImage;
     idleScreenUIConf.content.enabled.value = {
         value: idleScreen.enabled,
         label: ''
@@ -1296,6 +1311,9 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         case 'volumioBackground':
             idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO_BACKGROUND');
             break;
+        case 'myBackground':
+            idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_MY_BACKGROUND');
+            break;
         default:
             idleScreenUIConf.content.backgroundType.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_UNSPLASH');
     }
@@ -1350,6 +1368,70 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     }
     idleScreenUIConf.content.volumioBackgroundBlur.value = idleScreen.volumioBackgroundBlur;
     idleScreenUIConf.content.volumioBackgroundScale.value = idleScreen.volumioBackgroundScale;
+    if (idleScreen.myBackgroundImageType === 'fixed') {
+        if (idleScreenMyBackgroundImage !== '' && !myBackgrounds.find((bg) => bg.name === idleScreenMyBackgroundImage)) {
+            idleScreenMyBackgroundImage = ''; // Image no longer exists
+        }
+        idleScreenUIConf.content.myBackgroundImage.value = {
+            value: idleScreenMyBackgroundImage,
+            label: idleScreenMyBackgroundImage
+        };
+    }
+    else { // Random
+        idleScreenUIConf.content.myBackgroundImage.value = {
+            value: '/RANDOM/',
+            label: NowPlayingContext_1.default.getI18n('NOW_PLAYING_RANDOM')
+        };
+    }
+    if (myBackgrounds.length > 0) {
+        idleScreenUIConf.content.myBackgroundImage.options.push({
+            value: '/SEPARATOR/',
+            label: '-'.repeat(NowPlayingContext_1.default.getI18n('NOW_PLAYING_RANDOM').length)
+        });
+        myBackgrounds.forEach((bg) => {
+            idleScreenUIConf.content.myBackgroundImage.options.push({
+                value: bg.name,
+                label: bg.name
+            });
+        });
+    }
+    idleScreenUIConf.content.myBackgroundRandomRefreshInterval.value = idleScreen.myBackgroundRandomRefreshInterval;
+    idleScreenUIConf.content.myBackgroundFit.value = {
+        value: idleScreen.myBackgroundFit,
+        label: ''
+    };
+    switch (idleScreen.myBackgroundFit) {
+        case 'contain':
+            idleScreenUIConf.content.myBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_CONTAIN');
+            break;
+        case 'fill':
+            idleScreenUIConf.content.myBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_FILL');
+            break;
+        default:
+            idleScreenUIConf.content.myBackgroundFit.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_FIT_COVER');
+    }
+    idleScreenUIConf.content.myBackgroundPosition.value = {
+        value: idleScreen.myBackgroundPosition,
+        label: ''
+    };
+    switch (idleScreen.myBackgroundPosition) {
+        case 'top':
+            idleScreenUIConf.content.myBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            break;
+        case 'left':
+            idleScreenUIConf.content.myBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            break;
+        case 'bottom':
+            idleScreenUIConf.content.myBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            break;
+        case 'right':
+            idleScreenUIConf.content.myBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            break;
+        default:
+            idleScreenUIConf.content.myBackgroundPosition.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_CENTER');
+    }
+    idleScreenUIConf.content.myBackgroundBlur.value = idleScreen.myBackgroundBlur;
+    idleScreenUIConf.content.myBackgroundScale.value = idleScreen.myBackgroundScale;
     idleScreenUIConf.content.unsplashKeywords.value = idleScreen.unsplashKeywords;
     idleScreenUIConf.content.unsplashKeywordsAppendDayPeriod.value = idleScreen.unsplashKeywordsAppendDayPeriod;
     idleScreenUIConf.content.unsplashMatchScreenSize.value = idleScreen.unsplashMatchScreenSize;
@@ -1614,6 +1696,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
             await KioskUtils.modifyVolumioKioskScript(3000, NowPlayingContext_1.default.getConfigValue('port'));
         }
     }
+    MyBackgroundMonitor_1.default.start();
 }, _ControllerNowPlaying_doOnStop = async function _ControllerNowPlaying_doOnStop() {
     __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_stopApp).call(this);
     // Remove language change listener (this is hacky but prevents a potential
@@ -1632,6 +1715,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
             // Do nothing
         }
     }
+    await MyBackgroundMonitor_1.default.stop();
     NowPlayingContext_1.default.reset();
 }, _ControllerNowPlaying_startApp = async function _ControllerNowPlaying_startApp() {
     try {

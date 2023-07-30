@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVolumioBackgrounds = exports.kewToJSPromise = exports.jsPromiseToKew = void 0;
+exports.rnd = exports.getVolumioBackgrounds = exports.kewToJSPromise = exports.jsPromiseToKew = void 0;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const kew_1 = __importDefault(require("kew"));
@@ -71,4 +71,8 @@ function getVolumioBackgrounds() {
     }
 }
 exports.getVolumioBackgrounds = getVolumioBackgrounds;
+function rnd(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+exports.rnd = rnd;
 //# sourceMappingURL=Misc.js.map
