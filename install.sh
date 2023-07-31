@@ -8,7 +8,7 @@ echo "Installing geo-tz node dependency"
 cd /data/plugins/user_interface/now_playing
 # Remove geo-tz from devDependencies
 sed -i '/"geo-tz"/d' package.json
-npm i -P geo-tz@"^7.0.1"
+npm i --production --save geo-tz@"^7.0.1"
 
 echo "Creating user directories (if not exist)"
 mkdir -p "${CONFIG_BAK_DIR}"
