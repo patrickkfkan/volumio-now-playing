@@ -80,6 +80,9 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.5.1
+- Fix install script installing devDependencies
+
 0.5.0
 - Add 'Docked Volume Indicator -> % Symbol Size' setting
 - Add Track Info Visibility settings
