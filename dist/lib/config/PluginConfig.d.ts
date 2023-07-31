@@ -12,7 +12,7 @@ export interface PluginConfigSchema {
     background: PluginConfigSchemaEntry<BackgroundSettings, true>;
     actionPanel: PluginConfigSchemaEntry<ActionPanelSettings, true>;
     ['screen.idle']: PluginConfigSchemaEntry<IdleScreenSettings, true>;
-    theme: PluginConfigSchemaEntry<ThemeSettings>;
+    theme: PluginConfigSchemaEntry<ThemeSettings, true>;
     performance: PluginConfigSchemaEntry<PerformanceSettings, true>;
     localization: PluginConfigSchemaEntry<LocalizationSettings, true>;
     kioskDisplay: PluginConfigSchemaEntry<'default' | 'nowPlaying'>;

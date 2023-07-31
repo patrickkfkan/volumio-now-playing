@@ -102,7 +102,10 @@ class NowPlayingContext {
     hasConfigKey(key) {
         return __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").has(key);
     }
-    getConfigValue(key) {
+    getConfigValue(key, raw = false) {
+        if (raw) {
+            return __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").has(key) ? __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").get(key) : undefined;
+        }
         const schema = PluginConfig_1.PLUGIN_CONFIG_SCHEMA[key];
         if (__classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").has(key)) {
             const val = __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").get(key);
@@ -128,6 +131,9 @@ class NowPlayingContext {
     setConfigValue(key, value) {
         const schema = PluginConfig_1.PLUGIN_CONFIG_SCHEMA[key];
         __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").set(key, schema.json ? JSON.stringify(value) : value);
+    }
+    getConfigFilePath() {
+        return __classPrivateFieldGet(this, _NowPlayingContext_pluginConfig, "f").filePath;
     }
     reset() {
         __classPrivateFieldSet(this, _NowPlayingContext_pluginContext, null, "f");

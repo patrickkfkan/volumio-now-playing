@@ -212,6 +212,11 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
+          "trackInfoVisibility",
+          "titleVisibility",
+          "artistVisibility",
+          "albumVisibility",
+          "mediaInfoVisibility",
           "fontSizes",
           "titleFontSize",
           "artistFontSize",
@@ -247,6 +252,65 @@
         ]
       },
       "content": [
+        {
+          "id": "trackInfoVisibility",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_VISIBILITY",
+          "value": {
+            "value": "default", 
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "titleVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_TITLE",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "artistVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ARTIST",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "albumVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_ALBUM",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "mediaInfoVisibility",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_MEDIA_INFO",
+          "value": true,
+          "visibleIf": {
+            "field": "trackInfoVisibility",
+            "value": "custom"
+          }
+        },
         {
           "id": "fontSizes",
           "element": "select",
@@ -1547,6 +1611,7 @@
           "displayOrder",
           "fontSettings",
           "fontSize",
+          "fontSizePercentSymbol",
           "fontColor",
           "iconSettings",
           "iconSize",
@@ -1641,6 +1706,18 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "fontSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "fontSizePercentSymbol",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_FONT_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE_PERCENT_SYMBOL",
           "value": "",
           "visibleIf": {
             "field": "fontSettings",
@@ -2426,6 +2503,12 @@
           "volumioBackgroundPosition",
           "volumioBackgroundBlur",
           "volumioBackgroundScale",
+          "myBackgroundImage",
+          "myBackgroundRandomRefreshInterval",
+          "myBackgroundFit",
+          "myBackgroundPosition",
+          "myBackgroundBlur",
+          "myBackgroundScale",
           "unsplashKeywords",
           "unsplashKeywordsAppendDayPeriod",
           "unsplashMatchScreenSize",
@@ -2440,7 +2523,9 @@
           "weatherBackgroundColor",
           "weatherBackgroundColorOpacity",
           "weatherBackgroundGradient",
-          "weatherBackgroundGradientOpacity"
+          "weatherBackgroundGradientOpacity",
+          "weatherAreaHeightType",
+          "weatherAreaHeight"
         ]
       },
       "content": [
@@ -2847,6 +2932,10 @@
             {
               "value": "volumioBackground",
               "label": "TRANSLATE.NOW_PLAYING_VOLUMIO_BACKGROUND"
+            },
+            {
+              "value": "myBackground",
+              "label": "TRANSLATE.NOW_PLAYING_MY_BACKGROUND"
             }
           ]
         },
@@ -2959,6 +3048,123 @@
           "visibleIf": {
             "field": "backgroundType",
             "value": "volumioBackground"
+          }
+        },
+        {
+          "id": "myBackgroundImage",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_IMAGE",
+          "value": {
+            "value": "/RANDOM/", 
+            "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+          },
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          },
+          "options": [
+            {
+              "value": "/RANDOM/", 
+              "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+            }
+          ]
+        },
+        {
+          "id": "myBackgroundRandomRefreshInterval",
+          "element": "input",
+          "type": "number",
+          "label": "TRANSLATE.NOW_PLAYING_MY_BG_RND_REFRESH_INTERVAL",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_MY_BG_RND_REFRESH_INTERVAL",
+          "value": 10,
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundFit",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_FIT",
+          "value": {
+            "value": "cover", 
+            "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+          },
+          "options": [
+            {
+              "value": "cover", 
+              "label": "TRANSLATE.NOW_PLAYING_FIT_COVER"
+            },
+            {
+              "value": "contain",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_CONTAIN"
+            },
+            {
+              "value": "fill",
+              "label": "TRANSLATE.NOW_PLAYING_FIT_FILL"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundPosition",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_BACKGROUND_POSITION",
+          "value": {
+            "value": "center", 
+            "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+          },
+          "options": [
+            {
+              "value": "center", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_CENTER"
+            },
+            {
+              "value": "top", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_TOP"
+            },
+            {
+              "value": "left", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_LEFT"
+            },
+            {
+              "value": "bottom", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_BOTTOM"
+            },
+            {
+              "value": "right", 
+              "label": "TRANSLATE.NOW_PLAYING_POSITION_RIGHT"
+            }
+          ],
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundBlur",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_BLUR",
+          "label": "TRANSLATE.NOW_PLAYING_BLUR_RADIUS",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
+          }
+        },
+        {
+          "id": "myBackgroundScale",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SCALE",
+          "label": "TRANSLATE.NOW_PLAYING_SCALE",
+          "value": "",
+          "visibleIf": {
+            "field": "backgroundType",
+            "value": "myBackground"
           }
         },
         {
@@ -3168,6 +3374,37 @@
             "field": "weatherBackground",
             "value": "customGradient"
           }
+        },
+        {
+          "id": "weatherAreaHeightType",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_WEATHER_AREA_HEIGHT",
+          "value": {
+            "value": "auto", 
+            "label": "TRANSLATE.NOW_PLAYING_AUTO"
+          },
+          "options": [
+            {
+              "value": "auto",
+              "label": "TRANSLATE.NOW_PLAYING_AUTO"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "weatherAreaHeight",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_HEIGHT",
+          "label": "TRANSLATE.NOW_PLAYING_HEIGHT",
+          "value": "",
+          "visibleIf": {
+            "field": "weatherAreaHeightType",
+            "value": "custom"
+          }
         }
       ]
     },
@@ -3311,6 +3548,33 @@
             "field": "unmountScreensOnExit",
             "value": "custom"
           }
+        }
+      ]
+    },
+    {
+      "id": "section_backup_config",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_BACKUP_CONFIG",
+      "icon": "fa-file-o",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configBackupConfig"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_CREATE_BACKUP",
+        "data": [
+          "backupName"
+        ]
+      },
+      "content": [
+        {
+          "id": "backupName",
+          "element": "input",
+          "type": "text",
+          "label": "TRANSLATE.NOW_PLAYING_CREATE_NEW_BACKUP",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CREATE_NEW_BACKUP",
+          "value": ""
         }
       ]
     },

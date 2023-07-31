@@ -38,6 +38,9 @@ router.get('/preview', (req, res) => {
 router.get('/volumio', (req, res) => {
     handler.volumio(req, res);
 });
+router.get('/mybg', (req, res) => {
+    handler.myBackground(req.query, res);
+});
 router.post('/api/:apiName/:method', (req, res) => {
     const { apiName, method } = req.params;
     handler.api(apiName, method, req.body, res);

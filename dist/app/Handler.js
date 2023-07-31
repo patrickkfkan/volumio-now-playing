@@ -1,10 +1,34 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.api = exports.preview = exports.volumio = exports.index = void 0;
+exports.api = exports.myBackground = exports.preview = exports.volumio = exports.index = void 0;
 const ejs_1 = __importDefault(require("ejs"));
+const fs_1 = __importDefault(require("fs"));
 const NowPlayingContext_1 = __importDefault(require("../lib/NowPlayingContext"));
 const System_1 = require("../lib/utils/System");
 const MetadataAPI_1 = __importDefault(require("../lib/api/MetadataAPI"));
@@ -13,6 +37,9 @@ const WeatherAPI_1 = __importDefault(require("../lib/api/WeatherAPI"));
 const UnsplashAPI_1 = __importDefault(require("../lib/api/UnsplashAPI"));
 const CommonSettingsLoader_1 = __importDefault(require("../lib/config/CommonSettingsLoader"));
 const now_playing_common_1 = require("now-playing-common");
+const MyBackgroundMonitor_1 = __importDefault(require("../lib/utils/MyBackgroundMonitor"));
+const Misc_1 = require("../lib/utils/Misc");
+const SystemUtils = __importStar(require("../lib/utils/System"));
 const APIs = {
     metadata: MetadataAPI_1.default,
     settings: SettingsAPI_1.default,
@@ -48,6 +75,42 @@ async function preview(req, res) {
     res.send(html);
 }
 exports.preview = preview;
+async function myBackground(params, res) {
+    const images = MyBackgroundMonitor_1.default.getImages();
+    if (images.length === 0) {
+        NowPlayingContext_1.default.getLogger().error('[now-playing] No images found in My Backgrounds');
+        res.send(404);
+        return;
+    }
+    let targetImage;
+    const { file } = params;
+    if (file) {
+        targetImage = images.find((img) => img.name === file);
+        if (!targetImage) {
+            NowPlayingContext_1.default.getLogger().error(`[now-playing] Image '${file}' not found in My Backgrounds`);
+            res.send(404);
+            return;
+        }
+    }
+    else {
+        const rndIndex = (0, Misc_1.rnd)(0, images.length);
+        targetImage = images[rndIndex];
+        NowPlayingContext_1.default.getLogger().info(`[now-playing] Random My Background image: '${targetImage.name}'`);
+    }
+    if (!SystemUtils.fileExists(targetImage.path)) {
+        NowPlayingContext_1.default.getLogger().error(`[now-playing] Path to My Background image '${targetImage.path}' not found`);
+        res.send(404);
+        return;
+    }
+    try {
+        fs_1.default.createReadStream(targetImage.path).pipe(res);
+    }
+    catch (error) {
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Error piping ${targetImage.path} to response`, error, true));
+        res.send(400);
+    }
+}
+exports.myBackground = myBackground;
 async function api(apiName, method, params, res) {
     const api = apiName && method ? APIs[apiName] : null;
     const fn = api && typeof api[method] === 'function' ? api[method] : null;

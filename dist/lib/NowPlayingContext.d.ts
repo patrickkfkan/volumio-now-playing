@@ -24,10 +24,12 @@ declare class NowPlayingContext {
     getLanguageCode(): string;
     getErrorMessage(message: string, error: any, stack?: boolean): string;
     hasConfigKey<T extends PluginConfigKey>(key: T): boolean;
-    getConfigValue<T extends CommonSettingsCategory>(key: T): CommonRawSettingsOf<T>;
-    getConfigValue<T extends PluginConfigKey>(key: T): PluginConfigValue<T>;
+    getConfigValue<T extends PluginConfigKey>(key: T, raw: true): any;
+    getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonRawSettingsOf<T>;
+    getConfigValue<T extends PluginConfigKey>(key: T, raw?: false | undefined): PluginConfigValue<T>;
     deleteConfigValue(key: string): void;
     setConfigValue<T extends PluginConfigKey>(key: T, value: PluginConfigValue<T>): void;
+    getConfigFilePath(): string;
     reset(): void;
     getI18n(key: I18nKey, ...formatValues: any[]): string;
 }

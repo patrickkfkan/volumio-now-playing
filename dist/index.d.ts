@@ -24,6 +24,9 @@ declare class ControllerNowPlaying {
     configSaveIdleScreenSettings(data: Record<string, any>): void;
     configSaveExtraScreenSettings(data: Record<string, any>): void;
     configSavePerformanceSettings(data: Record<string, any>): void;
+    configBackupConfig(data: any): void;
+    configRestoreConfigFromBackup(data: any): Promise<void>;
+    configDeleteConfigBackup(data: any): void;
     clearMetadataCache(): void;
     clearWeatherCache(): void;
     broadcastRefresh(): void;

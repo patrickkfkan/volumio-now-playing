@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPluginInfo = exports.getPluginVersion = exports.readdir = exports.restartSystemdService = exports.isSystemdServiceActive = exports.copyFile = exports.replaceInFile = exports.findInFile = exports.fileExists = void 0;
+exports.getPluginInfo = exports.getPluginVersion = exports.readdir = exports.restartSystemdService = exports.isSystemdServiceActive = exports.copyFile = exports.replaceInFile = exports.findInFile = exports.dirExists = exports.fileExists = void 0;
 const child_process_1 = require("child_process");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -18,6 +18,15 @@ function fileExists(path) {
     }
 }
 exports.fileExists = fileExists;
+function dirExists(path) {
+    try {
+        return fs_1.default.existsSync(path) && fs_1.default.lstatSync(path).isDirectory();
+    }
+    catch (error) {
+        return false;
+    }
+}
+exports.dirExists = dirExists;
 function findInFile(path, str) {
     const contents = fs_1.default.readFileSync(path).toString();
     const regex = new RegExp(`\\b${str}\\b`, 'gm');
@@ -35,9 +44,9 @@ function copyFile(src, dest, opts) {
     const cmdPrefix = asRoot ? 'echo volumio | sudo -S' : '';
     if (createDestDirIfNotExists) {
         const p = path_1.default.parse(dest);
-        (0, child_process_1.execSync)(`${cmdPrefix} mkdir -p ${p.dir}`);
+        (0, child_process_1.execSync)(`${cmdPrefix} mkdir -p "${p.dir}"`);
     }
-    (0, child_process_1.execSync)(`${cmdPrefix} cp ${src} ${dest}`);
+    (0, child_process_1.execSync)(`${cmdPrefix} cp "${src}" "${dest}"`);
 }
 exports.copyFile = copyFile;
 function systemctl(cmd, service) {

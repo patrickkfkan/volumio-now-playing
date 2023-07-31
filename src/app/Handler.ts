@@ -1,5 +1,6 @@
 import ejs from 'ejs';
 import express from 'express';
+import fs from 'fs';
 import np from '../lib/NowPlayingContext';
 import { PluginInfo, getPluginInfo } from '../lib/utils/System';
 import metadataAPI from '../lib/api/MetadataAPI';
@@ -8,6 +9,9 @@ import weatherAPI from '../lib/api/WeatherAPI';
 import unsplashAPI from '../lib/api/UnsplashAPI';
 import CommonSettingsLoader from '../lib/config/CommonSettingsLoader';
 import { CommonSettingsCategory } from 'now-playing-common';
+import myBackgroundMonitor from '../lib/utils/MyBackgroundMonitor';
+import { rnd } from '../lib/utils/Misc';
+import * as SystemUtils from '../lib/utils/System';
 
 interface RenderViewData {
   i18n?: typeof np['getI18n'];
@@ -50,6 +54,43 @@ export async function preview(req: express.Request, res: express.Response) {
     nowPlayingUrl: getNowPlayingURL(req)
   });
   res.send(html);
+}
+
+export async function myBackground(params: Record<string, any>, res: express.Response) {
+  const images = myBackgroundMonitor.getImages();
+  if (images.length === 0) {
+    np.getLogger().error('[now-playing] No images found in My Backgrounds');
+    res.send(404);
+    return;
+  }
+  let targetImage: typeof images[number] | undefined;
+  const { file } = params;
+  if (file) {
+    targetImage = images.find((img) => img.name === file);
+    if (!targetImage) {
+      np.getLogger().error(`[now-playing] Image '${file}' not found in My Backgrounds`);
+      res.send(404);
+      return;
+    }
+  }
+  else {
+    const rndIndex = rnd(0, images.length);
+    targetImage = images[rndIndex];
+    np.getLogger().info(`[now-playing] Random My Background image: '${targetImage.name}'`);
+  }
+  if (!SystemUtils.fileExists(targetImage.path)) {
+    np.getLogger().error(`[now-playing] Path to My Background image '${targetImage.path}' not found`);
+    res.send(404);
+    return;
+  }
+  try {
+    fs.createReadStream(targetImage.path).pipe(res);
+  }
+  catch (error: any) {
+    np.getLogger().error(np.getErrorMessage(`[now-playing] Error piping ${targetImage.path} to response`, error, true));
+    res.send(400);
+
+  }
 }
 
 export async function api(apiName: string, method: string, params: Record<string, any>, res: express.Response) {

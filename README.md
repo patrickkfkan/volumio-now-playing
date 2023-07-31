@@ -80,6 +80,14 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.5.0
+- Add 'Docked Volume Indicator -> % Symbol Size' setting
+- Add Track Info Visibility settings
+- Add 'IdleScreen -> My Background' settings
+- Add 'IdleScreen -> Weather Area Height' setting
+- Add backup / restore settings
+- Update web client v0.5.0
+
 0.4.0
 - Migrate to TypeScript
 - Change settings handling

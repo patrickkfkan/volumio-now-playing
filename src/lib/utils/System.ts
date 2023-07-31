@@ -21,6 +21,15 @@ export function fileExists(path: string) {
   }
 }
 
+export function dirExists(path: string) {
+  try {
+    return fs.existsSync(path) && fs.lstatSync(path).isDirectory();
+  }
+  catch (error) {
+    return false;
+  }
+}
+
 export function findInFile(path: string, str: string) {
   const contents = fs.readFileSync(path).toString();
   const regex = new RegExp(`\\b${str}\\b`, 'gm');
@@ -41,9 +50,9 @@ export function copyFile(src: string, dest: string, opts?: {
   const cmdPrefix = asRoot ? 'echo volumio | sudo -S' : '';
   if (createDestDirIfNotExists) {
     const p = path.parse(dest);
-    execSync(`${cmdPrefix} mkdir -p ${p.dir}`);
+    execSync(`${cmdPrefix} mkdir -p "${p.dir}"`);
   }
-  execSync(`${cmdPrefix} cp ${src} ${dest}`);
+  execSync(`${cmdPrefix} cp "${src}" "${dest}"`);
 }
 
 function systemctl(cmd: string, service: string): Promise<string> {
