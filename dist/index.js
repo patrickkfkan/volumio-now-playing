@@ -371,7 +371,9 @@ class ControllerNowPlaying {
         }
     }
     configSaveExtraScreenSettings(data) {
-        const theme = data.theme.value;
+        const theme = {
+            active: data.theme.value
+        };
         NowPlayingContext_1.default.setConfigValue('theme', theme);
         NowPlayingContext_1.default.toast('success', NowPlayingContext_1.default.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
         __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_notifyCommonSettingsUpdated).call(this, now_playing_common_1.CommonSettingsCategory.Theme);

@@ -15,7 +15,7 @@ export interface PluginConfigSchema {
   background: PluginConfigSchemaEntry<BackgroundSettings, true>;
   actionPanel: PluginConfigSchemaEntry<ActionPanelSettings, true>;
   ['screen.idle']: PluginConfigSchemaEntry<IdleScreenSettings, true>;
-  theme: PluginConfigSchemaEntry<ThemeSettings>;
+  theme: PluginConfigSchemaEntry<ThemeSettings, true>;
   performance: PluginConfigSchemaEntry<PerformanceSettings, true>;
   localization: PluginConfigSchemaEntry<LocalizationSettings, true>;
   // What is being displayed on the kiosk screen (i.e. the one attached to Volumio device)?
@@ -48,7 +48,7 @@ export const PLUGIN_CONFIG_SCHEMA: PluginConfigSchema = {
   background: { defaultValue: DefaultBackgroundSettings, json: true },
   actionPanel: { defaultValue: DefaultActionPanelSettings, json: true },
   'screen.idle': { defaultValue: DefaultIdleScreenSettings, json: true },
-  theme: { defaultValue: DefaultThemeSettings, json: false },
+  theme: { defaultValue: DefaultThemeSettings, json: true },
   performance: { defaultValue: DefaultPerformanceSettings, json: true },
   localization: { defaultValue: DefaultLocalizationSettings, json: true },
   kioskDisplay: { defaultValue: 'default', json: false },

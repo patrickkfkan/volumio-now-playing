@@ -9,7 +9,7 @@ exports.PLUGIN_CONFIG_SCHEMA = {
     background: { defaultValue: now_playing_common_1.DefaultBackgroundSettings, json: true },
     actionPanel: { defaultValue: now_playing_common_1.DefaultActionPanelSettings, json: true },
     'screen.idle': { defaultValue: now_playing_common_1.DefaultIdleScreenSettings, json: true },
-    theme: { defaultValue: now_playing_common_1.DefaultThemeSettings, json: false },
+    theme: { defaultValue: now_playing_common_1.DefaultThemeSettings, json: true },
     performance: { defaultValue: now_playing_common_1.DefaultPerformanceSettings, json: true },
     localization: { defaultValue: now_playing_common_1.DefaultLocalizationSettings, json: true },
     kioskDisplay: { defaultValue: 'default', json: false },

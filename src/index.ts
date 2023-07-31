@@ -1626,7 +1626,9 @@ class ControllerNowPlaying {
   }
 
   configSaveExtraScreenSettings(data: Record<string, any>) {
-    const theme: ThemeSettings = data.theme.value;
+    const theme: ThemeSettings = {
+      active: data.theme.value
+    };
     np.setConfigValue('theme', theme);
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
 

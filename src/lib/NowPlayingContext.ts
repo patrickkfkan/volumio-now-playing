@@ -117,9 +117,13 @@ class NowPlayingContext {
     return this.#pluginConfig.has(key);
   }
 
-  getConfigValue<T extends CommonSettingsCategory>(key: T): CommonRawSettingsOf<T>;
-  getConfigValue<T extends PluginConfigKey>(key: T): PluginConfigValue<T>;
-  getConfigValue<T extends PluginConfigKey>(key: T): PluginConfigValue<T> {
+  getConfigValue<T extends PluginConfigKey>(key: T, raw: true): any;
+  getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonRawSettingsOf<T>;
+  getConfigValue<T extends PluginConfigKey>(key: T, raw?: false | undefined): PluginConfigValue<T>;
+  getConfigValue<T extends PluginConfigKey>(key: T, raw = false): any {
+    if (raw) {
+      return this.#pluginConfig.has(key) ? this.#pluginConfig.get(key) : undefined;
+    }
     const schema = PLUGIN_CONFIG_SCHEMA[key];
     if (this.#pluginConfig.has(key)) {
       const val = this.#pluginConfig.get(key);
