@@ -496,7 +496,6 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     const langCode = __classPrivateFieldGet(this, _ControllerNowPlaying_commandRouter, "f").sharedVars.get('language_code');
     const _uiconf = await (0, Misc_1.kewToJSPromise)(__classPrivateFieldGet(this, _ControllerNowPlaying_commandRouter, "f").i18nJson(`${__dirname}/i18n/strings_${langCode}.json`, `${__dirname}/i18n/strings_en.json`, `${__dirname}/UIConfig.json`));
     const uiconf = UIConfigHelper_1.default.observe(_uiconf);
-    //Const daemonUIConf = uiconf.findSectionById('section_daemon');
     const daemonUIConf = uiconf.section_daemon;
     const localizationUIConf = uiconf.section_localization;
     const metadataServiceUIConf = uiconf.section_metadata_service;

@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.api = exports.myBackground = exports.preview = exports.volumio = exports.index = void 0;
+exports.api = exports.myBackground = exports.preview = exports.index = void 0;
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
 const NowPlayingContext_1 = __importDefault(require("../lib/NowPlayingContext"));
@@ -62,13 +62,6 @@ async function index(req, res) {
     res.send(html);
 }
 exports.index = index;
-async function volumio(req, res) {
-    const html = await renderView('volumio', req, {
-        nowPlayingUrl: getNowPlayingURL(req)
-    });
-    res.send(html);
-}
-exports.volumio = volumio;
 async function preview(req, res) {
     const html = await renderView('preview', req, {
         nowPlayingUrl: getNowPlayingURL(req)

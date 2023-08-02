@@ -43,13 +43,6 @@ export async function index(req: express.Request, res: express.Response) {
   res.send(html);
 }
 
-export async function volumio(req: express.Request, res: express.Response) {
-  const html = await renderView('volumio', req, {
-    nowPlayingUrl: getNowPlayingURL(req)
-  });
-  res.send(html);
-}
-
 export async function preview(req: express.Request, res: express.Response) {
   const html = await renderView('preview', req, {
     nowPlayingUrl: getNowPlayingURL(req)

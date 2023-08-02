@@ -52,7 +52,6 @@ class ControllerNowPlaying {
       `${__dirname}/UIConfig.json`)) ;
     const uiconf = UIConfigHelper.observe(_uiconf);
 
-    //Const daemonUIConf = uiconf.findSectionById('section_daemon');
     const daemonUIConf = uiconf.section_daemon;
     const localizationUIConf = uiconf.section_localization;
     const metadataServiceUIConf = uiconf.section_metadata_service;
