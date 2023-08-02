@@ -145,6 +145,15 @@ class ControllerNowPlaying {
             NowPlayingContext_1.default.refreshUIConfig();
         });
     }
+    configSaveStartupOptions(data) {
+        const apply = __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_parseConfigSaveData).call(this, data);
+        NowPlayingContext_1.default.setConfigValue('startup', apply);
+        NowPlayingContext_1.default.toast('success', NowPlayingContext_1.default.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+        /**
+         * Note here we don't broadcast 'settings updated' message, because
+         * startup options are applied only once during app startup.
+         */
+    }
     configSaveTextStyles(data) {
         const maxTitleLines = data.maxTitleLines !== '' ? parseInt(data.maxTitleLines, 10) : '';
         const maxArtistLines = data.maxArtistLines !== '' ? parseInt(data.maxArtistLines, 10) : '';
@@ -491,6 +500,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     const daemonUIConf = uiconf.section_daemon;
     const localizationUIConf = uiconf.section_localization;
     const metadataServiceUIConf = uiconf.section_metadata_service;
+    const startupOptionsUIConf = uiconf.section_startup_options;
     const textStylesUIConf = uiconf.section_text_styles;
     const widgetStylesUIConf = uiconf.section_widget_styles;
     const albumartStylesUIConf = uiconf.section_album_art_style;
@@ -580,6 +590,25 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         type: 'openUrl',
         url: accessTokenSetupUrl
     };
+    const startupOptions = CommonSettingsLoader_1.default.get(now_playing_common_1.CommonSettingsCategory.Startup);
+    startupOptionsUIConf.content.activeScreen.value = {
+        value: startupOptions.activeScreen,
+        label: ''
+    };
+    switch (startupOptions.activeScreen) {
+        case 'nowPlaying.infoView':
+            startupOptionsUIConf.content.activeScreen.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NP_INFO');
+            break;
+        case 'browse':
+            startupOptionsUIConf.content.activeScreen.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_BROWSE');
+            break;
+        case 'volumio':
+            startupOptionsUIConf.content.activeScreen.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_VOLUMIO');
+            break;
+        default:
+            startupOptionsUIConf.content.activeScreen.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_NP_BASIC');
+    }
+    startupOptionsUIConf.content.activateIdleScreen.value = startupOptions.activateIdleScreen;
     /**
      * Text Styles conf
      */

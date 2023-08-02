@@ -30,6 +30,7 @@ const APIs: Record<string, any> = {
 export async function index(req: express.Request, res: express.Response) {
   const html = await renderView('index', req, {
     settings: {
+      [CommonSettingsCategory.Startup]: CommonSettingsLoader.get(CommonSettingsCategory.Startup),
       [CommonSettingsCategory.NowPlayingScreen]: CommonSettingsLoader.get(CommonSettingsCategory.NowPlayingScreen),
       [CommonSettingsCategory.IdleScreen]: CommonSettingsLoader.get(CommonSettingsCategory.IdleScreen),
       [CommonSettingsCategory.Background]: CommonSettingsLoader.get(CommonSettingsCategory.Background),
