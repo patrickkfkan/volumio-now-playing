@@ -26,9 +26,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.api = exports.myBackground = exports.preview = exports.index = void 0;
+exports.api = exports.proxy = exports.sysAsset = exports.vu = exports.myBackground = exports.preview = exports.index = void 0;
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const NowPlayingContext_1 = __importDefault(require("../lib/NowPlayingContext"));
 const System_1 = require("../lib/utils/System");
 const MetadataAPI_1 = __importDefault(require("../lib/api/MetadataAPI"));
@@ -40,6 +41,28 @@ const now_playing_common_1 = require("now-playing-common");
 const MyBackgroundMonitor_1 = __importDefault(require("../lib/utils/MyBackgroundMonitor"));
 const Misc_1 = require("../lib/utils/Misc");
 const SystemUtils = __importStar(require("../lib/utils/System"));
+const VUMeterConfigParser_1 = __importDefault(require("../lib/utils/VUMeterConfigParser"));
+const VUMeterTemplateMonitor_1 = __importStar(require("../lib/utils/VUMeterTemplateMonitor"));
+const Proxy_1 = require("../lib/utils/Proxy");
+const VU_ASSET_EXT = [
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.gif'
+];
+const SYS_ASSET_PATHS = {
+    font: '/volumio/http/www3/app/themes/volumio3/assets/variants/volumio/fonts',
+    formatIcon: '/volumio/http/www3/app/assets-common/format-icons'
+};
+const SYS_ASSET_EXTS = {
+    font: [
+        '.ttf',
+        '.eot',
+        '.woff',
+        '.woff2'
+    ],
+    formatIcon: ['.svg']
+};
 const APIs = {
     metadata: MetadataAPI_1.default,
     settings: SettingsAPI_1.default,
@@ -87,7 +110,7 @@ async function myBackground(params, res) {
         }
     }
     else {
-        const rndIndex = (0, Misc_1.rnd)(0, images.length);
+        const rndIndex = (0, Misc_1.rnd)(0, images.length - 1);
         targetImage = images[rndIndex];
         NowPlayingContext_1.default.getLogger().info(`[now-playing] Random My Background image: '${targetImage.name}'`);
     }
@@ -105,6 +128,61 @@ async function myBackground(params, res) {
     }
 }
 exports.myBackground = myBackground;
+async function vu(reqType, params, res) {
+    if (reqType === 'put') {
+        NowPlayingContext_1.default.broadcastMessage('nowPlayingVUMeterData', params);
+        return res.send(200);
+    }
+    let { template } = params;
+    if (!template) {
+        const templates = VUMeterTemplateMonitor_1.default.getTemplates();
+        if (templates.length === 0) {
+            return res.send({
+                error: NowPlayingContext_1.default.getI18n('NOW_PLAYING_ERR_NO_VU_METER_TEMPLATE')
+            });
+        }
+        template = templates[(0, Misc_1.rnd)(0, templates.length - 1)].name;
+    }
+    const { file } = params;
+    if (!file) {
+        const config = VUMeterConfigParser_1.default.getConfig(template);
+        return res.json(config);
+    }
+    const assetPath = `${VUMeterTemplateMonitor_1.VU_METER_TEMPLATE_PATH}/${template}/${file}`;
+    if (!SystemUtils.fileExists(assetPath) || !VU_ASSET_EXT.includes(path_1.default.parse(assetPath).ext)) {
+        return res.send(404);
+    }
+    try {
+        fs_1.default.createReadStream(assetPath).pipe(res);
+    }
+    catch (error) {
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Error piping ${assetPath} to response`, error, true));
+        return res.send(400);
+    }
+}
+exports.vu = vu;
+async function sysAsset(type, file, res) {
+    const assetPath = `${SYS_ASSET_PATHS[type]}/${file}`;
+    if (!SystemUtils.fileExists(assetPath) || !SYS_ASSET_EXTS[type].includes(path_1.default.parse(assetPath).ext)) {
+        return res.send(404);
+    }
+    try {
+        fs_1.default.createReadStream(assetPath).pipe(res);
+    }
+    catch (error) {
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Error piping ${assetPath} to response`, error, true));
+        return res.send(400);
+    }
+}
+exports.sysAsset = sysAsset;
+async function proxy(params, res) {
+    const { url } = params;
+    if (!url) {
+        return res.send(500);
+    }
+    return (0, Proxy_1.proxyRequest)(url, res);
+}
+exports.proxy = proxy;
 async function api(apiName, method, params, res) {
     const api = apiName && method ? APIs[apiName] : null;
     const fn = api && typeof api[method] === 'function' ? api[method] : null;

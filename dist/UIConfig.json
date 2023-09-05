@@ -235,6 +235,10 @@
               "label": "TRANSLATE.NOW_PLAYING_NP_INFO"
             },
             {
+              "value": "nowPlaying.vuMeter",
+              "label": "TRANSLATE.NOW_PLAYING_NP_VU_METER"
+            },
+            {
               "value": "browse",
               "label": "TRANSLATE.NOW_PLAYING_BROWSE"
             },
@@ -1606,6 +1610,55 @@
       ]
     },
     {
+      "id": "section_vu_meter",
+      "element": "section",
+      "label": "TRANSLATE.NOW_PLAYING_VU_METER",
+      "icon": "fa-bar-chart",
+      "onSave": {
+        "type": "controller",
+        "endpoint": "user_interface/now_playing",
+        "method": "configSaveVUMeterSettings"
+      },
+      "saveButton": {
+        "label": "TRANSLATE.NOW_PLAYING_SAVE",
+        "data": [
+          "template",
+          "randomRefreshInterval",
+          "randomRefreshOnTrackChange"
+        ]
+      },
+      "content": [
+        {
+          "id": "template",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_TEMPLATE",
+          "value": {
+            "value": "/RANDOM/", 
+            "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+          },
+          "options": [
+            {
+              "value": "/RANDOM/", 
+              "label": "TRANSLATE.NOW_PLAYING_RANDOM"
+            }
+          ]
+        },
+        {
+          "id": "randomRefreshInterval",
+          "element": "input",
+          "type": "number",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_RND_REFRESH_INTERVAL",
+          "value": 0
+        },
+        {
+          "id": "randomRefreshOnTrackChange",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_RND_REFRESH_ON_TRACK",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "section_action_panel",
       "element": "section",
       "label": "TRANSLATE.NOW_PLAYING_ACTION_PANEL",
@@ -1643,7 +1696,8 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "enabled"
+          "enabled",
+          "showInVUMeterView"
         ]
       },
       "content": [
@@ -1652,6 +1706,12 @@
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": true
+        },
+        {
+          "id": "showInVUMeterView",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_IN_VU_METER_VIEW",
           "value": true
         }
       ]
@@ -1671,6 +1731,7 @@
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
           "enabled",
+          "showInVUMeterView",
           "iconSettings",
           "iconStyle",
           "iconSize",
@@ -1686,6 +1747,12 @@
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": true
+        },
+        {
+          "id": "showInVUMeterView",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_IN_VU_METER_VIEW",
+          "value": false
         },
         {
           "id": "iconSettings",
@@ -1801,6 +1868,7 @@
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
           "enabled",
+          "showInVUMeterView",
           "placement",
           "displayOrder",
           "fontSettings",
@@ -1822,6 +1890,12 @@
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": false
+        },
+        {
+          "id": "showInVUMeterView",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_IN_VU_METER_VIEW",
           "value": false
         },
         {
@@ -2052,6 +2126,7 @@
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
           "enabled",
+          "showInVUMeterView",
           "placement",
           "displayOrder",
           "showInfo",
@@ -2077,6 +2152,12 @@
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": false
+        },
+        {
+          "id": "showInVUMeterView",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_IN_VU_METER_VIEW",
           "value": false
         },
         {
@@ -2427,6 +2508,7 @@
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
           "enabled",
+          "showInVUMeterView",
           "placement",
           "displayOrder",
           "showHumidity",
@@ -2448,6 +2530,12 @@
           "element": "switch",
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
+          "value": false
+        },
+        {
+          "id": "showInVUMeterView",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_SHOW_IN_VU_METER_VIEW",
           "value": false
         },
         {
@@ -3665,7 +3753,10 @@
           "unmountNowPlayingScreenOnExit",
           "unmountBrowseScreenOnExit",
           "unmountQueueScreenOnExit",
-          "unmountVolumioScreenOnExit"
+          "unmountVolumioScreenOnExit",
+          "vuMeterRenderingKiosk",
+          "vuMeterRenderingOtherDevices",
+          "vuMeterShowWebGLFPS"
         ]
       },
       "content": [
@@ -3742,6 +3833,48 @@
             "field": "unmountScreensOnExit",
             "value": "custom"
           }
+        },
+        {
+          "id": "vuMeterRenderingKiosk",
+          "element": "select",
+          "value": {
+            "value": "css",
+            "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
+          },
+          "options": [
+            {
+              "value": "webgl",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_WEBGL"
+            },
+            {
+              "value": "css",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
+            }
+          ]
+        },
+        {
+          "id": "vuMeterRenderingOtherDevices",
+          "element": "select",
+          "value": {
+            "value": "css",
+            "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
+          },
+          "options": [
+            {
+              "value": "webgl",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_WEBGL"
+            },
+            {
+              "value": "css",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
+            }
+          ]
+        },
+        {
+          "id": "vuMeterShowWebGLFPS",
+          "element": "switch",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_SHOW_WEBGL_FPS",
+          "value": false
         }
       ]
     },

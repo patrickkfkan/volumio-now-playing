@@ -59,6 +59,14 @@ export default class UIConfigHelper {
   static #observeSectionContent<K extends UIConfigSectionKey>(data: NonNullable<UIConfigSection<K>['content']>): ObservedUIConfigSectionContent<K> {
     return new Proxy(data, {
       get: (target, prop) => {
+        // Passthrough certain Array methods
+        switch (prop) {
+          case 'push':
+          case 'pop':
+          case 'slice':
+          case 'splice':
+            return (...args: any) => (target[prop] as any).apply(target, args);
+        }
         return data.find((c) => c.id === prop) || Reflect.get(target, prop);
       }
     }) as ObservedUIConfigSectionContent<K>;

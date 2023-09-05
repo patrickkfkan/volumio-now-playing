@@ -69,6 +69,14 @@ _a = UIConfigHelper, _UIConfigHelper_observeSection = function _UIConfigHelper_o
 }, _UIConfigHelper_observeSectionContent = function _UIConfigHelper_observeSectionContent(data) {
     return new Proxy(data, {
         get: (target, prop) => {
+            // Passthrough certain Array methods
+            switch (prop) {
+                case 'push':
+                case 'pop':
+                case 'slice':
+                case 'splice':
+                    return (...args) => target[prop].apply(target, args);
+            }
             return data.find((c) => c.id === prop) || Reflect.get(target, prop);
         }
     });

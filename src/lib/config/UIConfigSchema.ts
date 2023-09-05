@@ -11,6 +11,7 @@ export type UIConfigSectionKey =
               'section_widget_styles' | 
               'section_album_art_style' | 
               'section_background_style' | 
+              'section_vu_meter' | 
               'section_action_panel' | 
               'section_docked_menu' | 
               'section_docked_action_panel_trigger' | 
@@ -136,14 +137,21 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'backgroundOverlayGradient' | 
     'backgroundOverlayGradientOpacity' :
 
+  K extends 'section_vu_meter' ?
+    'template' | 
+    'randomRefreshInterval' | 
+    'randomRefreshOnTrackChange' :
+
   K extends 'section_action_panel' ?
     'showVolumeSlider' :
 
   K extends 'section_docked_menu' ?
-    'enabled' :
+    'enabled' | 
+    'showInVUMeterView' :
 
   K extends 'section_docked_action_panel_trigger' ?
     'enabled' | 
+    'showInVUMeterView' | 
     'iconSettings' | 
     'iconStyle' | 
     'iconSize' | 
@@ -153,6 +161,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
 
   K extends 'section_docked_volume_indicator' ?
     'enabled' | 
+    'showInVUMeterView' | 
     'placement' | 
     'displayOrder' | 
     'fontSettings' | 
@@ -169,6 +178,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
 
   K extends 'section_docked_clock' ?
     'enabled' | 
+    'showInVUMeterView' | 
     'placement' | 
     'displayOrder' | 
     'showInfo' | 
@@ -189,6 +199,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
 
   K extends 'section_docked_weather' ?
     'enabled' | 
+    'showInVUMeterView' | 
     'placement' | 
     'displayOrder' | 
     'showHumidity' | 
@@ -273,7 +284,10 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'unmountNowPlayingScreenOnExit' | 
     'unmountBrowseScreenOnExit' | 
     'unmountQueueScreenOnExit' | 
-    'unmountVolumioScreenOnExit' :
+    'unmountVolumioScreenOnExit' | 
+    'vuMeterRenderingKiosk' | 
+    'vuMeterRenderingOtherDevices' | 
+    'vuMeterShowWebGLFPS' :
 
   K extends 'section_backup_config' ?
     'backupName' :
@@ -414,6 +428,13 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     never
   ) : 
 
+  K extends 'section_vu_meter' ? (
+    C extends 'template' ? UIConfigSelect<K> :
+    C extends 'randomRefreshInterval' ? UIConfigInput<K, 'number'> :
+    C extends 'randomRefreshOnTrackChange' ? UIConfigSwitch<K> :
+    never
+  ) : 
+
   K extends 'section_action_panel' ? (
     C extends 'showVolumeSlider' ? UIConfigSwitch<K> :
     never
@@ -421,11 +442,13 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
 
   K extends 'section_docked_menu' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'showInVUMeterView' ? UIConfigSwitch<K> :
     never
   ) : 
 
   K extends 'section_docked_action_panel_trigger' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'showInVUMeterView' ? UIConfigSwitch<K> :
     C extends 'iconSettings' ? UIConfigSelect<K> :
     C extends 'iconStyle' ? UIConfigSelect<K> :
     C extends 'iconSize' ? UIConfigInput<K, 'text'> :
@@ -437,6 +460,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
 
   K extends 'section_docked_volume_indicator' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'showInVUMeterView' ? UIConfigSwitch<K> :
     C extends 'placement' ? UIConfigSelect<K> :
     C extends 'displayOrder' ? UIConfigInput<K, 'number'> :
     C extends 'fontSettings' ? UIConfigSelect<K> :
@@ -455,6 +479,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
 
   K extends 'section_docked_clock' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'showInVUMeterView' ? UIConfigSwitch<K> :
     C extends 'placement' ? UIConfigSelect<K> :
     C extends 'displayOrder' ? UIConfigInput<K, 'number'> :
     C extends 'showInfo' ? UIConfigSelect<K> :
@@ -477,6 +502,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
 
   K extends 'section_docked_weather' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'showInVUMeterView' ? UIConfigSwitch<K> :
     C extends 'placement' ? UIConfigSelect<K> :
     C extends 'displayOrder' ? UIConfigInput<K, 'number'> :
     C extends 'showHumidity' ? UIConfigSwitch<K> :
@@ -568,6 +594,9 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'unmountBrowseScreenOnExit' ? UIConfigSwitch<K> :
     C extends 'unmountQueueScreenOnExit' ? UIConfigSwitch<K> :
     C extends 'unmountVolumioScreenOnExit' ? UIConfigSwitch<K> :
+    C extends 'vuMeterRenderingKiosk' ? UIConfigSelect<K> :
+    C extends 'vuMeterRenderingOtherDevices' ? UIConfigSelect<K> :
+    C extends 'vuMeterShowWebGLFPS' ? UIConfigSwitch<K> :
     never
   ) : 
 

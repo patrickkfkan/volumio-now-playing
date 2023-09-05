@@ -14,6 +14,7 @@ declare class ControllerNowPlaying {
     configSaveWidgetStyles(data: Record<string, any>): void;
     configSaveAlbumartStyles(data: Record<string, any>): void;
     configSaveBackgroundStyles(data: Record<string, any>): void;
+    configSaveVUMeterSettings(data: Record<string, any>): void;
     configSaveActionPanelSettings(data: Record<string, any>): void;
     configSaveDockedMenuSettings(data: Record<string, any>): void;
     configSaveDockedActionPanelTriggerSettings(data: Record<string, any>): void;

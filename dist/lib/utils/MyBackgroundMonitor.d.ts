@@ -1,12 +1,14 @@
-declare class MyBackgroundMonitor {
+import FSMonitor from './FSMonitor';
+declare class MyBackgroundMonitor extends FSMonitor {
     #private;
+    name: string;
     constructor();
     getImages(): {
         name: string;
         path: string;
     }[];
-    start(): void;
     stop(): Promise<void>;
+    protected handleEvent(event: 'add' | 'unlink' | 'addDir' | 'unlinkDir', _path: string): void;
 }
 declare const myBackgroundMonitor: MyBackgroundMonitor;
 export default myBackgroundMonitor;

@@ -1,7 +1,6 @@
 import path from 'path';
-import * as SystemUtils from './System';
 import np from '../NowPlayingContext';
-import chokidar from 'chokidar';
+import FSMonitor from './FSMonitor';
 
 const MY_BACKGROUNDS_PATH = '/data/INTERNAL/NowPlayingPlugin/My Backgrounds';
 const ACCEPT_EXTENSIONS = [
@@ -11,22 +10,21 @@ const ACCEPT_EXTENSIONS = [
   '.gif'
 ];
 
-class MyBackgroundMonitor {
+class MyBackgroundMonitor extends FSMonitor {
+
+  name = 'MyBackgroundMonitor';
 
   #images: Array<{name: string; path: string}>;
-  #status: 'running' | 'stopped';
-  #watcher: ReturnType<typeof chokidar['watch']> | null;
   #isSorted: boolean;
 
   constructor() {
+    super(MY_BACKGROUNDS_PATH);
     this.#images = [];
-    this.#status = 'stopped';
-    this.#watcher = null;
     this.#isSorted = false;
   }
 
   getImages() {
-    if (this.#status !== 'running') {
+    if (this.status !== 'running') {
       np.getLogger().warn('[now-playing] MyBackgroundMonitor is not running. Returning empty image list.');
       return [];
     }
@@ -36,42 +34,35 @@ class MyBackgroundMonitor {
     return this.#images;
   }
 
-  start() {
-    if (!SystemUtils.dirExists(MY_BACKGROUNDS_PATH)) {
-      np.getLogger().warn(`[now-playing] ${MY_BACKGROUNDS_PATH} does not exist. MyBackgroundMonitor will not start.`);
-      return;
-    }
-    this.#watcher = chokidar.watch(MY_BACKGROUNDS_PATH);
-    this.#watcher.on('add', this.#handleWatcherEvent.bind(this, 'add'));
-    this.#watcher.on('unlink', this.#handleWatcherEvent.bind(this, 'unlink'));
-    np.getLogger().warn(`[now-playing] MyBackgroundMonitor is now watching ${MY_BACKGROUNDS_PATH}`);
-    this.#status = 'running';
-  }
-
   async stop() {
-    if (this.#watcher) {
-      await this.#watcher.close();
-      this.#watcher = null;
-    }
+    super.stop();
     this.#images = [];
     this.#isSorted = false;
-    this.#status = 'stopped';
-    np.getLogger().warn('[now-playing] MyBackgroundMonitor stopped');
   }
 
-  #handleWatcherEvent(event: string, pathToFile: string) {
-    const { ext, base } = path.parse(pathToFile);
+  protected handleEvent(event: 'add' | 'unlink' | 'addDir' | 'unlinkDir', _path: string): void {
+    if (event !== 'add' && event !== 'unlink') {
+      return ;
+    }
+    const { ext, base } = path.parse(_path);
 
-    if (!ACCEPT_EXTENSIONS.includes(ext)) {
+    try {
+      if (!ACCEPT_EXTENSIONS.includes(ext)) {
+        return;
+      }
+    }
+    catch (error) {
+      np.getLogger().info(np.getErrorMessage(`[now-playing] MyBackgroundMonitor failed to stat '${_path}':`, error, true));
       return;
     }
+
     np.getLogger().info(`[now-playing] MyBackgroundMonitor captured '${event}': ${base}`);
 
     switch (event) {
       case 'add':
         this.#images.push({
           name: base,
-          path: path.resolve(pathToFile)
+          path: path.resolve(_path)
         });
         this.#isSorted = false;
         break;
@@ -82,7 +73,6 @@ class MyBackgroundMonitor {
         }
         break;
       default:
-
     }
   }
 

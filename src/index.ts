@@ -20,6 +20,8 @@ import { CommonSettingsCategory, LocalizationSettings, NowPlayingScreenSettings,
 import UIConfigHelper from './lib/config/UIConfigHelper';
 import ConfigBackupHelper from './lib/config/ConfigBackupHelper';
 import myBackgroundMonitor from './lib/utils/MyBackgroundMonitor';
+import vuMeterTemplateMonitor from './lib/utils/VUMeterTemplateMonitor';
+import { UIConfigSelect } from './lib/config/UIConfig';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type DockedComponentKey<T = keyof NowPlayingScreenSettings> = T extends `docked${infer _X}` ? T : never;
@@ -39,7 +41,7 @@ class ControllerNowPlaying {
   getUIConfig() {
     return jsPromiseToKew(this.#doGetUIConfig())
       .fail((error: any) => {
-        np.getLogger().error(`[now-playing] getUIConfig(): Cannot populate configuration - ${error}`);
+        np.getLogger().error(np.getErrorMessage('[now-playing] getUIConfig(): Cannot populate configuration:', error, true));
         throw error;
       });
   }
@@ -60,6 +62,7 @@ class ControllerNowPlaying {
     const widgetStylesUIConf = uiconf.section_widget_styles;
     const albumartStylesUIConf = uiconf.section_album_art_style;
     const backgroundStylesUIConf = uiconf.section_background_style;
+    const vuMeterUIConf = uiconf.section_vu_meter;
     const actionPanelUIConf = uiconf.section_action_panel;
     const dockedMenuUIConf = uiconf.section_docked_menu;
     const dockedActionPanelTriggerUIConf = uiconf.section_docked_action_panel_trigger;
@@ -74,6 +77,7 @@ class ControllerNowPlaying {
 
     const volumioBackgrounds = getVolumioBackgrounds();
     const myBackgrounds = myBackgroundMonitor.getImages();
+    const vuMeterTemplates = vuMeterTemplateMonitor.getTemplates();
 
     /**
      * Daemon conf
@@ -163,6 +167,9 @@ class ControllerNowPlaying {
     switch (startupOptions.activeScreen) {
       case 'nowPlaying.infoView':
         startupOptionsUIConf.content.activeScreen.value.label = np.getI18n('NOW_PLAYING_NP_INFO');
+        break;
+      case 'nowPlaying.vuMeter':
+        startupOptionsUIConf.content.activeScreen.value.label = np.getI18n('NOW_PLAYING_NP_VU_METER');
         break;
       case 'browse':
         startupOptionsUIConf.content.activeScreen.value.label = np.getI18n('NOW_PLAYING_BROWSE');
@@ -554,6 +561,105 @@ class ControllerNowPlaying {
     backgroundStylesUIConf.content.backgroundOverlayGradientOpacity.value = backgroundSettings.backgroundOverlayGradientOpacity;
 
     /**
+     * VU Meter
+     */
+    const vuMeterSettings = nowPlayingScreen.vuMeter;
+    let vuMeterTemplate = '';
+    if (vuMeterSettings.templateType === 'fixed') {
+      vuMeterTemplate = vuMeterSettings.template;
+      if (vuMeterTemplate !== '' && !vuMeterTemplates.find((t) => t.name === vuMeterTemplate)) {
+        vuMeterTemplate = ''; // Template no longer exists
+      }
+    }
+    if (vuMeterTemplate) {
+      vuMeterUIConf.content.template.value = {
+        value: vuMeterTemplate,
+        label: vuMeterTemplate
+      };
+    }
+    else {
+      vuMeterUIConf.content.template.value = {
+        value: '/RANDOM/',
+        label: np.getI18n('NOW_PLAYING_RANDOM')
+      };
+    }
+    vuMeterUIConf.content.randomRefreshInterval.value = vuMeterSettings.randomRefreshInterval;
+    vuMeterUIConf.content.randomRefreshOnTrackChange.value = vuMeterSettings.randomRefreshOnTrackChange;
+
+    if (vuMeterTemplates.length > 0) {
+      vuMeterUIConf.content.template.options.push({
+        value: '/SEPARATOR/',
+        label: '-'.repeat(np.getI18n('NOW_PLAYING_RANDOM').length)
+      });
+
+      const vuMeterTemplateMeterSelectElements: UIConfigSelect<any>[] = [];
+      vuMeterTemplates.forEach((t) => {
+        vuMeterUIConf.content.template.options.push({
+          value: t.name,
+          label: t.name
+        });
+
+        // Create UIConfig `select` element for template's meters
+        const vuMeterTemplateMeterSelect: UIConfigSelect<any> = {
+          id: `${t.name}.meter` as any,
+          element: 'select',
+          label: np.getI18n('NOW_PLAYING_VU_METER_STYLE'),
+          options: [] as Array<{value: string, label: string}>,
+          value: {
+            value: '',
+            label: ''
+          },
+          visibleIf: {
+            field: 'template',
+            value: t.name
+          }
+        };
+        let selectedMeter = '';
+        if (t.name === vuMeterTemplate &&
+          vuMeterSettings.meterType === 'fixed' &&
+          t.meters.find((t2) => t2.name === vuMeterSettings.meter)) {
+
+          selectedMeter = vuMeterSettings.meter;
+        }
+        if (selectedMeter) {
+          vuMeterTemplateMeterSelect.value = ({
+            value: selectedMeter,
+            label: selectedMeter
+          });
+        }
+        else {
+          vuMeterTemplateMeterSelect.value = ({
+            value: '/RANDOM/',
+            label: np.getI18n('NOW_PLAYING_RANDOM')
+          });
+        }
+
+        vuMeterTemplateMeterSelect.options.push(
+          {
+            value: '/RANDOM/',
+            label: np.getI18n('NOW_PLAYING_RANDOM')
+          },
+          {
+            value: '/SEPARATOR/',
+            label: '-'.repeat(np.getI18n('NOW_PLAYING_RANDOM').length)
+          },
+          ...t.meters.map((m) => ({
+            value: m.name,
+            label: m.name
+          }))
+        );
+
+        vuMeterTemplateMeterSelectElements.push(vuMeterTemplateMeterSelect);
+
+        if (vuMeterUIConf.saveButton) {
+          vuMeterUIConf.saveButton.data.push(vuMeterTemplateMeterSelect.id as any);
+        }
+      });
+      const insertIndex = vuMeterUIConf.content.findIndex((c) => c.id === 'template') + 1;
+      vuMeterUIConf.content.splice(insertIndex, 0, ...vuMeterTemplateMeterSelectElements);
+    }
+
+    /**
      * Action Panel
      */
     const actionPanelSettings = CommonSettingsLoader.get(CommonSettingsCategory.ActionPanel);
@@ -564,12 +670,14 @@ class ControllerNowPlaying {
      */
     const dockedMenu = nowPlayingScreen.dockedMenu;
     dockedMenuUIConf.content.enabled.value = dockedMenu.enabled;
+    dockedMenuUIConf.content.showInVUMeterView.value = dockedMenu.showInVUMeterView;
 
     /**
      * Docked Action Panel Trigger
      */
     const dockedActionPanelTrigger = nowPlayingScreen.dockedActionPanelTrigger;
     dockedActionPanelTriggerUIConf.content.enabled.value = dockedActionPanelTrigger.enabled;
+    dockedActionPanelTriggerUIConf.content.showInVUMeterView.value = dockedActionPanelTrigger.showInVUMeterView;
     dockedActionPanelTriggerUIConf.content.iconSettings.value = {
       value: dockedActionPanelTrigger.iconSettings,
       label: dockedActionPanelTrigger.iconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
@@ -613,6 +721,7 @@ class ControllerNowPlaying {
      */
     const dockedVolumeIndicator = nowPlayingScreen.dockedVolumeIndicator;
     dockedVolumeIndicatorUIConf.content.enabled.value = dockedVolumeIndicator.enabled;
+    dockedVolumeIndicatorUIConf.content.showInVUMeterView.value = dockedVolumeIndicator.showInVUMeterView;
     dockedVolumeIndicatorUIConf.content.placement.value = {
       value: dockedVolumeIndicator.placement,
       label: ''
@@ -692,6 +801,7 @@ class ControllerNowPlaying {
      */
     const dockedClock = nowPlayingScreen.dockedClock;
     dockedClockUIConf.content.enabled.value = dockedClock.enabled;
+    dockedClockUIConf.content.showInVUMeterView.value = dockedClock.showInVUMeterView;
     dockedClockUIConf.content.placement.value = {
       value: dockedClock.placement,
       label: ''
@@ -833,6 +943,7 @@ class ControllerNowPlaying {
      */
     const dockedWeather = nowPlayingScreen.dockedWeather;
     dockedWeatherUIConf.content.enabled.value = dockedWeather.enabled;
+    dockedWeatherUIConf.content.showInVUMeterView.value = dockedWeather.showInVUMeterView;
     dockedWeatherUIConf.content.placement.value = {
       value: dockedWeather.placement,
       label: ''
@@ -1282,6 +1393,15 @@ class ControllerNowPlaying {
     performanceUIConf.content.unmountBrowseScreenOnExit.value = performanceSettings.unmountBrowseScreenOnExit;
     performanceUIConf.content.unmountQueueScreenOnExit.value = performanceSettings.unmountQueueScreenOnExit;
     performanceUIConf.content.unmountVolumioScreenOnExit.value = performanceSettings.unmountVolumioScreenOnExit;
+    performanceUIConf.content.vuMeterRenderingKiosk.value = {
+      value: performanceSettings.vuMeterRenderingKiosk,
+      label: performanceSettings.vuMeterRenderingKiosk == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+    };
+    performanceUIConf.content.vuMeterRenderingOtherDevices.value = {
+      value: performanceSettings.vuMeterRenderingOtherDevices,
+      label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+    };
+    performanceUIConf.content.vuMeterShowWebGLFPS.value = performanceSettings.vuMeterShowWebGLFPS;
 
     // Backup Config conf
     const backups = await ConfigBackupHelper.getBackupNames();
@@ -1566,6 +1686,45 @@ class ControllerNowPlaying {
     this.#notifyCommonSettingsUpdated(CommonSettingsCategory.Background);
   }
 
+  configSaveVUMeterSettings(data: Record<string, any>) {
+    const parsed = this.#parseConfigSaveData(data);
+    if (parsed.template === '/SEPARATOR/') {
+      np.toast('error', np.getI18n('NOW_PLAYING_ERR_INVALID_TEMPLATE'));
+      return;
+    }
+    const settings = np.getConfigValue('screen.nowPlaying');
+    if (parsed.template === '/RANDOM/') {
+      settings.vuMeter = {
+        templateType: 'random'
+      };
+    }
+    else {
+      settings.vuMeter = {
+        templateType: 'fixed',
+        template: parsed.template
+      };
+      const meterKey = `${parsed.template}.meter`;
+      if (parsed[meterKey] === '/RANDOM/') {
+        settings.vuMeter.meterType = 'random';
+      }
+      else if (parsed[meterKey] === '/SEPARATOR/') {
+        np.toast('error', np.getI18n('NOW_PLAYING_ERR_INVALID_METER'));
+        return;
+      }
+      else {
+        settings.vuMeter.meterType = 'fixed';
+        settings.vuMeter.meter = parsed[meterKey];
+      }
+    }
+    settings.vuMeter.randomRefreshInterval = parsed.randomRefreshInterval ? parseInt(parsed.randomRefreshInterval, 10) : 0;
+    settings.vuMeter.randomRefreshOnTrackChange = parsed.randomRefreshOnTrackChange;
+
+    np.setConfigValue('screen.nowPlaying', settings);
+    np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
+
+    this.#notifyCommonSettingsUpdated(CommonSettingsCategory.NowPlayingScreen);
+  }
+
   configSaveActionPanelSettings(data: Record<string, any>) {
     const settings = {
       showVolumeSlider: data.showVolumeSlider
@@ -1742,7 +1901,10 @@ class ControllerNowPlaying {
       unmountNowPlayingScreenOnExit: data.unmountNowPlayingScreenOnExit,
       unmountBrowseScreenOnExit: data.unmountBrowseScreenOnExit,
       unmountQueueScreenOnExit: data.unmountQueueScreenOnExit,
-      unmountVolumioScreenOnExit: data.unmountVolumioScreenOnExit
+      unmountVolumioScreenOnExit: data.unmountVolumioScreenOnExit,
+      vuMeterRenderingKiosk: data.vuMeterRenderingKiosk.value,
+      vuMeterRenderingOtherDevices: data.vuMeterRenderingOtherDevices.value,
+      vuMeterShowWebGLFPS: data.vuMeterShowWebGLFPS
     };
     np.setConfigValue('performance', settings);
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
@@ -1890,6 +2052,7 @@ class ControllerNowPlaying {
     }
 
     myBackgroundMonitor.start();
+    vuMeterTemplateMonitor.start();
   }
 
   onStop() {
@@ -1918,6 +2081,7 @@ class ControllerNowPlaying {
     }
 
     await myBackgroundMonitor.stop();
+    await vuMeterTemplateMonitor.stop();
 
     np.reset();
   }
