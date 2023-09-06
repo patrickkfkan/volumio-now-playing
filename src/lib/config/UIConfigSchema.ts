@@ -287,7 +287,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'unmountVolumioScreenOnExit' | 
     'vuMeterRenderingKiosk' | 
     'vuMeterRenderingOtherDevices' | 
-    'vuMeterShowWebGLFPS' :
+    'vuMeterWebGLShowStats' :
 
   K extends 'section_backup_config' ?
     'backupName' :
@@ -596,7 +596,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'unmountVolumioScreenOnExit' ? UIConfigSwitch<K> :
     C extends 'vuMeterRenderingKiosk' ? UIConfigSelect<K> :
     C extends 'vuMeterRenderingOtherDevices' ? UIConfigSelect<K> :
-    C extends 'vuMeterShowWebGLFPS' ? UIConfigSwitch<K> :
+    C extends 'vuMeterWebGLShowStats' ? UIConfigSwitch<K> :
     never
   ) : 
 

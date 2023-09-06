@@ -430,7 +430,7 @@ class ControllerNowPlaying {
             unmountVolumioScreenOnExit: data.unmountVolumioScreenOnExit,
             vuMeterRenderingKiosk: data.vuMeterRenderingKiosk.value,
             vuMeterRenderingOtherDevices: data.vuMeterRenderingOtherDevices.value,
-            vuMeterShowWebGLFPS: data.vuMeterShowWebGLFPS
+            vuMeterWebGLShowStats: data.vuMeterWebGLShowStats
         };
         NowPlayingContext_1.default.setConfigValue('performance', settings);
         NowPlayingContext_1.default.toast('success', NowPlayingContext_1.default.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
@@ -1825,7 +1825,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         value: performanceSettings.vuMeterRenderingOtherDevices,
         label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
-    performanceUIConf.content.vuMeterShowWebGLFPS.value = performanceSettings.vuMeterShowWebGLFPS;
+    performanceUIConf.content.vuMeterWebGLShowStats.value = performanceSettings.vuMeterWebGLShowStats;
     // Backup Config conf
     const backups = await ConfigBackupHelper_1.default.getBackupNames();
     if (backups.length > 0) {

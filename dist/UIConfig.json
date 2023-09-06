@@ -3756,7 +3756,7 @@
           "unmountVolumioScreenOnExit",
           "vuMeterRenderingKiosk",
           "vuMeterRenderingOtherDevices",
-          "vuMeterShowWebGLFPS"
+          "vuMeterWebGLShowStats"
         ]
       },
       "content": [
@@ -3837,6 +3837,7 @@
         {
           "id": "vuMeterRenderingKiosk",
           "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_KIOSK",
           "value": {
             "value": "css",
             "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
@@ -3855,6 +3856,7 @@
         {
           "id": "vuMeterRenderingOtherDevices",
           "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_OTHER",
           "value": {
             "value": "css",
             "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
@@ -3871,9 +3873,9 @@
           ]
         },
         {
-          "id": "vuMeterShowWebGLFPS",
+          "id": "vuMeterWebGLShowStats",
           "element": "switch",
-          "label": "TRANSLATE.NOW_PLAYING_VU_METER_SHOW_WEBGL_FPS",
+          "label": "TRANSLATE.NOW_PLAYING_VU_METER_WEBGL_SHOW_STATS",
           "value": false
         }
       ]

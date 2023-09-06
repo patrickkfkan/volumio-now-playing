@@ -1401,7 +1401,7 @@ class ControllerNowPlaying {
       value: performanceSettings.vuMeterRenderingOtherDevices,
       label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
-    performanceUIConf.content.vuMeterShowWebGLFPS.value = performanceSettings.vuMeterShowWebGLFPS;
+    performanceUIConf.content.vuMeterWebGLShowStats.value = performanceSettings.vuMeterWebGLShowStats;
 
     // Backup Config conf
     const backups = await ConfigBackupHelper.getBackupNames();
@@ -1904,7 +1904,7 @@ class ControllerNowPlaying {
       unmountVolumioScreenOnExit: data.unmountVolumioScreenOnExit,
       vuMeterRenderingKiosk: data.vuMeterRenderingKiosk.value,
       vuMeterRenderingOtherDevices: data.vuMeterRenderingOtherDevices.value,
-      vuMeterShowWebGLFPS: data.vuMeterShowWebGLFPS
+      vuMeterWebGLShowStats: data.vuMeterWebGLShowStats
     };
     np.setConfigValue('performance', settings);
     np.toast('success', np.getI18n('NOW_PLAYING_SETTINGS_SAVED'));
