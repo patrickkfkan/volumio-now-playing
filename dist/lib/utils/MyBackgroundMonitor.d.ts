@@ -1,5 +1,5 @@
 import FSMonitor from './FSMonitor';
-declare class MyBackgroundMonitor extends FSMonitor {
+declare class MyBackgroundMonitor extends FSMonitor<['add', 'unlink']> {
     #private;
     name: string;
     constructor();
@@ -8,7 +8,7 @@ declare class MyBackgroundMonitor extends FSMonitor {
         path: string;
     }[];
     stop(): Promise<void>;
-    protected handleEvent(event: 'add' | 'unlink' | 'addDir' | 'unlinkDir', _path: string): void;
+    protected handleEvent(event: 'add' | 'unlink', _path: string): void;
 }
 declare const myBackgroundMonitor: MyBackgroundMonitor;
 export default myBackgroundMonitor;

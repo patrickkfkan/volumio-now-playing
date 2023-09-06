@@ -10,7 +10,7 @@ const ACCEPT_EXTENSIONS = [
   '.gif'
 ];
 
-class MyBackgroundMonitor extends FSMonitor {
+class MyBackgroundMonitor extends FSMonitor<['add', 'unlink']> {
 
   name = 'MyBackgroundMonitor';
 
@@ -18,13 +18,13 @@ class MyBackgroundMonitor extends FSMonitor {
   #isSorted: boolean;
 
   constructor() {
-    super(MY_BACKGROUNDS_PATH);
+    super(MY_BACKGROUNDS_PATH, [ 'add', 'unlink' ]);
     this.#images = [];
     this.#isSorted = false;
   }
 
   getImages() {
-    if (this.status !== 'running') {
+    if (this.status === 'stopped') {
       np.getLogger().warn('[now-playing] MyBackgroundMonitor is not running. Returning empty image list.');
       return [];
     }
@@ -40,10 +40,7 @@ class MyBackgroundMonitor extends FSMonitor {
     this.#isSorted = false;
   }
 
-  protected handleEvent(event: 'add' | 'unlink' | 'addDir' | 'unlinkDir', _path: string): void {
-    if (event !== 'add' && event !== 'unlink') {
-      return ;
-    }
+  protected handleEvent(event: 'add' | 'unlink', _path: string): void {
     const { ext, base } = path.parse(_path);
 
     try {
@@ -72,7 +69,6 @@ class MyBackgroundMonitor extends FSMonitor {
           this.#images.splice(index, 1);
         }
         break;
-      default:
     }
   }
 

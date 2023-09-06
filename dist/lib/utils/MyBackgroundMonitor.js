@@ -27,7 +27,7 @@ const ACCEPT_EXTENSIONS = [
 ];
 class MyBackgroundMonitor extends FSMonitor_1.default {
     constructor() {
-        super(MY_BACKGROUNDS_PATH);
+        super(MY_BACKGROUNDS_PATH, ['add', 'unlink']);
         _MyBackgroundMonitor_instances.add(this);
         this.name = 'MyBackgroundMonitor';
         _MyBackgroundMonitor_images.set(this, void 0);
@@ -36,7 +36,7 @@ class MyBackgroundMonitor extends FSMonitor_1.default {
         __classPrivateFieldSet(this, _MyBackgroundMonitor_isSorted, false, "f");
     }
     getImages() {
-        if (this.status !== 'running') {
+        if (this.status === 'stopped') {
             NowPlayingContext_1.default.getLogger().warn('[now-playing] MyBackgroundMonitor is not running. Returning empty image list.');
             return [];
         }
@@ -51,9 +51,6 @@ class MyBackgroundMonitor extends FSMonitor_1.default {
         __classPrivateFieldSet(this, _MyBackgroundMonitor_isSorted, false, "f");
     }
     handleEvent(event, _path) {
-        if (event !== 'add' && event !== 'unlink') {
-            return;
-        }
         const { ext, base } = path_1.default.parse(_path);
         try {
             if (!ACCEPT_EXTENSIONS.includes(ext)) {
@@ -79,7 +76,6 @@ class MyBackgroundMonitor extends FSMonitor_1.default {
                     __classPrivateFieldGet(this, _MyBackgroundMonitor_images, "f").splice(index, 1);
                 }
                 break;
-            default:
         }
     }
 }

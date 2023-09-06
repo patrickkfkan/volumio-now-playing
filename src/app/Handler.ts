@@ -119,13 +119,12 @@ export async function vu(reqType: 'get' | 'put', params: Record<string, any>, re
   }
   let { template } = params;
   if (!template) {
-    const templates = vuMeterTemplateMonitor.getTemplates();
-    if (templates.length === 0) {
+    template = await vuMeterTemplateMonitor.getRandomTemplate();
+    if (!template) {
       return res.send({
         error: np.getI18n('NOW_PLAYING_ERR_NO_VU_METER_TEMPLATE')
       });
     }
-    template = templates[rnd(0, templates.length - 1)].name;
   }
   const { file } = params;
   if (!file) {

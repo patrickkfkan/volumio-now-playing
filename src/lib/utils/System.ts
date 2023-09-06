@@ -1,5 +1,6 @@
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
+import fsPromises from 'fs/promises';
 import path from 'path';
 import pluginInfo from '../../../package.json';
 import np from '../NowPlayingContext';
@@ -28,6 +29,15 @@ export function dirExists(path: string) {
   catch (error) {
     return false;
   }
+}
+
+// https://bobbyhadz.com/blog/list-all-directories-in-directory-in-node-js
+export async function listDirectories(path: string) {
+  const directories = (await fsPromises.readdir(path, {withFileTypes: true}))
+    .filter((dirent) => dirent.isDirectory())
+    .map((dir) => dir.name);
+
+  return directories;
 }
 
 export function findInFile(path: string, str: string) {

@@ -323,5 +323,7 @@
   "NOW_PLAYING_ERR_NO_VU_METER_TEMPLATE": "No VU meter templates found",
   "NOW_PLAYING_ERR_VU_METER_TEMPLATE_NOT_FOUND": "'()' not found",
   "NOW_PLAYING_ERR_VU_METER_CONF_NOT_FOUND": "'()' missing config file",
-  "NOW_PLAYING_ERR_VU_METER_PROCESS_TEMPLATE": "An error occurred while processing VU meter template:"
+  "NOW_PLAYING_ERR_VU_METER_PROCESS_TEMPLATE": "An error occurred while processing VU meter template:",
+  "NOW_PLAYING_WARN_MY_BG_MONITOR_UPDATING": "My backgrounds are being updated; list might not be complete.",
+  "NOW_PLAYING_WARN_VU_MONITOR_UPDATING": "VU meter templates are still being loaded; list might not be complete."
 }

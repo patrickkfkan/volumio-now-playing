@@ -8,6 +8,7 @@ export interface PluginInfo {
 }
 export declare function fileExists(path: string): boolean;
 export declare function dirExists(path: string): boolean;
+export declare function listDirectories(path: string): Promise<string[]>;
 export declare function findInFile(path: string, str: string): boolean;
 export declare function replaceInFile(path: string, search: string, replace: string): Buffer;
 export declare function copyFile(src: string, dest: string, opts?: {

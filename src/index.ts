@@ -79,6 +79,10 @@ class ControllerNowPlaying {
     const myBackgrounds = myBackgroundMonitor.getImages();
     const vuMeterTemplates = vuMeterTemplateMonitor.getTemplates();
 
+    if (myBackgroundMonitor.status === 'initializing' || myBackgroundMonitor.status === 'updating') {
+      np.toast('warning', np.getI18n('NOW_PLAYING_WARN_MY_BG_MONITOR_UPDATING'));
+    }
+
     /**
      * Daemon conf
      */
@@ -657,6 +661,9 @@ class ControllerNowPlaying {
       });
       const insertIndex = vuMeterUIConf.content.findIndex((c) => c.id === 'template') + 1;
       vuMeterUIConf.content.splice(insertIndex, 0, ...vuMeterTemplateMeterSelectElements);
+    }
+    if (vuMeterTemplateMonitor.status === 'initializing' || vuMeterTemplateMonitor.status === 'updating') {
+      vuMeterUIConf.description = np.getI18n('NOW_PLAYING_WARN_VU_MONITOR_UPDATING');
     }
 
     /**

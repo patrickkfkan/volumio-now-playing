@@ -2,15 +2,19 @@ import * as SystemUtils from './System';
 import np from '../NowPlayingContext';
 import chokidar from 'chokidar';
 
-export default abstract class FSMonitor {
+export type FSMonitorEvent = 'add' | 'unlink' | 'addDir' | 'unlinkDir';
+
+export default abstract class FSMonitor<T extends FSMonitorEvent[]> {
 
   abstract name: string;
-  #status: 'running' | 'stopped';
+  #status: 'initializing' | 'running' | 'updating' | 'stopped';
+  #events: FSMonitorEvent[];
   #watcher: ReturnType<typeof chokidar['watch']> | null;
   #monitorDir: string;
 
-  constructor(monitorDir: string) {
+  constructor(monitorDir: string, events: T) {
     this.#monitorDir = monitorDir;
+    this.#events = events;
     this.#status = 'stopped';
     this.#watcher = null;
   }
@@ -20,13 +24,35 @@ export default abstract class FSMonitor {
       np.getLogger().warn(`[now-playing] ${this.#monitorDir} does not exist. ${this.name} will not start.`);
       return;
     }
+    np.getLogger().info(`[now-playing] ${this.name} commencing initial scanning of ${this.#monitorDir}`);
     this.#watcher = chokidar.watch(this.#monitorDir);
-    this.#watcher.on('add', this.handleEvent.bind(this, 'add'));
-    this.#watcher.on('unlink', this.handleEvent.bind(this, 'unlink'));
-    this.#watcher.on('addDir', this.handleEvent.bind(this, 'addDir'));
-    this.#watcher.on('unlinkDir', this.handleEvent.bind(this, 'unlinkDir'));
-    np.getLogger().warn(`[now-playing] ${this.name} is now watching ${this.#monitorDir}`);
-    this.#status = 'running';
+    if (this.#events.includes('add')) {
+      this.#watcher.on('add', this.#preHandleEvent.bind(this, 'add'));
+    }
+    if (this.#events.includes('unlink')) {
+      this.#watcher.on('unlink', this.#preHandleEvent.bind(this, 'unlink'));
+    }
+    if (this.#events.includes('addDir')) {
+      this.#watcher.on('addDir', this.#preHandleEvent.bind(this, 'addDir'));
+    }
+    if (this.#events.includes('unlinkDir')) {
+      this.#watcher.on('unlinkDir', this.#preHandleEvent.bind(this, 'unlinkDir'));
+    }
+    this.#watcher.on('ready', () => {
+      np.getLogger().info(`[now-playing] ${this.name} has completed initial scanning`);
+      np.getLogger().info(`[now-playing] ${this.name} is now watching ${this.#monitorDir}`);
+      this.#status = 'running';
+    });
+    this.#status = 'initializing';
+  }
+
+  #preHandleEvent(event: FSMonitorEvent, path: string) {
+    const oldStatus = this.#status;
+    if (oldStatus === 'running') {
+      this.#status = 'updating';
+    }
+    this.handleEvent(event, path);
+    this.#status = oldStatus;
   }
 
   async stop() {
@@ -42,5 +68,5 @@ export default abstract class FSMonitor {
     return this.#status;
   }
 
-  protected abstract handleEvent(event: 'add' | 'unlink' | 'addDir' | 'unlinkDir', path: string): void;
+  protected abstract handleEvent(event: T[number], path: string): void;
 }

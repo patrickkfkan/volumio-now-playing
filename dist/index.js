@@ -559,6 +559,9 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     const volumioBackgrounds = (0, Misc_1.getVolumioBackgrounds)();
     const myBackgrounds = MyBackgroundMonitor_1.default.getImages();
     const vuMeterTemplates = VUMeterTemplateMonitor_1.default.getTemplates();
+    if (MyBackgroundMonitor_1.default.status === 'initializing' || MyBackgroundMonitor_1.default.status === 'updating') {
+        NowPlayingContext_1.default.toast('warning', NowPlayingContext_1.default.getI18n('NOW_PLAYING_WARN_MY_BG_MONITOR_UPDATING'));
+    }
     /**
      * Daemon conf
      */
@@ -1094,6 +1097,9 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         });
         const insertIndex = vuMeterUIConf.content.findIndex((c) => c.id === 'template') + 1;
         vuMeterUIConf.content.splice(insertIndex, 0, ...vuMeterTemplateMeterSelectElements);
+    }
+    if (VUMeterTemplateMonitor_1.default.status === 'initializing' || VUMeterTemplateMonitor_1.default.status === 'updating') {
+        vuMeterUIConf.description = NowPlayingContext_1.default.getI18n('NOW_PLAYING_WARN_VU_MONITOR_UPDATING');
     }
     /**
      * Action Panel

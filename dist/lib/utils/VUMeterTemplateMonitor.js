@@ -20,10 +20,12 @@ const path_1 = __importDefault(require("path"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
 const FSMonitor_1 = __importDefault(require("./FSMonitor"));
 const VUMeterConfigParser_1 = __importDefault(require("./VUMeterConfigParser"));
+const Misc_1 = require("./Misc");
+const System_1 = require("./System");
 exports.VU_METER_TEMPLATE_PATH = '/data/INTERNAL/NowPlayingPlugin/VU Meter Templates';
 class VUMeterTemplateMonitor extends FSMonitor_1.default {
     constructor() {
-        super(exports.VU_METER_TEMPLATE_PATH);
+        super(exports.VU_METER_TEMPLATE_PATH, ['addDir', 'unlinkDir']);
         _VUMeterTemplateMonitor_instances.add(this);
         this.name = 'VUMeterTemplateMonitor';
         _VUMeterTemplateMonitor_templates.set(this, void 0);
@@ -32,7 +34,7 @@ class VUMeterTemplateMonitor extends FSMonitor_1.default {
         __classPrivateFieldSet(this, _VUMeterTemplateMonitor_isSorted, false, "f");
     }
     getTemplates() {
-        if (this.status !== 'running') {
+        if (this.status === 'stopped') {
             NowPlayingContext_1.default.getLogger().warn('[now-playing] VUMeterTemplateMonitor is not running. Returning empty image list.');
             return [];
         }
@@ -41,15 +43,27 @@ class VUMeterTemplateMonitor extends FSMonitor_1.default {
         }
         return __classPrivateFieldGet(this, _VUMeterTemplateMonitor_templates, "f");
     }
+    async getRandomTemplate() {
+        if (this.status === 'initializing') {
+            NowPlayingContext_1.default.getLogger().info('[now-playing] Getting random template directly from template path');
+            const directories = await (0, System_1.listDirectories)(exports.VU_METER_TEMPLATE_PATH);
+            if (directories.length === 0) {
+                return null;
+            }
+            return directories[(0, Misc_1.rnd)(0, directories.length - 1)];
+        }
+        if (__classPrivateFieldGet(this, _VUMeterTemplateMonitor_templates, "f").length > 0) {
+            NowPlayingContext_1.default.getLogger().info('[now-playing] Getting random template from loaded templates');
+            return __classPrivateFieldGet(this, _VUMeterTemplateMonitor_templates, "f")[(0, Misc_1.rnd)(0, __classPrivateFieldGet(this, _VUMeterTemplateMonitor_templates, "f").length - 1)].name;
+        }
+        return null;
+    }
     async stop() {
         super.stop();
         __classPrivateFieldSet(this, _VUMeterTemplateMonitor_templates, [], "f");
         __classPrivateFieldSet(this, _VUMeterTemplateMonitor_isSorted, false, "f");
     }
     handleEvent(event, _path) {
-        if (event !== 'addDir' && event !== 'unlinkDir') {
-            return;
-        }
         const { base: template } = path_1.default.parse(_path);
         NowPlayingContext_1.default.getLogger().info(`[now-playing] VUMeterTemplateMonitor captured '${event}': ${template}`);
         switch (event) {

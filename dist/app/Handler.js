@@ -135,13 +135,12 @@ async function vu(reqType, params, res) {
     }
     let { template } = params;
     if (!template) {
-        const templates = VUMeterTemplateMonitor_1.default.getTemplates();
-        if (templates.length === 0) {
+        template = await VUMeterTemplateMonitor_1.default.getRandomTemplate();
+        if (!template) {
             return res.send({
                 error: NowPlayingContext_1.default.getI18n('NOW_PLAYING_ERR_NO_VU_METER_TEMPLATE')
             });
         }
-        template = templates[(0, Misc_1.rnd)(0, templates.length - 1)].name;
     }
     const { file } = params;
     if (!file) {

@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPluginInfo = exports.getPluginVersion = exports.readdir = exports.restartSystemdService = exports.isSystemdServiceActive = exports.copyFile = exports.replaceInFile = exports.findInFile = exports.dirExists = exports.fileExists = void 0;
+exports.getPluginInfo = exports.getPluginVersion = exports.readdir = exports.restartSystemdService = exports.isSystemdServiceActive = exports.copyFile = exports.replaceInFile = exports.findInFile = exports.listDirectories = exports.dirExists = exports.fileExists = void 0;
 const child_process_1 = require("child_process");
 const fs_1 = __importDefault(require("fs"));
+const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
 const package_json_1 = __importDefault(require("../../../package.json"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
@@ -27,6 +28,14 @@ function dirExists(path) {
     }
 }
 exports.dirExists = dirExists;
+// https://bobbyhadz.com/blog/list-all-directories-in-directory-in-node-js
+async function listDirectories(path) {
+    const directories = (await promises_1.default.readdir(path, { withFileTypes: true }))
+        .filter((dirent) => dirent.isDirectory())
+        .map((dir) => dir.name);
+    return directories;
+}
+exports.listDirectories = listDirectories;
 function findInFile(path, str) {
     const contents = fs_1.default.readFileSync(path).toString();
     const regex = new RegExp(`\\b${str}\\b`, 'gm');
