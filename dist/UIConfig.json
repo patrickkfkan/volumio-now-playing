@@ -1631,6 +1631,7 @@
         {
           "id": "template",
           "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_VU_METER_TEMPLATE",
           "label": "TRANSLATE.NOW_PLAYING_VU_METER_TEMPLATE",
           "value": {
             "value": "/RANDOM/", 
@@ -1647,6 +1648,7 @@
           "id": "randomRefreshInterval",
           "element": "input",
           "type": "number",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_VU_METER_RND_REFRESH_INTERVAL",
           "label": "TRANSLATE.NOW_PLAYING_VU_METER_RND_REFRESH_INTERVAL",
           "value": 0
         },
@@ -3837,6 +3839,7 @@
         {
           "id": "vuMeterRenderingKiosk",
           "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_VU_METER_RENDERING",
           "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_KIOSK",
           "value": {
             "value": "css",
@@ -3856,6 +3859,7 @@
         {
           "id": "vuMeterRenderingOtherDevices",
           "element": "select",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_VU_METER_RENDERING",
           "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_OTHER",
           "value": {
             "value": "css",
