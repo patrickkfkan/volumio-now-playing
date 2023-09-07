@@ -1895,7 +1895,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     const apply = {};
     for (const [key, value] of Object.entries(data)) {
         // Check if dropdown selection
-        if (typeof value === 'object' && Reflect.has(value, 'value')) {
+        if (typeof value === 'object' && value && Reflect.has(value, 'value')) {
             apply[key] = value.value;
         }
         else {
