@@ -294,7 +294,7 @@
   "NOW_PLAYING_DOC_MY_BACKGROUND": "Background image files are obtained from \"/data/INTERNAL/NowPlayingPlugin/My Backgrounds\"",
   "NOW_PLAYING_DOC_MY_BG_RND_REFRESH_INTERVAL": "Applies when My Background Image is set to \"Random\". Specifies the number of minutes to wait before refreshing. 0 for no refresh.",
   "NOW_PLAYING_DOC_CYCLE_INTERVAL_ALIGNMENT": "Number of seconds to wait before switching to next alignment (minimum 10 seconds; default: 60).",
-  "NOW_PLAYING_DOC_VU_METER_RENDERING": "WebGL can give smoother effects, but only when the target browser supports hardware-accelerated rendering. Otherwise, you might be better off choosing \"CSS\". Note that the WebGL option is currently experimental.",
+  "NOW_PLAYING_DOC_VU_METER_RENDERING": "\"WebGL\" draws the VU meter directly onto canvas, utilizing the GPU where available. \"CSS\" assembles together separate HTML elements and styles them through CSS, while leaving the rendering part to the browser which may also utilize the GPU in the process. Choose \"CSS\" if target browser does not support WebGL or lacks hardware graphics acceleration, such as default Volumio kiosk. Note that the WebGL option is currently experimental and your mileage may vary regarding performance.",
   "NOW_PLAYING_DOC_BROADCAST_REFRESH": "Sends a command to all active Now Playing screens to refresh themselves.",
   "NOW_PLAYING_DOC_KIOSK_RESTORE_BAK": "You can try restoring it from a backup copy that had been configured to show Volumio's default interface.",
   "NOW_PLAYING_DOC_GENIUS_ACCESS_TOKEN": "A Genius Access Token is required to access the plugin's metadata service.",
