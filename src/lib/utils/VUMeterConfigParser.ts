@@ -44,6 +44,7 @@ export default class VUMeterConfigParser {
         const screenBackground = this.#getConfigProp(config, section, 'screen.bgr', null);
         const foreground = this.#getConfigProp(config, section, 'fgr.filename', null);
         const meterBase: VUMeterBase = {
+          template,
           name: section,
           type: meterType,
           meter: {

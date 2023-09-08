@@ -51,6 +51,7 @@ class VUMeterConfigParser {
                 const screenBackground = __classPrivateFieldGet(this, _a, "m", _VUMeterConfigParser_getConfigProp).call(this, config, section, 'screen.bgr', null);
                 const foreground = __classPrivateFieldGet(this, _a, "m", _VUMeterConfigParser_getConfigProp).call(this, config, section, 'fgr.filename', null);
                 const meterBase = {
+                    template,
                     name: section,
                     type: meterType,
                     meter: {
