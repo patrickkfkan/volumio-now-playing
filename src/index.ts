@@ -1402,11 +1402,17 @@ class ControllerNowPlaying {
     performanceUIConf.content.unmountVolumioScreenOnExit.value = performanceSettings.unmountVolumioScreenOnExit;
     performanceUIConf.content.vuMeterRenderingKiosk.value = {
       value: performanceSettings.vuMeterRenderingKiosk,
-      label: performanceSettings.vuMeterRenderingKiosk == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+      label:
+        performanceSettings.vuMeterRenderingKiosk == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') :
+          performanceSettings.vuMeterRenderingKiosk == 'canvas' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CANVAS') :
+            np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
     performanceUIConf.content.vuMeterRenderingOtherDevices.value = {
       value: performanceSettings.vuMeterRenderingOtherDevices,
-      label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+      label:
+        performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') :
+          performanceSettings.vuMeterRenderingOtherDevices == 'canvas' ? np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CANVAS') :
+            np.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
     performanceUIConf.content.vuMeterWebGLShowStats.value = performanceSettings.vuMeterWebGLShowStats;
 

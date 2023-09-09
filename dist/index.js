@@ -1825,11 +1825,15 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     performanceUIConf.content.unmountVolumioScreenOnExit.value = performanceSettings.unmountVolumioScreenOnExit;
     performanceUIConf.content.vuMeterRenderingKiosk.value = {
         value: performanceSettings.vuMeterRenderingKiosk,
-        label: performanceSettings.vuMeterRenderingKiosk == 'webgl' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+        label: performanceSettings.vuMeterRenderingKiosk == 'webgl' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') :
+            performanceSettings.vuMeterRenderingKiosk == 'canvas' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CANVAS') :
+                NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
     performanceUIConf.content.vuMeterRenderingOtherDevices.value = {
         value: performanceSettings.vuMeterRenderingOtherDevices,
-        label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
+        label: performanceSettings.vuMeterRenderingOtherDevices == 'webgl' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_WEBGL') :
+            performanceSettings.vuMeterRenderingOtherDevices == 'canvas' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CANVAS') :
+                NowPlayingContext_1.default.getI18n('NOW_PLAYING_VU_METER_RENDERING_CSS')
     };
     performanceUIConf.content.vuMeterWebGLShowStats.value = performanceSettings.vuMeterWebGLShowStats;
     // Backup Config conf

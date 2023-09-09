@@ -3851,6 +3851,10 @@
               "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_WEBGL"
             },
             {
+              "value": "canvas",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CANVAS"
+            },
+            {
               "value": "css",
               "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
             }
@@ -3871,6 +3875,10 @@
               "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_WEBGL"
             },
             {
+              "value": "canvas",
+              "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CANVAS"
+            },
+            {
               "value": "css",
               "label": "TRANSLATE.NOW_PLAYING_VU_METER_RENDERING_CSS"
             }
@@ -3879,6 +3887,7 @@
         {
           "id": "vuMeterWebGLShowStats",
           "element": "switch",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_VU_METER_WEBGL_SHOW_STATS",
           "label": "TRANSLATE.NOW_PLAYING_VU_METER_WEBGL_SHOW_STATS",
           "value": false
         }
