@@ -12,6 +12,7 @@ declare class VUMeterTemplateMonitor extends FSMonitor<['addDir', 'unlinkDir']> 
     getRandomTemplate(): Promise<string | null>;
     stop(): Promise<void>;
     protected handleEvent(event: 'addDir' | 'unlinkDir', _path: string): void;
+    get status(): "initializing" | "running" | "updating" | "stopped";
 }
 declare const vuMeterTemplateMonitor: VUMeterTemplateMonitor;
 export default vuMeterTemplateMonitor;

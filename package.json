@@ -69,6 +69,7 @@
 		"node-cache": "^5.1.2",
 		"node-fetch": "^2.6.9",
 		"now-playing-common": "github:patrickkfkan/volumio-now-playing-common#vu",
+		"queue": "^6.0.2",
 		"semver": "^7.5.4",
 		"string-format": "^2.0.0",
 		"v-conf": "^1.4.3",
