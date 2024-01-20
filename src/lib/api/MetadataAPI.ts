@@ -2,6 +2,7 @@ import Genius, { Album, Artist, Song, TextFormat } from 'genius-fetch';
 import md5 from 'md5';
 import np from '../NowPlayingContext';
 import Cache from '../utils/Cache';
+import { removeSongNumber } from '../utils/Misc';
 import { Metadata, MetadataAlbumInfo, MetadataArtistInfo, MetadataSongInfo } from 'now-playing-common';
 
 type ItemType = 'song' | 'album' | 'artist';
@@ -210,6 +211,8 @@ class MetadataAPI {
   }
 
   async fetchInfo(params: { type: ItemType; name: string; album?: string; artist?: string; }) {
+    const isTrackNumberEnabled = np.getPluginSetting('music_service', 'mpd', 'tracknumbers');
+
     if (!np.getConfigValue('geniusAccessToken')) {
       throw Error(np.getI18n('NOW_PLAYING_ERR_METADATA_NO_TOKEN'));
     }
@@ -218,7 +221,8 @@ class MetadataAPI {
       const cacheKey = md5(JSON.stringify(params));
       if (params.type === 'song' && params.album) {
         const album = params.album;
-        info = await this.#cache.getOrSet('song', cacheKey, () => this.#getSongInfo({ ...params, album }));
+        const name = isTrackNumberEnabled ? removeSongNumber(params.name) : params.name;
+        info = await this.#cache.getOrSet('song', cacheKey, () => this.#getSongInfo({ ...params, album, name }));
       }
       else if (params.type === 'album') {
         info = await this.#cache.getOrSet('album', cacheKey, () => this.#getAlbumInfo(params));
