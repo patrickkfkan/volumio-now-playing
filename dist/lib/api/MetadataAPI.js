@@ -42,6 +42,7 @@ const genius_fetch_1 = __importStar(require("genius-fetch"));
 const md5_1 = __importDefault(require("md5"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
 const Cache_1 = __importDefault(require("../utils/Cache"));
+const Misc_1 = require("../utils/Misc");
 class MetadataAPI {
     constructor() {
         _MetadataAPI_instances.add(this);
@@ -71,6 +72,7 @@ class MetadataAPI {
         __classPrivateFieldSet(this, _MetadataAPI_accessToken, accessToken, "f");
     }
     async fetchInfo(params) {
+        const isTrackNumberEnabled = NowPlayingContext_1.default.getPluginSetting('music_service', 'mpd', 'tracknumbers');
         if (!NowPlayingContext_1.default.getConfigValue('geniusAccessToken')) {
             throw Error(NowPlayingContext_1.default.getI18n('NOW_PLAYING_ERR_METADATA_NO_TOKEN'));
         }
@@ -79,7 +81,8 @@ class MetadataAPI {
             const cacheKey = (0, md5_1.default)(JSON.stringify(params));
             if (params.type === 'song' && params.album) {
                 const album = params.album;
-                info = await __classPrivateFieldGet(this, _MetadataAPI_cache, "f").getOrSet('song', cacheKey, () => __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getSongInfo).call(this, { ...params, album }));
+                const name = isTrackNumberEnabled ? (0, Misc_1.removeSongNumber)(params.name) : params.name;
+                info = await __classPrivateFieldGet(this, _MetadataAPI_cache, "f").getOrSet('song', cacheKey, () => __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getSongInfo).call(this, { ...params, album, name }));
             }
             else if (params.type === 'album') {
                 info = await __classPrivateFieldGet(this, _MetadataAPI_cache, "f").getOrSet('album', cacheKey, () => __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getAlbumInfo).call(this, params));
