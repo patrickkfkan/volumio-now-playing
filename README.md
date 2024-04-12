@@ -82,7 +82,9 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 0.5.6
 - Fix weather not displayed following changes in openweathermap.org
-- Metadata service: add option to exclude parenthesized words in metadata queries
+- Metadata service: 
+  - Add option to exclude parenthesized words from query
+  - Remove track number (if enabled) before submitting query ([PR](https://github.com/patrickkfkan/volumio-now-playing/pull/12) by [Victor-arias](https://github.com/Victor-arias))
 
 0.5.5
 - Fix weather not displayed following changes in openweathermap.org
