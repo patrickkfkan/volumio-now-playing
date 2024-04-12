@@ -80,6 +80,10 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.5.6
+- Fix weather not displayed following changes in openweathermap.org
+- Metadata service: add option to exclude parenthesized words in metadata queries
+
 0.5.5
 - Fix weather not displayed following changes in openweathermap.org
 
