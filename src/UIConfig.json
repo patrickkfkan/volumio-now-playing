@@ -1748,7 +1748,11 @@
       "saveButton": {
         "label": "TRANSLATE.NOW_PLAYING_SAVE",
         "data": [
-          "enabled"
+          "enabled",
+          "iconSettings",
+          "iconStyle",
+          "iconSize",
+          "margin"
         ]
       },
       "content": [
@@ -1758,6 +1762,72 @@
           "doc": "",
           "label": "TRANSLATE.NOW_PLAYING_ENABLED",
           "value": true
+        },
+        {
+          "id": "iconSettings",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_ICON_SETTINGS",
+          "value": {
+            "value": "default",
+            "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+          },
+          "options": [
+            {
+              "value": "default",
+              "label": "TRANSLATE.NOW_PLAYING_DEFAULT"
+            },
+            {
+              "value": "custom",
+              "label": "TRANSLATE.NOW_PLAYING_CUSTOM"
+            }
+          ]
+        },
+        {
+          "id": "iconStyle",
+          "element": "select",
+          "label": "TRANSLATE.NOW_PLAYING_STYLE",
+          "value": {
+            "value": "ellipsis_v",
+            "label": "TRANSLATE.NOW_PLAYING_ELLIPSIS_V"
+          },
+          "options": [
+            {
+              "value": "ellipsis_h",
+              "label": "TRANSLATE.NOW_PLAYING_ELLIPSIS_H"
+            },
+            {
+              "value": "ellipsis_v",
+              "label": "TRANSLATE.NOW_PLAYING_ELLIPSIS_V"
+            },
+            {
+              "value": "hamburger", 
+              "label": "TRANSLATE.NOW_PLAYING_HAMBURGER"
+            }
+          ],
+          "visibleIf": {
+            "field": "iconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "iconSize",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SIZE",
+          "label": "TRANSLATE.NOW_PLAYING_SIZE",
+          "value": "",
+          "visibleIf": {
+            "field": "iconSettings",
+            "value": "custom"
+          }
+        },
+        {
+          "id": "margin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MARGIN",
+          "value": ""
         }
       ]
     },

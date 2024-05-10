@@ -148,7 +148,11 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'showVolumeSlider' :
 
   K extends 'section_docked_menu' ?
-    'enabled' :
+    'enabled' | 
+    'iconSettings' | 
+    'iconStyle' | 
+    'iconSize' | 
+    'margin' :
 
   K extends 'section_docked_action_panel_trigger' ?
     'enabled' | 
@@ -445,6 +449,10 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
 
   K extends 'section_docked_menu' ? (
     C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'iconSettings' ? UIConfigSelect<K> :
+    C extends 'iconStyle' ? UIConfigSelect<K> :
+    C extends 'iconSize' ? UIConfigInput<K, 'text'> :
+    C extends 'margin' ? UIConfigInput<K, 'text'> :
     never
   ) : 
 

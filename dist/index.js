@@ -1012,6 +1012,33 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
      */
     const dockedMenu = nowPlayingScreen.dockedMenu;
     dockedMenuUIConf.content.enabled.value = dockedMenu.enabled;
+    dockedMenuUIConf.content.iconSettings.value = {
+        value: dockedMenu.iconSettings,
+        label: dockedMenu.iconSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    dockedMenuUIConf.content.iconStyle.value = {
+        value: dockedMenu.iconStyle,
+        label: ''
+    };
+    switch (dockedMenu.iconStyle) {
+        case 'ellipsis_h':
+            dockedMenuUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ELLIPSIS_H');
+            break;
+        case 'hamburger':
+            dockedMenuUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_HAMBURGER');
+            break;
+        default:
+            dockedMenuUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ELLIPSIS_V');
+    }
+    dockedMenuUIConf.content.iconSize.value = dockedMenu.iconSize;
+    dockedMenuUIConf.content.iconColor.value = dockedMenu.iconColor;
+    dockedMenuUIConf.content.margin.value = dockedMenu.margin;
+    if (!dockedMenu.enabled) {
+        dockedMenuUIConf.content = [dockedMenuUIConf.content.enabled];
+        if (dockedMenuUIConf.saveButton) {
+            dockedMenuUIConf.saveButton.data = ['enabled'];
+        }
+    }
     /**
      * Docked Action Panel Trigger
      */

@@ -592,6 +592,32 @@ class ControllerNowPlaying {
      */
     const dockedMenu = nowPlayingScreen.dockedMenu;
     dockedMenuUIConf.content.enabled.value = dockedMenu.enabled;
+    dockedMenuUIConf.content.iconSettings.value = {
+      value: dockedMenu.iconSettings,
+      label: dockedMenu.iconSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    dockedMenuUIConf.content.iconStyle.value = {
+      value: dockedMenu.iconStyle,
+      label: ''
+    };
+    switch (dockedMenu.iconStyle) {
+      case 'ellipsis_h':
+        dockedMenuUIConf.content.iconStyle.value.label = np.getI18n('NOW_PLAYING_ELLIPSIS_H');
+        break;
+      case 'hamburger':
+        dockedMenuUIConf.content.iconStyle.value.label = np.getI18n('NOW_PLAYING_HAMBURGER');
+        break;
+      default:
+        dockedMenuUIConf.content.iconStyle.value.label = np.getI18n('NOW_PLAYING_ELLIPSIS_V');
+    }
+    dockedMenuUIConf.content.iconSize.value = dockedMenu.iconSize;
+    dockedMenuUIConf.content.margin.value = dockedMenu.margin;
+    if (!dockedMenu.enabled) {
+      dockedMenuUIConf.content = [ dockedMenuUIConf.content.enabled ] as any;
+      if (dockedMenuUIConf.saveButton) {
+        dockedMenuUIConf.saveButton.data = [ 'enabled' ];
+      }
+    }
 
     /**
      * Docked Action Panel Trigger
@@ -1684,7 +1710,7 @@ class ControllerNowPlaying {
     this.#configSaveDockedComponentSettings(data, 'dockedMediaFormat');
   }
 
-  #configSaveDockedComponentSettings(data: Record<string, any>, componentName: DockedComponentKey) {
+  #configSaveDockedComponentSettings<T extends DockedComponentKey>(data: Record<string, any>, componentName: T) {
     const apply = this.#parseConfigSaveData(data);
     const screen = np.getConfigValue('screen.nowPlaying');
     const current = screen[componentName] || {};
