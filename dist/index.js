@@ -290,6 +290,9 @@ class ControllerNowPlaying {
     configSaveDockedWeatherSettings(data) {
         __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_configSaveDockedComponentSettings).call(this, data, 'dockedWeather');
     }
+    configSaveDockedMediaFormatSettings(data) {
+        __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_configSaveDockedComponentSettings).call(this, data, 'dockedMediaFormat');
+    }
     configSaveLocalizationSettings(data) {
         const settings = {
             geoCoordinates: data.geoCoordinates,
@@ -520,6 +523,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     const dockedVolumeIndicatorUIConf = uiconf.section_docked_volume_indicator;
     const dockedClockUIConf = uiconf.section_docked_clock;
     const dockedWeatherUIConf = uiconf.section_docked_weather;
+    const dockedMediaFormatUIConf = uiconf.section_docked_media_format;
     const idleScreenUIConf = uiconf.section_idle_view;
     const extraScreensUIConf = uiconf.section_extra_screens;
     const kioskUIConf = uiconf.section_kiosk;
@@ -1337,6 +1341,54 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         dockedWeatherUIConf.content = [dockedWeatherUIConf.content.enabled];
         if (dockedWeatherUIConf.saveButton) {
             dockedWeatherUIConf.saveButton.data = ['enabled'];
+        }
+    }
+    /**
+     * Docked Media Format
+     */
+    const dockedMediaFormat = nowPlayingScreen.dockedMediaFormat;
+    dockedMediaFormatUIConf.content.enabled.value = dockedMediaFormat.enabled;
+    dockedMediaFormatUIConf.content.placement.value = {
+        value: dockedMediaFormat.placement,
+        label: ''
+    };
+    switch (dockedMediaFormat.placement) {
+        case 'top-left':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+            break;
+        case 'top':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP');
+            break;
+        case 'top-right':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+            break;
+        case 'left':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_LEFT');
+            break;
+        case 'right':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_RIGHT');
+            break;
+        case 'bottom-left':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+            break;
+        case 'bottom':
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+            break;
+        default:
+            dockedMediaFormatUIConf.content.placement.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+    }
+    dockedMediaFormatUIConf.content.displayOrder.value = UIConfigHelper_1.default.sanitizeNumberInput(dockedMediaFormat.displayOrder);
+    dockedMediaFormatUIConf.content.fontSettings.value = {
+        value: dockedMediaFormat.fontSettings,
+        label: dockedMediaFormat.fontSettings == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    dockedMediaFormatUIConf.content.fontSize.value = dockedMediaFormat.fontSize;
+    dockedMediaFormatUIConf.content.fontColor.value = dockedMediaFormat.fontColor;
+    dockedMediaFormatUIConf.content.margin.value = dockedMediaFormat.margin;
+    if (!dockedMediaFormat.enabled) {
+        dockedMediaFormatUIConf.content = [dockedMediaFormatUIConf.content.enabled];
+        if (dockedMediaFormatUIConf.saveButton) {
+            dockedMediaFormatUIConf.saveButton.data = ['enabled'];
         }
     }
     /**

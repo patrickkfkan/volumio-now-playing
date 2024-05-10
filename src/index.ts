@@ -67,6 +67,7 @@ class ControllerNowPlaying {
     const dockedVolumeIndicatorUIConf = uiconf.section_docked_volume_indicator;
     const dockedClockUIConf = uiconf.section_docked_clock;
     const dockedWeatherUIConf = uiconf.section_docked_weather;
+    const dockedMediaFormatUIConf = uiconf.section_docked_media_format;
     const idleScreenUIConf = uiconf.section_idle_view;
     const extraScreensUIConf = uiconf.section_extra_screens;
     const kioskUIConf = uiconf.section_kiosk;
@@ -928,6 +929,55 @@ class ControllerNowPlaying {
     }
 
     /**
+     * Docked Media Format
+     */
+    const dockedMediaFormat = nowPlayingScreen.dockedMediaFormat;
+    dockedMediaFormatUIConf.content.enabled.value = dockedMediaFormat.enabled;
+    dockedMediaFormatUIConf.content.placement.value = {
+      value: dockedMediaFormat.placement,
+      label: ''
+    };
+    switch (dockedMediaFormat.placement) {
+      case 'top-left':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_LEFT');
+        break;
+      case 'top':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_TOP');
+        break;
+      case 'top-right':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_TOP_RIGHT');
+        break;
+      case 'left':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_LEFT');
+        break;
+      case 'right':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_RIGHT');
+        break;
+      case 'bottom-left':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_LEFT');
+        break;
+      case 'bottom':
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM');
+        break;
+      default:
+        dockedMediaFormatUIConf.content.placement.value.label = np.getI18n('NOW_PLAYING_POSITION_BOTTOM_RIGHT');
+    }
+    dockedMediaFormatUIConf.content.displayOrder.value = UIConfigHelper.sanitizeNumberInput(dockedMediaFormat.displayOrder);
+    dockedMediaFormatUIConf.content.fontSettings.value = {
+      value: dockedMediaFormat.fontSettings,
+      label: dockedMediaFormat.fontSettings == 'default' ? np.getI18n('NOW_PLAYING_DEFAULT') : np.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    dockedMediaFormatUIConf.content.fontSize.value = dockedMediaFormat.fontSize;
+    dockedMediaFormatUIConf.content.fontColor.value = dockedMediaFormat.fontColor;
+    dockedMediaFormatUIConf.content.margin.value = dockedMediaFormat.margin;
+    if (!dockedMediaFormat.enabled) {
+      dockedMediaFormatUIConf.content = [ dockedMediaFormatUIConf.content.enabled ] as any;
+      if (dockedMediaFormatUIConf.saveButton) {
+        dockedMediaFormatUIConf.saveButton.data = [ 'enabled' ];
+      }
+    }
+
+    /**
      * Idle Screen conf
      */
     const idleScreen = CommonSettingsLoader.get(CommonSettingsCategory.IdleScreen);
@@ -1628,6 +1678,10 @@ class ControllerNowPlaying {
 
   configSaveDockedWeatherSettings(data: Record<string, any>) {
     this.#configSaveDockedComponentSettings(data, 'dockedWeather');
+  }
+
+  configSaveDockedMediaFormatSettings(data: Record<string, any>) {
+    this.#configSaveDockedComponentSettings(data, 'dockedMediaFormat');
   }
 
   #configSaveDockedComponentSettings(data: Record<string, any>, componentName: DockedComponentKey) {

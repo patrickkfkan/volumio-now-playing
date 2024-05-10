@@ -168,6 +168,7 @@
   "NOW_PLAYING_MONOCHROME": "Monochrome",
   "NOW_PLAYING_ICON_MONO_COLOR": "- Monochrome Color",
   "NOW_PLAYING_ICON_ANIMATE": "- Animate (Filled or Outline Style Only; Increases CPU Usage)",
+  "NOW_PLAYING_DOCKED_MEDIA_FORMAT": "Dock Component - Media Format",
   "NOW_PLAYING_METADATA_SERVICE": "Metadata Service",
   "NOW_PLAYING_GENIUS_ACCESS_TOKEN": "Genius Access Token",
   "NOW_PLAYING_ACCESS_TOKEN_GUIDE": "Access Token Guide",

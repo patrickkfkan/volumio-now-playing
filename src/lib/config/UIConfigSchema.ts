@@ -17,6 +17,7 @@ export type UIConfigSectionKey =
               'section_docked_volume_indicator' | 
               'section_docked_clock' | 
               'section_docked_weather' | 
+              'section_docked_media_format' | 
               'section_idle_view' | 
               'section_extra_screens' | 
               'section_kiosk' | 
@@ -208,6 +209,15 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'iconSize' | 
     'iconMonoColor' | 
     'iconAnimate' | 
+    'margin' :
+
+  K extends 'section_docked_media_format' ?
+    'enabled' | 
+    'placement' | 
+    'displayOrder' | 
+    'fontSettings' | 
+    'fontSize' | 
+    'fontColor' | 
     'margin' :
 
   K extends 'section_idle_view' ?
@@ -503,6 +513,17 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'iconSize' ? UIConfigInput<K, 'text'> :
     C extends 'iconMonoColor' ? UIConfigInput<K, 'color'> :
     C extends 'iconAnimate' ? UIConfigSwitch<K> :
+    C extends 'margin' ? UIConfigInput<K, 'text'> :
+    never
+  ) : 
+
+  K extends 'section_docked_media_format' ? (
+    C extends 'enabled' ? UIConfigSwitch<K> :
+    C extends 'placement' ? UIConfigSelect<K> :
+    C extends 'displayOrder' ? UIConfigInput<K, 'number'> :
+    C extends 'fontSettings' ? UIConfigSelect<K> :
+    C extends 'fontSize' ? UIConfigInput<K, 'text'> :
+    C extends 'fontColor' ? UIConfigInput<K, 'color'> :
     C extends 'margin' ? UIConfigInput<K, 'text'> :
     never
   ) : 
