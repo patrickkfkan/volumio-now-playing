@@ -100,6 +100,11 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'seekbarVisibility' | 
     'playbackButtonSizeType' | 
     'playbackButtonSize' | 
+    'seekbarStyling' | 
+    'seekbarThickness' | 
+    'seekbarBorderRadius' | 
+    'seekbarShowThumb' | 
+    'seekbarThumbSize' | 
     'widgetMargins' | 
     'playbackButtonsMargin' | 
     'seekbarMargin' :
@@ -374,6 +379,11 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'seekbarVisibility' ? UIConfigSwitch<K> :
     C extends 'playbackButtonSizeType' ? UIConfigSelect<K> :
     C extends 'playbackButtonSize' ? UIConfigInput<K, 'text'> :
+    C extends 'seekbarStyling' ? UIConfigSelect<K> :
+    C extends 'seekbarThickness' ? UIConfigInput<K, 'text'> :
+    C extends 'seekbarBorderRadius' ? UIConfigInput<K, 'text'> :
+    C extends 'seekbarShowThumb' ? UIConfigSwitch<K> :
+    C extends 'seekbarThumbSize' ? UIConfigInput<K, 'text'> :
     C extends 'widgetMargins' ? UIConfigSelect<K> :
     C extends 'playbackButtonsMargin' ? UIConfigInput<K, 'text'> :
     C extends 'seekbarMargin' ? UIConfigInput<K, 'text'> :

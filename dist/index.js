@@ -217,6 +217,11 @@ class ControllerNowPlaying {
             seekbarVisibility: data.seekbarVisibility,
             playbackButtonSizeType: data.playbackButtonSizeType.value,
             playbackButtonSize: data.playbackButtonSize,
+            seekbarStyling: data.seekbarStyling.value,
+            seekbarThickness: data.seekbarThickness,
+            seekbarBorderRadius: data.seekbarBorderRadius,
+            seekbarShowThumb: data.seekbarShowThumb,
+            seekbarThumbSize: data.seekbarThumbSize,
             widgetMargins: data.widgetMargins.value,
             playbackButtonsMargin: data.playbackButtonsMargin,
             seekbarMargin: data.seekbarMargin
@@ -751,6 +756,14 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
         label: nowPlayingScreen.playbackButtonSizeType == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
     };
     widgetStylesUIConf.content.playbackButtonSize.value = nowPlayingScreen.playbackButtonSize;
+    widgetStylesUIConf.content.seekbarStyling.value = {
+        value: nowPlayingScreen.seekbarStyling,
+        label: nowPlayingScreen.seekbarStyling == 'default' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
+    };
+    widgetStylesUIConf.content.seekbarThickness.value = nowPlayingScreen.seekbarThickness;
+    widgetStylesUIConf.content.seekbarBorderRadius.value = nowPlayingScreen.seekbarBorderRadius;
+    widgetStylesUIConf.content.seekbarShowThumb.value = nowPlayingScreen.seekbarShowThumb;
+    widgetStylesUIConf.content.seekbarThumbSize.value = nowPlayingScreen.seekbarThumbSize;
     widgetStylesUIConf.content.widgetMargins.value = {
         value: nowPlayingScreen.widgetMargins,
         label: nowPlayingScreen.widgetMargins == 'auto' ? NowPlayingContext_1.default.getI18n('NOW_PLAYING_AUTO') : NowPlayingContext_1.default.getI18n('NOW_PLAYING_CUSTOM')
