@@ -1752,7 +1752,6 @@
           "iconSettings",
           "iconStyle",
           "iconSize",
-          "iconColor",
           "margin"
         ]
       },
@@ -1816,18 +1815,6 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_SIZE",
           "label": "TRANSLATE.NOW_PLAYING_SIZE",
-          "value": "",
-          "visibleIf": {
-            "field": "iconSettings",
-            "value": "custom"
-          }
-        },
-        {
-          "id": "iconColor",
-          "type": "color",
-          "element": "input",
-          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_COLOR",
-          "label": "TRANSLATE.NOW_PLAYING_COLOR_LI",
           "value": "",
           "visibleIf": {
             "field": "iconSettings",

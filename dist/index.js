@@ -1031,7 +1031,6 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
             dockedMenuUIConf.content.iconStyle.value.label = NowPlayingContext_1.default.getI18n('NOW_PLAYING_ELLIPSIS_V');
     }
     dockedMenuUIConf.content.iconSize.value = dockedMenu.iconSize;
-    dockedMenuUIConf.content.iconColor.value = dockedMenu.iconColor;
     dockedMenuUIConf.content.margin.value = dockedMenu.margin;
     if (!dockedMenu.enabled) {
         dockedMenuUIConf.content = [dockedMenuUIConf.content.enabled];
