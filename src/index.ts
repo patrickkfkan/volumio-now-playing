@@ -371,6 +371,7 @@ class ControllerNowPlaying {
     }
     albumartStylesUIConf.content.albumartBorder.value = nowPlayingScreen.albumartBorder;
     albumartStylesUIConf.content.albumartBorderRadius.value = nowPlayingScreen.albumartBorderRadius;
+    albumartStylesUIConf.content.albumartMargin.value = nowPlayingScreen.albumartMargin;
     if (!nowPlayingScreen.albumartVisibility) {
       albumartStylesUIConf.content = [ albumartStylesUIConf.content.albumartVisibility ] as any;
       if (albumartStylesUIConf.saveButton) {

@@ -117,7 +117,8 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'albumartHeight' | 
     'albumartFit' | 
     'albumartBorder' | 
-    'albumartBorderRadius' :
+    'albumartBorderRadius' | 
+    'albumartMargin' :
 
   K extends 'section_background_style' ?
     'backgroundType' | 
@@ -412,6 +413,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
     C extends 'albumartFit' ? UIConfigSelect<K> :
     C extends 'albumartBorder' ? UIConfigInput<K, 'text'> :
     C extends 'albumartBorderRadius' ? UIConfigInput<K, 'text'> :
+    C extends 'albumartMargin' ? UIConfigInput<K, 'text'> :
     never
   ) : 
 

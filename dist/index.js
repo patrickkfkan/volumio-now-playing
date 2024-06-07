@@ -800,6 +800,7 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     }
     albumartStylesUIConf.content.albumartBorder.value = nowPlayingScreen.albumartBorder;
     albumartStylesUIConf.content.albumartBorderRadius.value = nowPlayingScreen.albumartBorderRadius;
+    albumartStylesUIConf.content.albumartMargin.value = nowPlayingScreen.albumartMargin;
     if (!nowPlayingScreen.albumartVisibility) {
         albumartStylesUIConf.content = [albumartStylesUIConf.content.albumartVisibility];
         if (albumartStylesUIConf.saveButton) {

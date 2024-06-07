@@ -1132,7 +1132,8 @@
           "albumartHeight",
           "albumartFit",
           "albumartBorder",
-          "albumartBorderRadius"
+          "albumartBorderRadius",
+          "albumartMargin"
         ]
       },
       "content": [
@@ -1226,6 +1227,14 @@
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_ALBUM_ART_BORDER_RADIUS",
           "label": "TRANSLATE.NOW_PLAYING_BORDER_RADIUS",
+          "value": ""
+        },
+        {
+          "id": "albumartMargin",
+          "type": "text",
+          "element": "input",
+          "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_MARGIN",
+          "label": "TRANSLATE.NOW_PLAYING_MARGIN",
           "value": ""
         }
       ]
