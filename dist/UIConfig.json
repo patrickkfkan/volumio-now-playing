@@ -330,7 +330,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_PADDING",
-          "label": "TRANSLATE.NOW_PLAYING_NP_BASIC",
+          "label": "TRANSLATE.NOW_PLAYING_NP_BASIC_LI",
           "value": "",
           "visibleIf": {
             "field": "padding",
@@ -342,7 +342,7 @@
           "type": "text",
           "element": "input",
           "doc": "TRANSLATE.NOW_PLAYING_DOC_CSS_PADDING",
-          "label": "TRANSLATE.NOW_PLAYING_NP_INFO",
+          "label": "TRANSLATE.NOW_PLAYING_NP_INFO_LI",
           "value": "",
           "visibleIf": {
             "field": "padding",

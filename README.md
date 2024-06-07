@@ -80,6 +80,11 @@ Starting from version 0.2.0, the web client and preview page are implemented in 
 
 ## Changelog
 
+0.6.1
+- Add 'Content Region' settings
+- Add 'Album Art -> Margin' setting
+- Update web client v0.6.1
+
 0.6.0
 - Add seekbar styling options
 - Add 'Dock Component - Media Format'
