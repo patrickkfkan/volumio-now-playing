@@ -61,7 +61,7 @@ class MetadataAPI {
 
   }
 
-  #getSongSnippet(info: Song | null): MetadataSongInfo | null {
+  #getSongSnippet(info: Song | null): MetadataSongInfo & { embed?: string } | null {
     if (!info) {
       return null;
     }
@@ -129,17 +129,21 @@ class MetadataAPI {
         artist: params.artist
       };
       const song = await this.#getSongByNameOrBestMatch(matchParams);
-      if (song) {
-        result.song = this.#getSongSnippet(song);
+      const songSnippet = this.#getSongSnippet(song);
+      if (song && songSnippet) {
+        const { title, description, image, embed } = songSnippet;
+        result.song = { title, description, image };
         if (song.artists && song.artists.primary) {
           const artist = await this.#genius.getArtistById(song.artists.primary.id, { textFormat: TextFormat.Plain });
           result.artist = this.#getArtistSnippet(artist);
         }
-
-        if (result.song?.embed) {
-          const embedContents = await this.#genius.parseSongEmbed(result.song.embed);
+        if (embed) {
+          const embedContents = await this.#genius.parseSongEmbed(embed);
           if (embedContents) {
-            result.song.embedContents = embedContents;
+            result.song.lyrics = {
+              type: 'html',
+              lines: embedContents.contentParts.join()
+            };
           }
         }
       }

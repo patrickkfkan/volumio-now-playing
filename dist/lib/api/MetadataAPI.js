@@ -177,16 +177,21 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_genius = new WeakMap(),
             artist: params.artist
         };
         const song = await __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getSongByNameOrBestMatch).call(this, matchParams);
-        if (song) {
-            result.song = __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getSongSnippet).call(this, song);
+        const songSnippet = __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getSongSnippet).call(this, song);
+        if (song && songSnippet) {
+            const { title, description, image, embed } = songSnippet;
+            result.song = { title, description, image };
             if (song.artists && song.artists.primary) {
                 const artist = await __classPrivateFieldGet(this, _MetadataAPI_genius, "f").getArtistById(song.artists.primary.id, { textFormat: genius_fetch_1.TextFormat.Plain });
                 result.artist = __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getArtistSnippet).call(this, artist);
             }
-            if (result.song?.embed) {
-                const embedContents = await __classPrivateFieldGet(this, _MetadataAPI_genius, "f").parseSongEmbed(result.song.embed);
+            if (embed) {
+                const embedContents = await __classPrivateFieldGet(this, _MetadataAPI_genius, "f").parseSongEmbed(embed);
                 if (embedContents) {
-                    result.song.embedContents = embedContents;
+                    result.song.lyrics = {
+                        type: 'html',
+                        lines: embedContents.contentParts.join()
+                    };
                 }
             }
         }
