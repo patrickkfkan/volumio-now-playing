@@ -101,6 +101,10 @@ class NowPlayingContext {
     return this.#pluginContext.coreCommand.executeOnPlugin(type, plugin, 'getConfigParam', setting);
   }
 
+  getMusicServicePlugin(name: string): any {
+    return this.#pluginContext.coreCommand.pluginManager.getPlugin('music_service', name) || null;
+  }
+
   getErrorMessage(message: string, error: any, stack = true): string {
     let result = message;
     if (typeof error == 'object') {

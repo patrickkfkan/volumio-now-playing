@@ -1,17 +1,7 @@
-import lodash from 'lodash';
 import np from '../NowPlayingContext';
+import { assignObjectEmptyProps } from '../utils/Misc';
 import ConfigHelper from './ConfigHelper';
 import { CommonSettingsCategory, CommonSettingsOf, DefaultSettings } from 'now-playing-common';
-
-const mergeSettingsCustomizer = (target: any, src: any): any => {
-  if (typeof target === 'object') {
-    return lodash.mergeWith(target, src, mergeSettingsCustomizer);
-  }
-  if (target === undefined || target === null || (typeof target === 'string' && target.trim() === '')) {
-    return src;
-  }
-  return target;
-};
 
 export default class CommonSettingsLoader {
 
@@ -55,7 +45,7 @@ export default class CommonSettingsLoader {
 
   static #getDefaultNormalized<T extends CommonSettingsCategory>(category: T): CommonSettingsOf<T> {
     const settings = np.getConfigValue(category);
-    const merged = lodash.mergeWith({}, settings, DefaultSettings[category], mergeSettingsCustomizer);
+    const merged = assignObjectEmptyProps({}, settings, DefaultSettings[category]);
     return merged;
   }
 }

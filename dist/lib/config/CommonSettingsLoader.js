@@ -9,19 +9,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a, _CommonSettingsLoader_getLocalizationSettings, _CommonSettingsLoader_getDefaultNormalized;
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = __importDefault(require("lodash"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
+const Misc_1 = require("../utils/Misc");
 const ConfigHelper_1 = __importDefault(require("./ConfigHelper"));
 const now_playing_common_1 = require("now-playing-common");
-const mergeSettingsCustomizer = (target, src) => {
-    if (typeof target === 'object') {
-        return lodash_1.default.mergeWith(target, src, mergeSettingsCustomizer);
-    }
-    if (target === undefined || target === null || (typeof target === 'string' && target.trim() === '')) {
-        return src;
-    }
-    return target;
-};
 class CommonSettingsLoader {
     static get(category) {
         if (category === now_playing_common_1.CommonSettingsCategory.Localization) {
@@ -58,7 +49,7 @@ _a = CommonSettingsLoader, _CommonSettingsLoader_getLocalizationSettings = funct
     return localization;
 }, _CommonSettingsLoader_getDefaultNormalized = function _CommonSettingsLoader_getDefaultNormalized(category) {
     const settings = NowPlayingContext_1.default.getConfigValue(category);
-    const merged = lodash_1.default.mergeWith({}, settings, now_playing_common_1.DefaultSettings[category], mergeSettingsCustomizer);
+    const merged = (0, Misc_1.assignObjectEmptyProps)({}, settings, now_playing_common_1.DefaultSettings[category]);
     return merged;
 };
 //# sourceMappingURL=CommonSettingsLoader.js.map

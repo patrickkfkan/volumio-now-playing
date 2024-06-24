@@ -87,6 +87,9 @@ class NowPlayingContext {
     getPluginSetting(type, plugin, setting) {
         return __classPrivateFieldGet(this, _NowPlayingContext_pluginContext, "f").coreCommand.executeOnPlugin(type, plugin, 'getConfigParam', setting);
     }
+    getMusicServicePlugin(name) {
+        return __classPrivateFieldGet(this, _NowPlayingContext_pluginContext, "f").coreCommand.pluginManager.getPlugin('music_service', name) || null;
+    }
     getErrorMessage(message, error, stack = true) {
         let result = message;
         if (typeof error == 'object') {
