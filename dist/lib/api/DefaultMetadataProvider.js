@@ -48,6 +48,7 @@ class DefaultMetadataProvider {
         __classPrivateFieldSet(this, _DefaultMetadataProvider_genius, new genius_fetch_1.default(), "f");
     }
     config(params) {
+        this.version = '1.0.0';
         __classPrivateFieldSet(this, _DefaultMetadataProvider_accessToken, params.accessToken, "f");
         __classPrivateFieldGet(this, _DefaultMetadataProvider_genius, "f").config(params);
     }

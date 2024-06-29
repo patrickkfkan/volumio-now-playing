@@ -1,6 +1,7 @@
 import { MetadataAlbumInfo, MetadataArtistInfo, MetadataSongInfo, NowPlayingMetadataProvider } from 'now-playing-common';
 export default class DefaultMetadataProvider implements NowPlayingMetadataProvider {
     #private;
+    version: '1.0.0';
     constructor();
     config(params: {
         accessToken: string;

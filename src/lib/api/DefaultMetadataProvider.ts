@@ -14,6 +14,7 @@ export default class DefaultMetadataProvider implements NowPlayingMetadataProvid
   }
 
   config(params: { accessToken: string }) {
+    this.version = '1.0.0';
     this.#accessToken = params.accessToken;
     this.#genius.config(params);
   }

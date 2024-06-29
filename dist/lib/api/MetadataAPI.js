@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _MetadataAPI_instances, _MetadataAPI_fetchPromises, _MetadataAPI_defaultMetadataProvider, _MetadataAPI_settings, _MetadataAPI_cache, _MetadataAPI_getFetchPromise, _MetadataAPI_isSongInfoComplete, _MetadataAPI_isBasicAlbumInfoComplete, _MetadataAPI_isBasicArtistInfoComplete, _MetadataAPI_doFetchInfo, _MetadataAPI_excludeParenthesis, _MetadataAPI_getProvider, _MetadataAPI_hasNowPlayingMetadataProvider;
+var _MetadataAPI_instances, _MetadataAPI_fetchPromises, _MetadataAPI_defaultMetadataProvider, _MetadataAPI_settings, _MetadataAPI_cache, _MetadataAPI_getFetchPromise, _MetadataAPI_isSongInfoComplete, _MetadataAPI_isBasicAlbumInfoComplete, _MetadataAPI_isBasicArtistInfoComplete, _MetadataAPI_doFetchInfo, _MetadataAPI_excludeParenthesis, _MetadataAPI_getProvider, _MetadataAPI_hasNowPlayingMetadataProvider, _MetadataAPI_validateNowPlayingMetadataProvider;
 Object.defineProperty(exports, "__esModule", { value: true });
 const md5_1 = __importDefault(require("md5"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
@@ -22,6 +22,8 @@ const Misc_1 = require("../utils/Misc");
 const lodash_1 = require("lodash");
 const DefaultMetadataProvider_1 = __importDefault(require("./DefaultMetadataProvider"));
 const escape_html_1 = __importDefault(require("escape-html"));
+const semver_1 = __importDefault(require("semver"));
+const REQUIRED_PROVIDER_VERSION = '1.x';
 class MetadataAPI {
     constructor() {
         _MetadataAPI_instances.add(this);
@@ -209,10 +211,13 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
         if (service) {
             const plugin = NowPlayingContext_1.default.getMusicServicePlugin(service);
             if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_hasNowPlayingMetadataProvider).call(this, plugin)) {
-                return {
-                    provider: plugin.getNowPlayingPluginMetadataProvider(),
-                    service
-                };
+                const provider = plugin.getNowPlayingPluginMetadataProvider();
+                if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_validateNowPlayingMetadataProvider).call(this, provider, service)) {
+                    return {
+                        provider,
+                        service
+                    };
+                }
             }
         }
     }
@@ -222,6 +227,28 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
     };
 }, _MetadataAPI_hasNowPlayingMetadataProvider = function _MetadataAPI_hasNowPlayingMetadataProvider(plugin) {
     return plugin && typeof plugin['getNowPlayingPluginMetadataProvider'] === 'function';
+}, _MetadataAPI_validateNowPlayingMetadataProvider = function _MetadataAPI_validateNowPlayingMetadataProvider(provider, service) {
+    const logPrefix = `[now-playing] NowPlayingPluginMetadataProvider for '${service}' plugin`;
+    if (!provider || typeof provider !== 'object') {
+        NowPlayingContext_1.default.getLogger().error(`${logPrefix} is null or wrong type`);
+        return false;
+    }
+    if (!Reflect.has(provider, 'version')) {
+        NowPlayingContext_1.default.getLogger().warn(`${logPrefix} is missing version number`);
+    }
+    else if (!semver_1.default.satisfies(provider.version, REQUIRED_PROVIDER_VERSION)) {
+        NowPlayingContext_1.default.getLogger().warn(`${logPrefix} has version '${provider.version}' which does not satisfy '${REQUIRED_PROVIDER_VERSION}'`);
+    }
+    const fns = [
+        'getSongInfo',
+        'getAlbumInfo',
+        'getArtistInfo'
+    ];
+    if (!fns.every((fn) => Reflect.has(provider, fn) && typeof provider[fn] === 'function')) {
+        NowPlayingContext_1.default.getLogger().error(`${logPrefix} is missing one of the following functions: ${fns.map((fn) => `${fn}()`).join(', ')}`);
+        return false;
+    }
+    return true;
 };
 const metadataAPI = new MetadataAPI();
 exports.default = metadataAPI;

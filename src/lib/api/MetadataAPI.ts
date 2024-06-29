@@ -7,8 +7,11 @@ import { MetadataServiceOptions } from '../config/PluginConfig';
 import { escapeRegExp } from 'lodash';
 import DefaultMetadataProvider from './DefaultMetadataProvider';
 import escapeHTML from 'escape-html';
+import semver from 'semver';
 
 type ItemType = 'song' | 'album' | 'artist';
+
+const REQUIRED_PROVIDER_VERSION = '1.x';
 
 class MetadataAPI {
 
@@ -213,24 +216,29 @@ class MetadataAPI {
   }
 
   #getProvider(uri?: string, service?: string) {
-    /**
-     * Always get service by URI if possible.
-     * Volumio has this long-standing bug where the MPD plugin sets service as 'mpd' even when
-     * consume state is on (consuming on behalf of another service).
-     */
-    if (uri) {
-      const _service = uri.split('/')[0];
-      if (_service) {
-        service = _service;
+    if (np.getConfigValue('metadataService').queryMusicServices) {
+      /**
+       * Always get service by URI if possible.
+       * Volumio has this long-standing bug where the MPD plugin sets service as 'mpd' even when
+       * consume state is on (consuming on behalf of another service).
+       */
+      if (uri) {
+        const _service = uri.split('/')[0];
+        if (_service) {
+          service = _service;
+        }
       }
-    }
-    if (service) {
-      const plugin = np.getMusicServicePlugin(service);
-      if (this.#hasNowPlayingMetadataProvider(plugin)) {
-        return {
-          provider: plugin.getNowPlayingPluginMetadataProvider(),
-          service
-        };
+      if (service) {
+        const plugin = np.getMusicServicePlugin(service);
+        if (this.#hasNowPlayingMetadataProvider(plugin)) {
+          const provider = plugin.getNowPlayingPluginMetadataProvider();
+          if (this.#validateNowPlayingMetadataProvider(provider, service)) {
+            return {
+              provider,
+              service
+            };
+          }
+        }
       }
     }
     return {
@@ -241,6 +249,30 @@ class MetadataAPI {
 
   #hasNowPlayingMetadataProvider(plugin: any): plugin is { getNowPlayingPluginMetadataProvider: () => NowPlayingMetadataProvider } {
     return plugin && typeof plugin['getNowPlayingPluginMetadataProvider'] === 'function';
+  }
+
+  #validateNowPlayingMetadataProvider(provider: any, service: string) {
+    const logPrefix = `[now-playing] NowPlayingPluginMetadataProvider for '${service}' plugin`;
+    if (!provider || typeof provider !== 'object') {
+      np.getLogger().error(`${logPrefix} is null or wrong type`);
+      return false;
+    }
+    if (!Reflect.has(provider, 'version')) {
+      np.getLogger().warn(`${logPrefix} is missing version number`);
+    }
+    else if (!semver.satisfies(provider.version, REQUIRED_PROVIDER_VERSION)) {
+      np.getLogger().warn(`${logPrefix} has version '${provider.version}' which does not satisfy '${REQUIRED_PROVIDER_VERSION}'`);
+    }
+    const fns = [
+      'getSongInfo',
+      'getAlbumInfo',
+      'getArtistInfo'
+    ];
+    if (!fns.every((fn) => Reflect.has(provider, fn) && typeof provider[fn] === 'function')) {
+      np.getLogger().error(`${logPrefix} is missing one of the following functions: ${fns.map((fn) => `${fn}()`).join(', ')}`);
+      return false;
+    }
+    return true;
   }
 }
 
