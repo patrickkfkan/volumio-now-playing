@@ -2,7 +2,7 @@ import md5 from 'md5';
 import np from '../NowPlayingContext';
 import Cache from '../utils/Cache';
 import { assignObjectEmptyProps, removeSongNumber } from '../utils/Misc';
-import { Metadata, NowPlayingMetadataProvider } from 'now-playing-common';
+import { Metadata, NowPlayingMetadataProvider, NowPlayingPluginSupport } from 'now-playing-common';
 import { MetadataServiceOptions } from '../config/PluginConfig';
 import { escapeRegExp } from 'lodash';
 import DefaultMetadataProvider from './DefaultMetadataProvider';
@@ -231,8 +231,8 @@ class MetadataAPI {
       if (service) {
         const plugin = np.getMusicServicePlugin(service);
         if (this.#hasNowPlayingMetadataProvider(plugin)) {
-          const provider = plugin.getNowPlayingPluginMetadataProvider();
-          if (this.#validateNowPlayingMetadataProvider(provider, service)) {
+          const provider = plugin.getNowPlayingMetadataProvider();
+          if (provider && this.#validateNowPlayingMetadataProvider(provider, service)) {
             return {
               provider,
               service
@@ -247,14 +247,14 @@ class MetadataAPI {
     };
   }
 
-  #hasNowPlayingMetadataProvider(plugin: any): plugin is { getNowPlayingPluginMetadataProvider: () => NowPlayingMetadataProvider } {
-    return plugin && typeof plugin['getNowPlayingPluginMetadataProvider'] === 'function';
+  #hasNowPlayingMetadataProvider(plugin: any): plugin is { getNowPlayingMetadataProvider: NowPlayingPluginSupport['getNowPlayingMetadataProvider'] } {
+    return plugin && typeof plugin['getNowPlayingMetadataProvider'] === 'function';
   }
 
   #validateNowPlayingMetadataProvider(provider: any, service: string) {
     const logPrefix = `[now-playing] NowPlayingPluginMetadataProvider for '${service}' plugin`;
-    if (!provider || typeof provider !== 'object') {
-      np.getLogger().error(`${logPrefix} is null or wrong type`);
+    if (typeof provider !== 'object') {
+      np.getLogger().error(`${logPrefix} has wrong type`);
       return false;
     }
     if (!Reflect.has(provider, 'version')) {

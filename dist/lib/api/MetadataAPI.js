@@ -211,8 +211,8 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
         if (service) {
             const plugin = NowPlayingContext_1.default.getMusicServicePlugin(service);
             if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_hasNowPlayingMetadataProvider).call(this, plugin)) {
-                const provider = plugin.getNowPlayingPluginMetadataProvider();
-                if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_validateNowPlayingMetadataProvider).call(this, provider, service)) {
+                const provider = plugin.getNowPlayingMetadataProvider();
+                if (provider && __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_validateNowPlayingMetadataProvider).call(this, provider, service)) {
                     return {
                         provider,
                         service
@@ -226,11 +226,11 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
         service: ''
     };
 }, _MetadataAPI_hasNowPlayingMetadataProvider = function _MetadataAPI_hasNowPlayingMetadataProvider(plugin) {
-    return plugin && typeof plugin['getNowPlayingPluginMetadataProvider'] === 'function';
+    return plugin && typeof plugin['getNowPlayingMetadataProvider'] === 'function';
 }, _MetadataAPI_validateNowPlayingMetadataProvider = function _MetadataAPI_validateNowPlayingMetadataProvider(provider, service) {
     const logPrefix = `[now-playing] NowPlayingPluginMetadataProvider for '${service}' plugin`;
-    if (!provider || typeof provider !== 'object') {
-        NowPlayingContext_1.default.getLogger().error(`${logPrefix} is null or wrong type`);
+    if (typeof provider !== 'object') {
+        NowPlayingContext_1.default.getLogger().error(`${logPrefix} has wrong type`);
         return false;
     }
     if (!Reflect.has(provider, 'version')) {
