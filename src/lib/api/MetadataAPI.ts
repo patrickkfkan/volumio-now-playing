@@ -127,7 +127,7 @@ class MetadataAPI {
       np.getLogger().info(`[now-playing] Fetch metadata ${providerStr}: ${JSON.stringify(params)}`);
       const cacheKey = md5(JSON.stringify({...params, providerSource}));
       const info = await this.#getFetchPromise(cacheKey, async () => {
-        if (params.type === 'song' && params.album) {
+        if (params.type === 'song') {
           const name = isTrackNumberEnabled ? removeSongNumber(params.name) : params.name;
           const songInfo = await this.#cache.getOrSet('song', cacheKey, () => provider.getSongInfo(name, params.album, params.artist, params.uri));
           return {

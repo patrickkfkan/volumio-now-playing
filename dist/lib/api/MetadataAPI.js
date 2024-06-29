@@ -116,7 +116,7 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
         NowPlayingContext_1.default.getLogger().info(`[now-playing] Fetch metadata ${providerStr}: ${JSON.stringify(params)}`);
         const cacheKey = (0, md5_1.default)(JSON.stringify({ ...params, providerSource }));
         const info = await __classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_getFetchPromise).call(this, cacheKey, async () => {
-            if (params.type === 'song' && params.album) {
+            if (params.type === 'song') {
                 const name = isTrackNumberEnabled ? (0, Misc_1.removeSongNumber)(params.name) : params.name;
                 const songInfo = await __classPrivateFieldGet(this, _MetadataAPI_cache, "f").getOrSet('song', cacheKey, () => provider.getSongInfo(name, params.album, params.artist, params.uri));
                 return {
