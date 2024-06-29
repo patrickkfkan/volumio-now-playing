@@ -21,6 +21,7 @@ const Cache_1 = __importDefault(require("../utils/Cache"));
 const Misc_1 = require("../utils/Misc");
 const lodash_1 = require("lodash");
 const DefaultMetadataProvider_1 = __importDefault(require("./DefaultMetadataProvider"));
+const escape_html_1 = __importDefault(require("escape-html"));
 class MetadataAPI {
     constructor() {
         _MetadataAPI_instances.add(this);
@@ -70,6 +71,12 @@ class MetadataAPI {
             catch (error) {
                 // Do nothing
             }
+        }
+        if (info.song?.lyrics?.type === 'synced' && !NowPlayingContext_1.default.getConfigValue('metadataService').enableSyncedLyrics) {
+            info.song.lyrics = {
+                type: 'plain',
+                lines: info.song.lyrics.lines.map((line) => (0, escape_html_1.default)(line.text))
+            };
         }
         return info;
     }
@@ -187,24 +194,26 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
         artist: __strip(params.artist, parentheses)?.trim() || params.artist
     };
 }, _MetadataAPI_getProvider = function _MetadataAPI_getProvider(uri, service) {
-    /**
-     * Always get service by URI if possible.
-     * Volumio has this long-standing bug where the MPD plugin sets service as 'mpd' even when
-     * consume state is on (consuming on behalf of another service).
-     */
-    if (uri) {
-        const _service = uri.split('/')[0];
-        if (_service) {
-            service = _service;
+    if (NowPlayingContext_1.default.getConfigValue('metadataService').queryMusicServices) {
+        /**
+         * Always get service by URI if possible.
+         * Volumio has this long-standing bug where the MPD plugin sets service as 'mpd' even when
+         * consume state is on (consuming on behalf of another service).
+         */
+        if (uri) {
+            const _service = uri.split('/')[0];
+            if (_service) {
+                service = _service;
+            }
         }
-    }
-    if (service) {
-        const plugin = NowPlayingContext_1.default.getMusicServicePlugin(service);
-        if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_hasNowPlayingMetadataProvider).call(this, plugin)) {
-            return {
-                provider: plugin.getNowPlayingPluginMetadataProvider(),
-                service
-            };
+        if (service) {
+            const plugin = NowPlayingContext_1.default.getMusicServicePlugin(service);
+            if (__classPrivateFieldGet(this, _MetadataAPI_instances, "m", _MetadataAPI_hasNowPlayingMetadataProvider).call(this, plugin)) {
+                return {
+                    provider: plugin.getNowPlayingPluginMetadataProvider(),
+                    service
+                };
+            }
         }
     }
     return {

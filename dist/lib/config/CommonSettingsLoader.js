@@ -7,10 +7,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a, _CommonSettingsLoader_getLocalizationSettings, _CommonSettingsLoader_getDefaultNormalized;
+var _a, _CommonSettingsLoader_getLocalizationSettings;
 Object.defineProperty(exports, "__esModule", { value: true });
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
-const Misc_1 = require("../utils/Misc");
 const ConfigHelper_1 = __importDefault(require("./ConfigHelper"));
 const now_playing_common_1 = require("now-playing-common");
 class CommonSettingsLoader {
@@ -18,12 +17,12 @@ class CommonSettingsLoader {
         if (category === now_playing_common_1.CommonSettingsCategory.Localization) {
             return __classPrivateFieldGet(this, _a, "m", _CommonSettingsLoader_getLocalizationSettings).call(this);
         }
-        return __classPrivateFieldGet(this, _a, "m", _CommonSettingsLoader_getDefaultNormalized).call(this, category);
+        return NowPlayingContext_1.default.getConfigValue(category);
     }
 }
 exports.default = CommonSettingsLoader;
 _a = CommonSettingsLoader, _CommonSettingsLoader_getLocalizationSettings = function _CommonSettingsLoader_getLocalizationSettings() {
-    const localization = __classPrivateFieldGet(this, _a, "m", _CommonSettingsLoader_getDefaultNormalized).call(this, now_playing_common_1.CommonSettingsCategory.Localization);
+    const localization = NowPlayingContext_1.default.getConfigValue(now_playing_common_1.CommonSettingsCategory.Localization);
     switch (localization.locale) {
         case 'matchVolumio':
             localization.resolvedLocale = ConfigHelper_1.default.getVolumioLocale();
@@ -47,9 +46,5 @@ _a = CommonSettingsLoader, _CommonSettingsLoader_getLocalizationSettings = funct
             localization.resolvedTimezone = localization.timezone;
     }
     return localization;
-}, _CommonSettingsLoader_getDefaultNormalized = function _CommonSettingsLoader_getDefaultNormalized(category) {
-    const settings = NowPlayingContext_1.default.getConfigValue(category);
-    const merged = (0, Misc_1.assignObjectEmptyProps)({}, settings, now_playing_common_1.DefaultSettings[category]);
-    return merged;
 };
 //# sourceMappingURL=CommonSettingsLoader.js.map

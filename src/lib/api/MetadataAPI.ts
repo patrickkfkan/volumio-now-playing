@@ -6,6 +6,7 @@ import { Metadata, NowPlayingMetadataProvider } from 'now-playing-common';
 import { MetadataServiceOptions } from '../config/PluginConfig';
 import { escapeRegExp } from 'lodash';
 import DefaultMetadataProvider from './DefaultMetadataProvider';
+import escapeHTML from 'escape-html';
 
 type ItemType = 'song' | 'album' | 'artist';
 
@@ -77,6 +78,12 @@ class MetadataAPI {
       catch (error) {
         // Do nothing
       }
+    }
+    if (info.song?.lyrics?.type === 'synced' && !np.getConfigValue('metadataService').enableSyncedLyrics) {
+      info.song.lyrics = {
+        type: 'plain',
+        lines: info.song.lyrics.lines.map((line) => escapeHTML(line.text))
+      };
     }
     return info;
   }

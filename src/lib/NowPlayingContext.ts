@@ -4,7 +4,8 @@ import fs from 'fs-extra';
 import winston from 'winston';
 import { PluginConfigKey, PluginConfigValue } from './config/PluginConfig';
 import { PLUGIN_CONFIG_SCHEMA } from './config/PluginConfig';
-import { CommonSettingsCategory, CommonRawSettingsOf } from 'now-playing-common';
+import { CommonSettingsCategory, CommonSettingsOf } from 'now-playing-common';
+import { assignObjectEmptyProps } from './utils/Misc';
 
 interface DeviceInfo {
   name: string;
@@ -126,7 +127,7 @@ class NowPlayingContext {
   }
 
   getConfigValue<T extends PluginConfigKey>(key: T, raw: true): any;
-  getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonRawSettingsOf<T>;
+  getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonSettingsOf<T>;
   getConfigValue<T extends PluginConfigKey>(key: T, raw?: false | undefined): PluginConfigValue<T>;
   getConfigValue<T extends PluginConfigKey>(key: T, raw = false): any {
     if (raw) {
@@ -137,7 +138,9 @@ class NowPlayingContext {
       const val = this.#pluginConfig.get(key);
       if (schema.json) {
         try {
-          return JSON.parse(val);
+          const parseVal = JSON.parse(val);
+          const merged = assignObjectEmptyProps({}, parseVal, schema.defaultValue);
+          return merged;
         }
         catch (e) {
           return schema.defaultValue;

@@ -4,6 +4,8 @@ import np from '../NowPlayingContext';
 
 export default class DefaultMetadataProvider implements NowPlayingMetadataProvider {
 
+  version: '1.0.0';
+
   #genius: Genius;
   #accessToken: string;
 

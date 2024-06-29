@@ -38,6 +38,7 @@
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
 		"@types/ejs": "^3.1.2",
+		"@types/escape-html": "^1.0.4",
 		"@types/express": "^4.17.17",
 		"@types/fs-extra": "^8.1.2",
 		"@types/lodash": "^4.14.195",
@@ -58,6 +59,7 @@
 		"cors": "^2.8.5",
 		"countries-and-timezones": "^3.5.1",
 		"ejs": "^3.1.9",
+		"escape-html": "^1.0.3",
 		"express": "^4.17.1",
 		"genius-fetch": "^1.0.0",
 		"install": "^0.13.0",
