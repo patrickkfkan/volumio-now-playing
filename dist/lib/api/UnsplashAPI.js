@@ -1,9 +1,5 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const BASE_URL = 'https://unsplash.com/napi/search/photos';
 const FALLBACK_URL = 'https://source.unsplash.com/random';
 const PER_PAGE = 20;
@@ -14,7 +10,7 @@ class UnsplashAPI {
         const matchSize = (w > 0 && h > 0) ? { w, h } : null;
         const doFetch = async (url, page = 1) => {
             url.searchParams.set('page', page.toString());
-            const resp = await (0, node_fetch_1.default)(url);
+            const resp = await fetch(url);
             return resp.json();
         };
         const fallback = () => {

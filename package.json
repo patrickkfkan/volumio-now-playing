@@ -19,7 +19,7 @@
 		"prettyName": "Now Playing",
 		"plugin_type": "user_interface",
 		"os": [
-			"buster"
+			"bookworm"
 		],
 		"icon": "fa-play-circle",
 		"boot_priority": 10,
@@ -27,13 +27,12 @@
 		"changelog": "",
 		"architectures": [
 			"amd64",
-			"armhf",
-			"i386"
+			"armhf"
 		]
 	},
 	"engines": {
-		"node": ">=14",
-		"volumio": ">=3"
+		"node": ">=20",
+		"volumio": ">=0"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
@@ -68,7 +67,6 @@
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
 		"node-cache": "^5.1.2",
-		"node-fetch": "^2.6.9",
 		"now-playing-common": "git+https://github.com/patrickkfkan/volumio-now-playing-common#v0.3.3",
 		"semver": "^7.5.4",
 		"string-format": "^2.0.0",

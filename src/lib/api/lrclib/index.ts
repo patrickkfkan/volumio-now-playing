@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { MetadataLyrics, MetadataSyncedLyrics } from 'now-playing-common';
 import np from '../../NowPlayingContext';
 

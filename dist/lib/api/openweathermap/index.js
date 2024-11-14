@@ -15,7 +15,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _OpenWeatherMapAPI_instances, _OpenWeatherMapAPI_apiKey, _OpenWeatherMapAPI_apiKeyPromise, _OpenWeatherMapAPI_coordinates, _OpenWeatherMapAPI_lang, _OpenWeatherMapAPI_units, _OpenWeatherMapAPI_getApiKey, _OpenWeatherMapAPI_createApiUrl, _OpenWeatherMapAPI_parseLocation, _OpenWeatherMapAPI_parseCurrent, _OpenWeatherMapAPI_parseDaily, _OpenWeatherMapAPI_parseHourly;
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const NowPlayingContext_1 = __importDefault(require("../../NowPlayingContext"));
 const BASE_URL = 'https://openweathermap.org';
 const API_URL = 'https://api.openweathermap.org';
@@ -23,7 +22,7 @@ const ONECALL_PATH = '/data/2.5/onecall';
 const WEATHER_PATH = '/data/2.5/weather';
 async function fetchPage(url, json = false) {
     try {
-        const response = await (0, node_fetch_1.default)(url);
+        const response = await fetch(url);
         if (response.ok) {
             return json ? response.json() : response.text();
         }

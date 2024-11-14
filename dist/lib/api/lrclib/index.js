@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const NowPlayingContext_1 = __importDefault(require("../../NowPlayingContext"));
 const API_GET_URL = 'https://lrclib.net/api/get';
 async function apiGet(params) {
@@ -14,7 +13,7 @@ async function apiGet(params) {
     urlObj.searchParams.set('duration', params.duration.toString());
     NowPlayingContext_1.default.getLogger().info(`[now-playing] LRCLIB getLyrics() API URL: ${urlObj.toString()}`);
     try {
-        const response = await (0, node_fetch_1.default)(urlObj, { method: 'GET' });
+        const response = await fetch(urlObj, { method: 'GET' });
         if (response.ok) {
             return response.json();
         }
