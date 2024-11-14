@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update = void 0;
+exports.update = update;
 const PluginConfig_1 = require("../PluginConfig");
 const NowPlayingContext_1 = __importDefault(require("../../NowPlayingContext"));
 /**
@@ -17,7 +17,6 @@ function update() {
     NowPlayingContext_1.default.setConfigValue('configVersion', TO_VERSION);
     NowPlayingContext_1.default.getLogger().info('[now-playing] Update complete');
 }
-exports.update = update;
 function updateMetadataServiceOptions() {
     /**
      * Old version has 'geniusAccessToken' value of string type, current is held in

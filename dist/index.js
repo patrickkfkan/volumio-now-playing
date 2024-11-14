@@ -36,7 +36,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _ControllerNowPlaying_instances, _ControllerNowPlaying_context, _ControllerNowPlaying_config, _ControllerNowPlaying_commandRouter, _ControllerNowPlaying_volumioLanguageChangeCallback, _ControllerNowPlaying_doGetUIConfig, _ControllerNowPlaying_parseConfigSaveData, _ControllerNowPlaying_configSaveDockedComponentSettings, _ControllerNowPlaying_configureWeatherApi, _ControllerNowPlaying_broadcastPluginInfo, _ControllerNowPlaying_notifyCommonSettingsUpdated, _ControllerNowPlaying_doOnStart, _ControllerNowPlaying_doOnStop, _ControllerNowPlaying_startApp, _ControllerNowPlaying_stopApp, _ControllerNowPlaying_restartApp, _ControllerNowPlaying_onVolumioLanguageChanged;
+var _ControllerNowPlaying_instances, _ControllerNowPlaying_context, _ControllerNowPlaying_config, _ControllerNowPlaying_commandRouter, _ControllerNowPlaying_volumioLanguageChangeCallback, _ControllerNowPlaying_doGetUIConfig, _ControllerNowPlaying_parseConfigSaveData, _ControllerNowPlaying_configSaveDockedComponentSettings, _ControllerNowPlaying_configureWeatherApi, _ControllerNowPlaying_broadcastPluginInfo, _ControllerNowPlaying_notifyCommonSettingsUpdated, _ControllerNowPlaying_doOnStart, _ControllerNowPlaying_doOnStop, _ControllerNowPlaying_startApp, _ControllerNowPlaying_stopApp, _ControllerNowPlaying_restartApp, _ControllerNowPlaying_onVolumioLanguageChanged, _ControllerNowPlaying_stdLogError;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const kew_1 = __importDefault(require("kew"));
@@ -78,12 +78,16 @@ class ControllerNowPlaying {
         });
     }
     configureVolumioKiosk(data) {
-        KioskUtils.configureVolumioKiosk(data.display).finally(() => {
+        KioskUtils.configureVolumioKiosk(data.display)
+            .catch((error) => __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_stdLogError).call(this, 'KioskUtils.configureVolumioKiosk()', error))
+            .finally(() => {
             NowPlayingContext_1.default.refreshUIConfig();
         });
     }
     restoreVolumioKioskBak() {
-        KioskUtils.restoreVolumioKiosk().finally(() => {
+        KioskUtils.restoreVolumioKiosk()
+            .catch((error) => __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_stdLogError).call(this, 'KioskUtils.restoreVolumioKiosk()', error))
+            .finally(() => {
             NowPlayingContext_1.default.refreshUIConfig();
         });
     }
@@ -137,7 +141,9 @@ class ControllerNowPlaying {
              * the screen will reload itself when app is started).
              */
             if (kiosk.exists && kiosk.display == 'nowPlaying') {
-                KioskUtils.modifyVolumioKioskScript(data.oldPort, data.port, false);
+                KioskUtils
+                    .modifyVolumioKioskScript(data.oldPort, data.port, false)
+                    .catch((error) => __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_stdLogError).call(this, 'KioskUtils.modifyVolumioKioskScript()', error));
             }
             NowPlayingContext_1.default.refreshUIConfig();
         })
@@ -2031,6 +2037,8 @@ _ControllerNowPlaying_context = new WeakMap(), _ControllerNowPlaying_config = ne
     // Push localization settings
     NowPlayingContext_1.default.getLogger().info('[now-playing] Volumio language changed - pushing localization settings');
     __classPrivateFieldGet(this, _ControllerNowPlaying_instances, "m", _ControllerNowPlaying_notifyCommonSettingsUpdated).call(this, now_playing_common_1.CommonSettingsCategory.Localization);
+}, _ControllerNowPlaying_stdLogError = function _ControllerNowPlaying_stdLogError(fn, error) {
+    NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Caught error in ${fn}:`, error, false));
 };
 module.exports = ControllerNowPlaying;
 //# sourceMappingURL=index.js.map

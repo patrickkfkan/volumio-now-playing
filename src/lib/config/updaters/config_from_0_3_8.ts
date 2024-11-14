@@ -1,4 +1,4 @@
-import { DefaultThemeSettings, ThemeSettings } from 'now-playing-common';
+import { DefaultThemeSettings, type ThemeSettings } from 'now-playing-common';
 import np from '../../NowPlayingContext';
 
 /**

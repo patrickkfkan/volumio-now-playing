@@ -1,4 +1,4 @@
-import { MetadataLyrics, MetadataSyncedLyrics } from 'now-playing-common';
+import { type MetadataLyrics, type MetadataSyncedLyrics } from 'now-playing-common';
 import np from '../../NowPlayingContext';
 
 const API_GET_URL = 'https://lrclib.net/api/get';
@@ -31,7 +31,7 @@ async function apiGet(params: LRCLibAPIGetParams): Promise<LRCLibAPIGetResult | 
   try {
     const response = await fetch(urlObj, { method: 'GET' });
     if (response.ok) {
-      return response.json();
+      return await response.json();
     }
     throw Error(`Response error: ${response.status} - ${response.statusText}`);
   }

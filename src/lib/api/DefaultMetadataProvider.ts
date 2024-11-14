@@ -1,5 +1,5 @@
-import Genius, { Album, Artist, Song, TextFormat } from 'genius-fetch';
-import { MetadataAlbumInfo, MetadataArtistInfo, MetadataSongInfo, NowPlayingMetadataProvider } from 'now-playing-common';
+import Genius, { type Album, type Artist, type Song, TextFormat } from 'genius-fetch';
+import { type MetadataAlbumInfo, type MetadataArtistInfo, type MetadataSongInfo, type NowPlayingMetadataProvider } from 'now-playing-common';
 import np from '../NowPlayingContext';
 import LRCLibAPI from './lrclib';
 

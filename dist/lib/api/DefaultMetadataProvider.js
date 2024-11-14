@@ -138,7 +138,6 @@ class DefaultMetadataProvider {
         __classPrivateFieldGet(this, _DefaultMetadataProvider_genius, "f").clearCache();
     }
 }
-exports.default = DefaultMetadataProvider;
 _DefaultMetadataProvider_genius = new WeakMap(), _DefaultMetadataProvider_accessToken = new WeakMap(), _DefaultMetadataProvider_instances = new WeakSet(), _DefaultMetadataProvider_getSongSnippet = function _DefaultMetadataProvider_getSongSnippet(info) {
     if (!info) {
         return null;
@@ -187,4 +186,5 @@ _DefaultMetadataProvider_genius = new WeakMap(), _DefaultMetadataProvider_access
     const album = await __classPrivateFieldGet(this, _DefaultMetadataProvider_genius, "f").getAlbumsByName(params.name, { textFormat: genius_fetch_1.TextFormat.Plain, obtainFullInfo: true, limit: 1 });
     return album.items[0] || null;
 };
+exports.default = DefaultMetadataProvider;
 //# sourceMappingURL=DefaultMetadataProvider.js.map

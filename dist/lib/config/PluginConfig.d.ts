@@ -1,6 +1,6 @@
-import { ActionPanelSettings, BackgroundSettings, IdleScreenSettings, LocalizationSettings, NowPlayingScreenSettings, PerformanceSettings, ThemeSettings } from 'now-playing-common';
-import { ContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
-import { StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
+import { type ActionPanelSettings, type BackgroundSettings, type IdleScreenSettings, type LocalizationSettings, type NowPlayingScreenSettings, type PerformanceSettings, type ThemeSettings } from 'now-playing-common';
+import { type ContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
+import { type StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
 export type PluginConfigKey = keyof PluginConfigSchema;
 export type PluginConfigValue<T extends PluginConfigKey> = PluginConfigSchema[T]['defaultValue'];
 export interface PluginConfigSchemaEntry<T, U = false> {

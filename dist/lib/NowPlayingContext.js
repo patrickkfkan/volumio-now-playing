@@ -38,6 +38,7 @@ class NowPlayingContext {
         __classPrivateFieldSet(this, _NowPlayingContext_i18nDefaults, {}, "f");
         __classPrivateFieldSet(this, _NowPlayingContext_i18CallbackRegistered, false, "f");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     set(key, value) {
         __classPrivateFieldGet(this, _NowPlayingContext_data, "f")[key] = value;
     }

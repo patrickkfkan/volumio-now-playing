@@ -26,7 +26,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.font = exports.api = exports.myBackground = exports.preview = exports.index = void 0;
+exports.index = index;
+exports.preview = preview;
+exports.myBackground = myBackground;
+exports.api = api;
+exports.font = font;
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
 const NowPlayingContext_1 = __importDefault(require("../lib/NowPlayingContext"));
@@ -63,15 +67,13 @@ async function index(req, res) {
     });
     res.send(html);
 }
-exports.index = index;
 async function preview(req, res) {
     const html = await renderView('preview', req, {
         nowPlayingUrl: getNowPlayingURL(req)
     });
     res.send(html);
 }
-exports.preview = preview;
-async function myBackground(params, res) {
+function myBackground(params, res) {
     const images = MyBackgroundMonitor_1.default.getImages();
     if (images.length === 0) {
         NowPlayingContext_1.default.getLogger().error('[now-playing] No images found in My Backgrounds');
@@ -106,7 +108,6 @@ async function myBackground(params, res) {
         res.send(400);
     }
 }
-exports.myBackground = myBackground;
 async function api(apiName, method, params, res) {
     const api = apiName && method ? APIs[apiName] : null;
     const fn = api && typeof api[method] === 'function' ? api[method] : null;
@@ -133,8 +134,7 @@ async function api(apiName, method, params, res) {
         });
     }
 }
-exports.api = api;
-async function font(filename, res) {
+function font(filename, res) {
     const assetPath = `${FontHelper_1.FONT_DIR}/${filename}`;
     if (!SystemUtils.fileExists(assetPath)) {
         return res.send(404);
@@ -147,7 +147,6 @@ async function font(filename, res) {
         return res.send(400);
     }
 }
-exports.font = font;
 function getNowPlayingURL(req) {
     return `${req.protocol}://${req.hostname}:${NowPlayingContext_1.default.getConfigValue('port')}`;
 }

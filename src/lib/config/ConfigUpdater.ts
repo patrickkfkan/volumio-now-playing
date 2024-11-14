@@ -93,7 +93,7 @@ export default class ConfigUpdater {
       const updatedVersion = np.getConfigValue('configVersion');
       if (updatedVersion) {
         np.getLogger().info(`[now-playing] ConfigUpdater: config version updated to ${updatedVersion}. Checking if there are further updates to be performed...`);
-        this.#updateConfigData(updatedVersion, toVersion, updaters.slice(applyIndex + 1));
+        await this.#updateConfigData(updatedVersion, toVersion, updaters.slice(applyIndex + 1));
       }
       else {
         np.getLogger().error('[now-playing] ConfigUpdater: error reading config version after last update. Aborting update process (config might be corrupt)...');

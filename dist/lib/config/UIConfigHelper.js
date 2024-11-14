@@ -46,7 +46,6 @@ class UIConfigHelper {
         return Number(value) || '';
     }
 }
-exports.default = UIConfigHelper;
 _a = UIConfigHelper, _UIConfigHelper_observeSection = function _UIConfigHelper_observeSection(data) {
     if (!data.content) {
         data.content = [];
@@ -73,4 +72,5 @@ _a = UIConfigHelper, _UIConfigHelper_observeSection = function _UIConfigHelper_o
         }
     });
 };
+exports.default = UIConfigHelper;
 //# sourceMappingURL=UIConfigHelper.js.map

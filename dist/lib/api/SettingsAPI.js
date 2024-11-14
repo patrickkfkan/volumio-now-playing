@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CommonSettingsLoader_1 = __importDefault(require("../config/CommonSettingsLoader"));
 const now_playing_common_1 = require("now-playing-common");
 class SettingsAPI {
-    async getSettings({ category }) {
+    getSettings({ category }) {
         if (Object.values(now_playing_common_1.CommonSettingsCategory).includes(category)) {
             return CommonSettingsLoader_1.default.get(category);
         }

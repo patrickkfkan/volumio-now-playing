@@ -15,7 +15,7 @@ async function apiGet(params) {
     try {
         const response = await fetch(urlObj, { method: 'GET' });
         if (response.ok) {
-            return response.json();
+            return await response.json();
         }
         throw Error(`Response error: ${response.status} - ${response.statusText}`);
     }

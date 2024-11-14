@@ -26,7 +26,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.assignObjectEmptyProps = exports.removeSongNumber = exports.rnd = exports.getVolumioBackgrounds = exports.kewToJSPromise = exports.jsPromiseToKew = void 0;
+exports.jsPromiseToKew = jsPromiseToKew;
+exports.kewToJSPromise = kewToJSPromise;
+exports.getVolumioBackgrounds = getVolumioBackgrounds;
+exports.rnd = rnd;
+exports.removeSongNumber = removeSongNumber;
+exports.assignObjectEmptyProps = assignObjectEmptyProps;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const kew_1 = __importDefault(require("kew"));
@@ -44,10 +49,9 @@ function jsPromiseToKew(promise) {
     });
     return defer.promise;
 }
-exports.jsPromiseToKew = jsPromiseToKew;
 function kewToJSPromise(promise) {
     // Guard against a JS promise from being passed to this function.
-    if (typeof promise.catch === 'function' && typeof promise.fail === undefined) {
+    if (typeof promise.catch === 'function' && typeof promise.fail === 'undefined') {
         // JS promise - return as is
         return promise;
     }
@@ -56,11 +60,10 @@ function kewToJSPromise(promise) {
             resolve(result);
         })
             .fail((error) => {
-            reject(error);
+            reject(error instanceof Error ? error : Error(String(error)));
         });
     });
 }
-exports.kewToJSPromise = kewToJSPromise;
 function getVolumioBackgrounds() {
     try {
         return SystemUtils.readdir(VOLUMIO_BG_PATH, 'thumbnail-');
@@ -71,11 +74,9 @@ function getVolumioBackgrounds() {
         return [];
     }
 }
-exports.getVolumioBackgrounds = getVolumioBackgrounds;
 function rnd(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-exports.rnd = rnd;
 function removeSongNumber(name) {
     // Translates "8 - Yellow Dog" to "Yellow Dog" for good Match on Genius service.
     const songNameRegex = /^(?:\d+\s*-\s*)([\w\d\s\p{L}.()-].+)$/u;
@@ -83,7 +84,6 @@ function removeSongNumber(name) {
     const newName = matches && matches?.length > 1 ? matches[1] : name;
     return newName;
 }
-exports.removeSongNumber = removeSongNumber;
 const mergeSettingsCustomizer = (target, src) => {
     if (target && typeof target === 'object' && !Array.isArray(target)) {
         return lodash_1.default.mergeWith(target, src, mergeSettingsCustomizer);
@@ -96,5 +96,4 @@ const mergeSettingsCustomizer = (target, src) => {
 function assignObjectEmptyProps(object, src1, src2) {
     return lodash_1.default.mergeWith(object, src1, src2, mergeSettingsCustomizer);
 }
-exports.assignObjectEmptyProps = assignObjectEmptyProps;
 //# sourceMappingURL=Misc.js.map

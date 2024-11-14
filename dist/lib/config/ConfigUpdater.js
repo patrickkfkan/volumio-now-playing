@@ -63,7 +63,6 @@ class ConfigUpdater {
         }
     }
 }
-exports.default = ConfigUpdater;
 _a = ConfigUpdater, _ConfigUpdater_getUpdaters = function _ConfigUpdater_getUpdaters() {
     const matchRegEx = /config_from_(.*).js$/;
     return fs_1.default.readdirSync(CONFIG_UPDATER_PATH).reduce((paths, file) => {
@@ -103,7 +102,7 @@ _a = ConfigUpdater, _ConfigUpdater_getUpdaters = function _ConfigUpdater_getUpda
     else {
         NowPlayingContext_1.default.getLogger().info(`[now-playing] ConfigUpdater: running config updater at "${applyUpdater.path}"...`);
         try {
-            const updater = await import(applyUpdater.path);
+            const updater = await Promise.resolve(`${applyUpdater.path}`).then(s => __importStar(require(s)));
             updater.update();
         }
         catch (e) {
@@ -113,7 +112,7 @@ _a = ConfigUpdater, _ConfigUpdater_getUpdaters = function _ConfigUpdater_getUpda
         const updatedVersion = NowPlayingContext_1.default.getConfigValue('configVersion');
         if (updatedVersion) {
             NowPlayingContext_1.default.getLogger().info(`[now-playing] ConfigUpdater: config version updated to ${updatedVersion}. Checking if there are further updates to be performed...`);
-            __classPrivateFieldGet(this, _a, "m", _ConfigUpdater_updateConfigData).call(this, updatedVersion, toVersion, updaters.slice(applyIndex + 1));
+            await __classPrivateFieldGet(this, _a, "m", _ConfigUpdater_updateConfigData).call(this, updatedVersion, toVersion, updaters.slice(applyIndex + 1));
         }
         else {
             NowPlayingContext_1.default.getLogger().error('[now-playing] ConfigUpdater: error reading config version after last update. Aborting update process (config might be corrupt)...');
@@ -123,4 +122,5 @@ _a = ConfigUpdater, _ConfigUpdater_getUpdaters = function _ConfigUpdater_getUpda
     NowPlayingContext_1.default.setConfigValue('configVersion', toVersion);
     NowPlayingContext_1.default.getLogger().info(`[now-playing] ConfigUpdater: updated config version to ${toVersion}`);
 };
+exports.default = ConfigUpdater;
 //# sourceMappingURL=ConfigUpdater.js.map

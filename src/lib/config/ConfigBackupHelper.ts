@@ -80,7 +80,7 @@ export default class ConfigBackupHelper {
     catch (error) {
       throw Error(`Failed to copy ${src} to ${dest}`);
     }
-    ConfigUpdater.checkAndUpdate();
+    await ConfigUpdater.checkAndUpdate();
   }
 
   static #getPathToBackupFile(backupName: string) {
@@ -119,17 +119,19 @@ export default class ConfigBackupHelper {
 
   static #getModifiedTime(backupName: string): Promise<{ backupName: string; modified: number; }> {
     const pathToFile = this.#getPathToBackupFile(backupName);
-    return new Promise(async (resolve, reject) => {
-      try {
-        const stat = await fs.promises.stat(pathToFile);
-        resolve({
-          backupName,
-          modified: stat.mtime.getTime()
-        });
-      }
-      catch (error) {
-        reject(error);
-      }
+    return new Promise((resolve, reject) => {
+      void (async () => {
+        try {
+          const stat = await fs.promises.stat(pathToFile);
+          resolve({
+            backupName,
+            modified: stat.mtime.getTime()
+          });
+        }
+        catch (error: unknown) {
+          reject(error instanceof Error ? error : Error(String(error)));
+        }
+      })();
     });
   }
 }

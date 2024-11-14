@@ -24,7 +24,7 @@ async function fetchPage(url, json = false) {
     try {
         const response = await fetch(url);
         if (response.ok) {
-            return json ? response.json() : response.text();
+            return await (json ? response.json() : response.text());
         }
         throw Error(`Response error: ${response.status} - ${response.statusText}`);
     }
@@ -104,7 +104,6 @@ class OpenWeatherMapAPI {
         return result;
     }
 }
-exports.default = OpenWeatherMapAPI;
 _OpenWeatherMapAPI_apiKey = new WeakMap(), _OpenWeatherMapAPI_apiKeyPromise = new WeakMap(), _OpenWeatherMapAPI_coordinates = new WeakMap(), _OpenWeatherMapAPI_lang = new WeakMap(), _OpenWeatherMapAPI_units = new WeakMap(), _OpenWeatherMapAPI_instances = new WeakSet(), _OpenWeatherMapAPI_getApiKey = async function _OpenWeatherMapAPI_getApiKey() {
     if (__classPrivateFieldGet(this, _OpenWeatherMapAPI_apiKey, "f")) {
         return __classPrivateFieldGet(this, _OpenWeatherMapAPI_apiKey, "f");
@@ -195,4 +194,5 @@ _OpenWeatherMapAPI_apiKey = new WeakMap(), _OpenWeatherMapAPI_apiKeyPromise = ne
         return parsed;
     }) || [];
 };
+exports.default = OpenWeatherMapAPI;
 //# sourceMappingURL=index.js.map

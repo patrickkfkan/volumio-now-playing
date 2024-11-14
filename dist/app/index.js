@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stop = exports.start = void 0;
+exports.start = start;
+exports.stop = stop;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const Router_1 = __importDefault(require("./Router"));
@@ -45,12 +46,10 @@ function start() {
         });
     });
 }
-exports.start = start;
 function stop() {
     if (server) {
         server.close();
         server = null;
     }
 }
-exports.stop = stop;
 //# sourceMappingURL=index.js.map

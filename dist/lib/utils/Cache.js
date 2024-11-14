@@ -52,12 +52,14 @@ class Cache {
     setEnabled(value) {
         __classPrivateFieldSet(this, _Cache_enabled, value, "f");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     get(type, key) {
         if (!this.isEnabled()) {
             return undefined;
         }
         return __classPrivateFieldGet(this, _Cache_cache, "f").get(`${type}.${key}`);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     put(type, key, value) {
         if (!this.isEnabled()) {
             return;
@@ -98,7 +100,6 @@ class Cache {
         });
     }
 }
-exports.default = Cache;
 _Cache_ttl = new WeakMap(), _Cache_maxEntries = new WeakMap(), _Cache_cache = new WeakMap(), _Cache_enabled = new WeakMap(), _Cache_instances = new WeakSet(), _Cache_reduceEntries = function _Cache_reduceEntries(type, reduceTo) {
     if (reduceTo === undefined) {
         reduceTo = this.getMaxEntries(type);
@@ -113,4 +114,5 @@ _Cache_ttl = new WeakMap(), _Cache_maxEntries = new WeakMap(), _Cache_cache = ne
         }
     }
 };
+exports.default = Cache;
 //# sourceMappingURL=Cache.js.map

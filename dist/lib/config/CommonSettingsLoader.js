@@ -20,7 +20,6 @@ class CommonSettingsLoader {
         return NowPlayingContext_1.default.getConfigValue(category);
     }
 }
-exports.default = CommonSettingsLoader;
 _a = CommonSettingsLoader, _CommonSettingsLoader_getLocalizationSettings = function _CommonSettingsLoader_getLocalizationSettings() {
     const localization = NowPlayingContext_1.default.getConfigValue(now_playing_common_1.CommonSettingsCategory.Localization);
     switch (localization.locale) {
@@ -47,4 +46,5 @@ _a = CommonSettingsLoader, _CommonSettingsLoader_getLocalizationSettings = funct
     }
     return localization;
 };
+exports.default = CommonSettingsLoader;
 //# sourceMappingURL=CommonSettingsLoader.js.map

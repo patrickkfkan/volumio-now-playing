@@ -1,5 +1,5 @@
-import { ObservedUIConfig, ObservedUIConfigSection, ObservedUIConfigSectionContent, UIConfig, UIConfigSection } from './UIConfig';
-import { UIConfigSectionKey } from './UIConfigSchema';
+import { type ObservedUIConfig, type ObservedUIConfigSection, type ObservedUIConfigSectionContent, type UIConfig, type UIConfigSection } from './UIConfig';
+import { type UIConfigSectionKey } from './UIConfigSchema';
 
 export default class UIConfigHelper {
 

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update = void 0;
+exports.update = update;
 const now_playing_common_1 = require("now-playing-common");
 const NowPlayingContext_1 = __importDefault(require("../../NowPlayingContext"));
 /**
@@ -17,7 +17,6 @@ function update() {
     NowPlayingContext_1.default.setConfigValue('configVersion', TO_VERSION);
     NowPlayingContext_1.default.getLogger().info('[now-playing] Update complete');
 }
-exports.update = update;
 function updateThemeSetting() {
     /**
      * Old version has 'theme' value of string type, current is object { active: themeName }.

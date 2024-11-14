@@ -35,7 +35,7 @@ class UnsplashAPI {
         }
         const randomOffset = Math.floor(Math.random() * ((total > SAMPLE_SIZE ? SAMPLE_SIZE : total) - 1)); // 0-based
         const randomOffsetToPage = {
-            page: Math.floor(randomOffset / PER_PAGE) + 1,
+            page: Math.floor(randomOffset / PER_PAGE) + 1, // 1-based
             offset: randomOffset % PER_PAGE
         };
         const finalFetch = await doFetch(url, randomOffsetToPage.page);

@@ -3,7 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPluginInfo = exports.getPluginVersion = exports.readdir = exports.restartSystemdService = exports.isSystemdServiceActive = exports.copyFile = exports.replaceInFile = exports.findInFile = exports.dirExists = exports.fileExists = void 0;
+exports.fileExists = fileExists;
+exports.dirExists = dirExists;
+exports.findInFile = findInFile;
+exports.replaceInFile = replaceInFile;
+exports.copyFile = copyFile;
+exports.isSystemdServiceActive = isSystemdServiceActive;
+exports.restartSystemdService = restartSystemdService;
+exports.readdir = readdir;
+exports.getPluginVersion = getPluginVersion;
+exports.getPluginInfo = getPluginInfo;
 const child_process_1 = require("child_process");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -17,7 +26,6 @@ function fileExists(path) {
         return false;
     }
 }
-exports.fileExists = fileExists;
 function dirExists(path) {
     try {
         return fs_1.default.existsSync(path) && fs_1.default.lstatSync(path).isDirectory();
@@ -26,18 +34,15 @@ function dirExists(path) {
         return false;
     }
 }
-exports.dirExists = dirExists;
 function findInFile(path, str) {
     const contents = fs_1.default.readFileSync(path).toString();
     const regex = new RegExp(`\\b${str}\\b`, 'gm');
     return regex.test(contents);
 }
-exports.findInFile = findInFile;
 function replaceInFile(path, search, replace) {
     const cmd = `echo volumio | sudo -S sed -i 's/${search}/${replace}/g' "${path}"`;
     return (0, child_process_1.execSync)(cmd, { uid: 1000, gid: 1000 });
 }
-exports.replaceInFile = replaceInFile;
 function copyFile(src, dest, opts) {
     const asRoot = !!opts?.asRoot;
     const createDestDirIfNotExists = !!opts?.createDestDirIfNotExists;
@@ -48,7 +53,6 @@ function copyFile(src, dest, opts) {
     }
     (0, child_process_1.execSync)(`${cmdPrefix} cp "${src}" "${dest}"`);
 }
-exports.copyFile = copyFile;
 function systemctl(cmd, service) {
     return new Promise((resolve, reject) => {
         const fullCmd = `/usr/bin/sudo /bin/systemctl ${cmd} ${service}`;
@@ -68,11 +72,9 @@ async function isSystemdServiceActive(service) {
     const out = await systemctl('status', service);
     return out.indexOf('active') >= 0 && out.indexOf('inactive') == -1;
 }
-exports.isSystemdServiceActive = isSystemdServiceActive;
 function restartSystemdService(service) {
     return systemctl('restart', service);
 }
-exports.restartSystemdService = restartSystemdService;
 function readdir(path, ignoreIfContains) {
     let files = fs_1.default.readdirSync(path);
     if (ignoreIfContains) {
@@ -80,11 +82,9 @@ function readdir(path, ignoreIfContains) {
     }
     return files;
 }
-exports.readdir = readdir;
 function getPluginVersion() {
     return package_json_1.default.version || null;
 }
-exports.getPluginVersion = getPluginVersion;
 function getPluginInfo() {
     let cached = NowPlayingContext_1.default.get('pluginInfo');
     if (!cached) {
@@ -101,5 +101,4 @@ function getPluginInfo() {
     }
     return cached;
 }
-exports.getPluginInfo = getPluginInfo;
 //# sourceMappingURL=System.js.map

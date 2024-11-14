@@ -26,7 +26,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restartVolumioKioskService = exports.modifyVolumioKioskScript = exports.restoreVolumioKiosk = exports.configureVolumioKiosk = exports.volumioKioskBackupPathExists = exports.checkVolumioKiosk = void 0;
+exports.checkVolumioKiosk = checkVolumioKiosk;
+exports.volumioKioskBackupPathExists = volumioKioskBackupPathExists;
+exports.configureVolumioKiosk = configureVolumioKiosk;
+exports.restoreVolumioKiosk = restoreVolumioKiosk;
+exports.modifyVolumioKioskScript = modifyVolumioKioskScript;
+exports.restartVolumioKioskService = restartVolumioKioskService;
 const SystemUtils = __importStar(require("./System"));
 const NowPlayingContext_1 = __importDefault(require("../NowPlayingContext"));
 const VOLUMIO_KIOSK_PATH = '/opt/volumiokiosk.sh';
@@ -64,11 +69,9 @@ function checkVolumioKiosk() {
         };
     }
 }
-exports.checkVolumioKiosk = checkVolumioKiosk;
 function volumioKioskBackupPathExists() {
     return SystemUtils.fileExists(VOLUMIO_KIOSK_BAK_PATH);
 }
-exports.volumioKioskBackupPathExists = volumioKioskBackupPathExists;
 async function configureVolumioKiosk(display) {
     let oldPort, newPort;
     if (display === 'nowPlaying') {
@@ -82,7 +85,6 @@ async function configureVolumioKiosk(display) {
     await modifyVolumioKioskScript(oldPort, newPort);
     NowPlayingContext_1.default.setConfigValue('kioskDisplay', display);
 }
-exports.configureVolumioKiosk = configureVolumioKiosk;
 async function restoreVolumioKiosk() {
     if (!volumioKioskBackupPathExists()) {
         NowPlayingContext_1.default.toast('error', NowPlayingContext_1.default.getI18n('NOW_PLAYING_KIOSK_BAK_NOT_FOUND'));
@@ -90,14 +92,13 @@ async function restoreVolumioKiosk() {
     }
     try {
         SystemUtils.copyFile(VOLUMIO_KIOSK_BAK_PATH, VOLUMIO_KIOSK_PATH, { asRoot: true });
-        restartVolumioKioskService();
+        await restartVolumioKioskService();
     }
     catch (error) {
         NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage('[now-playing] Error restoring kiosk script from backup: ', error));
         NowPlayingContext_1.default.toast('error', NowPlayingContext_1.default.getI18n('NOW_PLAYING_KIOSK_RESTORE_BAK_ERR'));
     }
 }
-exports.restoreVolumioKiosk = restoreVolumioKiosk;
 async function modifyVolumioKioskScript(oldPort, newPort, restartService = true) {
     try {
         if (oldPort == 3000) {
@@ -116,19 +117,17 @@ async function modifyVolumioKioskScript(oldPort, newPort, restartService = true)
         return restartVolumioKioskService();
     }
 }
-exports.modifyVolumioKioskScript = modifyVolumioKioskScript;
 async function restartVolumioKioskService() {
     // Restart volumio-kiosk service if it is active
     const isActive = await SystemUtils.isSystemdServiceActive(VOLUMIO_KIOSK_SERVICE_NAME);
     if (isActive) {
         NowPlayingContext_1.default.toast('info', 'Restarting Volumio Kiosk service...');
         try {
-            return SystemUtils.restartSystemdService(VOLUMIO_KIOSK_SERVICE_NAME);
+            return await SystemUtils.restartSystemdService(VOLUMIO_KIOSK_SERVICE_NAME);
         }
         catch (error) {
             NowPlayingContext_1.default.toast('error', 'Failed to restart Volumio Kiosk service.');
         }
     }
 }
-exports.restartVolumioKioskService = restartVolumioKioskService;
 //# sourceMappingURL=Kiosk.js.map

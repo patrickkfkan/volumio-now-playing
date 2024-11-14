@@ -1,5 +1,5 @@
-import { Metadata } from 'now-playing-common';
-import { MetadataServiceOptions } from '../config/PluginConfig';
+import { type Metadata } from 'now-playing-common';
+import { type MetadataServiceOptions } from '../config/PluginConfig';
 type ItemType = 'song' | 'album' | 'artist';
 export interface MetadataAPIFetchInfoParams {
     type: ItemType;

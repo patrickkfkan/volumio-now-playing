@@ -32,7 +32,7 @@ class FontHelper {
             files = (0, fs_1.readdirSync)(exports.FONT_DIR);
         }
         catch (error) {
-            NowPlayingContext_1.default.getLogger().warn(`[now-playing] Error reading "${exports.FONT_DIR}": ${error instanceof Error ? error.message : error}`);
+            NowPlayingContext_1.default.getLogger().warn(`[now-playing] Error reading "${exports.FONT_DIR}": ${error instanceof Error ? error.message : String(error)}`);
             return [];
         }
         return files.filter((f) => FONT_EXTS.includes(path_1.default.parse(f).ext.toLowerCase()));
@@ -47,8 +47,8 @@ class FontHelper {
         }
     }
 }
-exports.default = FontHelper;
 _a = FontHelper, _FontHelper_getUIConfSelectDefaultEntry = function _FontHelper_getUIConfSelectDefaultEntry() {
     return { value: '', label: NowPlayingContext_1.default.getI18n('NOW_PLAYING_DEFAULT') };
 };
+exports.default = FontHelper;
 //# sourceMappingURL=FontHelper.js.map
