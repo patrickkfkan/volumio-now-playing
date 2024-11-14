@@ -93,6 +93,9 @@ Starting from v0.7.0, the Now Playing plugin can query the relevant music servic
 
 ## Changelog
 
+1.0.0
+- Release for Bookworm-based Volumio
+
 0.7.6
 - Update web client v0.7.4 - this should fix situations where screen constantly displays spinner
 
