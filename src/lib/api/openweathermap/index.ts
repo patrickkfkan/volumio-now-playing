@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import np from '../../NowPlayingContext';
 
 const BASE_URL = 'https://openweathermap.org';
