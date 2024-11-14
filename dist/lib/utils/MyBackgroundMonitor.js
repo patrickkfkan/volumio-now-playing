@@ -107,12 +107,13 @@ _MyBackgroundMonitor_images = new WeakMap(), _MyBackgroundMonitor_status = new W
             });
             __classPrivateFieldSet(this, _MyBackgroundMonitor_isSorted, false, "f");
             break;
-        case 'unlink':
+        case 'unlink': {
             const index = __classPrivateFieldGet(this, _MyBackgroundMonitor_images, "f").findIndex((image) => image.name === base);
             if (index >= 0) {
                 __classPrivateFieldGet(this, _MyBackgroundMonitor_images, "f").splice(index, 1);
             }
             break;
+        }
         default:
     }
 }, _MyBackgroundMonitor_sortImages = function _MyBackgroundMonitor_sortImages() {

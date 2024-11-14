@@ -1,4 +1,4 @@
-import { DefaultMetadataServiceOptions, MetadataServiceOptions } from '../PluginConfig';
+import { DefaultMetadataServiceOptions, type MetadataServiceOptions } from '../PluginConfig';
 import np from '../../NowPlayingContext';
 
 /**

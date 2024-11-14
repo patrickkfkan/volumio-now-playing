@@ -1,4 +1,4 @@
-import { UIConfigElementOf, UIConfigSectionContentKeyOf, UIConfigSectionKey } from './UIConfigSchema';
+import { type UIConfigElementOf, type UIConfigSectionContentKeyOf, type UIConfigSectionKey } from './UIConfigSchema';
 
 export interface UIConfig {
   page: {

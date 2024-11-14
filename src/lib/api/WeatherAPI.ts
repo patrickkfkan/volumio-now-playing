@@ -1,11 +1,11 @@
-import OpenWeatherMapAPI, { OpenWeatherMapAPIGetWeatherResult } from './openweathermap';
+import OpenWeatherMapAPI, { type OpenWeatherMapAPIGetWeatherResult } from './openweathermap';
 import md5 from 'md5';
 import np from '../NowPlayingContext';
 import Cache from '../utils/Cache';
 import ConfigHelper from '../config/ConfigHelper';
-import { DeepRequired } from 'now-playing-common';
+import { type DeepRequired } from 'now-playing-common';
 import { getPluginInfo } from '../utils/System';
-import { WeatherData, WeatherDataCurrent, WeatherDataForecastDay, WeatherDataHourly, WeatherDataLocation } from 'now-playing-common';
+import { type WeatherData, type WeatherDataCurrent, type WeatherDataForecastDay, type WeatherDataHourly, type WeatherDataLocation } from 'now-playing-common';
 
 const WEATHER_ICONS_BASE_PATH = '/assets/weather-icons';
 const ICON_CODE_MAPPINGS: Record<string, string> = {
@@ -86,10 +86,10 @@ class WeatherAPI {
           data: refreshedInfo
         });
       })
-        .catch((e) => {
+        .catch((e: unknown) => {
           np.broadcastMessage('npPushWeatherOnServiceChange', {
             success: false,
-            error: e.message || e
+            error: e instanceof Error ? e.message : e
           });
         });
     }
@@ -103,7 +103,11 @@ class WeatherAPI {
 
     const promise = callback();
     this.#fetchPromises[key] = promise;
-    promise.finally(() => {
+    promise
+    .catch((error: unknown) => {
+      np.getLogger().error(np.getErrorMessage('[now-playing] Caught error in callback of WeatherAPI.#getFetchPromise():', error, false));
+    })
+    .finally(() => {
       delete this.#fetchPromises[key];
     });
     return promise;
@@ -124,12 +128,12 @@ class WeatherAPI {
       iconCode = '';
     }
     return {
-      'filledStatic': appUrl + this.#getWeatherIconPath(iconCode, 'fill', false),
-      'filledAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'fill', true),
-      'outlineStatic': appUrl + this.#getWeatherIconPath(iconCode, 'line', false),
-      'outlineAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'line', true),
-      'monoStatic': appUrl + this.#getWeatherIconPath(iconCode, 'monochrome', false),
-      'monoAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'monochrome', true)
+      'filledStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'fill', false) || ''),
+      'filledAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'fill', true) || ''),
+      'outlineStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'line', false) || ''),
+      'outlineAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'line', true) || ''),
+      'monoStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'monochrome', false) || ''),
+      'monoAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'monochrome', true) || '')
     };
   }
 

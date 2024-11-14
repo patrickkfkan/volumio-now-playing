@@ -47,6 +47,7 @@ export default class Cache {
     this.#enabled = value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   get<T>(type: string, key: string): T | undefined {
     if (!this.isEnabled()) {
       return undefined;
@@ -54,6 +55,7 @@ export default class Cache {
     return this.#cache.get(`${type}.${key}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   put<T>(type: string, key: string, value: T) {
     if (!this.isEnabled()) {
       return;

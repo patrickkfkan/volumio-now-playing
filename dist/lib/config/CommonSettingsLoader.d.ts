@@ -1,4 +1,4 @@
-import { CommonSettingsCategory, CommonSettingsOf } from 'now-playing-common';
+import { CommonSettingsCategory, type CommonSettingsOf } from 'now-playing-common';
 export default class CommonSettingsLoader {
     #private;
     static get<T extends CommonSettingsCategory>(category: T): CommonSettingsOf<T>;

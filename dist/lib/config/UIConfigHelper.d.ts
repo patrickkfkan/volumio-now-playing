@@ -1,4 +1,4 @@
-import { ObservedUIConfig, UIConfig } from './UIConfig';
+import { type ObservedUIConfig, type UIConfig } from './UIConfig';
 export default class UIConfigHelper {
     #private;
     static observe(data: UIConfig): ObservedUIConfig;

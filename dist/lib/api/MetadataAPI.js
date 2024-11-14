@@ -88,7 +88,11 @@ _MetadataAPI_fetchPromises = new WeakMap(), _MetadataAPI_defaultMetadataProvider
     }
     const promise = callback();
     __classPrivateFieldGet(this, _MetadataAPI_fetchPromises, "f")[key] = promise;
-    promise.finally(() => {
+    promise
+        .catch((error) => {
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage('[now-playing] Caught error in callback of MetdataAPI.#getFetchPromise():', error, false));
+    })
+        .finally(() => {
         delete __classPrivateFieldGet(this, _MetadataAPI_fetchPromises, "f")[key];
     });
     return promise;

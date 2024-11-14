@@ -28,23 +28,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const handler = __importStar(require("./Handler"));
+const NowPlayingContext_1 = __importDefault(require("../lib/NowPlayingContext"));
 const router = express_1.default.Router();
+function stdLogError(fn, error) {
+    NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Caught error in router -> ${fn}:`, error, false));
+}
 router.get('/', (req, res) => {
-    handler.index(req, res);
+    handler.index(req, res).catch((error) => stdLogError('index', error));
 });
 router.get('/preview', (req, res) => {
-    handler.preview(req, res);
+    handler.preview(req, res).catch((error) => stdLogError('preview', error));
 });
 router.get('/mybg', (req, res) => {
     handler.myBackground(req.query, res);
 });
 router.post('/api/:apiName/:method', (req, res) => {
     const { apiName, method } = req.params;
-    handler.api(apiName, method, req.body, res);
+    handler.api(apiName, method, req.body, res).catch((error) => stdLogError(`api -> ${apiName}.${method}`, error));
 });
 router.get('/api/:apiName/:method', (req, res) => {
     const { apiName, method } = req.params;
-    handler.api(apiName, method, req.query, res);
+    handler.api(apiName, method, req.query, res).catch((error) => stdLogError(`api -> ${apiName}.${method}`, error));
 });
 router.get('/font/:file', (req, res) => {
     const { file } = req.params;

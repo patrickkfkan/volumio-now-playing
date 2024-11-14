@@ -1,4 +1,3 @@
-/// <reference types="node" />
 export interface PluginInfo {
     appPort: number;
     version: string | null;

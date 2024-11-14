@@ -1,4 +1,4 @@
-import { WeatherData } from 'now-playing-common';
+import { type WeatherData } from 'now-playing-common';
 export interface WeatherAPIConfig {
     coordinates: string;
     units: 'imperial' | 'metric' | 'standard';

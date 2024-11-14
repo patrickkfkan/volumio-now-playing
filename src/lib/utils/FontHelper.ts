@@ -2,8 +2,8 @@ import { readdirSync } from 'fs';
 import np from '../NowPlayingContext';
 import { dirExists } from './System';
 import path from 'path';
-import { UIConfigSelect } from '../config/UIConfig';
-import { UIConfigSectionKey } from '../config/UIConfigSchema';
+import { type UIConfigSelect } from '../config/UIConfig';
+import { type UIConfigSectionKey } from '../config/UIConfigSchema';
 
 export const FONT_DIR = '/data/INTERNAL/NowPlayingPlugin/Fonts';
 const FONT_EXTS = [
@@ -25,7 +25,7 @@ export default class FontHelper {
       files = readdirSync(FONT_DIR);
     }
     catch (error) {
-      np.getLogger().warn(`[now-playing] Error reading "${FONT_DIR}": ${error instanceof Error ? error.message : error}`);
+      np.getLogger().warn(`[now-playing] Error reading "${FONT_DIR}": ${error instanceof Error ? error.message : String(error)}`);
       return [];
     }
     return files.filter((f) => FONT_EXTS.includes(path.parse(f).ext.toLowerCase()));

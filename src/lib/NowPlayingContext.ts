@@ -1,10 +1,10 @@
-import I18nSchema from '../i18n/strings_en.json';
+import type I18nSchema from '../i18n/strings_en.json';
 import format from 'string-format';
 import fs from 'fs-extra';
-import winston from 'winston';
-import { PluginConfigKey, PluginConfigValue } from './config/PluginConfig';
+import type winston from 'winston';
+import { type PluginConfigKey, type PluginConfigValue } from './config/PluginConfig';
 import { PLUGIN_CONFIG_SCHEMA } from './config/PluginConfig';
-import { CommonSettingsCategory, CommonSettingsOf } from 'now-playing-common';
+import { type CommonSettingsCategory, type CommonSettingsOf } from 'now-playing-common';
 import { assignObjectEmptyProps } from './utils/Misc';
 
 interface DeviceInfo {
@@ -38,10 +38,12 @@ class NowPlayingContext {
     this.#i18CallbackRegistered = false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   set<T>(key: string, value: T) {
     this.#data[key] = value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   get<T>(key: string): T | null;
   get<T>(key: string, defaultValue: T): T;
   get<T>(key: string, defaultValue?: T): T | null {
@@ -122,14 +124,14 @@ class NowPlayingContext {
     return result.trim();
   }
 
-  hasConfigKey<T extends PluginConfigKey>(key: T): boolean {
+  hasConfigKey(key: PluginConfigKey): boolean {
     return this.#pluginConfig.has(key);
   }
 
-  getConfigValue<T extends PluginConfigKey>(key: T, raw: true): any;
-  getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonSettingsOf<T>;
-  getConfigValue<T extends PluginConfigKey>(key: T, raw?: false | undefined): PluginConfigValue<T>;
-  getConfigValue<T extends PluginConfigKey>(key: T, raw = false): any {
+  getConfigValue(key:PluginConfigKey, raw: true): any;
+  getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false): CommonSettingsOf<T>;
+  getConfigValue<T extends PluginConfigKey>(key: T, raw?: false  ): PluginConfigValue<T>;
+  getConfigValue(key: PluginConfigKey, raw = false): any {
     if (raw) {
       return this.#pluginConfig.has(key) ? this.#pluginConfig.get(key) : undefined;
     }

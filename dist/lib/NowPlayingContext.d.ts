@@ -1,7 +1,7 @@
-import I18nSchema from '../i18n/strings_en.json';
-import winston from 'winston';
-import { PluginConfigKey, PluginConfigValue } from './config/PluginConfig';
-import { CommonSettingsCategory, CommonSettingsOf } from 'now-playing-common';
+import type I18nSchema from '../i18n/strings_en.json';
+import type winston from 'winston';
+import { type PluginConfigKey, type PluginConfigValue } from './config/PluginConfig';
+import { type CommonSettingsCategory, type CommonSettingsOf } from 'now-playing-common';
 interface DeviceInfo {
     name: string;
     id: string;
@@ -25,10 +25,10 @@ declare class NowPlayingContext {
     getPluginSetting(type: string, plugin: string, setting: string): any;
     getMusicServicePlugin(name: string): any;
     getErrorMessage(message: string, error: any, stack?: boolean): string;
-    hasConfigKey<T extends PluginConfigKey>(key: T): boolean;
-    getConfigValue<T extends PluginConfigKey>(key: T, raw: true): any;
-    getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false | undefined): CommonSettingsOf<T>;
-    getConfigValue<T extends PluginConfigKey>(key: T, raw?: false | undefined): PluginConfigValue<T>;
+    hasConfigKey(key: PluginConfigKey): boolean;
+    getConfigValue(key: PluginConfigKey, raw: true): any;
+    getConfigValue<T extends CommonSettingsCategory>(key: T, raw?: false): CommonSettingsOf<T>;
+    getConfigValue<T extends PluginConfigKey>(key: T, raw?: false): PluginConfigValue<T>;
     deleteConfigValue(key: string): void;
     setConfigValue<T extends PluginConfigKey>(key: T, value: PluginConfigValue<T>): void;
     getConfigFilePath(): string;

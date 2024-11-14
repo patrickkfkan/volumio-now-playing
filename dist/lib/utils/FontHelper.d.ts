@@ -1,5 +1,5 @@
-import { UIConfigSelect } from '../config/UIConfig';
-import { UIConfigSectionKey } from '../config/UIConfigSchema';
+import { type UIConfigSelect } from '../config/UIConfig';
+import { type UIConfigSectionKey } from '../config/UIConfigSchema';
 export declare const FONT_DIR = "/data/INTERNAL/NowPlayingPlugin/Fonts";
 export default class FontHelper {
     #private;

@@ -9,7 +9,7 @@ async function fetchPage(url: string, json = false) {
   try {
     const response = await fetch(url);
     if (response.ok) {
-      return json ? response.json() : response.text();
+      return await (json ? response.json() : response.text());
     }
     throw Error(`Response error: ${response.status} - ${response.statusText}`);
   }

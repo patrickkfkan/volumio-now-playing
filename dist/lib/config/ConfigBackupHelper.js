@@ -107,10 +107,9 @@ class ConfigBackupHelper {
         catch (error) {
             throw Error(`Failed to copy ${src} to ${dest}`);
         }
-        ConfigUpdater_1.default.checkAndUpdate();
+        await ConfigUpdater_1.default.checkAndUpdate();
     }
 }
-exports.default = ConfigBackupHelper;
 _a = ConfigBackupHelper, _ConfigBackupHelper_getPathToBackupFile = function _ConfigBackupHelper_getPathToBackupFile(backupName) {
     return path_1.default.resolve(`${CONFIG_BACKUPS_PATH}/${backupName}`);
 }, _ConfigBackupHelper_validateBackup = function _ConfigBackupHelper_validateBackup(filename) {
@@ -142,17 +141,20 @@ _a = ConfigBackupHelper, _ConfigBackupHelper_getPathToBackupFile = function _Con
     });
 }, _ConfigBackupHelper_getModifiedTime = function _ConfigBackupHelper_getModifiedTime(backupName) {
     const pathToFile = __classPrivateFieldGet(this, _a, "m", _ConfigBackupHelper_getPathToBackupFile).call(this, backupName);
-    return new Promise(async (resolve, reject) => {
-        try {
-            const stat = await fs_1.default.promises.stat(pathToFile);
-            resolve({
-                backupName,
-                modified: stat.mtime.getTime()
-            });
-        }
-        catch (error) {
-            reject(error);
-        }
+    return new Promise((resolve, reject) => {
+        void (async () => {
+            try {
+                const stat = await fs_1.default.promises.stat(pathToFile);
+                resolve({
+                    backupName,
+                    modified: stat.mtime.getTime()
+                });
+            }
+            catch (error) {
+                reject(error instanceof Error ? error : Error(String(error)));
+            }
+        })();
     });
 };
+exports.default = ConfigBackupHelper;
 //# sourceMappingURL=ConfigBackupHelper.js.map

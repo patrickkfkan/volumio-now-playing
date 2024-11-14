@@ -1,8 +1,8 @@
 import ejs from 'ejs';
-import express from 'express';
+import type express from 'express';
 import fs from 'fs';
 import np from '../lib/NowPlayingContext';
-import { PluginInfo, getPluginInfo } from '../lib/utils/System';
+import { type PluginInfo, getPluginInfo } from '../lib/utils/System';
 import metadataAPI from '../lib/api/MetadataAPI';
 import settingsAPI from '../lib/api/SettingsAPI';
 import weatherAPI from '../lib/api/WeatherAPI';
@@ -52,7 +52,7 @@ export async function preview(req: express.Request, res: express.Response) {
   res.send(html);
 }
 
-export async function myBackground(params: Record<string, any>, res: express.Response) {
+export function myBackground(params: Record<string, any>, res: express.Response) {
   const images = myBackgroundMonitor.getImages();
   if (images.length === 0) {
     np.getLogger().error('[now-playing] No images found in My Backgrounds');
@@ -90,7 +90,7 @@ export async function myBackground(params: Record<string, any>, res: express.Res
 }
 
 export async function api(apiName: string, method: string, params: Record<string, any>, res: express.Response) {
-  const api = apiName && method ? APIs[apiName] as any : null;
+  const api = apiName && method ? APIs[apiName] : null;
   const fn = api && typeof api[method] === 'function' ? api[method] : null;
   if (fn) {
     try {
@@ -116,7 +116,7 @@ export async function api(apiName: string, method: string, params: Record<string
   }
 }
 
-export async function font(filename: string, res: express.Response) {
+export function font(filename: string, res: express.Response) {
   const assetPath = `${FONT_DIR}/${filename}`;
   if (!SystemUtils.fileExists(assetPath)) {
     return res.send(404);

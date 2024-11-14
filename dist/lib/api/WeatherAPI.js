@@ -84,7 +84,7 @@ class WeatherAPI {
                 .catch((e) => {
                 NowPlayingContext_1.default.broadcastMessage('npPushWeatherOnServiceChange', {
                     success: false,
-                    error: e.message || e
+                    error: e instanceof Error ? e.message : e
                 });
             });
         }
@@ -111,7 +111,11 @@ _WeatherAPI_api = new WeakMap(), _WeatherAPI_fetchPromises = new WeakMap(), _Wea
     }
     const promise = callback();
     __classPrivateFieldGet(this, _WeatherAPI_fetchPromises, "f")[key] = promise;
-    promise.finally(() => {
+    promise
+        .catch((error) => {
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage('[now-playing] Caught error in callback of WeatherAPI.#getFetchPromise():', error, false));
+    })
+        .finally(() => {
         delete __classPrivateFieldGet(this, _WeatherAPI_fetchPromises, "f")[key];
     });
     return promise;
@@ -125,12 +129,12 @@ _WeatherAPI_api = new WeakMap(), _WeatherAPI_fetchPromises = new WeakMap(), _Wea
         iconCode = '';
     }
     return {
-        'filledStatic': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'fill', false),
-        'filledAnimated': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'fill', true),
-        'outlineStatic': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'line', false),
-        'outlineAnimated': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'line', true),
-        'monoStatic': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'monochrome', false),
-        'monoAnimated': appUrl + __classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'monochrome', true)
+        'filledStatic': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'fill', false) || ''),
+        'filledAnimated': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'fill', true) || ''),
+        'outlineStatic': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'line', false) || ''),
+        'outlineAnimated': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'line', true) || ''),
+        'monoStatic': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'monochrome', false) || ''),
+        'monoAnimated': appUrl + (__classPrivateFieldGet(this, _WeatherAPI_instances, "m", _WeatherAPI_getWeatherIconPath).call(this, iconCode, 'monochrome', true) || '')
     };
 }, _WeatherAPI_getTemperatureText = function _WeatherAPI_getTemperatureText(value, short = false) {
     if (value === undefined) {

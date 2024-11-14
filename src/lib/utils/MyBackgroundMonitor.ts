@@ -75,12 +75,13 @@ class MyBackgroundMonitor {
         });
         this.#isSorted = false;
         break;
-      case 'unlink':
+      case 'unlink': {
         const index = this.#images.findIndex((image) => image.name === base);
         if (index >= 0) {
           this.#images.splice(index, 1);
         }
         break;
+      }
       default:
 
     }

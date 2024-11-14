@@ -1,7 +1,7 @@
 import lodash from 'lodash';
-import { ActionPanelSettings, BackgroundSettings, DefaultActionPanelSettings, DefaultBackgroundSettings, DefaultIdleScreenSettings, DefaultLocalizationSettings, DefaultNowPlayingScreenSettings, DefaultPerformanceSettings, DefaultThemeSettings, IdleScreenSettings, LocalizationSettings, NowPlayingScreenSettings, PerformanceSettings, ThemeSettings } from 'now-playing-common';
-import { ContentRegionSettings, DefaultContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
-import { DefaultStartupOptions, StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
+import { type ActionPanelSettings, type BackgroundSettings, DefaultActionPanelSettings, DefaultBackgroundSettings, DefaultIdleScreenSettings, DefaultLocalizationSettings, DefaultNowPlayingScreenSettings, DefaultPerformanceSettings, DefaultThemeSettings, type IdleScreenSettings, type LocalizationSettings, type NowPlayingScreenSettings, type PerformanceSettings, type ThemeSettings } from 'now-playing-common';
+import { type ContentRegionSettings, DefaultContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
+import { DefaultStartupOptions, type StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
 
 export type PluginConfigKey = keyof PluginConfigSchema;
 export type PluginConfigValue<T extends PluginConfigKey> = PluginConfigSchema[T]['defaultValue'];

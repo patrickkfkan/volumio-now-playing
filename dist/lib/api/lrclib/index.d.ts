@@ -1,4 +1,4 @@
-import { MetadataLyrics } from 'now-playing-common';
+import { type MetadataLyrics } from 'now-playing-common';
 export interface LRCLibAPIGetParams {
     songTitle: string;
     artistName: string;

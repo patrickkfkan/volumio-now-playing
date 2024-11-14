@@ -16,14 +16,14 @@ import * as KioskUtils from './lib/utils/Kiosk';
 import ConfigUpdater from './lib/config/ConfigUpdater';
 import metadataAPI from './lib/api/MetadataAPI';
 import weatherAPI from './lib/api/WeatherAPI';
-import { CommonSettingsCategory, LocalizationSettings, NowPlayingScreenSettings, PerformanceSettings, ThemeSettings } from 'now-playing-common';
+import { CommonSettingsCategory, type LocalizationSettings, type NowPlayingScreenSettings, type PerformanceSettings, type ThemeSettings } from 'now-playing-common';
 import UIConfigHelper from './lib/config/UIConfigHelper';
 import ConfigBackupHelper from './lib/config/ConfigBackupHelper';
 import myBackgroundMonitor from './lib/utils/MyBackgroundMonitor';
-import { MetadataServiceOptions } from './lib/config/PluginConfig';
+import { type MetadataServiceOptions } from './lib/config/PluginConfig';
 import FontHelper from './lib/utils/FontHelper';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 type DockedComponentKey<T = keyof NowPlayingScreenSettings> = T extends `docked${infer _X}` ? T : never;
 
 class ControllerNowPlaying {
@@ -1510,15 +1510,19 @@ class ControllerNowPlaying {
   }
 
   configureVolumioKiosk(data: { display: 'nowPlaying' | 'default' }) {
-    KioskUtils.configureVolumioKiosk(data.display).finally(() => {
-      np.refreshUIConfig();
-    });
+    KioskUtils.configureVolumioKiosk(data.display)
+      .catch((error: unknown) => this.#stdLogError('KioskUtils.configureVolumioKiosk()', error))
+      .finally(() => {
+        np.refreshUIConfig();
+      });
   }
 
   restoreVolumioKioskBak() {
-    KioskUtils.restoreVolumioKiosk().finally(() => {
-      np.refreshUIConfig();
-    });
+    KioskUtils.restoreVolumioKiosk()
+      .catch((error: unknown) => this.#stdLogError('KioskUtils.restoreVolumioKiosk()', error))
+      .finally(() => {
+        np.refreshUIConfig();
+      });
   }
 
   configSaveDaemon(data: Record<string, any>) {
@@ -1577,7 +1581,9 @@ class ControllerNowPlaying {
        * the screen will reload itself when app is started).
        */
       if (kiosk.exists && kiosk.display == 'nowPlaying') {
-        KioskUtils.modifyVolumioKioskScript(data.oldPort, data.port, false);
+        KioskUtils
+          .modifyVolumioKioskScript(data.oldPort, data.port, false)
+          .catch((error: unknown) => this.#stdLogError('KioskUtils.modifyVolumioKioskScript()', error));
       }
 
       np.refreshUIConfig();
@@ -1804,6 +1810,7 @@ class ControllerNowPlaying {
     this.#configSaveDockedComponentSettings(data, 'dockedMediaFormat');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   #configSaveDockedComponentSettings<T extends DockedComponentKey>(data: Record<string, any>, componentName: T) {
     const apply = this.#parseConfigSaveData(data);
     const screen = np.getConfigValue('screen.nowPlaying');
@@ -2164,6 +2171,10 @@ class ControllerNowPlaying {
     // Push localization settings
     np.getLogger().info('[now-playing] Volumio language changed - pushing localization settings');
     this.#notifyCommonSettingsUpdated(CommonSettingsCategory.Localization);
+  }
+
+  #stdLogError(fn: string, error: unknown) {
+    np.getLogger().error(np.getErrorMessage(`[now-playing] Caught error in ${fn}:`, error, false));
   }
 }
 
