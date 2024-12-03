@@ -93,6 +93,9 @@ Starting from v0.7.0, the Now Playing plugin can query the relevant music servic
 
 ## Changelog
 
+1.0.1
+- Rebase on master branch (v0.7.5)
+
 1.0.0
 - Release for Bookworm-based Volumio
 
