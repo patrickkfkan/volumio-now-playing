@@ -67,7 +67,7 @@
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
 		"node-cache": "^5.1.2",
-		"now-playing-common": "git+https://github.com/patrickkfkan/volumio-now-playing-common#v0.3.3",
+		"now-playing-common": "git+https://github.com/phts/NP-01_now-playing-common#b069223f7bfd40350e0e321cf8cb39f4c45b0fc0",
 		"semver": "^7.5.4",
 		"string-format": "^2.0.0",
 		"v-conf": "^1.4.3",
