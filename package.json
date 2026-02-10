@@ -1,6 +1,6 @@
 {
 	"name": "now_playing",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "Provides a 'Now Playing' screen for your Volumio device.",
 	"main": "./dist/index.js",
 	"scripts": {
@@ -24,7 +24,7 @@
 		"icon": "fa-play-circle",
 		"boot_priority": 10,
 		"details": "Provides a 'Now Playing' screen for your Volumio device.",
-		"changelog": "Weather cache dropdown, improved weather error handling",
+		"changelog": "",
 		"architectures": [
 			"amd64",
 			"armhf"
