@@ -1,6 +1,6 @@
 {
 	"name": "now_playing",
-	"version": "1.0.3",
+	"version": "1.0.6",
 	"description": "Provides a 'Now Playing' screen for your Volumio device.",
 	"main": "./dist/index.js",
 	"scripts": {
@@ -13,7 +13,7 @@
 		"type": "git",
 		"url": "https://github.com/patrickkfkan/volumio-now-playing.git"
 	},
-	"author": "Patrick Kan",
+	"author": "Patrick Kan, Just a Nerd",
 	"license": "MIT",
 	"volumio_info": {
 		"prettyName": "Now Playing",
@@ -24,7 +24,7 @@
 		"icon": "fa-play-circle",
 		"boot_priority": 10,
 		"details": "Provides a 'Now Playing' screen for your Volumio device.",
-		"changelog": "",
+		"changelog": "Weather cache dropdown, improved weather error handling",
 		"architectures": [
 			"amd64",
 			"armhf"
@@ -32,7 +32,7 @@
 	},
 	"engines": {
 		"node": ">=20",
-		"volumio": ">=0"
+		"volumio": ">=4"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
@@ -48,7 +48,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.6.0",
 		"@typescript-eslint/parser": "^8.6.0",
 		"eslint": "^9.10.0",
-		"geo-tz": "^8.0.2",
+		"geo-tz": "^8.1.4",
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^8.6.0",
 		"winston": "^3.8.2"
