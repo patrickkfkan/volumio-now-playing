@@ -1,8 +1,9 @@
 import { type WeatherData } from 'now-playing-common';
 export interface WeatherAPIConfig {
     coordinates: string;
-    units: 'imperial' | 'metric' | 'standard';
-    apiKey?: string | null;
+    locale: string;
+    timezone?: string;
+    units: 'imperial' | 'metric';
     cacheMinutes?: number;
 }
 export interface WeatherAPIParsedConfig {
@@ -10,7 +11,9 @@ export interface WeatherAPIParsedConfig {
         lon: number;
         lat: number;
     };
-    units?: 'imperial' | 'metric' | 'standard';
+    locale?: string;
+    timezone?: string;
+    units: 'imperial' | 'metric';
 }
 declare class WeatherAPI {
     #private;

@@ -1,0 +1,1 @@
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../src/lib/api/openstreetmap/index.ts"],"names":[],"mappings":"AAIA,MAAM,CAAC,OAAO,OAAO,gBAAgB;;IAEnC;;;;;;;;;OASG;WACU,OAAO,CAAC,GAAG,EAAE,MAAM,EAAE,GAAG,EAAE,MAAM,EAAE,IAAI,SAAO,GAAG,OAAO,CAAC;QAAC,IAAI,CAAC,EAAE,MAAM,CAAC;QAAC,OAAO,CAAC,EAAE,MAAM,CAAA;KAAC,CAAC;CAiDxG"}

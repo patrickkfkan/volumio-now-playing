@@ -99,6 +99,9 @@ class NowPlayingContext {
                 result += ` ${error.stack}`;
             }
             else if (error.message) {
+                if (error.name) {
+                    result += ` ${error.name}:`;
+                }
                 result += ` ${error.message}`;
             }
         }

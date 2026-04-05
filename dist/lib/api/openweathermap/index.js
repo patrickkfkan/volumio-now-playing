@@ -32,7 +32,7 @@ async function fetchPage(url, json = false) {
         throw Error(`Response error: ${response.status} - ${response.statusText}`);
     }
     catch (error) {
-        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Error fetching OpenWeatherMap resource "${url}":`, error, false));
+        NowPlayingContext_1.default.getLogger().error(NowPlayingContext_1.default.getErrorMessage(`[now-playing] Error fetching OpenWeatherMap resource "${url}":`, error, true));
         throw error;
     }
 }
