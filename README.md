@@ -93,6 +93,10 @@ Starting from v0.7.0, the Now Playing plugin can query the relevant music servic
 
 ## Changelog
 
+1.1.0
+- Replace OpenWeatherMap with Open-Meteo + OpenStreetMap as data provider for weather service.
+- Update web client v0.7.6.
+
 1.0.7
 - Make OpenWeatherMap API key optional.
 
