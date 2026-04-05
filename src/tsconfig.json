@@ -17,7 +17,7 @@
     "sourceMap": false,
     "inlineSources": false,
     "strict": true,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
     "resolveJsonModule": true
   },
   "references": [
