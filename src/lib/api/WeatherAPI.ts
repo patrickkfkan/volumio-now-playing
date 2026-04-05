@@ -5,7 +5,7 @@ import ConfigHelper from '../config/ConfigHelper';
 import { type DeepRequired } from 'now-playing-common';
 import { getPluginInfo } from '../utils/System';
 import { type WeatherData, type WeatherDataCurrent, type WeatherDataForecastDay, type WeatherDataHourly, type WeatherDataLocation } from 'now-playing-common';
-import OpenMeteoAPI, { OpenMeteoAPIGetWeatherResult } from './open-meteo';
+import OpenMeteoAPI, { type OpenMeteoAPIGetWeatherResult } from './open-meteo';
 
 const WEATHER_ICONS_BASE_PATH = '/assets/weather-icons';
 

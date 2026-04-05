@@ -1,6 +1,6 @@
 // Auto-generated from ./src/UIConfig.json
 
-import { UIConfigButton, UIConfigInput, UIConfigSelect, UIConfigSwitch } from "./UIConfig";
+import type { UIConfigButton, UIConfigInput, UIConfigSelect, UIConfigSwitch } from "./UIConfig";
 export type UIConfigSectionKey = 
               'section_daemon' | 
               'section_localization' | 

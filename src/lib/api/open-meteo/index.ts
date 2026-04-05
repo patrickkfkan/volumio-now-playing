@@ -1,6 +1,6 @@
 import np from '../../NowPlayingContext';
 import { fetchWeatherApi } from "openmeteo";
-import { WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
+import { type WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
 import OpenStreetMapAPI from "../openstreetmap";
 
 export interface OpenMeteoAPIConstructorOptions {
