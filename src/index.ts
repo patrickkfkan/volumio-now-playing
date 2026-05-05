@@ -15,13 +15,14 @@ import * as SystemUtils from './lib/utils/System';
 import * as KioskUtils from './lib/utils/Kiosk';
 import ConfigUpdater from './lib/config/ConfigUpdater';
 import metadataAPI from './lib/api/MetadataAPI';
-import weatherAPI from './lib/api/WeatherAPI';
+import { getWeatherAPI } from './lib/api/WeatherAPI';
 import { CommonSettingsCategory, type LocalizationSettings, type NowPlayingScreenSettings, type PerformanceSettings, type ThemeSettings } from 'now-playing-common';
 import UIConfigHelper from './lib/config/UIConfigHelper';
 import ConfigBackupHelper from './lib/config/ConfigBackupHelper';
 import myBackgroundMonitor from './lib/utils/MyBackgroundMonitor';
 import { type MetadataServiceOptions } from './lib/config/PluginConfig';
 import FontHelper from './lib/utils/FontHelper';
+import { HostMonitor } from './lib/utils/HostMonitor';
 
  
 type DockedComponentKey<T = keyof NowPlayingScreenSettings> = T extends `docked${infer _X}` ? T : never;
@@ -31,11 +32,16 @@ class ControllerNowPlaying {
   #config: any;
   #commandRouter: any;
   #volumioLanguageChangeCallback: (() => void) | null;
+  // For DHCP networks, when plugin starts, there's no guarantee that the IP address 
+  // has been obtained. Use HostMonitor to check periodically and refresh host-dependent
+  // components on change.
+  #hostMonitor: HostMonitor | null;
 
   constructor(context: any) {
     this.#context = context;
     this.#commandRouter = this.#context.coreCommand;
     this.#volumioLanguageChangeCallback = null;
+    this.#hostMonitor = null;
   }
 
   getUIConfig() {
@@ -1900,12 +1906,13 @@ class ControllerNowPlaying {
   #configureWeatherApi() {
     const localization = CommonSettingsLoader.get(CommonSettingsCategory.Localization);
     const weather = np.getConfigValue('weather');
-    weatherAPI.setConfig({
+    getWeatherAPI().setConfig({
       coordinates: localization.geoCoordinates,
       locale: localization.resolvedLocale || ConfigHelper.getVolumioLocale(),
       timezone: localization.resolvedTimezone || localization.geoTimezone || undefined,
       units: localization.unitSystem,
-      cacheMinutes: weather?.cacheMinutes ?? 10
+      cacheMinutes: weather?.cacheMinutes ?? 10,
+      appUrl: this.getPluginInfo().payload.appUrl
     });
   }
 
@@ -2085,7 +2092,7 @@ class ControllerNowPlaying {
   }
 
   clearWeatherCache() {
-    weatherAPI.clearCache();
+    getWeatherAPI().clearCache();
     np.toast('success', np.getI18n('NOW_PLAYING_CACHE_CLEARED'));
   }
 
@@ -2136,6 +2143,31 @@ class ControllerNowPlaying {
     metadataAPI.updateSettings(np.getConfigValue('metadataService'));
     this.#configureWeatherApi();
 
+    // Host monitor
+    const host = np.getDeviceInfo().host;
+    if (host === 'http://127.0.0.1') {
+      this.#hostMonitor = new HostMonitor();
+      this.#hostMonitor.on('change', (previous, current) => {
+        np.getLogger().info(`[now-playing] Detected host change: ${previous} => ${current}`);
+
+        if (current !== 'http://127.0.0.1') {
+          this.#hostMonitor?.stop();
+        }
+
+        // Delete any cached instance of device / plugin info and broadcast updated one
+        np.delete('deviceInfo');
+        np.delete('pluginInfo');
+        this.#broadcastPluginInfo();
+
+        // Refesh UI config to show updated preview URL
+        np.refreshUIConfig();
+
+        // Refesh weather service since icons URLs would have changed
+        this.#configureWeatherApi();
+      });
+      this.#hostMonitor.start();
+    }
+
     // Register language change listener
     this.#volumioLanguageChangeCallback = this.#onVolumioLanguageChanged.bind(this);
     this.#context.coreCommand.sharedVars.registerCallback('language_code', this.#volumioLanguageChangeCallback);
@@ -2159,6 +2191,11 @@ class ControllerNowPlaying {
 
   async #doOnStop() {
     this.#stopApp();
+
+    if (this.#hostMonitor) {
+      this.#hostMonitor.stop();
+      this.#hostMonitor.removeAllListeners();
+    }
 
     // Remove language change listener (this is hacky but prevents a potential
     // Memory leak)
