@@ -1,6 +1,6 @@
 // Auto-generated from ./src/UIConfig.json
 
-import { UIConfigButton, UIConfigInput, UIConfigSelect, UIConfigSwitch } from "./UIConfig";
+import type { UIConfigButton, UIConfigInput, UIConfigSelect, UIConfigSwitch } from "./UIConfig";
 export type UIConfigSectionKey = 
               'section_daemon' | 
               'section_localization' | 
@@ -51,6 +51,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
     'enableSyncedLyrics' :
 
   K extends 'section_weather_service' ?
+    'weatherCacheMinutes' | 
     'clearWeatherCache' :
 
   K extends 'section_startup_options' ?
@@ -254,6 +255,7 @@ export type UIConfigSectionContentKeyOf<K extends UIConfigSectionKey> =
   K extends 'section_idle_view' ?
     'enabled' | 
     'waitTime' | 
+    'showClock' | 
     'showLocation' | 
     'showWeather' | 
     'mainAlignment' | 
@@ -363,6 +365,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
   ) : 
 
   K extends 'section_weather_service' ? (
+    C extends 'weatherCacheMinutes' ? UIConfigSelect<K> :
     C extends 'clearWeatherCache' ? UIConfigButton<K> :
     never
   ) : 
@@ -596,6 +599,7 @@ export type UIConfigElementOf<K extends UIConfigSectionKey, C extends UIConfigSe
   K extends 'section_idle_view' ? (
     C extends 'enabled' ? UIConfigSelect<K> :
     C extends 'waitTime' ? UIConfigInput<K, 'number'> :
+    C extends 'showClock' ? UIConfigSwitch<K> :
     C extends 'showLocation' ? UIConfigSwitch<K> :
     C extends 'showWeather' ? UIConfigSwitch<K> :
     C extends 'mainAlignment' ? UIConfigSelect<K> :

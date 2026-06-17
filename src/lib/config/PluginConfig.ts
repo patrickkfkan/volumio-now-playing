@@ -1,7 +1,7 @@
 import lodash from 'lodash';
-import { ActionPanelSettings, BackgroundSettings, DefaultActionPanelSettings, DefaultBackgroundSettings, DefaultIdleScreenSettings, DefaultLocalizationSettings, DefaultNowPlayingScreenSettings, DefaultPerformanceSettings, DefaultThemeSettings, IdleScreenSettings, LocalizationSettings, NowPlayingScreenSettings, PerformanceSettings, ThemeSettings } from 'now-playing-common';
-import { ContentRegionSettings, DefaultContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
-import { DefaultStartupOptions, StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
+import { type ActionPanelSettings, type BackgroundSettings, DefaultActionPanelSettings, DefaultBackgroundSettings, DefaultIdleScreenSettings, DefaultLocalizationSettings, DefaultNowPlayingScreenSettings, DefaultPerformanceSettings, DefaultThemeSettings, type IdleScreenSettings, type LocalizationSettings, type NowPlayingScreenSettings, type PerformanceSettings, type ThemeSettings } from 'now-playing-common';
+import { type ContentRegionSettings, DefaultContentRegionSettings } from 'now-playing-common/dist/config/ContentRegionSettings';
+import { DefaultStartupOptions, type StartupOptions } from 'now-playing-common/dist/config/StartupOptions';
 
 export type PluginConfigKey = keyof PluginConfigSchema;
 export type PluginConfigValue<T extends PluginConfigKey> = PluginConfigSchema[T]['defaultValue'];
@@ -23,12 +23,21 @@ export interface PluginConfigSchema {
   theme: PluginConfigSchemaEntry<ThemeSettings, true>;
   performance: PluginConfigSchemaEntry<PerformanceSettings, true>;
   localization: PluginConfigSchemaEntry<LocalizationSettings, true>;
+  weather: PluginConfigSchemaEntry<WeatherOptions, true>;
   // What is being displayed on the kiosk screen (i.e. the one attached to Volumio device)?
   // - 'default' - Default Volumio interface
   // - 'nowPlaying' - Now Playing page served by the plugin
   kioskDisplay: PluginConfigSchemaEntry<'default' | 'nowPlaying'>;
   configVersion: PluginConfigSchemaEntry<string | null>;
 }
+
+export interface WeatherOptions {
+  cacheMinutes: number;
+}
+
+export const DefaultWeatherOptions: WeatherOptions = {
+  cacheMinutes: 10
+};
 
 export interface MetadataServiceOptions {
   geniusAccessToken: string;
@@ -74,6 +83,7 @@ export const PLUGIN_CONFIG_SCHEMA: PluginConfigSchema = {
   theme: { defaultValue: lodash.cloneDeep(DefaultThemeSettings), json: true },
   performance: { defaultValue: lodash.cloneDeep(DefaultPerformanceSettings), json: true },
   localization: { defaultValue: lodash.cloneDeep(DefaultLocalizationSettings), json: true },
+  weather: { defaultValue: lodash.cloneDeep(DefaultWeatherOptions), json: true },
   kioskDisplay: { defaultValue: 'default', json: false },
   configVersion: { defaultValue: null, json: false }
 };

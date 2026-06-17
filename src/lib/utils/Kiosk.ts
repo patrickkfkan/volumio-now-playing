@@ -68,7 +68,7 @@ export async function restoreVolumioKiosk() {
   }
   try {
     SystemUtils.copyFile(VOLUMIO_KIOSK_BAK_PATH, VOLUMIO_KIOSK_PATH, { asRoot: true });
-    restartVolumioKioskService();
+    await restartVolumioKioskService();
   }
   catch (error) {
     np.getLogger().error(np.getErrorMessage('[now-playing] Error restoring kiosk script from backup: ', error));
@@ -102,7 +102,7 @@ export async function restartVolumioKioskService() {
   if (isActive) {
     np.toast('info', 'Restarting Volumio Kiosk service...');
     try {
-      return SystemUtils.restartSystemdService(VOLUMIO_KIOSK_SERVICE_NAME);
+      return await SystemUtils.restartSystemdService(VOLUMIO_KIOSK_SERVICE_NAME);
     }
     catch (error: any) {
       np.toast('error', 'Failed to restart Volumio Kiosk service.');

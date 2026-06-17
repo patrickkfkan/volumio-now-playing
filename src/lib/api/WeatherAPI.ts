@@ -1,13 +1,19 @@
-import OpenWeatherMapAPI, { OpenWeatherMapAPIGetWeatherResult } from './openweathermap';
 import md5 from 'md5';
 import np from '../NowPlayingContext';
 import Cache from '../utils/Cache';
 import ConfigHelper from '../config/ConfigHelper';
-import { DeepRequired } from 'now-playing-common';
+import { type DeepRequired } from 'now-playing-common';
 import { getPluginInfo } from '../utils/System';
-import { WeatherData, WeatherDataCurrent, WeatherDataForecastDay, WeatherDataHourly, WeatherDataLocation } from 'now-playing-common';
+import { type WeatherData, type WeatherDataCurrent, type WeatherDataForecastDay, type WeatherDataHourly, type WeatherDataLocation } from 'now-playing-common';
+import OpenMeteoAPI, { type OpenMeteoAPIGetWeatherResult } from './open-meteo';
 
 const WEATHER_ICONS_BASE_PATH = '/assets/weather-icons';
+
+/**
+ * The codes were from OpenWeatherMap API, before moving to Open-Meteo.
+ * We map Open-Meteo's WMO codes to these codes simply out of convenience.
+ * See OpenMeteoAPI#getWeatherIconName().
+ */
 const ICON_CODE_MAPPINGS: Record<string, string> = {
   '01d': 'clear-day.svg',
   '01n': 'clear-night.svg',
@@ -33,7 +39,11 @@ const ICON_CODE_MAPPINGS: Record<string, string> = {
 
 export interface WeatherAPIConfig {
   coordinates: string;
-  units: 'imperial' | 'metric' | 'standard';
+  locale: string;
+  timezone?: string;
+  units: 'imperial' | 'metric';
+  cacheMinutes?: number;
+  appUrl: string;
 }
 
 export interface WeatherAPIParsedConfig {
@@ -41,12 +51,15 @@ export interface WeatherAPIParsedConfig {
     lon: number;
     lat: number;
   };
-  units?: 'imperial' | 'metric' | 'standard';
+  locale?: string;
+  timezone?: string;
+  units: 'imperial' | 'metric';
+  appUrl: string;
 }
 
 class WeatherAPI {
 
-  #api: OpenWeatherMapAPI;
+  #api: OpenMeteoAPI;
   #fetchPromises: {
     [key: string]: Promise<WeatherData>;
   };
@@ -54,10 +67,13 @@ class WeatherAPI {
   #config: WeatherAPIParsedConfig;
 
   constructor() {
-    this.#api = new OpenWeatherMapAPI();
+    this.#api = new OpenMeteoAPI();
     this.#fetchPromises = {};
     this.#cache = new Cache({ weather: 600 }, { weather: 10 });
-    this.#config = {};
+    this.#config = {
+      units: 'metric',
+      appUrl: getPluginInfo().appUrl
+    };
   }
 
   clearCache() {
@@ -65,18 +81,40 @@ class WeatherAPI {
   }
 
   setConfig(opts: WeatherAPIConfig) {
-    const { coordinates, units } = opts;
+    const { coordinates, locale, timezone, units, cacheMinutes, appUrl } = opts;
+    const minutes = Math.min(1440, Math.max(10, cacheMinutes ?? 10));
+    this.#cache.setTTL('weather', minutes * 60);
     const coord = ConfigHelper.parseCoordinates(coordinates);
     let configChanged = false;
-    const {coordinates: currentCoordinates, units: currentUnits} = this.#config;
+    const {
+      coordinates: currentCoordinates,
+      locale: currentLocale,
+      timezone: currentTimezone,
+      units: currentUnits,
+      appUrl: currentAppUrl
+    } = this.#config;
     if (coord && (coord.lat !== currentCoordinates?.lat || coord.lon !== currentCoordinates?.lon)) {
       this.#api.setCoordinates(coord.lat, coord.lon);
       this.#config.coordinates = coord;
       configChanged = true;
     }
+    if (currentLocale !== locale) {
+      this.#api.setLang(locale);
+      this.#config.locale = locale;
+      configChanged = true;
+    }
+    if (currentTimezone !== timezone ){
+      this.#api.setTimzone(timezone);
+      this.#config.timezone = timezone;
+      configChanged = true;
+    }
     if (currentUnits !== units) {
       this.#api.setUnits(units);
       this.#config.units = units;
+      configChanged = true;
+    }
+    if (currentAppUrl !== appUrl) {
+      this.#config.appUrl = appUrl;
       configChanged = true;
     }
     if (configChanged) {
@@ -86,10 +124,10 @@ class WeatherAPI {
           data: refreshedInfo
         });
       })
-        .catch((e) => {
+        .catch((e: unknown) => {
           np.broadcastMessage('npPushWeatherOnServiceChange', {
             success: false,
-            error: e.message || e
+            error: e instanceof Error ? e.message : e
           });
         });
     }
@@ -103,7 +141,11 @@ class WeatherAPI {
 
     const promise = callback();
     this.#fetchPromises[key] = promise;
-    promise.finally(() => {
+    promise
+    .catch((error: unknown) => {
+      np.getLogger().error(np.getErrorMessage('[now-playing] Caught error in callback of WeatherAPI.#getFetchPromise():', error, false));
+    })
+    .finally(() => {
       delete this.#fetchPromises[key];
     });
     return promise;
@@ -124,12 +166,12 @@ class WeatherAPI {
       iconCode = '';
     }
     return {
-      'filledStatic': appUrl + this.#getWeatherIconPath(iconCode, 'fill', false),
-      'filledAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'fill', true),
-      'outlineStatic': appUrl + this.#getWeatherIconPath(iconCode, 'line', false),
-      'outlineAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'line', true),
-      'monoStatic': appUrl + this.#getWeatherIconPath(iconCode, 'monochrome', false),
-      'monoAnimated': appUrl + this.#getWeatherIconPath(iconCode, 'monochrome', true)
+      'filledStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'fill', false) || ''),
+      'filledAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'fill', true) || ''),
+      'outlineStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'line', false) || ''),
+      'outlineAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'line', true) || ''),
+      'monoStatic': appUrl + (this.#getWeatherIconPath(iconCode, 'monochrome', false) || ''),
+      'monoAnimated': appUrl + (this.#getWeatherIconPath(iconCode, 'monochrome', true) || '')
     };
   }
 
@@ -146,8 +188,6 @@ class WeatherAPI {
         return `${valueText}°C`;
       case 'imperial':
         return `${valueText}°F`;
-      default: // 'standard'
-        return `${valueText}K`;
     }
   }
 
@@ -161,8 +201,6 @@ class WeatherAPI {
         return `${valueText} m/s`;
       case 'imperial': // Miles per hour
         return `${valueText} mph`;
-      default: // 'standard' - meter/s
-        return `${valueText} m/s`;
     }
   }
 
@@ -173,7 +211,7 @@ class WeatherAPI {
     return `${value.toFixed(0)}%`;
   }
 
-  #parseLocation(data: OpenWeatherMapAPIGetWeatherResult): WeatherDataLocation {
+  #parseLocation(data: OpenMeteoAPIGetWeatherResult): WeatherDataLocation {
     const locationData = data.location;
     return {
       name: locationData.name || '',
@@ -181,9 +219,9 @@ class WeatherAPI {
     };
   }
 
-  #parseCurrent(data: OpenWeatherMapAPIGetWeatherResult) {
+  #parseCurrent(data: OpenMeteoAPIGetWeatherResult) {
     const currentData = data.current;
-    const appUrl = getPluginInfo().appUrl;
+    const appUrl = this.#config.appUrl;
     const temp = currentData.temp.now;
     const humidity = currentData.humidity;
     const windSpeed = currentData.windSpeed;
@@ -224,8 +262,8 @@ class WeatherAPI {
     return result;
   }
 
-  #parseForecast(data: OpenWeatherMapAPIGetWeatherResult) {
-    const appUrl = getPluginInfo().appUrl;
+  #parseForecast(data: OpenMeteoAPIGetWeatherResult) {
+    const appUrl = this.#config.appUrl;
     const forecast: WeatherDataForecastDay[] = [];
     for (const dailyWeather of data.daily) {
       const tempMin = dailyWeather.temp.min;
@@ -264,8 +302,8 @@ class WeatherAPI {
     return forecast.slice(1); // First day of forecast is actually current day
   }
 
-  #parseHourly(data: OpenWeatherMapAPIGetWeatherResult) {
-    const appUrl = getPluginInfo().appUrl;
+  #parseHourly(data: OpenMeteoAPIGetWeatherResult) {
+    const appUrl = this.#config.appUrl;
     const hourly: WeatherDataHourly[] = [];
     for (const hourlyWeather of data.hourly) {
       const temp = hourlyWeather.temp;
@@ -313,7 +351,9 @@ class WeatherAPI {
   async fetchInfo() {
     const config = this.#config;
     if (!this.#isConfigValid(config)) {
-      throw Error(np.getI18n('NOW_PLAYING_ERR_WEATHER_MISCONFIG'));
+      const err = new Error(np.getI18n('NOW_PLAYING_ERR_WEATHER_MISCONFIG')) as Error & { code?: string };
+      err.code = 'WEATHER_NOT_CONFIGURED';
+      throw err;
     }
     try {
       const cacheKey = md5(JSON.stringify(this.#config));
@@ -321,7 +361,13 @@ class WeatherAPI {
     }
     catch (e: any) {
       const msg = np.getI18n('NOW_PLAYING_ERR_WEATHER_FETCH') + (e.message ? `: ${e.message}` : '');
-      throw Error(msg);
+      const err = new Error(msg) as Error & { code?: string };
+      const notConfigured = e?.code === 'WEATHER_NOT_CONFIGURED' ||
+        (typeof e?.message === 'string' && (e.message.includes('not configured') || e.message.includes('not set up') || e.message.includes('missing geographic')));
+      if (notConfigured) {
+        err.code = 'WEATHER_NOT_CONFIGURED';
+      }
+      throw err;
     }
   }
 
@@ -330,6 +376,11 @@ class WeatherAPI {
   }
 }
 
-const weatherAPI = new WeatherAPI();
+let weatherApi: WeatherAPI | null = null;
 
-export default weatherAPI;
+export function getWeatherAPI() {
+  if (!weatherApi) {
+    weatherApi = new WeatherAPI();
+  }
+  return weatherApi;
+}

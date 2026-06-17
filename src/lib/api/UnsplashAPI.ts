@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 
 const BASE_URL = 'https://unsplash.com/napi/search/photos';
 const FALLBACK_URL = 'https://source.unsplash.com/random';

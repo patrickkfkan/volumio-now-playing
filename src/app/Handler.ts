@@ -1,11 +1,11 @@
 import ejs from 'ejs';
-import express from 'express';
+import type express from 'express';
 import fs from 'fs';
 import np from '../lib/NowPlayingContext';
-import { PluginInfo, getPluginInfo } from '../lib/utils/System';
+import { type PluginInfo, getPluginInfo } from '../lib/utils/System';
 import metadataAPI from '../lib/api/MetadataAPI';
 import settingsAPI from '../lib/api/SettingsAPI';
-import weatherAPI from '../lib/api/WeatherAPI';
+import { getWeatherAPI } from '../lib/api/WeatherAPI';
 import unsplashAPI from '../lib/api/UnsplashAPI';
 import CommonSettingsLoader from '../lib/config/CommonSettingsLoader';
 import { CommonSettingsCategory } from 'now-playing-common';
@@ -21,11 +21,18 @@ interface RenderViewData {
   [k: string]: any;
 }
 
+const getAPIs: Record<string, () => any> = {
+  metadata: () => metadataAPI,
+  settings: () => settingsAPI,
+  weather: () => getWeatherAPI(),
+  unsplash: () => unsplashAPI
+};
+
 const APIs: Record<string, any> = {
-  metadata: metadataAPI,
-  settings: settingsAPI,
-  weather: weatherAPI,
-  unsplash: unsplashAPI
+  metadata: null,
+  settings: null,
+  weather: null,
+  unsplash: null
 };
 
 export async function index(req: express.Request, res: express.Response) {
@@ -52,7 +59,7 @@ export async function preview(req: express.Request, res: express.Response) {
   res.send(html);
 }
 
-export async function myBackground(params: Record<string, any>, res: express.Response) {
+export function myBackground(params: Record<string, any>, res: express.Response) {
   const images = myBackgroundMonitor.getImages();
   if (images.length === 0) {
     np.getLogger().error('[now-playing] No images found in My Backgrounds');
@@ -90,7 +97,14 @@ export async function myBackground(params: Record<string, any>, res: express.Res
 }
 
 export async function api(apiName: string, method: string, params: Record<string, any>, res: express.Response) {
-  const api = apiName && method ? APIs[apiName] as any : null;
+  let api: any = null;
+  if (apiName && method) {
+    api = APIs[apiName];
+    if (!api && getAPIs[apiName]) {
+      api = getAPIs[apiName]();
+      APIs[apiName]  = api;
+    }
+  }
   const fn = api && typeof api[method] === 'function' ? api[method] : null;
   if (fn) {
     try {
@@ -101,10 +115,17 @@ export async function api(apiName: string, method: string, params: Record<string
       });
     }
     catch (e: any) {
-      np.getLogger().error(np.getErrorMessage(`[now-playing] API endpoint ${apiName}/${method} returned error:`, e, true));
+      const isWeatherNotConfigured = e?.code === 'WEATHER_NOT_CONFIGURED';
+      if (isWeatherNotConfigured) {
+        np.getLogger().info(`[now-playing] Weather not configured: ${e.message || e}`);
+      }
+      else {
+        np.getLogger().error(np.getErrorMessage(`[now-playing] API endpoint ${apiName}/${method} returned error:`, e, true));
+      }
       res.json({
         success: false,
-        error: e.message || e
+        error: e.message || e,
+        code: e?.code ?? null
       });
     }
   }
@@ -116,7 +137,7 @@ export async function api(apiName: string, method: string, params: Record<string
   }
 }
 
-export async function font(filename: string, res: express.Response) {
+export function font(filename: string, res: express.Response) {
   const assetPath = `${FONT_DIR}/${filename}`;
   if (!SystemUtils.fileExists(assetPath)) {
     return res.send(404);

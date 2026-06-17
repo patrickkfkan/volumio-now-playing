@@ -1,3 +1,5 @@
+<a href='https://ko-fi.com/C0C5RGOOP' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 # Now Playing Plugin for Volumio
 
 This plugin provides a 'Now Playing' screen for your Volumio device. It is intended for displays that are mainly used to show what Volumio is playing, as opposed to doing things such as browsing media. This makes the plugin suitable for embedded displays that are generally limited in screen estate.
@@ -69,7 +71,7 @@ The 'Preview URL' points to the preview page. Click the 'Open Preview' button to
 
 'Timezone' determines what date and time should be displayed in the Clock Dock Component and on the Idle Screen. If you have provided Geographic Coordinates, you can simply set this to 'Match Geographic Coordinates' - the plugin will determine the timezone based on the specified coordinates.
 
-*Display of weather information is optional. Data is obtained from [OpenWeather](https://openweathermap.org/).
+*Display of weather information is optional. Weather data is obtained from [Open-Meteo](https://open-meteo.com) and location data from [OpenStreetMap](https://openstreetmap.org).
 
 ## Technical Notes
 
@@ -90,6 +92,39 @@ Starting from v0.7.0, the Now Playing plugin can query the relevant music servic
 4. The Now Playing plugin calls the corresponding method of the `NowPlayingMetadataProvider` implementation and returns the result in its response.
 
 ## Changelog
+
+1.1.1
+- Resolve situation where app URL stays at 'http://127.0.0.1' if plugin starts before IP address is obtained.
+- Update web client v0.7.7 (fixes horizontal alignment not applied to format text in basic view).
+
+1.1.0
+- Replace OpenWeatherMap with Open-Meteo + OpenStreetMap as data provider for weather service.
+- Update web client v0.7.6.
+
+1.0.7
+- Make OpenWeatherMap API key optional.
+
+1.0.6
+- Weather cache duration is now a dropdown with preset options (10 min–24 h).
+- Improved weather error handling: clearer “not configured” messages and `WEATHER_NOT_CONFIGURED` code for client UI.
+
+1.0.4
+- The plugin now uses **One Call API 3.0** (`/data/3.0/onecall`).  
+- Config supports a `weather.openWeatherMapApiKey` value; the UI exposes it in the Weather Service section.
+
+1.0.3
+- Add 'Idle Screen -> Show Clock' setting ([@phts](https://github.com/phts) - [#18](https://github.com/patrickkfkan/volumio-now-playing/pull/18))
+- Fix wrong ownership of Node modules installed in `install.sh`, which prevents plugin from being uninstalled due to insufficient permissions to delete plugin directory.
+- Update web client v0.7.5
+
+1.0.2
+- Rebase on master branch (v0.7.6)
+
+1.0.1
+- Rebase on master branch (v0.7.5)
+
+1.0.0
+- Release for Bookworm-based Volumio
 
 0.7.6
 - Update web client v0.7.4 - this should fix situations where screen constantly displays spinner

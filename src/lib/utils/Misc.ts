@@ -14,7 +14,7 @@ export function jsPromiseToKew<T>(promise: Promise<T>): any {
   promise.then((result) => {
     defer.resolve(result);
   })
-    .catch((error) => {
+    .catch((error: unknown) => {
       defer.reject(error);
     });
 
@@ -23,7 +23,7 @@ export function jsPromiseToKew<T>(promise: Promise<T>): any {
 
 export function kewToJSPromise(promise: any): Promise<any> {
   // Guard against a JS promise from being passed to this function.
-  if (typeof promise.catch === 'function' && typeof promise.fail === undefined) {
+  if (typeof promise.catch === 'function' && typeof promise.fail === 'undefined') {
     // JS promise - return as is
     return promise;
   }
@@ -31,8 +31,8 @@ export function kewToJSPromise(promise: any): Promise<any> {
     promise.then((result: any) => {
       resolve(result);
     })
-      .fail((error: any) => {
-        reject(error);
+      .fail((error: unknown) => {
+        reject(error instanceof Error ? error : Error(String(error)));
       });
   });
 }

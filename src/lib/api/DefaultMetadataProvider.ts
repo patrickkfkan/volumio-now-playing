@@ -1,5 +1,5 @@
-import Genius, { Album, Artist, Song, TextFormat } from 'genius-fetch';
-import { MetadataAlbumInfo, MetadataArtistInfo, MetadataSongInfo, NowPlayingMetadataProvider } from 'now-playing-common';
+import Genius, { type Album, type Artist, type Song, TextFormat } from 'genius-fetch';
+import { type MetadataAlbumInfo, type MetadataArtistInfo, type MetadataSongInfo, type NowPlayingMetadataProvider } from 'now-playing-common';
 import np from '../NowPlayingContext';
 import LRCLibAPI from './lrclib';
 
@@ -8,14 +8,15 @@ export default class DefaultMetadataProvider implements NowPlayingMetadataProvid
   version: '1.1.0';
 
   #genius: Genius;
-  #accessToken: string;
+  #accessToken: string | null;
 
   constructor() {
+    this.version = '1.1.0';
     this.#genius = new Genius();
+    this.#accessToken = null;
   }
 
   config(params: { accessToken: string }) {
-    this.version = '1.1.0';
     this.#accessToken = params.accessToken;
     this.#genius.config(params);
   }

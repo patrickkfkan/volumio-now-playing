@@ -2,8 +2,8 @@ import md5 from 'md5';
 import np from '../NowPlayingContext';
 import Cache from '../utils/Cache';
 import { assignObjectEmptyProps, removeSongNumber } from '../utils/Misc';
-import { Metadata, NowPlayingMetadataProvider, NowPlayingPluginSupport } from 'now-playing-common';
-import { MetadataServiceOptions } from '../config/PluginConfig';
+import { type Metadata, type NowPlayingMetadataProvider, type NowPlayingPluginSupport } from 'now-playing-common';
+import { type MetadataServiceOptions } from '../config/PluginConfig';
 import { escapeRegExp } from 'lodash';
 import DefaultMetadataProvider from './DefaultMetadataProvider';
 import escapeHTML from 'escape-html';
@@ -60,9 +60,13 @@ class MetadataAPI {
     }
     const promise = callback();
     this.#fetchPromises[key] = promise;
-    promise.finally(() => {
-      delete this.#fetchPromises[key];
-    });
+    promise
+      .catch((error: unknown) => {
+        np.getLogger().error(np.getErrorMessage('[now-playing] Caught error in callback of MetdataAPI.#getFetchPromise():', error, false));
+      })
+      .finally(() => {
+        delete this.#fetchPromises[key];
+      });
     return promise;
   }
 
@@ -168,7 +172,7 @@ class MetadataAPI {
           };
         }
 
-        throw Error(`Unknown metadata type ${params.type}`);
+        throw Error(`Unknown metadata type ${params.type as string}`);
 
       });
       return {
